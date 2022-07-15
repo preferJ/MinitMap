@@ -12,11 +12,13 @@ public class TestController {
         return "/gps";
     }
 
+    // 이현 테스트전용 get
     @GetMapping("/leehyeon")
     public String leehyeon(){
         return "/LeeHyeon/test";
     }
 
+    // 성수 테스트
     @GetMapping("/hss")
     public String hss(){
         return "/hss/hss";

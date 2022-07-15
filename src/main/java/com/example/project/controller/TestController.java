@@ -11,4 +11,9 @@ public class TestController {
     public String gps() {
         return "/gps";
     }
+
+    @GetMapping("/leehyeon")
+    public String leehyeon(){
+        return "/LeeHyeon/test";
+    }
 }

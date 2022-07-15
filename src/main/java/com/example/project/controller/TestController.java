@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TestController {
-//    ㅅㅎ 테스트 sout 추가
+    //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
     @GetMapping("/")
-    public String gps(){
+    public String gps() {
         return "/gps";
     }
 }

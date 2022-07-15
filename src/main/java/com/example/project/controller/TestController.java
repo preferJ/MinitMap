@@ -9,4 +9,9 @@ public class TestController {
     public String gps(){
         return "/gps";
     }
+
+    @GetMapping("/hss")
+    public String hss(){
+        return "/hss/hss";
+    }
 }

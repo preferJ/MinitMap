@@ -18,17 +18,17 @@ public class AdminHistoryEntity {
     private Long adminHistoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
-    @Column(name = "historyType" , nullable = false)
+    @Column(name = "historyType", nullable = false)
     private String historyType;
 
-    @Column(name = "historyMessage" , nullable = false)
+    @Column(name = "historyMessage", nullable = false)
     private String historyMessage;
 
     @CreationTimestamp
-    @Column(name = "historyTime" , updatable = false)
+    @Column(name = "historyTime", updatable = false)
     private LocalDateTime historyTime;
 
 

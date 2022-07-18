@@ -17,27 +17,27 @@ public class TrafficTimeEntity {
     private Long trafficTimeId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trafficId" , nullable = false)
+    @JoinColumn(name = "trafficId", nullable = false)
     private TrafficEntity trafficEntity;
 
-    @Column(name = "trafficTime" , nullable = false)
+    @Column(name = "trafficTime", nullable = false)
     private Long trafficId;
 
-    @Column(name = "trafficApplyStart" , nullable = false)
+    @Column(name = "trafficApplyStart", nullable = false)
     private LocalTime trafficApplyStart;
 
-    @Column(name = "trafficApplyEnd" , nullable = false)
+    @Column(name = "trafficApplyEnd", nullable = false)
     private LocalTime trafficApplyEnd;
 
-    @Column(name = "startType" ,nullable = false)
+    @Column(name = "startType", nullable = false)
     private String startType;
 
-    @Column(name = "greenOn",nullable = false)
+    @Column(name = "greenOn", nullable = false)
     private LocalTime greenOn;
 
-    @Column(name = "redOn",nullable = false)
+    @Column(name = "redOn", nullable = false)
     private LocalTime redOn;
 
-    @Column(name = "setStartTime",nullable = false)
+    @Column(name = "setStartTime", nullable = false)
     private LocalTime setStartTime;
 }

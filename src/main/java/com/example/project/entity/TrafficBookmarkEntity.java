@@ -16,10 +16,10 @@ public class TrafficBookmarkEntity {
     private Long trafficBookmarkId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trafficId" , nullable = false)
+    @JoinColumn(name = "trafficId", nullable = false)
     private TrafficEntity trafficEntity;
 }

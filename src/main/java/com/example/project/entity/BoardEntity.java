@@ -22,7 +22,7 @@ public class BoardEntity {
     private Long boardId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,11 +49,11 @@ public class BoardEntity {
     private Long boardHits;
 
     @CreationTimestamp
-    @Column(name = "boardCreatedTime",updatable = false)
+    @Column(name = "boardCreatedTime", updatable = false)
     private LocalDateTime boardCreatedTime;
 
     @UpdateTimestamp
-    @Column(name = "boardUpdatedTime",insertable = false)
+    @Column(name = "boardUpdatedTime", insertable = false)
     private LocalDateTime boardUpdateTime;
 
     @Column(name = "boardLike")
@@ -68,9 +68,9 @@ public class BoardEntity {
     @ColumnDefault("0") //default 0
     private boolean managerCheck;
 
-    @OneToMany(mappedBy = "boardEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ErrorEntity> errorEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
 }

@@ -17,19 +17,19 @@ public class MyPlaceEntity {
     private Long myPlaceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
-    @Column(name = "myPlaceName" , nullable = false)
+    @Column(name = "myPlaceName", nullable = false)
     private String myPlaceName;
 
-    @Column(name = "myPlaceLat" , nullable = false)
+    @Column(name = "myPlaceLat", nullable = false)
     private Double myPlaceLat;
 
-    @Column(name = "myPlaceLon",nullable = false)
+    @Column(name = "myPlaceLon", nullable = false)
     private Double myPlaceLon;
 
-    @Column(name = "icon",nullable = false)
+    @Column(name = "icon", nullable = false)
     @ColumnDefault("0") //default 0
     private Long icon;
 

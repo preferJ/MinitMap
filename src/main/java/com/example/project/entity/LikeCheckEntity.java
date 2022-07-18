@@ -16,11 +16,11 @@ public class LikeCheckEntity {
     private Long likeCheckId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardId" , nullable = false)
+    @JoinColumn(name = "boardId", nullable = false)
     private BoardEntity boardEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)

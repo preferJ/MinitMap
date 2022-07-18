@@ -19,16 +19,16 @@ public class TrafficEntity {
     private Long trafficId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
-    @Column(name = "trafficName" , nullable = false)
+    @Column(name = "trafficName", nullable = false)
     private Long trafficName;
 
-    @Column(name = "trafficLat" ,nullable = false)
+    @Column(name = "trafficLat", nullable = false)
     private Long trafficLat;
 
-    @Column(name = "trafficLon" , nullable = false)
+    @Column(name = "trafficLon", nullable = false)
     private Long trafficLon;
 
     @Column(name = "trafficLike")
@@ -39,19 +39,17 @@ public class TrafficEntity {
     @ColumnDefault("0") //default 0
     private Long trafficDislike;
 
-    @OneToMany(mappedBy = "trafficEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> boardEntityList = new ArrayList<>();
-
-
-    @OneToOne(mappedBy = "trafficEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
 
-    @OneToMany(mappedBy = "trafficEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficBookmarkEntity> trafficBookmarkEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trafficEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ErrorEntity> errorEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trafficEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
 }

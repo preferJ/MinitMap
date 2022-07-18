@@ -18,43 +18,43 @@ public class MemberEntity {
     @Column(name = "memberId")
     private Long memberId;
 
-    @Column(name = "memberEmail" , unique = true , nullable = false)
+    @Column(name = "memberEmail", unique = true, nullable = false)
     private String memberEmail;
 
-    @Column(name = "memberPassword" ,nullable = false)
+    @Column(name = "memberPassword", nullable = false)
     private String memberPassword;
 
-    @Column(name = "memberNickname",nullable = false,unique = true)
+    @Column(name = "memberNickname", nullable = false, unique = true)
     private String memberNickname;
 
-    @Column(name = "memberPhone",nullable = false,unique = true)
+    @Column(name = "memberPhone", nullable = false, unique = true)
     private String memberPhone;
 
     @Column(name = "memberLevel")
     @ColumnDefault("1") //default 1
     private Long memberLevel;
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> boardEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MyPlaceEntity> myPlaceEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RutinEntity> rutinEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficEntity> trafficEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficBookmarkEntity> trafficBookmarkEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ErrorEntity> errorEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AdminHistoryEntity> adminHistoryEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
 }

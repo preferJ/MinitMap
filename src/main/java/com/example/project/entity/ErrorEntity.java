@@ -26,7 +26,7 @@ public class ErrorEntity {
     private BoardEntity boardEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId" , nullable = false)
+    @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
     @Column(name = "errorType", nullable = false)
@@ -36,7 +36,7 @@ public class ErrorEntity {
     private String errorContents;
 
     @CreationTimestamp
-    @Column(name = "errorCreatedTime" , updatable = false)
+    @Column(name = "errorCreatedTime", updatable = false)
     private LocalDateTime errorCreatedTime;
 
     @Column(name = "managerCheck")

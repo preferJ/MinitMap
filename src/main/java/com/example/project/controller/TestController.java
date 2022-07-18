@@ -9,7 +9,7 @@ public class TestController {
     // 이현 System.out.println("테스트");
     @GetMapping("/")
     public String gps() {
-        return "/gps";
+        return "/index";
     }
 
     // 이현 테스트전용 get

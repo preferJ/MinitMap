@@ -20,7 +20,15 @@ public class TestController {
 
     // 성수 테스트
     @GetMapping("/hss")
+    // 홍성수
     public String hss(){
         return "/hss/hss";
+    }
+
+    @GetMapping("/hss/search")
+    // TLWT-26
+    // 홍성수
+    public String search(){
+        return "/hss/Search";
     }
 }

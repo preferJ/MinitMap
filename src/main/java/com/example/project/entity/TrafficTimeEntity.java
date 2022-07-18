@@ -16,7 +16,7 @@ public class TrafficTimeEntity {
     @Column(name = "trafficTimeId")
     private Long trafficTimeId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trafficId", nullable = false)
     private TrafficEntity trafficEntity;
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <head>
+        <meta charset="UTF-8">
+        <title>header</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+              integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+        <style>
+            #header {
+                background-color: #74D19D;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 151px;
+                border: 1px solid #000000;
+                opacity: 1;
+            }
+
+        </style>
+    </head>
+    <body>
+    <div id="header">
+        <div align="left">
+            <button onclick="tap1()"><i class="fa-solid fa-magnifying-glass fa-5x"></i></button>
+            <button onclick="tap2()"><i class="fa-solid fa-road fa-5x"></i></button>
+            <button onclick="tap3()"><i class="fa-solid fa-file-pen fa-5x"></i></button>
+            <button onclick="tap4()"><i class="fa-solid fa-traffic-light fa-5x"></i></button>
+        </div>
+
+        <div align="right">
+            <button onclick="save()"><i class="fa-solid fa-arrow-right-to-bracket fa-5x"></i></button>
+            <button onclick="myPage()"><i class="fa-solid fa-user-large fa-5x"></i></button>
+        </div>
+    </div>
+    </body>
+</th:block>
+<script>
+    function tap1() {
+        location.href = "/1tapTest";
+    }
+
+    function tap2() {
+        location.href = "/2tapTest";
+    }
+
+    function tap3() {
+        location.href = "/3tapTest";
+    }
+
+    function tap4() {
+        location.href = "/4tapTest";
+    }
+    function save() {
+        location.href = "/member/saveForm";
+    }
+    function myPage() {
+        location.href = "/member/myPage";
+    }
+</script>
+</html>

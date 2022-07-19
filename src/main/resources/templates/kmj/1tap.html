@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:replace="kmj/headerPages/header :: header"></th:block>
+</body>
+<div>
+마이플레이스 <br>
+집<i class="fa-solid fa-house"></i> <input type="text"> <br>
+회사<i class="fa-solid fa-buildings"></i> <input type="text"><br>
+</div>
+<div>
+    루틴 <br>
+    <input type="text" th:value="출근길"> <br>
+    <input type="text" th:value="퇴근길">
+</div>
+<div>
+    자주보는 신호등<br>
+    <input type="text" th:value="11"> <br>
+    <input type="text" th:value="11">
+</div>
+</html>

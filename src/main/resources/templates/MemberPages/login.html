@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <h1>member sighUp</h1>
-
+<form action="/member/login" method="post">
+    <input type="text" name="memberEmail">
+    <input type="text" name="memberPassword" th:onclick="loginCheck()">
+    <input type="submit" value="로그인">
+</form>
 </body>
 </html>

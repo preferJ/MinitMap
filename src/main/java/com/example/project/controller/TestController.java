@@ -31,4 +31,14 @@ public class TestController {
     public String search(){
         return "/hss/Search";
     }
+
+    @GetMapping("/header")
+    public String header() {
+        return "/kmj/header";
+    }
+    @GetMapping("/1tapTest")
+    public String tap1() {
+        return "/kmj/1tap";
+    }
+
 }

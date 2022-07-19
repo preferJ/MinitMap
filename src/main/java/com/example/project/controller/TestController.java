@@ -41,6 +41,12 @@ public class TestController {
         return "/hss/Search";
     }
 
+    @GetMapping("/hss/myprot")
+    //홍성수
+    public String myprot(){
+        return "/hss/myprot";
+    }
+
     //이현
     @GetMapping("/test/test")
     public String testtest(@ModelAttribute TestDTO testDTO) {

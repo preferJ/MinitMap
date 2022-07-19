@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/test/test">
+    <input type="button" value="색깔고르기" onclick="typeCheck()">
+    <input type="hidden" value="red" id="startType" name="startType">
+    <input type="button" value="시간출력" onclick="timeCheck()">
+    <input type="time" id="setStartTime" name="setStartTime">
+    <input type="text" value="청색불로바뀐시간" id="setStartTime2">
+    <input type="text" value="적색불로바뀐시간" id="setStartTime3">
+    <input type="text" placeholder="신호등명을 입력해주세요." name="trafficName" id="trafficName">
+    <input type="text" placeholder="청색불 점화시간" id="greenOn" name="greenOn">
+    <input type="text" placeholder="적색불 점화시간" id="redOn" name="redOn">
+    <input type="text" id="trafficApplyStart" name="trafficApplyStart" placeholder="신호시작시간">
+    <input type="text" id="trafficApplyEnd" name="trafficApplyEnd" placeholder="신호끝시간">
+    <input type="submit" value="전송">
+</form>
+</body>
+<script>
+    let timeCount = 0;
+    function timeCheck(){
+        let today = new Date();
+        if (timeCount == 0){
+
+            document.getElementById("setStartTime").value = today;
+            document.getElementById("setStartTime").value = today.getHours() +":" +today.getMinutes()+":"+today.getSeconds();
+
+            let startTime = new Date();
+            startTime.setMinutes(today.getMinutes()-30);
+            //document.getElementById("trafficApplyStart").value = startTime.getHours() + ":" + startTime.getMinutes() + ":" + startTime.getSeconds();
+            document.getElementById("trafficApplyStart").value = startTime;
+            let endTime = new Date();
+            endTime.setMinutes(today.getMinutes()+30);
+            //document.getElementById("trafficApplyEnd").value = endTime.getHours() + ":" + endTime.getMinutes() + ":" + endTime.getSeconds();
+            document.getElementById("trafficApplyEnd").value = endTime;
+            timeCount +=1;
+        }else if (timeCount ==1){
+            document.getElementById("setStartTime2").value = today;
+            //document.getElementById("setStartTime2").value = today.getHours() +":" +today.getMinutes()+":"+today.getSeconds();
+            timeCount +=1;
+        }else {
+            document.getElementById("setStartTime3").value = today.getHours() +":" +today.getMinutes()+":"+today.getSeconds();
+            timeCount+=1;
+            document.getElementById("trafficName").focus();
+            lightCheck();
+        }
+
+    }
+
+    let startTypeCheck = true;
+    function typeCheck(){
+        if (startTypeCheck){
+            startTypeCheck = false;
+            document.getElementById("startType").value = "green";
+            document.getElementById("setStartTime").value = "청색불로바뀐시간";
+            document.getElementById("setStartTime2").value = "적색불로바뀐시간";
+            document.getElementById("setStartTime3").value = "청색불로바뀐시간";
+
+        }else {
+            startTypeCheck = true;
+            document.getElementById("startType").value = "red";
+            document.getElementById("setStartTime").value = "적색불로바뀐시간";
+            document.getElementById("setStartTime2").value = "청색불로바뀐시간";
+            document.getElementById("setStartTime3").value = "적색불로바뀐시간";
+        }
+    }
+</script>
+</html>

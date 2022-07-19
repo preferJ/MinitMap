@@ -3,6 +3,7 @@ package com.example.project.controller;
 import com.example.project.dto.TestDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,8 +12,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Controller
+@RequiredArgsConstructor
 public class TestController {
-    private TestRepository testRepository;
+    private final TestRepository testRepository;
 
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
@@ -41,10 +43,16 @@ public class TestController {
         return "/hss/Search";
     }
 
+    @GetMapping("/hss/myprot")
+    //홍성수
+    public String myprot(){
+        return "/hss/myprot";
+    }
+
     //이현
     @GetMapping("/test/test")
     public String testtest(@ModelAttribute TestDTO testDTO) {
-
+        System.out.println("testDTO = " + testDTO);
         testRepository.save(TestEntity.toEntity(testDTO));
         return "/LeeHyeon/time";
     }

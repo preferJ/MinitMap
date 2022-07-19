@@ -12,10 +12,10 @@ import java.time.LocalTime;
 public class TestDTO {
     private Long trafficTimeId;
     private Long trafficId;
-    private Long trafficApplyStart;
-    private Long trafficApplyEnd;
+    private LocalTime trafficApplyStart;
+    private LocalTime trafficApplyEnd;
     private String startType;
-    private Long greenOn;
-    private Long redOn;
-    private Long setStartTime;
+    private LocalTime greenOn;
+    private LocalTime redOn;
+    private LocalTime setStartTime;
 }

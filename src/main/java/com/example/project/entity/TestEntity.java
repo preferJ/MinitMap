@@ -21,29 +21,27 @@ public class TestEntity {
     private Long trafficId;
 
     @Column(name = "trafficApplyStart")
-    private Long trafficApplyStart;
+    private LocalTime trafficApplyStart;
 
     @Column(name = "trafficApplyEnd")
-    private Long trafficApplyEnd;
+    private LocalTime trafficApplyEnd;
 
     @Column(name = "startType")
     private String startType;
 
     @Column(name = "greenOn")
-    private Long greenOn;
+    private LocalTime greenOn;
 
     @Column(name = "redOn", nullable = false)
-    private Long redOn;
+    private LocalTime redOn;
 
     @Column(name = "setStartTime", nullable = false)
-    private Long setStartTime;
+    private LocalTime setStartTime;
 
     public static TestEntity toEntity(TestDTO testDTO) {
         TestEntity testEntity = new TestEntity();
         testEntity.setStartType(testDTO.getStartType());
         testEntity.setSetStartTime(testDTO.getSetStartTime());
-        testEntity.setGreenOn(testDTO.getGreenOn());
-        testEntity.setRedOn(testDTO.getRedOn());
         testEntity.setTrafficApplyStart(testDTO.getTrafficApplyStart());
         testEntity.setTrafficApplyEnd(testDTO.getTrafficApplyEnd());
         return testEntity;

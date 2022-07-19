@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
 </head>
+<style>
+    #map_div {
+        position: absolute;
+        right: 0px;
+        top: 151px;
+    }
+</style>
 <body>
-<th:block th:replace="kmj/headerPages/header :: header"></th:block>
+<th:block th:replace="/kmj/header :: header"></th:block>
 </body>
+    <button onclick="loginForm()">로그인하기</button>
 <div>
 마이플레이스 <br>
 집<i class="fa-solid fa-house"></i> <input type="text"> <br>
@@ -22,4 +32,35 @@
     <input type="text" th:value="11"> <br>
     <input type="text" th:value="11">
 </div>
+
+<script th:inline="javascript">
+    const loginForm = () => {
+            var width = 450;
+            var height = 300;
+
+            var left = (window.screen.width / 2) - (width/2);
+            var top = (window.screen.height / 4);
+
+            var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+            window.open("/member/loginForm", "로그인", windowStatus);
+
+    }
+</script>
+<script type="text/javascript">
+    function initTmap() {
+        // 1. 지도 띄우기
+        map = new Tmapv2.Map("map_div", {
+            center: new Tmapv2.LatLng(37.570028, 126.989072),
+            width: "75%",
+            height: "817px",
+            zoom: 15,
+            zoomControl: true,
+            scrollwheel: true
+        });
+    }
+</script>
+<body onload="initTmap();">
+<div id="map_div"></div>
+</body>
 </html>

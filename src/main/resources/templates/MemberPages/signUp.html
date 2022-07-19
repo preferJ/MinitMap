@@ -5,13 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<h1>member Login</h1>
+<h1>회원가입</h1>
 <form action="/member/save" method="post">
-    <input type="text" name="memberEmail" placeholder="아이디" required>
-    <input type="text" name="memberPassword" placeholder="비밀번호" required>
-    <input type="text" name="memberNickname" placeholder="닉네임" required>
+    <input type="text" name="memberEmail" placeholder="아이디" required> <br>
+    <input type="text" name="memberPassword" placeholder="비밀번호" required><br>
+    <input type="text" name="memberNickname" placeholder="닉네임" required><br>
     <input type="tel" name="memberPhone"
-           required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####" placeholder="전화번호">
+           required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####" placeholder="전화번호"><br>
     <input type="submit" value="가입하기" th:onclick="">
 </form>
 </body>

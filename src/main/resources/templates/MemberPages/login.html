@@ -5,11 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-<h1>member sighUp</h1>
+<h1>로그인</h1>
 <form action="/member/login" method="post">
+    <div>
     <input type="text" name="memberEmail">
     <input type="text" name="memberPassword" th:onclick="loginCheck()">
+    </div>
     <input type="submit" value="로그인">
+    <div>
+        <a href="/member/findIdForm">아이디찾기</a>｜<a href="/member/findPwForm">비밀번호찾기</a>
+    </div>
 </form>
 </body>
 </html>

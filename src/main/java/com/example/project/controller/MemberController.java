@@ -13,5 +13,9 @@ public class MemberController {
     public String saveForm() {
         return "MemberPages/signUp";
     }
+    @GetMapping("/loginForm")
+    public String loginForm() {
+        return "Memberpages/login";
+    }
 
 }

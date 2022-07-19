@@ -20,24 +20,21 @@ public class TrafficTimeEntity {
     @JoinColumn(name = "trafficId", nullable = false)
     private TrafficEntity trafficEntity;
 
-    @Column(name = "trafficTime", nullable = false)
-    private Long trafficId;
-
     @Column(name = "trafficApplyStart", nullable = false)
-    private LocalTime trafficApplyStart;
+    private Long trafficApplyStart;
 
     @Column(name = "trafficApplyEnd", nullable = false)
-    private LocalTime trafficApplyEnd;
+    private Long trafficApplyEnd;
 
     @Column(name = "startType", nullable = false)
     private String startType;
 
     @Column(name = "greenOn", nullable = false)
-    private LocalTime greenOn;
+    private Long greenOn;
 
     @Column(name = "redOn", nullable = false)
-    private LocalTime redOn;
+    private Long redOn;
 
     @Column(name = "setStartTime", nullable = false)
-    private LocalTime setStartTime;
+    private Long setStartTime;
 }

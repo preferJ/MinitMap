@@ -1,9 +1,7 @@
 package com.example.project.controller;
 
-import com.example.project.dto.TestDTO;
+import com.example.project.dto.*;
 import com.example.project.dto.TrafficDTO;
-import com.example.project.dto.TrafficDTO;
-import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
 import com.example.project.service.TrafficService;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,34 +58,40 @@ public class TestController {
     public String myprot() {
         return "/hss/myprot";
     }
+
     @GetMapping("/kmj/header")
     // ㅁㅈ
     public String header() {
         return "/kmj/header";
     }
+
     @GetMapping("/1tapTest")
     // ㅁㅈ
     public String tap1() {
         return "/kmj/1tap";
     }
-    @GetMapping ("/2tapTest")
+
+    @GetMapping("/2tapTest")
     // ㅁㅈ
     public String tap2() {
         return "/kmj/2tap";
     }
+
     @GetMapping("/3tapTest")
     // ㅁㅈ
     public String tap3() {
         return "/kmj/3tap";
     }
+
     @GetMapping("/4tapTest")
     // ㅁㅈ
     public String tap4() {
         return "/kmj/4tap";
     }
+
     //이현
     @PostMapping("/test/test")
-    public String testtest(@ModelAttribute TestDTO testDTO , @ModelAttribute TrafficDTO trafficDTO) {
+    public String testtest(@ModelAttribute TestDTO testDTO, @ModelAttribute TrafficDTO trafficDTO) {
         System.out.println("testDTO = " + testDTO + ", trafficDTO = " + trafficDTO);
         testRepository.save(TestEntity.toEntity(testDTO));
         return "/LeeHyeon/time";
@@ -139,17 +144,32 @@ public class TestController {
     }
 
     // ㅅㅎ 테스트 신호등 저장 메서드
-//    @GetMapping("/jshTestTrafficSave")
-//    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
-//                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO){
-//        System.out.println("trafficDTO = " + trafficDTO);
-//        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
-//        Long id = trafficService.save(trafficDTO);
-//        trafficTimeService.save(id , trafficTimeDTO);
-//
-//
-//        return "/jsh/Test";
-//    }
+    @GetMapping("/jshTestTrafficSave")
+    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
+                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO,
+                                     HttpSession session) {
+        System.out.println("trafficDTO = " + trafficDTO);
+        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
+        Long id = trafficService.save(trafficDTO, 1L);
+        trafficTimeService.save(id, trafficTimeDTO);
+        return "/jsh/Test";
+    }
+// ㅅㅎ 테스트 로그인
+    @PostMapping("/jshTestlogin")
+    public String jshTestlogin(HttpSession session, @ModelAttribute MemberDTO memberDTO) {
+        System.out.println(memberDTO);
+        session.setAttribute("memberId", memberDTO.getMemberEmail());
+        return "/jsh/Test";
+    }
+// ㅅㅎ 일단 다 가져오자 메서드
+    @GetMapping("/jshTestPrintTraffic")
+    public String jshTestPrintTraffic(Model model) {
+        List<TrafficDTO> trafficDTOList = trafficService.findAll();
+        List<TrafficTimeDTO> trafficTimeDTOList = trafficTimeService.findAll();
+        model.addAttribute("trafficDTOList", trafficDTOList);
+        model.addAttribute("trafficTimeDTOList", trafficTimeDTOList);
+        return "/jsh/Test";
+    }
 
 
 }

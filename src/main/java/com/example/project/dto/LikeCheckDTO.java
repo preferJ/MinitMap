@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeCheckDTO {
-    private Long listCheckId;
+    private Long likeCheckId;
     private Long memberId;
     private Long boardId;
     private Long trafficId;

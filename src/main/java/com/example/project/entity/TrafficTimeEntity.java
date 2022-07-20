@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.TrafficTimeDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,4 +38,29 @@ public class TrafficTimeEntity {
 
     @Column(name = "setStartTime", nullable = false)
     private Long setStartTime;
+
+    public static TrafficTimeEntity toTrafficTimeSaveEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity){
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime());
+        trafficTimeEntity.setTrafficEntity(trafficEntity);
+        return trafficTimeEntity;
+    }
+
+    public static TrafficTimeEntity toTrafficTimeUpdateEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity){
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficTimeId(trafficTimeDTO.getTrafficTimeId());
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime());
+        trafficTimeEntity.setTrafficEntity(trafficEntity);
+        return trafficTimeEntity;
+    }
 }

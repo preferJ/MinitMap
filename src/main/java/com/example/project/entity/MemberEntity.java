@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -57,4 +58,23 @@ public class MemberEntity {
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
+
+    public static MemberEntity toMemberSaveEntity(MemberDTO memberDTO){
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setMemberNickname(memberDTO.getMemberNickname());
+        memberEntity.setMemberPhone(memberDTO.getMemberPhone());
+        return memberEntity;
+    }
+    public static MemberEntity toMemberUpdateEntity(MemberDTO memberDTO){
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberId(memberDTO.getMemberId());
+        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setMemberNickname(memberDTO.getMemberNickname());
+        memberEntity.setMemberPhone(memberDTO.getMemberPhone());
+        memberEntity.setMemberLevel(memberDTO.getMemberLevel());
+        return memberEntity;
+    }
 }

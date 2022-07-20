@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.TrafficDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -23,13 +24,13 @@ public class TrafficEntity {
     private MemberEntity memberEntity;
 
     @Column(name = "trafficName", nullable = false)
-    private Long trafficName;
+    private String trafficName;
 
     @Column(name = "trafficLat", nullable = false)
-    private Long trafficLat;
+    private Double trafficLat;
 
     @Column(name = "trafficLon", nullable = false)
-    private Long trafficLon;
+    private Double trafficLon;
 
     @Column(name = "trafficLike")
     @ColumnDefault("0") //default 0
@@ -53,4 +54,23 @@ public class TrafficEntity {
 
     @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
+
+    public static TrafficEntity trafficSaveEntity(TrafficDTO trafficDTO, MemberEntity memberEntity){
+        TrafficEntity trafficEntity = new TrafficEntity();
+        trafficEntity.setTrafficName(trafficDTO.getTrafficName());
+        trafficEntity.setTrafficLat(trafficDTO.getTrafficLat());
+        trafficEntity.setTrafficLon(trafficDTO.getTrafficLon());
+        trafficEntity.setMemberEntity(memberEntity);
+        return trafficEntity;
+    }
+    public static TrafficEntity trafficUpdateEntity(TrafficDTO trafficDTO, MemberEntity memberEntity){
+        TrafficEntity trafficEntity = new TrafficEntity();
+        trafficEntity.setTrafficName(trafficDTO.getTrafficName());
+        trafficEntity.setTrafficLat(trafficDTO.getTrafficLat());
+        trafficEntity.setTrafficLon(trafficDTO.getTrafficLon());
+        trafficEntity.setTrafficLike(trafficDTO.getTrafficLike());
+        trafficEntity.setTrafficDislike(trafficDTO.getTrafficDisLike());
+        trafficEntity.setMemberEntity(memberEntity);
+        return trafficEntity;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.ErrorDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,5 +43,25 @@ public class ErrorEntity {
     @Column(name = "managerCheck")
     private boolean managerCheck;
 
+    public static ErrorEntity toErrorSaveEntity(ErrorDTO errorDTO,TrafficEntity trafficEntity, BoardEntity boardEntity, MemberEntity memberEntity){
+        ErrorEntity errorEntity = new ErrorEntity();
+        errorEntity.setErrorType(errorDTO.getErrorType());
+        errorEntity.setErrorContents(errorDTO.getErrorContents());
+        errorEntity.setTrafficEntity(trafficEntity);
+        errorEntity.setBoardEntity(boardEntity);
+        errorEntity.setMemberEntity(memberEntity);
+        return errorEntity;
+    }
 
+    public static ErrorEntity toErrorUpdateEntity(ErrorDTO errorDTO,TrafficEntity trafficEntity, BoardEntity boardEntity, MemberEntity memberEntity){
+        ErrorEntity errorEntity = new ErrorEntity();
+        errorEntity.setErrorId(errorDTO.getErrorId());
+        errorEntity.setErrorType(errorDTO.getErrorType());
+        errorEntity.setErrorContents(errorDTO.getErrorContents());
+        errorEntity.setManagerCheck(errorDTO.isManagerCheck());
+        errorEntity.setTrafficEntity(trafficEntity);
+        errorEntity.setBoardEntity(boardEntity);
+        errorEntity.setMemberEntity(memberEntity);
+        return errorEntity;
+    }
 }

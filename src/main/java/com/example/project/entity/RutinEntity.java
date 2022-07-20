@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.RutinDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,4 +37,29 @@ public class RutinEntity {
 
     @Column(name = "endPointLon", nullable = false)
     private Double endPointLon;
+
+    public static RutinEntity toRutinSaveEntity(RutinDTO rutinDTO, MemberEntity memberEntity){
+        RutinEntity rutinEntity = new RutinEntity();
+        rutinEntity.setStratPoint(rutinDTO.getStartPoint());
+        rutinEntity.setStartPointLat(rutinDTO.getStartPointLat());
+        rutinEntity.setStartPointLon(rutinDTO.getStartPointLon());
+        rutinEntity.setDestination(rutinDTO.getDestination());
+        rutinEntity.setEndPointLat(rutinDTO.getEndPointLat());
+        rutinEntity.setEndPointLon(rutinDTO.getEndPointLon());
+        rutinEntity.setMemberEntity(memberEntity);
+        return rutinEntity;
+    }
+
+    public static RutinEntity toRutinUpdateEntity(RutinDTO rutinDTO, MemberEntity memberEntity){
+        RutinEntity rutinEntity = new RutinEntity();
+        rutinEntity.setRutinId(rutinDTO.getRutinId());
+        rutinEntity.setStratPoint(rutinDTO.getStartPoint());
+        rutinEntity.setStartPointLat(rutinDTO.getStartPointLat());
+        rutinEntity.setStartPointLon(rutinDTO.getStartPointLon());
+        rutinEntity.setDestination(rutinDTO.getDestination());
+        rutinEntity.setEndPointLat(rutinDTO.getEndPointLat());
+        rutinEntity.setEndPointLon(rutinDTO.getEndPointLon());
+        rutinEntity.setMemberEntity(memberEntity);
+        return rutinEntity;
+    }
 }

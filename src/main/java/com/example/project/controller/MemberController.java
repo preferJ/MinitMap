@@ -39,7 +39,7 @@ public class MemberController {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
-            session.setAttribute("id", loginResult.getMemberId());
+            session.setAttribute("loginId", loginResult.getMemberId());
             return "/kmj/1tap";
         } else {
             return "memberPages/login";

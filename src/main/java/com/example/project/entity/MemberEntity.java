@@ -4,6 +4,7 @@ import com.example.project.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@DynamicInsert
 @Table(name = "member")
 public class MemberEntity {
     @Id

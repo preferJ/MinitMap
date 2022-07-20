@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.MemberDTO;
+import com.example.project.entity.MemberEntity;
 import com.example.project.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,9 @@ public class MemberController {
     @PostMapping("/save")
     // ㅁㅈ
     public String save(@ModelAttribute MemberDTO memberDTO) {
+        System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
-        return "/";
+        return "/index";
     }
 
     @GetMapping("/loginForm")

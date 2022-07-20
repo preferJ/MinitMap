@@ -13,7 +13,8 @@
     <input type="text" name="memberNickname" placeholder="닉네임" required><br>
     <input type="tel" name="memberPhone"
            required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####" placeholder="전화번호"><br>
-    <input type="submit" value="가입하기" th:onclick="">
+    <input type="hidden" name="memberLevel" value="1">
+    <input type="submit" value="가입하기">
 </form>
 </body>
 </html>

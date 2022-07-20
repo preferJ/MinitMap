@@ -63,6 +63,21 @@ public class TestController {
     public String tap1() {
         return "/kmj/1tap";
     }
+    @GetMapping ("/2tapTest")
+    // ㅁㅈ
+    public String tap2() {
+        return "/kmj/2tap";
+    }
+    @GetMapping("/3tapTest")
+    // ㅁㅈ
+    public String tap3() {
+        return "/kmj/3tap";
+    }
+    @GetMapping("/4tapTest")
+    // ㅁㅈ
+    public String tap4() {
+        return "/kmj/4tap";
+    }
     //이현
     @PostMapping("/test/test")
     public String testtest(@ModelAttribute TestDTO testDTO , @ModelAttribute TrafficDTO trafficDTO) {

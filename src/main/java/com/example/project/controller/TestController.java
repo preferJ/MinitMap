@@ -6,13 +6,17 @@ import com.example.project.dto.TrafficDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
+import com.example.project.service.TrafficService;
+import com.example.project.service.TrafficTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,6 +24,8 @@ import java.util.TimerTask;
 @RequiredArgsConstructor
 public class TestController {
     private final TestRepository testRepository;
+    private final TrafficService trafficService;
+    private final TrafficTimeService trafficTimeService;
 
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
@@ -133,12 +139,17 @@ public class TestController {
     }
 
     // ㅅㅎ 테스트 신호등 저장 메서드
-    @GetMapping("/jshTestTrafficSave")
-    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
-                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO){
-        System.out.println("trafficDTO = " + trafficDTO);
-        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
+//    @GetMapping("/jshTestTrafficSave")
+//    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
+//                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO){
+//        System.out.println("trafficDTO = " + trafficDTO);
+//        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
+//        Long id = trafficService.save(trafficDTO);
+//        trafficTimeService.save(id , trafficTimeDTO);
+//
+//
+//        return "/jsh/Test";
+//    }
 
-        return "/jsh/Test";
-    }
+
 }

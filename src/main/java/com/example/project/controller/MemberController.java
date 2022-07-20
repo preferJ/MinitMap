@@ -18,8 +18,9 @@ public class MemberController {
     public String saveForm() {
         return "MemberPages/signUp";
     }
-    @PostMapping("/save")
     // ㅁㅈ
+    // ㅅㅎ 주석 위치 수정
+    @PostMapping("/save")
     public String save(@ModelAttribute MemberDTO memberDTO) {
         memberService.save(memberDTO);
         return "/";
@@ -31,6 +32,7 @@ public class MemberController {
     public String loginForm() {
         return "Memberpages/login";
     }
+    //ㅅㅎ setAttribute에 id --> loginId 로 수정함
     @PostMapping("/login")
     public String login(MemberDTO memberDTO, HttpSession session) {
         // ㅁㅈ

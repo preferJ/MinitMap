@@ -4,10 +4,9 @@ import com.example.project.dto.MemberDTO;
 import com.example.project.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @AllArgsConstructor
@@ -26,10 +25,29 @@ public class MemberController {
         return "/";
     }
 
+
     @GetMapping("/loginForm")
     // ㅁㅈ
     public String loginForm() {
         return "Memberpages/login";
+    }
+    @PostMapping("/login")
+    public String login(MemberDTO memberDTO, HttpSession session) {
+        // ㅁㅈ
+        MemberDTO loginResult = memberService.login(memberDTO);
+        if (loginResult != null) {
+            session.setAttribute("loginEmail", loginResult.getMemberEmail());
+            session.setAttribute("id", loginResult.getMemberId());
+            return "/kmj/1tap";
+        } else {
+            return "memberPages/login";
+        }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // ㅁㅈ
+        session.invalidate();
+        return "redirect:/kmj/1tap";
     }
 
 }

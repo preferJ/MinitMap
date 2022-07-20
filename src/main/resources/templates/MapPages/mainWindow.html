@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
     <title>Title</title>
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
@@ -23,14 +24,44 @@
 
         }
     </script>
+
+    <style>
+        .tab-1{
+            background-color: #0c63e4;
+            color: #e2e3e5;
+            font-size: 40px;
+            width: 600px;
+            height: 150px;
+        }
+
+        .tab-main{
+
+            top: 150px;
+            left: 0px;
+            width: 584px;
+            height: 929px;
+            float: left;
+            position: absolute;
+            background-color: #157347;
+        }
+    </style>
 </head>
 
-<body><!-- 맵 생성 실행 -->
-<div style="background-color: #31d2f2 ;width: 100% ; height: 150px">asd
-    <button type="button" onclick="initTmap()">맵 불러오기</button>
+<body onload="initTmap()"><!-- 맵 생성 실행 -->
+<div class="header" style="background-color: #31d2f2 ;width: 100% ; height: 150px">
+    <div class="tab-1">
+        &nbsp;<i class="bi bi-archive" style="font-size: 100px"></i>&nbsp;&nbsp;&nbsp;
+        <i class="bi bi-archive" style="font-size: 100px"></i>&nbsp;&nbsp;&nbsp;
+        <i class="bi bi-archive" style="font-size: 100px"></i>&nbsp;&nbsp;&nbsp;
+        <i class="bi bi-archive" style="font-size: 100px"></i>&nbsp;&nbsp;&nbsp;
+    </div>
+
+</div>
+<!--    <div class="tab-main" id="tab-main-1" style="visibility:visible">asd</div>-->
+<div id="map_div" style="positon :" >
+    <div class="tab-main">asd</div>
 </div>
 
-<div id="map_div"></div>
 </body>
 
 </html>

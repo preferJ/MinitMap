@@ -1,12 +1,15 @@
 package com.example.project.controller;
 
 import com.example.project.dto.TestDTO;
+import com.example.project.dto.TrafficDTO;
+import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,7 +48,7 @@ public class TestController {
 
     @GetMapping("/hss/myprot")
     //홍성수
-    public String myprot(){
+    public String myprot() {
         return "/hss/myprot";
     }
     @GetMapping("/kmj/header")
@@ -94,8 +97,8 @@ public class TestController {
 
                 if (sCurTime.compareTo(String.valueOf(sMinTime)) >= 0 && sCurTime.compareTo(String.valueOf(sMaxTime)) < 0) {
                     System.out.println("반갑습니다람쥐" + i);
-                    if (sCurTime.compareTo(String.valueOf(startTime)) ==0) {
-                        System.out.println("현재시간입니다람쥐"+i);
+                    if (sCurTime.compareTo(String.valueOf(startTime)) == 0) {
+                        System.out.println("현재시간입니다람쥐" + i);
                     }
                     i++;
                 }
@@ -103,5 +106,22 @@ public class TestController {
             }
         };
         return "/LeeHyeon/time";
+    }
+
+
+    // ㅅㅎ 테스트 페이지 이동 메서드
+    @GetMapping("/jshTest")
+    public String jshTest() {
+        return "/jsh/Test";
+    }
+
+    // ㅅㅎ 테스트 신호등 저장 메서드
+    @GetMapping("/jshTestTrafficSave")
+    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
+                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO){
+        System.out.println("trafficDTO = " + trafficDTO);
+        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
+
+        return "/jsh/Test";
     }
 }

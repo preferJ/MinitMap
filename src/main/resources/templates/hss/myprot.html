@@ -31,21 +31,21 @@
         // 루틴 더미목록
         var rutinList = [rutin1];
 
-        var map, marker;
-        var markerArr = [];
-        var marker_ps = [];
+        var map;
+        var searchMarkerArr = [];
+        var p_markerArr = [];
         var drawInfoArr = [];
         var resultdrawArr = [];
         var labelArr = [];
         var latLonArr = [];
         // 시작시 marker, marker2 객체를 생성해서 position 값 비교 가능하게 만들기
-        marker = new Tmapv2.Marker({
+        s_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
             draggable: true,
             map: null //Marker가 표시될 Map 설정.
         });
-        marker2 = new Tmapv2.Marker({
+        e_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
             draggable: true,
@@ -130,11 +130,11 @@
                             var resultpoisData = response.searchPoiInfo.pois.poi;
 
                             // 2. 기존 마커, 팝업 제거
-                            if (markerArr.length > 0) {
-                                for(var i in markerArr) {
-                                    markerArr[i].setMap(null);
+                            if (searchMarkerArr.length > 0) {
+                                for(var i in searchMarkerArr) {
+                                    searchMarkerArr[i].setMap(null);
                                 }
-                                markerArr = [];
+                                searchMarkerArr = [];
                             }
 
                             if (labelArr.length > 0) {
@@ -178,7 +178,7 @@
                                 latLonArr.push(markerPosition);
 
                                 // Marker 설정
-                                markerA = new Tmapv2.Marker(
+                                search_marker = new Tmapv2.Marker(
                                     {
                                         position : markerPosition, // 마커가 표시될 좌표
                                         //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
@@ -202,7 +202,7 @@
                                     + ");'>도착지</button></div></li>";
 
                                 // 마커들을 담을 배열에 마커 저장
-                                markerArr.push(markerA);
+                                searchMarkerArr.push(search_marker);
                                 positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
                             }
 
@@ -286,7 +286,7 @@
         function onClick(e) {
             // marker 객체의 포지션 상황을 판단하여 출발지인지 도착지인지 확인
             // 출발지 -> 도착지 순서로 상세조회에서 도착지 설정을 했을 때 출발지로 바로가게 만듬
-            if (marker.getPosition() == null) {
+            if (s_marker.getPosition() == null) {
 
                 var result = e.latLng;
                 var resultDiv = document.getElementById("result");
@@ -295,7 +295,7 @@
 
                 lonlat = e.latLng;
                 //Marker 객체 생성.
-                marker = new Tmapv2.Marker({
+                s_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                     position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
                     draggable: true,
@@ -303,26 +303,26 @@
                 });
                 // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
                 marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-            } else if (marker2.getPosition() == null) {
+            } else if (e_marker2.getPosition() == null) {
                 var result = e.latLng;
                 var resultDiv = document.getElementById("result");
                 resultDiv.innerHTML = result;
 
                 lonlat = e.latLng;
                 //Marker 객체 생성.
-                marker2 = new Tmapv2.Marker({
+                e_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                     position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
                     draggable: true,
                     map: map //Marker가 표시될 Map 설정.
                 });
                 // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
-                marker2.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                 // 지도 클릭으로 도착지 설정이 완료되면 출발지는 무조건 설정되어있기 때문에 바로 경로를 탐색시켜 줌
                 ontestfoot();
             }
             // 출발지 도착지가 모두 설정되어있을 상황에 한번 더 누르면 출발지 도착지가 모두 지워지고 출발지 설정
-            else if (marker2.getPosition() != null && marker.getPosition() != null) {
+            else if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
                 removeMarkers();
                 onClick(e);
             }
@@ -330,7 +330,7 @@
 
         // 드래그를 놓았을 때 발생하는 함수 출발지 도착지 설정이 완료되어있을 때만 실행됨
         function ontestfoot() {
-            if (marker2.getPosition() != null && marker.getPosition() != null) {
+            if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
                 onfoot();
             }
         }
@@ -338,16 +338,16 @@
         // 검색을 제외한 모든 마커를 지우는 함수
         function removeMarkers() {
             // map 에서 marker marker2 를 지움
-            marker.setMap(null);
-            marker2.setMap(null);
+            s_marker.setMap(null);
+            e_marker.setMap(null);
             // 마커가 있는지 비교할때 사용할 position null 세팅을 위한 기본 객체 생성
-            marker = new Tmapv2.Marker({
+            s_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 position: null, //Marker의 중심좌표 설정.
                 draggable: true,
                 map: null //Marker가 표시될 Map 설정.
             });
-            marker2 = new Tmapv2.Marker({
+            e_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 position: null, //Marker의 중심좌표 설정.
                 draggable: true,
@@ -363,11 +363,11 @@
 
             }
             // 경로탐색시 나오는 포인트 객체를 지움
-            if (marker_ps.length > 0) {
-                for (var i = 0; i < marker_ps.length; i++) {
-                    marker_ps[i].setMap(null);
+            if (p_markerArr.length > 0) {
+                for (var i = 0; i < p_markerArr.length; i++) {
+                    p_markerArr[i].setMap(null);
                 }
-                marker_ps = [];
+                p_markerArr = [];
             }
         }
 
@@ -379,13 +379,13 @@
             course.innerHTML = "";
 
             // 실행 시에 출발지 도착지가 설정되어있어야만 실행되며 안되어있으면 alert 창 실행
-            if (marker2.getPosition() != null && marker.getPosition() != null) {
+            if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
                 // 시작시 포인트 마커가 남아있으면 모두 삭제후 실행
-                if (marker_ps.length > 0) {
-                    for (var i = 0; i < marker_ps.length; i++) {
-                        marker_ps[i].setMap(null);
+                if (p_markerArr.length > 0) {
+                    for (var i = 0; i < p_markerArr.length; i++) {
+                        p_markerArr[i].setMap(null);
                     }
-                    marker_ps = [];
+                    p_markerArr = [];
                 }
 
                 // 출발지 도착지는 다른 마커를 사용하기 때문에 경로탐색시 출발지 도착지 마커는 사용 안함
@@ -415,10 +415,10 @@
                         async: false,
                         data: {
                             "appKey": "l7xx71377ca4d61b42018b3da0ede8c234fb",
-                            "startX": marker.getPosition().lng(),// 현제 지도의 출발지 도착지 마커의 위도 경도를 뽑아옴
-                            "startY": marker.getPosition().lat(),
-                            "endX": marker2.getPosition().lng(),
-                            "endY": marker2.getPosition().lat(),
+                            "startX": s_marker.getPosition().lng(),// 현제 지도의 출발지 도착지 마커의 위도 경도를 뽑아옴
+                            "startY": s_marker.getPosition().lat(),
+                            "endX": e_marker.getPosition().lng(),
+                            "endY": e_marker.getPosition().lat(),
                             "reqCoordType": "WGS84GEO",
                             "resCoordType": "EPSG3857",
                             "startName": "출발지",
@@ -518,7 +518,7 @@
                                             map: map
                                         });
                                     // 포인트 객체 초기화를 위해 배열에 현제 포인트 정보를 추가
-                                    marker_ps.push(marker_p);
+                                    p_markerArr.push(marker_p);
                                 }
                                 if (geometry.type != "LineString") {
                                     console.log(properties.description);
@@ -543,9 +543,9 @@
         // 마이플레이스 출발지 지정
         function startMyp(id) {
             // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
-            if (marker.getPosition() != null) {
-                marker.setMap(null);
-                marker = new Tmapv2.Marker({
+            if (s_marker.getPosition() != null) {
+                s_marker.setMap(null);
+                s_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                     position: null, //Marker의 중심좌표 설정.
                     draggable: true,
@@ -555,13 +555,13 @@
             // 이전에 저장한 위도경도의 값을 불러옴
             lonlat = mypList[id];
             //Marker 객체 생성
-            marker = new Tmapv2.Marker({
+            s_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 position: new Tmapv2.LatLng(lonlat.lat, lonlat.lon), //Marker의 중심좌표 설정.
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
             map.setCenter(new Tmapv2.LatLng(lonlat.lat,lonlat.lon));
             map.setZoom(14);
@@ -569,9 +569,9 @@
         // 마이플레이스 도착지 지정
         function endMyp(id){
             // 도착지가 이미 지정되어 있으면 도착지 마커를 지우고 시작
-            if (marker2.getPosition() != null) {
-                marker2.setMap(null);
-                marker2 = new Tmapv2.Marker({
+            if (e_marker.getPosition() != null) {
+                e_marker.setMap(null);
+                e_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                     position: null, //Marker의 중심좌표 설정.
                     draggable: true,
@@ -580,13 +580,13 @@
             }
             lonlat = mypList[id];
             //Marker 객체 생성.
-            marker2 = new Tmapv2.Marker({
+            e_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                 position: new Tmapv2.LatLng(lonlat.lat, lonlat.lon), //Marker의 중심좌표 설정.
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            marker2.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
             map.setCenter(new Tmapv2.LatLng(lonlat.lat,lonlat.lon));
             map.setZoom(14);
@@ -595,9 +595,9 @@
         // 검색 시 장소의 출발지 지정 함수
         function startPing(id) {
             // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
-            if (marker.getPosition() != null) {
-                marker.setMap(null);
-                marker = new Tmapv2.Marker({
+            if (s_marker.getPosition() != null) {
+                s_marker.setMap(null);
+                s_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                     position: null, //Marker의 중심좌표 설정.
                     draggable: true,
@@ -612,20 +612,20 @@
 
             lonlat = latLonArr[id];
             //Marker 객체 생성.
-            marker = new Tmapv2.Marker({
+            s_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
         }
         function endPing(id){
             // 도착지가 이미 지정되어 있으면 도착지 마커를 지우고 시작
-            if (marker2.getPosition() != null) {
-                marker2.setMap(null);
-                marker2 = new Tmapv2.Marker({
+            if (e_marker.getPosition() != null) {
+                e_marker.setMap(null);
+                e_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                     position: null, //Marker의 중심좌표 설정.
                     draggable: true,
@@ -638,13 +638,13 @@
 
             lonlat = latLonArr[id];
             //Marker 객체 생성.
-            marker2 = new Tmapv2.Marker({
+            e_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                 position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            marker2.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
         }
 
@@ -653,21 +653,21 @@
             removeMarkers();
             var rutin = rutinList[id];
             // 출발지 설정
-            marker = new Tmapv2.Marker({
+            s_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 position: new Tmapv2.LatLng(rutin.startlat, rutin.startlon), //Marker의 중심좌표 설정.
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             // 도착지 설정
-            marker2 = new Tmapv2.Marker({
+            e_marker = new Tmapv2.Marker({
                 icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                 position: new Tmapv2.LatLng(rutin.endlat, rutin.endlon), //Marker의 중심좌표 설정.
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            marker2.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
             map.setCenter(new Tmapv2.LatLng(rutin.startlat,rutin.startlon));
             map.setZoom(13);

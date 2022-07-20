@@ -1,5 +1,6 @@
 package com.example.project.dto;
 
+import com.example.project.entity.AdminHistoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,14 @@ public class AdminHistoryDTO {
     private String historyType;
     private String historyMessage;
     private LocalDateTime historyTime;
+
+    public static AdminHistoryDTO toAdminHistoryDTO(AdminHistoryEntity adminHistoryEntity){
+        AdminHistoryDTO adminHistoryDTO = new AdminHistoryDTO();
+        adminHistoryDTO.setAdminHistoryId(adminHistoryEntity.getAdminHistoryId());
+        adminHistoryDTO.setMemberId(adminHistoryEntity.getMemberEntity().getMemberId());
+        adminHistoryDTO.setHistoryType(adminHistoryEntity.getHistoryType());
+        adminHistoryDTO.setHistoryMessage(adminHistoryEntity.getHistoryMessage());
+        adminHistoryDTO.setHistoryTime(adminHistoryEntity.getHistoryTime());
+        return adminHistoryDTO;
+    }
 }

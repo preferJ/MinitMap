@@ -1,5 +1,6 @@
 package com.example.project.dto;
 
+import com.example.project.entity.RutinEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,17 @@ public class RutinDTO {
     private String destination;
     private Double endPointLat;
     private Double endPointLon;
+
+    public static RutinDTO toRutinDTO(RutinEntity rutinEntity){
+        RutinDTO rutinDTO = new RutinDTO();
+        rutinDTO.setRutinId(rutinEntity.getRutinId());
+        rutinDTO.setMemberId(rutinEntity.getMemberEntity().getMemberId());
+        rutinDTO.setStartPoint(rutinEntity.getStratPoint());
+        rutinDTO.setStartPointLat(rutinEntity.getStartPointLat());
+        rutinDTO.setStartPointLon(rutinEntity.getStartPointLon());
+        rutinDTO.setDestination(rutinEntity.getDestination());
+        rutinDTO.setEndPointLat(rutinEntity.getEndPointLat());
+        rutinDTO.setEndPointLon(rutinEntity.getEndPointLon());
+        return rutinDTO;
+    }
 }

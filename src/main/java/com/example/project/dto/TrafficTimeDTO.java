@@ -1,5 +1,6 @@
 package com.example.project.dto;
 
+import com.example.project.entity.TrafficTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,17 @@ public class TrafficTimeDTO {
     private Long greenOn;
     private Long redOn;
     private Long setStartTime;
+
+    public static TrafficTimeDTO toTrafficTimeDTO(TrafficTimeEntity trafficTimeEntity){
+        TrafficTimeDTO trafficTimeDTO = new TrafficTimeDTO();
+        trafficTimeDTO.setTrafficTimeId(trafficTimeEntity.getTrafficTimeId());
+        trafficTimeDTO.setTrafficId(trafficTimeEntity.getTrafficEntity().getTrafficId());
+        trafficTimeDTO.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
+        trafficTimeDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
+        trafficTimeDTO.setStartType(trafficTimeEntity.getStartType());
+        trafficTimeDTO.setGreenOn(trafficTimeEntity.getGreenOn());
+        trafficTimeDTO.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
+        return trafficTimeDTO;
+    }
 }

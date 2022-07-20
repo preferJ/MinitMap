@@ -33,6 +33,9 @@ public class ErrorEntity {
     @Column(name = "errorType", nullable = false)
     private String errorType;
 
+    @Column(name = "errorTitle", nullable = false)
+    private String errorTitle;
+
     @Column(name = "errorContents", nullable = false)
     private String errorContents;
 
@@ -46,6 +49,7 @@ public class ErrorEntity {
     public static ErrorEntity toErrorSaveEntity(ErrorDTO errorDTO,TrafficEntity trafficEntity, BoardEntity boardEntity, MemberEntity memberEntity){
         ErrorEntity errorEntity = new ErrorEntity();
         errorEntity.setErrorType(errorDTO.getErrorType());
+        errorEntity.setErrorTitle(errorDTO.getErrorTitle());
         errorEntity.setErrorContents(errorDTO.getErrorContents());
         errorEntity.setTrafficEntity(trafficEntity);
         errorEntity.setBoardEntity(boardEntity);
@@ -57,6 +61,7 @@ public class ErrorEntity {
         ErrorEntity errorEntity = new ErrorEntity();
         errorEntity.setErrorId(errorDTO.getErrorId());
         errorEntity.setErrorType(errorDTO.getErrorType());
+        errorEntity.setErrorTitle(errorDTO.getErrorTitle());
         errorEntity.setErrorContents(errorDTO.getErrorContents());
         errorEntity.setManagerCheck(errorDTO.isManagerCheck());
         errorEntity.setTrafficEntity(trafficEntity);

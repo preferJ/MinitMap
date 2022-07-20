@@ -48,7 +48,16 @@ public class TestController {
     public String myprot(){
         return "/hss/myprot";
     }
-
+    @GetMapping("/kmj/header")
+    // ㅁㅈ
+    public String header() {
+        return "/kmj/header";
+    }
+    @GetMapping("/1tapTest")
+    // ㅁㅈ
+    public String tap1() {
+        return "/kmj/1tap";
+    }
     //이현
     @GetMapping("/test/test")
     public String testtest(@ModelAttribute TestDTO testDTO) {

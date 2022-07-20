@@ -21,22 +21,22 @@ public class TestEntity {
     private Long trafficId;
 
     @Column(name = "trafficApplyStart")
-    private LocalTime trafficApplyStart;
+    private Long trafficApplyStart;
 
     @Column(name = "trafficApplyEnd")
-    private LocalTime trafficApplyEnd;
+    private Long trafficApplyEnd;
 
     @Column(name = "startType")
     private String startType;
 
     @Column(name = "greenOn")
-    private LocalTime greenOn;
+    private Long greenOn;
 
     @Column(name = "redOn", nullable = false)
-    private LocalTime redOn;
+    private Long redOn;
 
     @Column(name = "setStartTime", nullable = false)
-    private LocalTime setStartTime;
+    private Long setStartTime;
 
     public static TestEntity toEntity(TestDTO testDTO) {
         TestEntity testEntity = new TestEntity();

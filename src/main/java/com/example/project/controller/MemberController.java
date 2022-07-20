@@ -32,7 +32,7 @@ public class MemberController {
     @GetMapping("/loginForm")
     // ㅁㅈ
     public String loginForm() {
-        return "Memberpages/login";
+        return "MemberPages/login";
     }
     //ㅅㅎ setAttribute에 id --> loginId 로 수정함
     @PostMapping("/login")
@@ -44,14 +44,14 @@ public class MemberController {
             session.setAttribute("loginId", loginResult.getMemberId());
             return "/kmj/1tap";
         } else {
-            return "memberPages/login";
+            return "MemberPages/login";
         }
     }
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         // ㅁㅈ
         session.invalidate();
-        return "redirect:/kmj/1tap";
+        return "redirect:/1tapTest";
     }
 
 }

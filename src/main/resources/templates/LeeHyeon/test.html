@@ -1,256 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>simpleMap</title>
+    <script
+            src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <script type="text/javascript">
+        var map;
+        var dnleh;
+        var rudeh;
+        // 페이지가 로딩이 된 후 호출하는 함수입니다.
+        function initTmap(){
+
+
+            if (navigator.geolocation) {
+                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    lat = position.coords.latitude; // 위도
+                    lon = position.coords.longitude; // 경도
+                    dnleh = lat;
+                    rudeh = lon;
+                    // map 생성
+                    // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
+                    map = new Tmapv2.Map("map_div",  // "map_div" : 지도가 표시될 div의 id
+                        {
+                            center: new Tmapv2.LatLng(lat,lon), // 지도 초기 좌표
+                            width: "100%", // map의 width 설정
+                            height: "400px" // map의 height 설정
+                        });
+                });
+            }
+        }
+
+        //마커의 옵션을 설정해주는 함수입니다.
+        function addMarker(lonlatoption){
+            // 마커 생성
+            var marker = new Tmapv2.Marker({
+                position: new Tmapv2.LatLng(lonlatoption.lonlat.latitude(),lonlatoption.lonlat.longitude()), //Marker의 중심좌표 설정.
+                map: map, //Marker가 표시될 Map 설정..
+                title : lonlatoption.title //마우스 위치시 출력할 타이틀
+            });
+        }
+
+        //특정 장소를 검색하는 함수입니다.
+        function searchPOI() {
+            var center = map.getCenter();//map의 중심 좌표 값을 받아 옵니다.
+            var optionObj = {
+                reqCoordType:"WGS84GEO", //요청 좌표계 옵셥 설정입니다.
+                resCoordType:"WGS84GEO",  //응답 좌표계 옵셥 설정입니다.
+                centerLon:lon, //POI검색시 중앙좌표의 경도입니다.
+                centerLat:lat,	//POI검색시 중앙좌표의 위도입니다.
+                count:20 // 검색 결과 갯수
+            };
+            var params = {
+                onComplete:onComplete,
+                onProgress:onProgress,
+                onError:onError
+            };
+            var tData = new Tmapv2.extension.TData();
+            tData.getPOIDataFromSearchJson(encodeURIComponent("롯데리아"),optionObj,params);//encodeURIComponent함수로 해당 파라메터 값을 처리합니다.
+        }
+
+        //POI검색
+        function onComplete() {
+
+            console.log(this._responseData); //json로 데이터를 받은 정보들을 콘솔창에서 확인할 수 있습니다.
+
+            if(this._responseData.searchPoiInfo.pois.poi != ''){
+                jQuery(this._responseData.searchPoiInfo.pois.poi).each(function(){//결과를 each문으로 돌려 마커를 등록합니다.
+                    //response 데이터중 원하는 값을 find 함수로 찾습니다.
+                    var name = this.name;
+                    var id = this.id;
+                    var lon = this.frontLon;
+                    var lat = this.frontLat;
+                    var lonlatoption = {
+                        title : name,   //마커 라벨 text 설정
+                        lonlat:new Tmapv2.LatLng(lat,lon)//마커 라벨 좌표 설정
+                    };
+                    addMarker(lonlatoption);//마커를 추가하는 함수입니다.
+                });
+            }else {
+                alert('검색결과가 없습니다.');
+            }
+            map.setCenter(new Tmapv2.LatLng(lat, lon));
+            map.setZoom(14);
+        }
+
+        //데이터 로드중 실행하는 함수입니다.
+        function onProgress(){
+
+        }
+
+        //데이터 로드 중 에러가 발생시 실행하는 함수입니다.
+        function onError(){
+            alert("onError");
+        }
+
+    </script>
 </head>
 <body onload="initTmap()"><!-- 맵 생성 실행 -->
-<div id="map_div"></div>
-
-<form action="/test/test" method="get">
-    <input type="button" value="색깔고르기" onclick="typeCheck()">
-    <input type="hidden" value="red" id="startType" name="startType">
-    <input type="button" value="시간출력" onclick="timeCheck()">
-    <input type="hidden" id="setStartTime" name="setStartTime">
-    <input type="text" value="적색불로바뀐시간" id="setStartTime1">
-    <input type="text" value="청색불로바뀐시간" id="setStartTime2">
-    <input type="text" value="적색불로바뀐시간" id="setStartTime3">
-    <input type="text" placeholder="신호등명을 입력해주세요." name="trafficName" id="trafficName">
-    <input type="text" placeholder="청색불 점화시간" id="greenOn" name="greenOn">
-    <input type="text" placeholder="적색불 점화시간" id="redOn" name="redOn">
-    <input type="text" id="trafficApplyStart" name="trafficApplyStart" placeholder="신호시작시간" onchange="startTimeCheck()">
-    <input type="text" id="trafficApplyEnd" name="trafficApplyEnd" placeholder="신호끝시간">
-    <input type="text" id="trafficLat" name="trafficLat">
-    <input type="text" id="trafficLon" name="trafficLon">
-    <input type="submit" value="전송">
-</form>
+<div id="map_div">
+</div>
+<button onClick="searchPOI()">POI검색 실행</button>
 </body>
-<script>
-    let timeCount = 0;
-    function timeCheck(){
-        let today = new Date();
-        if (timeCount == 0){
-
-            if (today.getHours()<10){
-                document.getElementById("setStartTime").value = "0" + today.getHours();
-                document.getElementById("setStartTime1").value = "0" + today.getHours();
-            }else{
-                document.getElementById("setStartTime").value = today.getHours();
-                document.getElementById("setStartTime1").value = today.getHours();
-            }
-
-            if (today.getMinutes()<10){
-                document.getElementById("setStartTime").value += "0" + today.getMinutes();
-                document.getElementById("setStartTime1").value += "0" + today.getMinutes();
-            }else {
-                document.getElementById("setStartTime").value += today.getMinutes();
-                document.getElementById("setStartTime1").value += today.getMinutes();
-            }
-
-            if (today.getSeconds()<10){
-                document.getElementById("setStartTime").value += "0"+today.getSeconds();
-                document.getElementById("setStartTime1").value += "0"+today.getSeconds();
-            }else {
-                document.getElementById("setStartTime").value += today.getSeconds();
-                document.getElementById("setStartTime1").value += today.getSeconds();
-            }
-
-            let startTime = new Date();
-            startTime.setMinutes(today.getMinutes()-30);
-            if (startTime.getHours()<10){
-                document.getElementById("trafficApplyStart").value = "0" + startTime.getHours();
-            }else{
-                document.getElementById("trafficApplyStart").value = startTime.getHours();
-            }
-
-            if (startTime.getMinutes()<10){
-                document.getElementById("trafficApplyStart").value += "0" + startTime.getMinutes();
-            }else {
-                document.getElementById("trafficApplyStart").value += startTime.getMinutes();
-            }
-
-            if (startTime.getSeconds()<10){
-                document.getElementById("trafficApplyStart").value += "0"+startTime.getSeconds();
-            }else {
-                document.getElementById("trafficApplyStart").value += startTime.getSeconds();
-            }
-
-            let endTime = new Date();
-            endTime.setMinutes(today.getMinutes()+30);
-            if (endTime.getHours()<10){
-                document.getElementById("trafficApplyEnd").value = "0" + endTime.getHours();
-            }else{
-                document.getElementById("trafficApplyEnd").value = endTime.getHours();
-            }
-
-            if (endTime.getMinutes()<10){
-                document.getElementById("trafficApplyEnd").value += "0" + endTime.getMinutes();
-            }else {
-                document.getElementById("trafficApplyEnd").value += endTime.getMinutes();
-            }
-
-            if (endTime.getSeconds()<10){
-                document.getElementById("trafficApplyEnd").value += "0"+endTime.getSeconds();
-            }else {
-                document.getElementById("trafficApplyEnd").value += endTime.getSeconds();
-            }
-
-            timeCount +=1;
-        }else if (timeCount ==1){
-            if (today.getHours()<10){
-                document.getElementById("setStartTime2").value = "0" + today.getHours();
-            }else{
-                document.getElementById("setStartTime2").value = today.getHours();
-            }
-
-            if (today.getMinutes()<10){
-                document.getElementById("setStartTime2").value += "0" + today.getMinutes();
-            }else {
-                document.getElementById("setStartTime2").value += today.getMinutes();
-            }
-
-            if (today.getSeconds()<10){
-                document.getElementById("setStartTime2").value += "0"+today.getSeconds();
-            }else {
-                document.getElementById("setStartTime2").value += today.getSeconds();
-            }
-            timeCount +=1;
-        }else {
-            if (today.getHours()<10){
-                document.getElementById("setStartTime3").value = "0" + today.getHours();
-            }else{
-                document.getElementById("setStartTime3").value = today.getHours();
-            }
-
-            if (today.getMinutes()<10){
-                document.getElementById("setStartTime3").value += "0" + today.getMinutes();
-            }else {
-                document.getElementById("setStartTime3").value += today.getMinutes();
-            }
-
-            if (today.getSeconds()<10){
-                document.getElementById("setStartTime3").value += "0"+today.getSeconds();
-            }else {
-                document.getElementById("setStartTime3").value += today.getSeconds();
-            }
-            timeCount+=1;
-            document.getElementById("trafficName").focus();
-            lightCheck();
-        }
-
-    }
-
-    let startTypeCheck = true;
-    function typeCheck(){
-        if (startTypeCheck){
-            startTypeCheck = false;
-            document.getElementById("startType").value = "green";
-            document.getElementById("setStartTime1").value = "청색불로바뀐시간";
-            document.getElementById("setStartTime2").value = "적색불로바뀐시간";
-            document.getElementById("setStartTime3").value = "청색불로바뀐시간";
-
-        }else {
-            startTypeCheck = true;
-            document.getElementById("startType").value = "red";
-            document.getElementById("setStartTime1").value = "적색불로바뀐시간";
-            document.getElementById("setStartTime2").value = "청색불로바뀐시간";
-            document.getElementById("setStartTime3").value = "적색불로바뀐시간";
-        }
-    }
-
-    function lightCheck(){
-        let first = document.getElementById("setStartTime1").value;
-        let second = document.getElementById("setStartTime2").value;
-        let third = document.getElementById("setStartTime3").value;
-
-        let firstSecond = (first-first%10000)/10000*3600 + ((first%10000-first%100)/100)*60 + first%100;
-        let secondSecond = (second-second%10000)/10000*3600 + ((second%10000-second%100)/100)*60 + second%100;
-        let thirdSecond = (third-third%10000)/10000*3600 + ((third%10000-third%100)/100)*60 + third%100;
-
-        if (document.getElementById("startType").value == "red"){
-            document.getElementById("greenOn").value = secondSecond - firstSecond;
-            document.getElementById("redOn").value = thirdSecond - secondSecond;
-        }else {
-            document.getElementById("redOn").value = secondSecond - firstSecond;
-            document.getElementById("greenOn").value = thirdSecond - secondSecond;
-        }
-
-        startTimeCheck()
-    }
-
-    function startTimeCheck(){
-        let first = document.getElementById("setStartTime").value;
-        let second = document.getElementById("trafficApplyStart").value;
-        let redOn = + document.getElementById("redOn").value;
-        let greenOn = + document.getElementById("greenOn").value;
-        let count = redOn + greenOn;
-        let firstSecond = (first-first%10000)/10000*3600 + ((first%10000-first%100)/100)*60 + first%100;
-        console.log(firstSecond)
-        let secondSecond = (second-second%10000)/10000*3600 + ((second%10000-second%100)/100)*60 + second%100;
-        console.log(secondSecond)
-
-        let reverseCount = Math.ceil((firstSecond - secondSecond) / count);
-        console.log(reverseCount)
-
-        let startSecond = firstSecond - reverseCount * count;
-        document.getElementById("setStartTime").value = Math.floor(startSecond/3600)*10000 + Math.floor((startSecond%3600)/60)*100 + Math.floor(startSecond%60)
-        console.log(document.getElementById("setStartTime").value)
-    }
-</script>
-<script
-        src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
-<script type="text/javascript">
-    var map,marker;
-    var lonlat;
-    var markers = [];
-    // 페이지가 로딩이 된 후 호출하는 함수입니다.
-    function initTmap(){
-        navigator.geolocation.getCurrentPosition(function(position) {
-
-            lat = position.coords.latitude; // 위도
-            lon = position.coords.longitude; // 경도
-
-            // map 생성
-            // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
-            map = new Tmapv2.Map("map_div", {
-                center: new Tmapv2.LatLng(lat, lon), // 지도 초기 좌표
-                width: "100%", // map의 width 설정
-                height: "400px" // map의 height 설정
-
-            });
-            map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
-        });
-    }
-
-    function onClick(e){
-        // 클릭한 위치에 새로 마커를 찍기 위해 이전에 있던 마커들을 제거
-        removeMarkers();
-
-        lonlat = e.latLng;
-        //Marker 객체 생성.
-        marker = new Tmapv2.Marker({
-            position: new Tmapv2.LatLng(lonlat.lat(),lonlat.lng()), //Marker의 중심좌표 설정.
-            map: map, //Marker가 표시될 Map 설정.
-            draggable: true, //Marker의 드래그 가능 여부.
-            icon:"https://search.pstatic.net/sunny/?src=https%3A%2F%2Fmedia.istockphoto.com%2Fphotos%2Ftraffic-lights-isolated-on-white-background-picture-id138171966&type=sc960_832",
-            iconSize : new Tmapv2.Size(24,38)
-        });
-        marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-        markers.push(marker);
-        ontestfoot();
-    }
-    // 모든 마커를 제거하는 함수입니다.
-    function removeMarkers() {
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(null);
-        }
-        markers = [];
-    }
-
-    function ontestfoot(){
-        document.getElementById("trafficLat").value = marker.getPosition().lat();
-        document.getElementById("trafficLon").value = marker.getPosition().lng();
-    }
-
-</script>
 </html>

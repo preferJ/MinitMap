@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dto.TestDTO;
 import com.example.project.dto.TrafficDTO;
+import com.example.project.dto.TrafficDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Timer;
@@ -62,9 +64,9 @@ public class TestController {
         return "/kmj/1tap";
     }
     //이현
-    @GetMapping("/test/test")
-    public String testtest(@ModelAttribute TestDTO testDTO) {
-        System.out.println("testDTO = " + testDTO);
+    @PostMapping("/test/test")
+    public String testtest(@ModelAttribute TestDTO testDTO , @ModelAttribute TrafficDTO trafficDTO) {
+        System.out.println("testDTO = " + testDTO + ", trafficDTO = " + trafficDTO);
         testRepository.save(TestEntity.toEntity(testDTO));
         return "/LeeHyeon/time";
     }

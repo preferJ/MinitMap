@@ -32,7 +32,7 @@ public class TestEntity {
     @Column(name = "greenOn")
     private Long greenOn;
 
-    @Column(name = "redOn", nullable = false)
+    @Column(name = "redOn")
     private Long redOn;
 
     @Column(name = "setStartTime", nullable = false)

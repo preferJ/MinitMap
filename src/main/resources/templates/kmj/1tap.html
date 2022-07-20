@@ -3,47 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
 </head>
 <style>
     #map_div {
-        position: absolute;
-        right: 0px;
-        top: 151px;
+        float: right;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #sidebar {
+        float: left;
+        width: 25%;
+        height: 818px;
+        background-color: #c7dbd2;
+        border: 2px solid #000000;
     }
 </style>
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
+<div id="sidebar">
     <button onclick="loginForm()">로그인하기</button>
-<div>
-마이플레이스 <br>
-집<i class="fa-solid fa-house"></i> <input type="text"> <br>
-회사<i class="fa-solid fa-buildings"></i> <input type="text"><br>
+    <div>
+        마이플레이스
+        집<i class="fa-solid fa-house"></i><input type="text"> <br>
+        회사<i class="fa-solid fa-buildings"></i><input type="text">
+    </div>
+    <div>
+        루틴 <br>
+        <input type="text" placeholder="출근길"> <br>
+        <input type="text" placeholder="퇴근길">
+    </div>
+    <div>
+        자주보는 신호등<br>
+        <input type="text" th:value="11"> <br>
+        <input type="text" th:value="11">
+    </div>
 </div>
-<div>
-    루틴 <br>
-    <input type="text" th:value="출근길"> <br>
-    <input type="text" th:value="퇴근길">
-</div>
-<div>
-    자주보는 신호등<br>
-    <input type="text" th:value="11"> <br>
-    <input type="text" th:value="11">
-</div>
-
 <script th:inline="javascript">
     const loginForm = () => {
-            var width = 450;
-            var height = 300;
+        var width = 450;
+        var height = 300;
 
-            var left = (window.screen.width / 2) - (width/2);
-            var top = (window.screen.height / 4);
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
 
-            var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
 
-            window.open("/member/loginForm", "로그인", windowStatus);
+        window.open("/member/loginForm", "로그인", windowStatus);
 
     }
 </script>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
     <style>
         input:focus { outline: none !important; border-color: #0d6efd; box-shadow: 0 0 10px #3dd5f3; }
     </style>
@@ -34,7 +36,28 @@
     </div>
 </form>
 </body>
-<script>
+<!--<script>-->
+<!--    const loginCheck = () => {-->
+<!--        const id = document.getElementById("memberEmail").value;-->
+<!--        const pw = document.getElementById("memberPassword").value;-->
 
-</script>
+<!--        $.ajax({-->
+<!--            type: "post",-->
+<!--            url: "/member/login",-->
+<!--            data: {"id": id, "pw":pw},-->
+<!--            dataType: "text",-->
+<!--            success: function (loginResult) {-->
+<!--                if (loginResult == "ok") {-->
+<!--                    alert("로그인이 성공하였습니다");-->
+<!--                    loginForm.submit();-->
+<!--                } else {-->
+<!--                    alert("아이디와 비밀번호를 확인해주세요");-->
+<!--                }-->
+<!--            },-->
+<!--            error: function (){-->
+<!--                alert("error");-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+<!--</script>-->
 </html>

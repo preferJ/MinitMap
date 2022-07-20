@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #map_div {
+        float: right;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    #sidebar {
+        float: left;
+        width: 40%;
+        height: 818px;
+        background-color: #c7dbd2;
+        border: 2px solid #000000;
+    }
+    #boardSave {
+        background-color: white;
+        border: 1px solid #20c997;
+        margin: 3%;
+        height: 95%;
+        padding: 10%;
+    }
+</style>
+<body>
+<th:block th:replace="/kmj/header :: header"></th:block>
+</body>
+<div id="sidebar">
+
+    <div id="boardSave">
+
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function initTmap() {
+        // 1. 지도 띄우기
+        map = new Tmapv2.Map("map_div", {
+            center: new Tmapv2.LatLng(37.570028, 126.989072),
+            width: "75%",
+            height: "817px",
+            zoom: 15,
+            zoomControl: true,
+            scrollwheel: true
+        });
+    }
+</script>
+<body onload="initTmap();">
+<div id="map_div"></div>
+</body>
+</html>

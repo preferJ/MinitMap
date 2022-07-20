@@ -26,22 +26,28 @@
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
-    <button onclick="loginForm()">로그인하기</button>
+    <button onclick="loginForm()">로그인하기</button> <br>
+    <hr>
+    <input type="search" placeholder="장소검색창">
+    <hr>
     <div>
-        마이플레이스
+        <b>마이플레이스</b> <br>
         집<i class="fa-solid fa-house"></i><input type="text"> <br>
         회사<i class="fa-solid fa-buildings"></i><input type="text">
     </div>
+    <hr>
     <div>
-        루틴 <br>
+        <b>루틴</b>
         <input type="text" placeholder="출근길"> <br>
         <input type="text" placeholder="퇴근길">
     </div>
+    <hr>
     <div>
-        자주보는 신호등<br>
+        <b>자주보는 신호등</b><br>
         <input type="text" th:value="11"> <br>
         <input type="text" th:value="11">
     </div>
+    <hr>
 </div>
 <script th:inline="javascript">
     const loginForm = () => {

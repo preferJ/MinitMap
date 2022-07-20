@@ -7,8 +7,17 @@
     <style>
         input:focus { outline: none !important; border-color: #0d6efd; box-shadow: 0 0 10px #3dd5f3; }
     </style>
+    <script>
+        var session = [[${session.loginEmail}]];
+        function start1() {
+            if(session != null){
+                opener.document.location.reload();
+                self.close();
+            }
+        }
+    </script>
 </head>
-<body>
+<body onload="start1()">
 <h1>로그인</h1>
 <form action="/member/login" method="post">
     <div style="text-align: center">

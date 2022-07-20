@@ -42,7 +42,7 @@ public class MemberController {
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
             session.setAttribute("loginId", loginResult.getMemberId());
-            return "/kmj/1tap";
+            return "/MemberPages/login";
         } else {
             return "MemberPages/login";
         }

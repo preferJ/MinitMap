@@ -5,10 +5,9 @@ import com.example.project.entity.MemberEntity;
 import com.example.project.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @AllArgsConstructor
@@ -20,18 +19,39 @@ public class MemberController {
     public String saveForm() {
         return "MemberPages/signUp";
     }
-    @PostMapping("/save")
     // ㅁㅈ
+    // ㅅㅎ 주석 위치 수정
+    @PostMapping("/save")
     public String save(@ModelAttribute MemberDTO memberDTO) {
         System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
         return "/index";
     }
 
+
     @GetMapping("/loginForm")
     // ㅁㅈ
     public String loginForm() {
         return "Memberpages/login";
+    }
+    //ㅅㅎ setAttribute에 id --> loginId 로 수정함
+    @PostMapping("/login")
+    public String login(MemberDTO memberDTO, HttpSession session) {
+        // ㅁㅈ
+        MemberDTO loginResult = memberService.login(memberDTO);
+        if (loginResult != null) {
+            session.setAttribute("loginEmail", loginResult.getMemberEmail());
+            session.setAttribute("loginId", loginResult.getMemberId());
+            return "/kmj/1tap";
+        } else {
+            return "memberPages/login";
+        }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // ㅁㅈ
+        session.invalidate();
+        return "redirect:/kmj/1tap";
     }
 
 }

@@ -26,7 +26,12 @@
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
-    <button onclick="loginForm()">로그인하기</button> <br>
+    <div th:if="${session.loginEmail}">
+    <button onclick="logout()">로그아웃</button> <br>
+    </div>
+    <div th:unless="${session.loginEmail}">
+        <button onclick="loginForm()">로그인</button> <br>
+    </div>
     <hr>
     <input type="search" placeholder="장소검색창">
     <hr>

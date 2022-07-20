@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.LikeCheckDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,4 +31,23 @@ public class LikeCheckEntity {
     @Column(name = "likeCheck")
     private boolean likeCheck;
 
+
+    public static LikeCheckEntity toLikeCheckSaveEntity(LikeCheckDTO likeCheckDTO, MemberEntity memberEntity, BoardEntity boardEntity, TrafficEntity trafficEntity){
+        LikeCheckEntity likeCheckEntity = new LikeCheckEntity();
+        likeCheckEntity.setLikeCheck(likeCheckDTO.isLikeCheck());
+        likeCheckEntity.setMemberEntity(memberEntity);
+        likeCheckEntity.setBoardEntity(boardEntity);
+        likeCheckEntity.setTrafficEntity(trafficEntity);
+        return likeCheckEntity;
+    }
+
+    public static LikeCheckEntity toLikeCheckUpdateEntity(LikeCheckDTO likeCheckDTO, MemberEntity memberEntity, BoardEntity boardEntity, TrafficEntity trafficEntity){
+        LikeCheckEntity likeCheckEntity = new LikeCheckEntity();
+        likeCheckEntity.setLikeCheckId(likeCheckDTO.getLikeCheckId());
+        likeCheckEntity.setLikeCheck(likeCheckDTO.isLikeCheck());
+        likeCheckEntity.setMemberEntity(memberEntity);
+        likeCheckEntity.setBoardEntity(boardEntity);
+        likeCheckEntity.setTrafficEntity(trafficEntity);
+        return likeCheckEntity;
+    }
 }

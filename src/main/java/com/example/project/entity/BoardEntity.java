@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.BoardDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -30,7 +31,7 @@ public class BoardEntity {
     private TrafficEntity trafficEntity;
 
     @Column(name = "boardType", nullable = false)
-    private Long boardType;
+    private String boardType;
 
     @Column(name = "boardTypeLocation1")
     private String boardTypeLocation1;
@@ -73,4 +74,31 @@ public class BoardEntity {
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
+
+    public static BoardEntity toBoardSaveEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
+       BoardEntity boardEntity = new BoardEntity();
+       boardEntity.setBoardType(boardDTO.getBoardType());
+       boardEntity.setBoardTypeLocation1(boardDTO.getBoardTypeLocation1());
+       boardEntity.setBoardTypeLocation2(boardDTO.getBoardTypeLocation2());
+       boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+       boardEntity.setBoardContents(boardDTO.getBoardContents());
+       boardEntity.setMemberEntity(memberEntity);
+       boardEntity.setTrafficEntity(trafficEntity);
+       return boardEntity;
+    }
+    public static BoardEntity toBoardUpdateEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardId(boardDTO.getBoardId());
+        boardEntity.setBoardType(boardDTO.getBoardType());
+        boardEntity.setBoardTypeLocation1(boardDTO.getBoardTypeLocation1());
+        boardEntity.setBoardTypeLocation2(boardDTO.getBoardTypeLocation2());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setBoardLike(boardDTO.getBoardLike());
+        boardEntity.setBoardDislike(boardDTO.getBoardDislike());
+        boardEntity.setManagerCheck(boardDTO.isManagerCheck());
+        boardEntity.setMemberEntity(memberEntity);
+        boardEntity.setTrafficEntity(trafficEntity);
+        return boardEntity;
+    }
 }

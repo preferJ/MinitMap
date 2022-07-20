@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.MyPlaceDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -36,4 +37,26 @@ public class MyPlaceEntity {
     @Column(name = "bookmark")
     @ColumnDefault("0") //default 0
     private boolean bookmark;
+
+    public static MyPlaceEntity toMyPlaceSaveEntity(MyPlaceDTO myPlaceDTO, MemberEntity memberEntity){
+        MyPlaceEntity myPlaceEntity = new MyPlaceEntity();
+        myPlaceEntity.setMyPlaceName(myPlaceDTO.getMyPlaceName());
+        myPlaceEntity.setMyPlaceLat(myPlaceDTO.getMyPlaceLat());
+        myPlaceEntity.setMyPlaceLon(myPlaceDTO.getMyPlaceLon());
+        myPlaceEntity.setIcon(myPlaceDTO.getIcon());
+        myPlaceEntity.setMemberEntity(memberEntity);
+        return myPlaceEntity;
+    }
+
+    public static MyPlaceEntity toMyPlaceUpdateEntity(MyPlaceDTO myPlaceDTO, MemberEntity memberEntity){
+        MyPlaceEntity myPlaceEntity = new MyPlaceEntity();
+        myPlaceEntity.setMyPlaceId(myPlaceDTO.getMyPlaceId());
+        myPlaceEntity.setMyPlaceName(myPlaceDTO.getMyPlaceName());
+        myPlaceEntity.setMyPlaceLat(myPlaceDTO.getMyPlaceLat());
+        myPlaceEntity.setMyPlaceLon(myPlaceDTO.getMyPlaceLon());
+        myPlaceEntity.setIcon(myPlaceDTO.getIcon());
+        myPlaceEntity.setBookmark(myPlaceDTO.isBookmark());
+        myPlaceEntity.setMemberEntity(memberEntity);
+        return myPlaceEntity;
+    }
 }

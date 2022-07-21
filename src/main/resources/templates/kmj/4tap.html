@@ -1,10 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
 </head>
-<body>
+<style>
+    #map_div {
+        float: right;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
+    #sidebar {
+        float: left;
+        width: 320px;
+        height: 818px;
+        background-color: #c7dbd2;
+        border: 2px solid #000000;
+    }
+
+    #traffic_information {
+        background-color: white;
+        border: 1px solid #20c997;
+        margin: 3%;
+        height: 95%;
+        padding: 10%;
+    }
+</style>
+<body>
+<th:block th:replace="/kmj/header :: header"></th:block>
 </body>
+<div id="sidebar" style="text-align: center
+">
+
+    <div id="traffic_information">
+        <h3>신호등추가</h3>
+        <hr>
+        <span style="size: 15px">현재 신호등 상태</span>
+        <i id="red" th:onclick="trafficRed()" class="fa-solid fa-circle"></i>
+        <i id="green" th:onclick="trafficGreen()" class="fa-solid fa-circle"></i>
+        <hr>
+        <div style="display: inline-flex; ">
+            <div style="display: inline-block;width: 150px;height: 100px">
+                <div>
+                    <input type="text" placeholder="적색불로 바뀐 시간" style="width:150px;height:26px;font-size:10px;">
+                </div>
+                <div>
+                    <input type="text" placeholder="적색불로 바뀐 시간" style="width:150px;height:26px;font-size:10px;">
+                </div>
+                <div>
+                    <input type="text" placeholder="적색불로 바뀐 시간" style="width:150px;height:26px;font-size:10px;">
+                </div>
+            </div>
+            <div style="display: inline-block">
+                <input type="button" value="시간 기록" style="outline-color: #0d6efd; width: 190px;height: 100px; top: 1%">
+            </div>
+        </div>
+        <hr>
+        <div>
+            <input type="text" placeholder="신호등 이름 입력" style="outline-color:#20c997; width:335px;height:26px;font-size:15px;">
+        </div>
+        <input type="text" placeholder="청색불 점화 시간" style="width:335px;height:26px;font-size:15px;"> <br>
+        <input type="text" placeholder="적색불 점화 시간" style="width:335px;height:26px;font-size:15px;">
+        <hr>
+        <h4>적용 시간대</h4>
+        <input type="text" placeholder="00:00:00" style="outline-color:#20c997; width:335px;height:26px;font-size:15px; text-align: center">
+        <div style="text-align: center">
+            ||
+        </div>
+        <input type="text" placeholder="00:00:00" style="outline-color:#20c997; width:335px;height:26px;font-size:15px; text-align: center">
+    <hr>
+        <button type="button" class="btn btn-check">저장</button>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function initTmap() {
+        // 1. 지도 띄우기
+        map = new Tmapv2.Map("map_div", {
+            center: new Tmapv2.LatLng(37.570028, 126.989072),
+            width: "75%",
+            height: "817px",
+            zoom: 15,
+            zoomControl: true,
+            scrollwheel: true
+        });
+    }
+</script>
+<body onload="initTmap();">
+<div id="map_div"></div>
+</body>
+<script th:inline="javascript">
+    function trafficRed() {
+        const red = document.getElementById("red");
+        red.style.color = "red";
+    }
+
+    function trafficGreen() {
+        const green = document.getElementById("green");
+        green.style.color = "green";
+    }
+</script>
 </html>

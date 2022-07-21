@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-</head>
+    <script
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script></head>
+<script>
+    // 화면 크기가 변경될때마다 함수 호출
+    $(window).resize(function (){
+        var width_size = window.outerWidth;
+        // 화면의 height값을 가져오기
+        var height_size = window.outerHeight;
+        var mapResize = document.getElementById('map_div');//map의 div
+        var sidebarResize = document.getElementById("sidebar");
+        mapResize.style.width = width_size-336+"px";//map의 height 변경
+        mapResize.style.height = height_size-164+"px";//map의 height 변경
+        sidebarResize.style.height = height_size-164+"px";
+    })
+</script>
 <style>
     #map_div {
         float: right;
         width: 100%;
         box-sizing: border-box;
     }
+
     #sidebar {
         float: left;
-        width: 40%;
+        width: 320px;
         height: 818px;
         background-color: #c7dbd2;
         border: 2px solid #000000;
@@ -24,14 +40,41 @@
         height: 95%;
         padding: 10%;
     }
+    .hstack {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-self: stretch;
+    }
 </style>
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
 
-    <div id="boardSave">
+    <div id="boardSave" style="text-align: center">
+        <div class="hstack gap-3">
+            <div class="bg-light border">전체게시글</div>
+            <div class="bg-light border">신호등 게시글</div>
+            <div class="bg-light border">자유 게시글</div>
+            <div class="bg-light border">공지사항</div>
+        </div>
+    <div class="container">
+        <h3 style="text-align: center">게시글 목록</h3>
+        <table class="table">
+            <tr>
+                <td>카테고리</td>
+                <td>글 제목</td>
+                <td>작성자</td>
+            </tr>
+            <tr th:each="board: ${boardList}">
+                <td th:text="${board.boardType}"></td>
+                <a href="#"><td th:text="${board.boardTitle}"></td></a>
+                <td th:text="${board.memberNickname}"></td>
 
+            </tr>
+        </table>
+    </div>
     </div>
 </div>
 </body>

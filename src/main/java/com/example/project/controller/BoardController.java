@@ -11,9 +11,4 @@ public class
 BoardController {
     private final BoardService boardService;
 
-    @GetMapping("/saveForm")
-    // ㅁㅈ
-    public String saveForm() {
-        return "/BoardPages/save";
-    }
 }

@@ -177,7 +177,11 @@ public class TestController {
 
     }
 
-
+    @GetMapping("/admin")
+    // ㅁㅈ
+    public String admin(){
+        return"/AdminPages/adminHistory";
+    }
 
 
 }

@@ -25,10 +25,10 @@
     <div style="text-align: center">
         <div>
             <input  type="text" id="memberEmail" name="memberEmail" placeholder="아이디"> <br>
-            <input type="text" name="memberPassword" th:onclick="loginCheck()" placeholder="비밀번호"> <br>
+            <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
         </div>
         <div>
-            <input type="submit" value="로그인">
+            <input type="submit" value="로그인" th:onclick="loginCheck()">
         </div>
         <div>
             <a href="/member/findIdForm">아이디찾기</a> ｜ <a href="/member/findPwForm">비밀번호찾기</a>
@@ -36,28 +36,4 @@
     </div>
 </form>
 </body>
-<!--<script>-->
-<!--    const loginCheck = () => {-->
-<!--        const id = document.getElementById("memberEmail").value;-->
-<!--        const pw = document.getElementById("memberPassword").value;-->
-
-<!--        $.ajax({-->
-<!--            type: "post",-->
-<!--            url: "/member/login",-->
-<!--            data: {"id": id, "pw":pw},-->
-<!--            dataType: "text",-->
-<!--            success: function (loginResult) {-->
-<!--                if (loginResult == "ok") {-->
-<!--                    alert("로그인이 성공하였습니다");-->
-<!--                    loginForm.submit();-->
-<!--                } else {-->
-<!--                    alert("아이디와 비밀번호를 확인해주세요");-->
-<!--                }-->
-<!--            },-->
-<!--            error: function (){-->
-<!--                alert("error");-->
-<!--            }-->
-<!--        })-->
-<!--    }-->
-<!--</script>-->
 </html>

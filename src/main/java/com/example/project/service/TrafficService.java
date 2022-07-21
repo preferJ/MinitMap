@@ -34,4 +34,14 @@ public class TrafficService {
         }
         return trafficDTOList;
     }
+
+
+    public List<TrafficDTO> findByMemberId(Long id) {
+        List<TrafficEntity> byMemberEntity = trafficRepository.findByMemberEntity(memberRepository.findById(id).get());
+        List<TrafficDTO> trafficDTOList = new ArrayList<>();
+        for (TrafficEntity trafficEntity : byMemberEntity){
+            trafficDTOList.add(TrafficDTO.toTrafficDTO(trafficEntity));
+        }
+        return trafficDTOList;
+    }
 }

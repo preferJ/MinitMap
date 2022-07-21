@@ -58,6 +58,13 @@ public class TestController {
         return "/hss/myprot";
     }
 
+    @GetMapping("/hss/trafficChoese")
+    //홍성수
+    public String traficChoese() {
+        return "/hss/trafficChoese";
+    }
+
+
     @GetMapping("/kmj/header")
     // ㅁㅈ
     public String header() {

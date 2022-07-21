@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>simpleMap</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <script type="text/javascript">
+        // 마이플레이스 더미 파일
+        var traffic1 = ({
+            name: "myp1",
+            lat: 37.53306179789372,
+            lon: 127.03439712524445
+        })
+        var traffic2 = ({
+            name: "myp2",
+            lat: 37.52249072492314,
+            lon: 126.97989463806194
+        })
+        // 마이플레이스 더미 목록
+        var trafficList = [traffic1, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2, traffic2];
+        // 루틴 더미목록
+        var map;
+        var select_marker;
+        // 마이플레이스 호출
+        function mytrafficPlus(){
+            var ww = document.getElementById("trafficResult");
+            var innerHtml = "";
+            for (var k in trafficList) {
+                innerHtml += "<li style='margin-top: 2px'><div><span>"
+                    + trafficList[k].name
+                    + "</span>  <button type='button' name='sendBtn' onClick='pingTraffic("
+                    + k
+                    + ");'>선택</button></div></li>";
+            }
+            ww.innerHTML = innerHtml;
+        }
+        // 화면 크기가 변경될때마다 함수 호출
+        $(window).resize(function (){
+            // 화면의 height값을 가져오기
+            var height_size = window.outerHeight;
+            var mapResize = document.getElementById('map_div');//map의 div
+            var selectBox = document.getElementById("selectBox");
+            mapResize.style.height = height_size-120+"px";//map의 height 변경
+            selectBox.style.height = height_size - 120 - 90 + "px";
+        })
+        function initTmap() {
+            var height_size = window.outerHeight;
+            document.getElementById("selectBox").style.height = height_size - 120 - 90 + "px";
+            // 1. 지도 띄우기
+            map = new Tmapv2.Map("map_div", {
+                center: new Tmapv2.LatLng(37.570028, 126.986072),
+                width: "70%",
+                height: height_size - 120 + "px",
+                zoom: 15,
+                zoomControl: true,
+                scrollwheel: true
+
+            });
+            // 시작시 마이플레이스 목록 나오게 하기
+            mytrafficPlus();
+        }
+        // 검색을 제외한 모든 마커를 지우는 함수
+        function removeMarkers() {
+            // map 에서 select_marker 를 지움
+            select_marker.setMap(null);
+            select_marker = null;
+        }
+        // 마이플레이스 출발지 지정
+        function pingTraffic(index) {
+            // 마커가 이미 있으면 삭제
+            if (select_marker != null) {
+                removeMarkers()
+            }
+            // 이전에 저장한 위도경도의 값을 불러옴
+            var lonlat = trafficList[index];
+            //Marker 객체 생성
+            select_marker = new Tmapv2.Marker({
+                icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                position: new Tmapv2.LatLng(lonlat.lat, lonlat.lon), //Marker의 중심좌표 설정.
+                map: map, //Marker가 표시될 Map 설정.
+            });
+            map.setCenter(new Tmapv2.LatLng(lonlat.lat,lonlat.lon));
+            map.setZoom(18);
+
+            var buttonText = '<button style="position: absolute;width: 95%;height: 50px;display: block; margin-top: 10px;padding: 5px" onclick="sandTraffic()">'+ trafficList[index].name +'</button>';
+            document.getElementById("buttonText").innerHTML = buttonText;
+        }
+        function sandTraffic(){
+        }
+    </script>
+    <style>
+        #selectBox{
+            overflow: scroll;
+            height: 300px;
+            -ms-overflow-style: none;
+        }
+        #selectBox::-webkit-scrollbar{
+            display:none;
+        }
+    </style>
+</head>
+<body onload="initTmap();">
+<div>
+    <div style="width: 30%; float:left;position: relative;display: block">
+        <div>
+        <div class="rst_wrap" style="display: block">
+            <div style="margin: 5px">
+                <div class="title">My <strong>Traffic</strong></div>
+            </div>
+            <div class="" id="selectBox">
+                <ul id="trafficResult" name="traffic">
+                    <li>신호등이 없습니다.</li>
+                </ul>
+            </div>
+        </div>
+        <div id="buttonText"><button style="position: absolute;width: 95%;height: 50px;display: block; margin-top: 10px;padding: 5px" onclick="sandTraffic()">신호등을 선택해주세요</button></div>
+        </div>
+    </div>
+    <div id="map_div" class="map_wrap" style="float:left"></div>
+</div>
+<div class="map_act_btn_wrap clear_box"></div>
+<p id="result"></p>
+</body>
+</html>

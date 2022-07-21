@@ -68,9 +68,11 @@ public class TestController {
     // ㅁㅈ
     public String tap1(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
+                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")int page_zoom,
                        Model model) {
         model.addAttribute("page_lat",page_lat);
         model.addAttribute("page_lng",page_lng);
+        model.addAttribute("page_zoom", page_zoom);
         return "/kmj/1tap";
     }
 

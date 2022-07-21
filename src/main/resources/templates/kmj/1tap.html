@@ -8,6 +8,8 @@
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>
+        var page_lat = [[${page_lat}]];
+        var page_lng = [[${page_lng}]];
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function (){
             var width_size = window.outerWidth;
@@ -15,15 +17,31 @@
             var height_size = window.outerHeight;
             var mapResize = document.getElementById('map_div');//map의 div
             var sidebarResize = document.getElementById("sidebar");
-            mapResize.style.width = width_size-336+"px";//map의 height 변경
-            mapResize.style.height = height_size-164+"px";//map의 height 변경
-            sidebarResize.style.height = height_size-164+"px";
+            if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 4  + "px";
+                alert("전체화면은 지원하지 않습니다.")
+            }
+            else if(width_size == 1920 ){
+                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 147 - 4  + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 4  + "px";
+            }else {
+                mapResize.style.width = width_size - 336 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 164 - 4  + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 164 - 4  + "px";
+            }
+            console.log("width:" + width_size+"height_size:" + height_size);
+
         })
     </script>
 </head>
 <style>
     body {
         -ms-overflow-style: none;
+        padding: 0;
+        margin: 0;
     }
     ::-webkit-scrollbar {
         display: none;
@@ -39,7 +57,8 @@
         width: 320px;
         height: 818px;
         background-color: #c7dbd2;
-        border: 2px solid #000000;
+        border: 2px solid black;
+        border-top: none;
     }
 </style>
 
@@ -47,6 +66,7 @@
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
+    <div style="margin-top: 8px">
     <div th:if="${session.loginEmail}">
     <button onclick="logout()">로그아웃</button> <br>
     </div>
@@ -74,6 +94,7 @@
         <input type="text" th:value="11">
     </div>
     <hr>
+    </div>
 </div>
 <script th:inline="javascript">
     const loginForm = () => {
@@ -91,27 +112,45 @@
 </script>
 <script type="text/javascript">
     function initTmap() {
-        var page_lat = [[${page_lat}]];
-        var page_lng = [[${page_lng}]];
+        tapCheck("tap1");
         var request_lat;
         var request_lng;
         if(page_lat == 0&& page_lng == 0){
-
+            request_lat = 37.570028;
+            request_lng = 126.989072;
+        }else{
+            request_lat = page_lat;
+            request_lng = page_lng;
         }
         console.log(page_lat,page_lng);
         sidebarResize = document.getElementById("sidebar");
         var width_size = window.outerWidth;
         var height_size = window.outerHeight;
-        sidebarResize.style.height = height_size-164+"px";
-        // 1. 지도 띄우기
-        map = new Tmapv2.Map("map_div", {
-            center: new Tmapv2.LatLng(37.570028, 126.989072),
-            width: width_size-336 + "px",
-            height: height_size-164 + "px",
-            zoom: 15,
-            zoomControl: true,
-            scrollwheel: true
-        });
+        if(width_size == 1920 ){
+            sidebarResize.style.height = height_size - 147 - 4  + "px";
+            // 1. 지도 띄우기
+            map = new Tmapv2.Map("map_div", {
+                center: new Tmapv2.LatLng(request_lat, request_lng),
+                width: width_size-320 + "px",
+                height: height_size-147 - 4  + "px",
+                zoom: [[${page_zoom}]],
+                zoomControl: true,
+                scrollwheel: true
+            });
+        }else {
+            sidebarResize.style.height = height_size - 164 + "px";
+            // 1. 지도 띄우기
+            map = new Tmapv2.Map("map_div", {
+                center: new Tmapv2.LatLng(request_lat, request_lng),
+                width: width_size-336 + "px",
+                height: height_size-164 - 4  + "px",
+                zoom: [[${page_zoom}]],
+                zoomControl: true,
+                scrollwheel: true
+            });
+        }
+
+
     }
 
     function logout(){

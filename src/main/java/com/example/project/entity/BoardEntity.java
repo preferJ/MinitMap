@@ -46,7 +46,6 @@ public class BoardEntity {
     private String boardContents;
 
     @Column(name = "boardHits")
-    @ColumnDefault("0") //default 0
     private Long boardHits;
 
     @CreationTimestamp
@@ -58,15 +57,12 @@ public class BoardEntity {
     private LocalDateTime boardUpdateTime;
 
     @Column(name = "boardLike")
-    @ColumnDefault("0") //default 0
     private Long boardLike;
 
     @Column(name = "boardDislike")
-    @ColumnDefault("0") //default 0
     private Long boardDislike;
 
     @Column(name = "managerCheck")
-    @ColumnDefault("0") //default 0
     private boolean managerCheck;
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -75,18 +71,38 @@ public class BoardEntity {
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
 
-    public static BoardEntity toBoardSaveEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
-       BoardEntity boardEntity = new BoardEntity();
-       boardEntity.setBoardType(boardDTO.getBoardType());
-       boardEntity.setBoardTypeLocation1(boardDTO.getBoardTypeLocation1());
-       boardEntity.setBoardTypeLocation2(boardDTO.getBoardTypeLocation2());
-       boardEntity.setBoardTitle(boardDTO.getBoardTitle());
-       boardEntity.setBoardContents(boardDTO.getBoardContents());
-       boardEntity.setMemberEntity(memberEntity);
-       boardEntity.setTrafficEntity(trafficEntity);
-       return boardEntity;
+    public static BoardEntity toBoardTrafficSaveEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardType(boardDTO.getBoardType());
+        boardEntity.setBoardTypeLocation1(boardDTO.getBoardTypeLocation1());
+        boardEntity.setBoardTypeLocation2(boardDTO.getBoardTypeLocation2());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setMemberEntity(memberEntity);
+        boardEntity.setTrafficEntity(trafficEntity);
+        boardEntity.setBoardHits(0l);
+        boardEntity.setBoardLike(0l);
+        boardEntity.setBoardDislike(0l);
+        boardEntity.setManagerCheck(false);
+        return boardEntity;
     }
-    public static BoardEntity toBoardUpdateEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
+
+    public static BoardEntity toBoardSaveEntity(BoardDTO boardDTO, MemberEntity memberEntity) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardType(boardDTO.getBoardType());
+        boardEntity.setBoardTypeLocation1(boardDTO.getBoardTypeLocation1());
+        boardEntity.setBoardTypeLocation2(boardDTO.getBoardTypeLocation2());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setMemberEntity(memberEntity);
+        boardEntity.setBoardHits(0l);
+        boardEntity.setBoardLike(0l);
+        boardEntity.setBoardDislike(0l);
+        boardEntity.setManagerCheck(false);
+        return boardEntity;
+    }
+
+    public static BoardEntity toBoardUpdateEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setBoardId(boardDTO.getBoardId());
         boardEntity.setBoardType(boardDTO.getBoardType());

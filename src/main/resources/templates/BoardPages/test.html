@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>test</h1>
+<input type="text" name="child" id="child" value="testtest">
+<table>
+    <tr th:each="traffic : ${trafficDTOList}" th:onclick="saveTest([[${traffic.trafficId}]])">
+            <td th:text="${traffic.trafficName}"></td>
+    </tr>
+</table>
+<input type="button" th:onclick="sendChildValue()" value="test">
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:inline="javascript">
+    let test;
+    function saveTest(id){
+        test=id;
+    }
+
+    function sendChildValue(){
+        if (test==null){
+            alert("선택된 신호등이 없습니다.")
+        }else {
+            opener.setChildValue(test);
+
+            window.close();
+        }
+
+    }
+</script>
+</html>

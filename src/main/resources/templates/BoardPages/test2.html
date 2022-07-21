@@ -10,13 +10,15 @@
 
         var map;
         var select_marker;
+        var trafficList;
+        var idResult;
         // 마이플레이스 호출
         function mytrafficPlus(){
             var ww = document.getElementById("trafficResult");
             var innerHtml = "";
             for (var k in trafficList) {
                 innerHtml += "<li style='margin-top: 2px'><div><span>"
-                    + trafficList[k].name
+                    + trafficList[k].trafficName
                     + "</span>  <button type='button' name='sendBtn' onClick='pingTraffic("
                     + k
                     + ");'>선택</button></div></li>";
@@ -71,10 +73,12 @@
             map.setCenter(new Tmapv2.LatLng(lonlat.lat,lonlat.lon));
             map.setZoom(18);
 
-            var buttonText = '<button style="position: absolute;width: 95%;height: 50px;display: block; margin-top: 10px;padding: 5px" onclick="sandTraffic()">'+ trafficList[index].name +'</button>';
+            var buttonText = '<button style="position: absolute;width: 95%;height: 50px;display: block; margin-top: 10px;padding: 5px" onclick="sandTraffic()">'+ trafficList[index].trafficName +'</button>';
             document.getElementById("buttonText").innerHTML = buttonText;
+            idResult = trafficList[index].trafficId;
         }
         function sandTraffic(){
+            console.log(idResult);
         }
     </script>
     <style>

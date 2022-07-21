@@ -5,6 +5,7 @@ import com.example.project.entity.MemberEntity;
 import com.example.project.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -14,11 +15,13 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+
     // ㅁㅈ
     @GetMapping("/saveForm")
     public String saveForm() {
         return "MemberPages/signUp";
     }
+
     // ㅁㅈ
     // ㅅㅎ 주석 위치 수정
     @PostMapping("/save")
@@ -34,6 +37,7 @@ public class MemberController {
     public String loginForm() {
         return "MemberPages/login";
     }
+
     //ㅅㅎ setAttribute에 id --> loginId 로 수정함
     @PostMapping("/login")
     public String login(MemberDTO memberDTO, HttpSession session) {
@@ -48,11 +52,11 @@ public class MemberController {
             return "MemberPages/login";
         }
     }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         // ㅁㅈ
         session.invalidate();
         return "redirect:/1tapTest";
     }
-
 }

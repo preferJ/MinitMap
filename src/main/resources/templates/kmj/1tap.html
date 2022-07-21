@@ -6,8 +6,28 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        // 화면 크기가 변경될때마다 함수 호출
+        $(window).resize(function (){
+            var width_size = window.outerWidth;
+            // 화면의 height값을 가져오기
+            var height_size = window.outerHeight;
+            var mapResize = document.getElementById('map_div');//map의 div
+            var sidebarResize = document.getElementById("sidebar");
+            mapResize.style.width = width_size-336+"px";//map의 height 변경
+            mapResize.style.height = height_size-164+"px";//map의 height 변경
+            sidebarResize.style.height = height_size-164+"px";
+        })
+    </script>
 </head>
 <style>
+    body {
+        -ms-overflow-style: none;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
     #map_div {
         float: right;
         width: 100%;
@@ -16,12 +36,13 @@
 
     #sidebar {
         float: left;
-        width: 25%;
+        width: 320px;
         height: 818px;
         background-color: #c7dbd2;
         border: 2px solid #000000;
     }
 </style>
+
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
@@ -70,11 +91,23 @@
 </script>
 <script type="text/javascript">
     function initTmap() {
+        var page_lat = [[${page_lat}]];
+        var page_lng = [[${page_lng}]];
+        var request_lat;
+        var request_lng;
+        if(page_lat == 0&& page_lng == 0){
+
+        }
+        console.log(page_lat,page_lng);
+        sidebarResize = document.getElementById("sidebar");
+        var width_size = window.outerWidth;
+        var height_size = window.outerHeight;
+        sidebarResize.style.height = height_size-164+"px";
         // 1. 지도 띄우기
         map = new Tmapv2.Map("map_div", {
             center: new Tmapv2.LatLng(37.570028, 126.989072),
-            width: "75%",
-            height: "817px",
+            width: width_size-336 + "px",
+            height: height_size-164 + "px",
             zoom: 15,
             zoomControl: true,
             scrollwheel: true
@@ -85,6 +118,7 @@
         location.href = "/member/logout";
     }
 </script>
+
 <body onload="initTmap();">
 <div id="map_div"></div>
 </body>

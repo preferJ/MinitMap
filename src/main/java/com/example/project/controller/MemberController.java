@@ -42,6 +42,7 @@ public class MemberController {
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
             session.setAttribute("loginId", loginResult.getMemberId());
+            session.setAttribute("loginNickName",loginResult.getMemberNickname());
             return "/MemberPages/login";
         } else {
             return "MemberPages/login";

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>simpleMap</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script type="text/javascript">
@@ -121,25 +120,6 @@
             addNum ++;
 
         }
-        // 신호등 찍는거 테스트 메서드 , 아약스로 불러와서 마커 남길 거임
-        function test(){
-            console.log("테스트 진입")
-            $.ajax({
-                method : "GET", // 요청 방식
-                url : "/jshTestFindAllTraffic",
-                async : true, // 동기 설정
-                dataType : 'json',
-                success : function(response) {
-                    console.log(response);
-                },
-                error : function(request, status, error) {
-                    console.log("code:" + request.status + "\n"
-                        + "message:" + request.responseText + "\n"
-                        + "error:" + error);
-                }
-            });
-
-        }
 
         function onTouchend(e) {
             var result = '모바일에서 터치가 끝난 위치의 좌표는' + e.latLng + '입니다.';
@@ -156,9 +136,9 @@
 <p id="resultDiv"/>
 <div id="resultList">결과값들</div>
 <br><br><br>;
-<form action="/jshTestTrafficSave" method="post">
+<form action="/jshTestTrafficSave" method="get">;
     memberId<input type="text" id="memberId" value="1" name="memberId"><br>
-    trafficName<input type="text" id="trafficName"name="trafficName" value=${session.memberId}><br>
+    trafficName<input type="text" id="trafficName"name="trafficName"><br>
     trafficLat<input type="text" id="trafficLat"name="trafficLat"><br>
     trafficLon<input type="text" id="trafficLon"name="trafficLon"><br>
     trafficApplyStart<input type="text" id="trafficApplyStart"name="trafficApplyStart"><br>
@@ -169,11 +149,37 @@
     setStartTime<input type="text" id="setStartTime"name="setStartTime"><br>
     <button>저장하기</button>
 
-
-
 </form>
-<button onclick="test()">값 가져오는지 테스트</button>
-<div id="testDiv"></div>
+<button href="/jshTestfindAllTraffic">확인하기</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>trafficId</th>
+        <th>memberId</th>
+        <th>trafficName</th>
+        <th>trafficLat</th>
+        <th>trafficLon</th>
+        <th>bookmark</th>
+        <th>trafficLike</th>
+        <th>trafficDisLike</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${trafficDTOList.trafficId}"></td>
+        <td th:text="${trafficDTOList.memberId}"></td>
+        <td th:text="${trafficDTOList.trafficName}"></td>
+        <td th:text="${trafficDTOList.trafficLat}"></td>
+        <td th:text="${trafficDTOList.trafficLon}"></td>
+        <td th:text="${trafficDTOList.bookmark}"></td>
+        <td th:text="${trafficDTOList.trafficLike}"></td>
+        <td th:text="${trafficDTOList.trafficDisLike}"></td>
+
+    </tr>
+    </tbody>
+</table>
+
 
 
 <form action="/jshTestlogin" method="post">
@@ -191,7 +197,4 @@
     </div>
 </form>
 </body>
-<script>
-
-</script>
 </html>

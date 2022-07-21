@@ -5,14 +5,12 @@ import com.example.project.dto.TrafficDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
 import com.example.project.service.TrafficService;
+import com.example.project.service.TrafficTestService;
 import com.example.project.service.TrafficTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -25,6 +23,7 @@ public class TestController {
     private final TestRepository testRepository;
     private final TrafficService trafficService;
     private final TrafficTimeService trafficTimeService;
+    private final TrafficTestService trafficTestService;
 
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
@@ -158,22 +157,27 @@ public class TestController {
         trafficTimeService.save(id, trafficTimeDTO);
         return "/jsh/Test";
     }
-// ㅅㅎ 테스트 로그인
+
+    // ㅅㅎ 테스트 로그인
     @PostMapping("/jshTestlogin")
     public String jshTestlogin(HttpSession session, @ModelAttribute MemberDTO memberDTO) {
         System.out.println(memberDTO);
         session.setAttribute("memberId", memberDTO.getMemberEmail());
         return "/jsh/Test";
     }
-// ㅅㅎ 일단 다 가져오자 메서드
-    @GetMapping("/jshTestPrintTraffic")
-    public String jshTestPrintTraffic(Model model) {
-        List<TrafficDTO> trafficDTOList = trafficService.findAll();
-        List<TrafficTimeDTO> trafficTimeDTOList = trafficTimeService.findAll();
-        model.addAttribute("trafficDTOList", trafficDTOList);
-        model.addAttribute("trafficTimeDTOList", trafficTimeDTOList);
-        return "/jsh/Test";
+
+//     ㅅㅎ 일단 다 가져오자 메서드
+    @GetMapping("/jshTestFindAllTraffic")
+    @ResponseBody
+    public List<TrafficTestDTO> jshTestFindAllTraffic() {
+        System.out.println("TestController.jshTestFindAllTraffic");
+        List<TrafficTestDTO> trafficTestDTOList = trafficTestService.findAll();
+        System.out.println(trafficTestDTOList);
+        return trafficTestDTOList;
+
     }
+
+
 
 
 }

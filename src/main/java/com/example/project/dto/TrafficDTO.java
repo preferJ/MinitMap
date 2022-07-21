@@ -14,7 +14,6 @@ public class TrafficDTO {
     private String trafficName;
     private Double trafficLat;
     private Double trafficLon;
-//    private boolean bookmark;
     private Long trafficLike;
     private Long trafficDisLike;
 
@@ -29,4 +28,6 @@ public class TrafficDTO {
         trafficDTO.setTrafficDisLike(trafficEntity.getTrafficDislike());
         return trafficDTO;
     }
+
+
 }

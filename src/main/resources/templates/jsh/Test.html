@@ -130,7 +130,22 @@
                 async : true, // 동기 설정
                 dataType : 'json',
                 success : function(response) {
-                    console.log(response);
+            let lat = response[0].trafficLat;
+            let lon = response[0].trafficLon;
+            let latlng = lat+","+lon
+            console.log(latlng)
+                    marker_Traffic2 = new Tmapv2.Marker(
+                        {
+                            position: latlng, // 마커가 표시될 좌표
+                            icon:"/icon/Traffic-light.png", // 아이콘 등록
+                            iconSize: new Tmapv2.Size(
+                                36, 57), // 아이콘 크기 설정
+                            title: "marker_Traffic1", // 마커 타이틀
+                            label :"MakeTest",
+                            map: map // 마커가 등록될 지도 객체
+                        });
+
+
                 },
                 error : function(request, status, error) {
                     console.log("code:" + request.status + "\n"

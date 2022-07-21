@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
 </head>
 <style>
     #map_div {
@@ -19,13 +22,53 @@
         border: 2px solid #000000;
     }
 </style>
-<body>
+
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
-
+    <input type="text" class="text_custom" id="searchKeyword" name="searchKeyword" placeholder="주소..">
+    <button id="btn_select">검색</button>
 </div>
+</body>
+<script type="text/javascript">
+    var map, marker;
+    var markerArr = [];
+    var marker_ps = [];
+    var drawInfoArr = [];
+    var resultdrawArr = [];
+    var labelArr = [];
+    var latLonArr = [];
+    // 시작시 marker, marker2 객체를 생성해서 position 값 비교 가능하게 만들기
+    marker = new Tmapv2.Marker({
+        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+        position: null, //Marker의 중심좌표 설정.
+        draggable: true,
+        map: null //Marker가 표시될 Map 설정.
+    });
+    marker2 = new Tmapv2.Marker({
+        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+        position: null, //Marker의 중심좌표 설정.
+        draggable: true,
+        map: null //Marker가 표시될 Map 설정.
+    });
+    map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
 
+
+
+    function initTmap() {
+        // 1. 지도 띄우기
+        map = new Tmapv2.Map("map_div", {
+            center: new Tmapv2.LatLng(37.570028, 126.989072),
+            width: "75%",
+            height: "817px",
+            zoom: 18,
+            zoomControl: true,
+            scrollwheel: true
+        });
+    }
+</script>
+<body onload="initTmap();">
+<div id="map_div"></div>
 </body>
 </html>

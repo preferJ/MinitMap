@@ -147,7 +147,7 @@ public class TestController {
     }
 
     // ㅅㅎ 테스트 신호등 저장 메서드
-    @GetMapping("/jshTestTrafficSave")
+    @PostMapping("/jshTestTrafficSave")
     public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
                                      @ModelAttribute TrafficTimeDTO trafficTimeDTO,
                                      HttpSession session) {

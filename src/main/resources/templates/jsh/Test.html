@@ -16,6 +16,8 @@
         });
         var map;
         let addNum = 1;
+        var trafficMarkerArr = [];
+        var trafficLeftTime = [];
 
         // 페이지가 로딩이 된 후 호출하는 함수입니다.
         function initTmap() {
@@ -26,45 +28,9 @@
                 width: "100%",
                 height: "400px"
             });
-            map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-            map.addListener("zoom_changed", onChanged); // 지도의 줌 변경시, 이벤트 리스너 등록.
-            map.addListener("drag", onDrag); // 지도 드래그시, 이벤트 리스너 등록.
-            map.addListener("dragstart", onDragstart); // 지도 드래그 시작시, 이벤트 리스너 등록.
-            map.addListener("dragend", onDragend); // 지도 드래그 끝났을 때, 이벤트 리스너 등록.
             map.addListener("contextmenu", onContextmenu); // 지도 우클릭시, 이벤트 리스너 등록.
-            map.addListener("touchend", onTouchend); // 모바일에서 지도 터치 터치가 끝났을때, 이벤트 리스너 등록.
         }
 
-        // 지도를 클릭했을때 발생하는 이벤트 함수입니다.
-        function onClick(e) {
-            var result = '클릭한 위치의 좌표는' + e.latLng + '입니다.';
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = result;
-        }
-
-        function onChanged(e) {
-            var result = '현재 zoom : ' + e.zoom + '입니다.';
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = result;
-        }
-
-        function onDrag(e) {
-            var result = '드래그한 위치의 좌표는' + e.latLng + '입니다.';
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = result;
-        }
-
-        function onDragstart(e) {
-            var result = '드래그를 시작한 위치의 좌표는' + e.latLng + '입니다.';
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = result;
-        }
-
-        function onDragend(e) {
-            var result = '드래그가 끝난 위치의 중앙좌표는' + e.latLng + '입니다.';
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = result;
-        }
 
         function onContextmenu(e) {
             let today = new Date();
@@ -92,13 +58,13 @@
             var setStartTime = document.getElementById("setStartTime");
 
             resultDiv.innerHTML = result;
-            trafficName.value = "테스트신호등"+addNum;
+            trafficName.value = "테스트신호등" + addNum;
             trafficLat.value = latlat
             trafficLon.value = lonlon
-            trafficApplyStart.value = time-3000;
-            trafficApplyEnd.value = time+3000;
-            greenOn.value = 30+ranNum1;
-            redOn.value = 30+ranNum2;
+            trafficApplyStart.value = time - 3000;
+            trafficApplyEnd.value = time + 3000;
+            greenOn.value = 30 + ranNum1;
+            redOn.value = 30 + ranNum2;
             setStartTime.value = time;
 
 
@@ -111,43 +77,69 @@
             marker_Traffic = new Tmapv2.Marker(
                 {
                     position: e.latLng, // 마커가 표시될 좌표
-                    icon:"/icon/Traffic-light.png", // 아이콘 등록
+                    icon: "/icon/Traffic-light.png", // 아이콘 등록
                     iconSize: new Tmapv2.Size(
                         36, 57), // 아이콘 크기 설정
                     title: "marker_Traffic1", // 마커 타이틀
-                    label :"test1",
+                    label: "test1",
                     map: map // 마커가 등록될 지도 객체
                 });
-            addNum ++;
+            addNum++;
 
         }
-        // 신호등 찍는거 테스트 메서드 , 아약스로 불러와서 마커 남길 거임
-        function test(){
-            console.log("테스트 진입")
-            $.ajax({
-                method : "GET", // 요청 방식
-                url : "/jshTestFindAllTraffic",
-                async : true, // 동기 설정
-                dataType : 'json',
-                success : function(response) {
-            let lat = response[0].trafficLat;
-            let lon = response[0].trafficLon;
-            let latlng = lat+","+lon
-            console.log(latlng)
-                    marker_Traffic2 = new Tmapv2.Marker(
-                        {
-                            position: latlng, // 마커가 표시될 좌표
-                            icon:"/icon/Traffic-light.png", // 아이콘 등록
-                            iconSize: new Tmapv2.Size(
-                                36, 57), // 아이콘 크기 설정
-                            title: "marker_Traffic1", // 마커 타이틀
-                            label :"MakeTest",
-                            map: map // 마커가 등록될 지도 객체
-                        });
 
+        // 신호등 찍는거 테스트 메서드 , 아약스로 불러와서 마커 남길 거임
+        function test() {
+            let today = new Date();
+            let hours = today.getHours();
+            let minutes = today.getMinutes();
+            let seconds = today.getSeconds();
+            let time = hours * 10000 + minutes * 100 + seconds;
+            $.ajax({
+                method: "GET", // 요청 방식
+                url: "/jshTestFindAllTraffic",
+                async: true, // 동기 설정
+                dataType: 'json',
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].trafficApplyStart < time < response[i].trafficApplyEnd) {
+                            var leftTime = response[i].leftTime + "초";
+                            if (response[i].startType == 1) {
+                                marker_Traffic = new Tmapv2.Marker(
+                                    {
+                                        position: new Tmapv2.LatLng(response[i].trafficLat, response[i].trafficLon), //Marker의 중심좌표 설정.
+                                        icon: "/icon/greenOn.png", // 아이콘 등록
+                                        iconSize: new Tmapv2.Size(
+                                            36, 57), // 아이콘 크기 설정
+                                        title: 1, // 마커 타이틀
+                                        label: leftTime,
+                                        map: map // 마커가 등록될 지도 객체
+                                    });
+                            } else {
+                                marker_Traffic = new Tmapv2.Marker(
+                                    {
+                                        position: new Tmapv2.LatLng(response[i].trafficLat, response[i].trafficLon), //Marker의 중심좌표 설정.
+                                        icon: "/icon/redOn.png", // 아이콘 등록
+                                        iconSize: new Tmapv2.Size(
+                                            36, 57), // 아이콘 크기 설정
+                                        title: -1, // 마커 타이틀
+                                        label: leftTime,
+                                        map: map // 마커가 등록될 지도 객체
+                                    });
+
+
+                            }
+
+                            trafficMarkerArr.push(marker_Traffic);
+                            trafficLeftTime.push(response[i].leftTime);
+
+                        }
+                    }
+                        console.log(trafficMarkerArr[0])
+                    // startAlert();
 
                 },
-                error : function(request, status, error) {
+                error: function (request, status, error) {
                     console.log("code:" + request.status + "\n"
                         + "message:" + request.responseText + "\n"
                         + "error:" + error);
@@ -156,11 +148,27 @@
 
         }
 
-        function onTouchend(e) {
-            var result = '모바일에서 터치가 끝난 위치의 좌표는' + e.latLng + '입니다.';
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = result;
+        function stopPlayAlert() {
+            clearInterval(playAlert);
         }
+
+
+        startAlert = function () {
+            playAlert = setInterval(function () {
+                // trafficMarkerArr.push(marker_Traffic);
+                // trafficLeftTime.push(response[i].leftTime);
+                // for (var i = 0; trafficMarkerArr.length; i++) {
+                //     time = trafficLeftTime[i] - 1
+                //     if (time == 0) {
+                //         trafficMarkerArr[i].title
+                //     }
+                // }
+
+
+            }, 995);
+        };
+
+
     </script>
 </head>
 <body onload="initTmap()"><!-- 맵 생성 실행 -->
@@ -173,28 +181,28 @@
 <br><br><br>;
 <form action="/jshTestTrafficSave" method="post">
     memberId<input type="text" id="memberId" value="1" name="memberId"><br>
-    trafficName<input type="text" id="trafficName"name="trafficName" value=${session.memberId}><br>
-    trafficLat<input type="text" id="trafficLat"name="trafficLat"><br>
-    trafficLon<input type="text" id="trafficLon"name="trafficLon"><br>
-    trafficApplyStart<input type="text" id="trafficApplyStart"name="trafficApplyStart"><br>
-    trafficApplyEnd<input type="text" id="trafficApplyEnd"name="trafficApplyEnd"><br>
-    startType<input type="text" id="startType"name="startType"><br>
-    greenOn<input type="text" id="greenOn"name="greenOn"><br>
-    redOn<input type="text" id="redOn"name="redOn"><br>
-    setStartTime<input type="text" id="setStartTime"name="setStartTime"><br>
+    trafficName<input type="text" id="trafficName" name="trafficName" value=${session.memberId}><br>
+    trafficLat<input type="text" id="trafficLat" name="trafficLat"><br>
+    trafficLon<input type="text" id="trafficLon" name="trafficLon"><br>
+    trafficApplyStart<input type="text" id="trafficApplyStart" name="trafficApplyStart"><br>
+    trafficApplyEnd<input type="text" id="trafficApplyEnd" name="trafficApplyEnd"><br>
+    startType<input type="text" id="startType" name="startType"><br>
+    greenOn<input type="text" id="greenOn" name="greenOn"><br>
+    redOn<input type="text" id="redOn" name="redOn"><br>
+    setStartTime<input type="text" id="setStartTime" name="setStartTime"><br>
     <button>저장하기</button>
-
 
 
 </form>
 <button onclick="test()">값 가져오는지 테스트</button>
+<button onclick="stopPlayAlert()">테스트 정지 버튼</button>
 <div id="testDiv"></div>
 
 
 <form action="/jshTestlogin" method="post">
     <div style="text-align: center">
         <div>
-            <input  type="text" id="memberEmail" name="memberEmail" placeholder="아이디"> <br>
+            <input type="text" id="memberEmail" name="memberEmail" placeholder="아이디"> <br>
             <input type="text" name="memberPassword" th:onclick="loginCheck()" placeholder="비밀번호"> <br>
         </div>
         <div>

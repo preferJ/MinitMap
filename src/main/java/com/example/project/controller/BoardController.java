@@ -49,6 +49,6 @@ public class BoardController {
         List<TrafficDTO> trafficDTOList = trafficService.findByMemberId(id);
         System.out.println(trafficDTOList);
         model.addAttribute("trafficDTOList",trafficDTOList);
-        return "/BoardPages/test2";
+        return "/BoardPages/modal";
     }
 }

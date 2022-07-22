@@ -164,8 +164,8 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">주간 인기글</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1" id="boardTypeLocation1"></select>
-                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation()"></select>
+<!--                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1" id="boardTypeLocation1"></select>-->
+<!--                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation()"></select>-->
 
                     <div class="btn-group me-2">
                         <button type="button" th:onclick="saveForm()" class="btn btn-sm btn-outline-secondary">글 쓰기</button>
@@ -184,7 +184,8 @@
                         <th scope="col">제목</th>
                         <th scope="col">지역</th>
                         <th scope="col">작성자</th>
-                        <th scope="col">업로드 or 수정시간</th>
+                        <th scope="col">작성시간</th>
+                        <th scope="col">좋아요</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -197,6 +198,7 @@
                         <td th:text="${board.memberNickname}"></td>
                         <td th:if="${board.boardUpdateTime}" th:text="*{#temporals.format(board.boardUpdateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:unless="${board.boardUpdateTime}" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${board.boardLike}"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>simpleMap</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script type="text/javascript">
@@ -67,6 +69,23 @@
         }
     </script>
     <style>
+        .w-btn-outline {
+            position: relative;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-family: "paybooc-Light", sans-serif;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+        .w-btn-outline:active {
+            transform: scale(1.5);
+        }
+        .w-btn-green-outline {
+            border: 3px solid #77af9c;
+            color: darkgray;
+        }
         #selectBox{
             overflow: scroll;
             height: 300px;
@@ -85,15 +104,18 @@
             <div style="margin: 5px">
                 <div class="title">My <strong>Traffic</strong></div>
             </div>
+
             <div class="" id="selectBox">
-                <table>
+                <table class="table table-striped table-sm">
+                    <tbody>
                     <tr th:each="traffic : ${trafficDTOList}" th:onclick="saveTest([[${traffic.trafficId}]]),pingTraffic([[${traffic.trafficLat}]],[[${traffic.trafficLon}]])">
                         <td th:text="${traffic.trafficName}"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
-        <div id="buttonText"><button style="position: absolute;width: 95%;height: 50px;display: block; margin-top: 10px;padding: 5px" onclick="sendChildValue()">선택 하기</button></div>
+        <div id="buttonText"><button  class="w-btn-outline w-btn-green-outline" style="position: absolute;width: 95%;height: 50px;display: block; margin-top: 10px;padding: 5px" onclick="sendChildValue()">선택 하기</button></div>
         </div>
     </div>
     <div id="map_div" class="map_wrap" style="float:left"></div>

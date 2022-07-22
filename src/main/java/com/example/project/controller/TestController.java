@@ -194,6 +194,7 @@ public class TestController {
 
     @GetMapping("/admin")
     // ㅁㅈ
+    // 일단 관리자페이지 메서드만 만들어놓음
     public String admin(){
         return"/AdminPages/adminHistory";
     }

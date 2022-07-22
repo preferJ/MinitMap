@@ -51,30 +51,29 @@
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
-
     <div id="boardSave" style="text-align: center">
         <div class="hstack gap-3">
-            <div class="bg-light border">전체게시글</div>
-            <div class="bg-light border">신호등 게시글</div>
-            <div class="bg-light border">자유 게시글</div>
-            <div class="bg-light border">공지사항</div>
-        </div>
+            <div class="bg-light border" onclick="boardAll()">전체</div>
+            <div class="bg-light border" onclick="trafficAll()">신호등</div>
+            <div class="bg-light border" onclick="freeAll()">자유</div>
+            <div class="bg-light border" onclick="adminAll()">공지</div>
+        </div> <br>
     <div class="container">
-        <h3 style="text-align: center">게시글 목록</h3>
+        <h4 style="text-align: center">게시글 목록</h4>
         <table class="table">
             <tr>
-                <td>카테고리</td>
-                <td>글 제목</td>
-                <td>작성자</td>
+                <th>카테고리</th>
+                <th>글 제목</th>
+                <th>작성자</th>
             </tr>
             <tr th:each="board: ${boardList}">
                 <td th:text="${board.boardType}"></td>
-                <a href="#"><td th:text="${board.boardTitle}"></td></a>
+                <a href="/board/findById"><td th:text="${board.boardTitle}"></td></a>
                 <td th:text="${board.memberNickname}"></td>
-
             </tr>
         </table>
     </div>
+        <button onclick="goBoardPages()">게시판 이동</button>
     </div>
 </div>
 </body>
@@ -94,4 +93,21 @@
 <body onload="initTmap();">
 <div id="map_div"></div>
 </body>
+<script th:inline="javascript">
+    const boardAll = () => {
+        location.href = "/board/findAll";
+    }
+    const trafficAll = () => {
+
+    }
+    const freeAll = () => {
+
+    }
+    const adminAll = () => {
+
+    }
+    const goBoardPages = () => {
+        location.href = "/board";
+    }
+</script>
 </html>

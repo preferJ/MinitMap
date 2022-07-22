@@ -58,4 +58,12 @@ public class BoardController {
         model.addAttribute("trafficDTOList",trafficDTOList);
         return "/BoardPages/modal";
     }
+
+    @GetMapping("/findAll")
+    public String findAll(Model model) {
+        // ㅁㅈ
+        List<BoardDTO> boardDTOList = boardService.findAll();
+        model.addAttribute("boardList", boardDTOList);
+        return "/kmj/3tap";
+    }
 }

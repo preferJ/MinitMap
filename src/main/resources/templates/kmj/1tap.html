@@ -11,7 +11,7 @@
         var page_lat = [[${page_lat}]];
         var page_lng = [[${page_lng}]];
         // 화면 크기가 변경될때마다 함수 호출
-        $(window).resize(function (){
+        $(window).resize(function () {
             var width_size = window.outerWidth;
             // 화면의 height값을 가져오기
             var height_size = window.outerHeight;
@@ -20,19 +20,18 @@
             if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
                 mapResize.style.width = width_size - 320 + "px";//map의 height 변경
                 mapResize.style.height = height_size - 147 - 6 + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 147 - 6  + "px";
+                sidebarResize.style.height = height_size - 147 - 6 + "px";
                 alert("전체화면은 지원하지 않습니다.")
-            }
-            else if(width_size == 1920 ){
+            } else if (width_size == 1920) {
                 mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 147 - 6  + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 147 - 6  + "px";
-            }else {
+                mapResize.style.height = height_size - 147 - 6 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 6 + "px";
+            } else {
                 mapResize.style.width = width_size - 336 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 164 - 6  + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 164 - 6  + "px";
+                mapResize.style.height = height_size - 164 - 6 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 164 - 6 + "px";
             }
-            console.log("width:" + width_size+"height_size:" + height_size);
+            console.log("width:" + width_size + "height_size:" + height_size);
 
         })
     </script>
@@ -43,9 +42,11 @@
         padding: 0;
         margin: 0;
     }
+
     ::-webkit-scrollbar {
         display: none;
     }
+
     #map_div {
         float: right;
         width: 100%;
@@ -67,39 +68,39 @@
 </body>
 <div id="sidebar">
     <div style="margin-top: 8px">
-    <div th:if="${session.loginEmail}">
-    <button onclick="logout()">로그아웃</button> <br>
-    </div>
-    <div th:unless="${session.loginEmail}">
-        <button onclick="loginForm()">로그인</button> <br>
-    </div>
-    <hr>
-    <input type="search" placeholder="장소검색창">
-    <hr>
-    <div>
-        <b>마이플레이스</b> <br>
-        집<i class="fa-solid fa-house"></i><input type="text"> <br>
-        회사<i class="fa-solid fa-buildings"></i><input type="text">
-    </div>
-    <hr>
-    <div>
-        <b>루틴</b> <br>
-        <input type="text" placeholder="출근길"> <br>
-        <input type="text" placeholder="퇴근길">
-    </div>
-    <hr>
-    <div>
-        <b>자주보는 신호등</b> <br>
-        <input type="text" th:value="11"> <br>
-        <input type="text" th:value="11">
-    </div>
-    <hr>
+        <div th:if="${session.loginEmail}">
+            <button th:onclick="logout()" type="button" class="btn success">로그아웃</button>
+        </div>
+        <div th:unless="${session.loginEmail}">
+            <button onclick="loginForm()" type="button" class="btn success">로그인</button>
+        </div>
+        <hr>
+        <input type="search" placeholder="장소검색창">
+        <hr>
+        <div>
+            <b>마이플레이스</b> <br>
+            집<i class="fa-solid fa-house"></i><input type="text"> <br>
+            회사<i class="fa-solid fa-buildings"></i><input type="text">
+        </div>
+        <hr>
+        <div>
+            <b>루틴</b> <br>
+            <input type="text" placeholder="출근길"> <br>
+            <input type="text" placeholder="퇴근길">
+        </div>
+        <hr>
+        <div>
+            <b>자주보는 신호등</b> <br>
+            <input type="text" th:value="11"> <br>
+            <input type="text" th:value="11">
+        </div>
+        <hr>
     </div>
 </div>
 <script th:inline="javascript">
     const loginForm = () => {
-        var width = 450;
-        var height = 300;
+        var width = 480;
+        var height = 630;
 
         var left = (window.screen.width / 2) - (width / 2);
         var top = (window.screen.height / 4);
@@ -115,35 +116,35 @@
         tapCheck("tap1");
         var request_lat;
         var request_lng;
-        if(page_lat == 0&& page_lng == 0){
+        if (page_lat == 0 && page_lng == 0) {
             request_lat = 37.570028;
             request_lng = 126.989072;
-        }else{
+        } else {
             request_lat = page_lat;
             request_lng = page_lng;
         }
-        console.log(page_lat,page_lng);
+        console.log(page_lat, page_lng);
         sidebarResize = document.getElementById("sidebar");
         var width_size = window.outerWidth;
         var height_size = window.outerHeight;
-        if(width_size == 1920 ){
-            sidebarResize.style.height = height_size - 147 - 6  + "px";
+        if (width_size == 1920) {
+            sidebarResize.style.height = height_size - 147 - 6 + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size-320 + "px",
-                height: height_size-147 - 6  + "px",
+                width: width_size - 320 + "px",
+                height: height_size - 147 - 6 + "px",
                 zoom: [[${page_zoom}]],
                 zoomControl: true,
                 scrollwheel: true
             });
-        }else {
+        } else {
             sidebarResize.style.height = height_size - 164 - 6 + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size-336 + "px",
-                height: height_size-164 - 6  + "px",
+                width: width_size - 336 + "px",
+                height: height_size - 164 - 6 + "px",
                 zoom: [[${page_zoom}]],
                 zoomControl: true,
                 scrollwheel: true
@@ -153,7 +154,7 @@
 
     }
 
-    function logout(){
+    function logout() {
         location.href = "/member/logout";
     }
 </script>

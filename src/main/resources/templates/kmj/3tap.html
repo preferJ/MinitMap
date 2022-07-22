@@ -52,15 +52,17 @@
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
+    <div style="float: right"></div>
     <div id="boardSave" style="text-align: center">
-        <div class="hstack gap-3">
-            <div class="bg-light border" onclick="boardAll()">전체</div>
-            <div class="bg-light border" onclick="trafficAll()">신호등</div>
-            <div class="bg-light border" onclick="freeAll()">자유</div>
-            <div class="bg-light border" onclick="adminAll()">공지</div>
-        </div> <br>
     <div class="container">
         <h4 style="text-align: center">게시글 목록</h4>
+        <select name="" id="" style="float:left" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <option value="">카테고리</option>
+            <option value="">전체</option>
+            <option value="">신호</option>
+            <option value="">자유</option>
+            <option value="">공지</option>
+        </select>
         <table class="table">
             <tr>
                 <th>카테고리</th>

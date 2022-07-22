@@ -162,7 +162,7 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">주간 인기글</h1>
+                <h1 class="h2">신호게시판</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1" id="boardTypeLocation1"></select>
                     <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation()"></select>
@@ -176,25 +176,24 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-striped table-sm">
+                <table class="table table-striped table-sm"  style="table-layout:fixed">
                     <thead>
                     <tr>
                         <th scope="col">글번호</th>
-                        <th scope="col">게시판 타입</th>
                         <th scope="col">제목</th>
-                        <th scope="col">지역</th>
+                        <th scope="col">시/도</th>
+                        <th scope="col">군/구</th>
                         <th scope="col">작성자</th>
                         <th scope="col">작성시간</th>
                         <th scope="col">좋아요</th>
-                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="board : ${boardDTOList}">
                         <td th:text="${board.boardId}"></td>
-                        <td th:text="${board.boardType}"></td>
-                        <td th:text="${board.boardTitle}"></td>
+                        <td th:text="${board.boardTitle}" style="width:100%;overflow:hidden;text-overflow:ellipsis;"></td>
                         <td th:text="${board.boardTypeLocation1}"></td>
+                        <td th:text="${board.boardTypeLocation2}"></td>
                         <td th:text="${board.memberNickname}"></td>
                         <td th:if="${board.boardUpdateTime}" th:text="*{#temporals.format(board.boardUpdateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:unless="${board.boardUpdateTime}" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -204,6 +203,47 @@
                 </table>
             </div>
         </main>
+    </div>
+
+    <div class="container">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <!--첫페이지 요청 링크-->
+                <a class="page-link" th:href="@{/board/traffic(page=1)}">
+                    <span>First</span>
+                </a>
+            </li>
+
+            <li th:class="${boardDTOList.first} ? 'disabled'" class="page-item">
+                <!--boardList.first: isFirst()
+                    boardList.number: getNumber()-->
+                <a class="page-link" th:href="${boardDTOList.first} ? '#' : @{/board/traffic(page=${boardDTOList.number})}">
+                    <span><</span> <!-- < -->
+                </a>
+            </li>
+
+            <!-- startPage ~ endPage 까지 숫자를 만들어주는 역할 -->
+            <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                th:class="${page == boardDTOList.number + 1} ? 'page-item active'" class="page-item">
+                <a class="page-link" th:text="${page}" th:href="@{/board/traffic(page=${page})}"></a>
+            </li>
+
+            <!-- 다음 페이지 요청
+                현재 3페이지를 보고 있다면 다음 페이지는 4페이지임.
+                getNumber() 값은 2임.
+                따라서 4페이지를 보고 싶다면 getNumber()+2를 해야 컨트롤러에 4를 요청할 수 있음. -->
+            <li th:class="${boardDTOList.last} ? 'disabled'">
+                <a class="page-link" th:href="${boardDTOList.last} ? '#' : @{/board/traffic(page=${boardDTOList.number + 2})}">
+                    <span>&gt;</span>
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" th:href="@{/board/traffic(page=${boardDTOList.totalPages})}">
+                    <span>Last</span>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

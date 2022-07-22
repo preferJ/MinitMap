@@ -19,18 +19,18 @@
             var sidebarResize = document.getElementById("sidebar");
             if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
                 mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 147 - 4  + "px";
+                mapResize.style.height = height_size - 147 - 6 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 6  + "px";
                 alert("전체화면은 지원하지 않습니다.")
             }
             else if(width_size == 1920 ){
                 mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 147 - 4  + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 147 - 4  + "px";
+                mapResize.style.height = height_size - 147 - 6  + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 6  + "px";
             }else {
                 mapResize.style.width = width_size - 336 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 164 - 4  + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 164 - 4  + "px";
+                mapResize.style.height = height_size - 164 - 6  + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 164 - 6  + "px";
             }
             console.log("width:" + width_size+"height_size:" + height_size);
 
@@ -127,23 +127,23 @@
         var width_size = window.outerWidth;
         var height_size = window.outerHeight;
         if(width_size == 1920 ){
-            sidebarResize.style.height = height_size - 147 - 4  + "px";
+            sidebarResize.style.height = height_size - 147 - 6  + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
                 width: width_size-320 + "px",
-                height: height_size-147 - 4  + "px",
+                height: height_size-147 - 6  + "px",
                 zoom: [[${page_zoom}]],
                 zoomControl: true,
                 scrollwheel: true
             });
         }else {
-            sidebarResize.style.height = height_size - 164 + "px";
+            sidebarResize.style.height = height_size - 164 - 6 + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
                 width: width_size-336 + "px",
-                height: height_size-164 - 4  + "px",
+                height: height_size-164 - 6  + "px",
                 zoom: [[${page_zoom}]],
                 zoomControl: true,
                 scrollwheel: true

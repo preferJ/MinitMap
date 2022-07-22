@@ -5,10 +5,99 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <script
-            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
-</head>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var page_lat = [[${page_lat}]];
+        var page_lng = [[${page_lng}]];
+        // 화면 크기가 변경될때마다 함수 호출
+        $(window).resize(function (){
+            var width_size = window.outerWidth;
+            // 화면의 height값을 가져오기
+            var height_size = window.outerHeight;
+            var mapResize = document.getElementById('map_div');//map의 div
+            var sidebarResize = document.getElementById("sidebar");
+            if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 4  + "px";
+                alert("전체화면은 지원하지 않습니다.")
+            }
+            else if(width_size == 1920 ){
+                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 147 - 4  + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 4  + "px";
+            }else {
+                mapResize.style.width = width_size - 336 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 164 - 4  + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 164 - 4  + "px";
+            }
+            console.log("width:" + width_size+"height_size:" + height_size);
+
+        })
+        function initTmap() {
+            tapCheck("tap4");
+            var request_lat;
+            var request_lng;
+            if(page_lat == 0&& page_lng == 0){
+                request_lat = 37.570028;
+                request_lng = 126.989072;
+            }else{
+                request_lat = page_lat;
+                request_lng = page_lng;
+            }
+            console.log(page_lat,page_lng);
+            sidebarResize = document.getElementById("sidebar");
+            var width_size = window.outerWidth;
+            var height_size = window.outerHeight;
+            if(width_size == 1920 ){
+                sidebarResize.style.height = height_size - 147 - 4  + "px";
+                // 1. 지도 띄우기
+                map = new Tmapv2.Map("map_div", {
+                    center: new Tmapv2.LatLng(request_lat, request_lng),
+                    width: width_size-320 + "px",
+                    height: height_size-147 - 4  + "px",
+                    zoom: [[${page_zoom}]],
+                    zoomControl: true,
+                    scrollwheel: true
+                });
+            }else {
+                sidebarResize.style.height = height_size - 164 + "px";
+                // 1. 지도 띄우기
+                map = new Tmapv2.Map("map_div", {
+                    center: new Tmapv2.LatLng(request_lat, request_lng),
+                    width: width_size-336 + "px",
+                    height: height_size-164 - 4  + "px",
+                    zoom: [[${page_zoom}]],
+                    zoomControl: true,
+                    scrollwheel: true
+                });
+            }
+
+
+        }
+
+        function trafficRed() {
+            const red = document.getElementById("red");
+            red.style.color = "red";
+        }
+
+        function trafficGreen() {
+            const green = document.getElementById("green");
+            green.style.color = "green";
+        }
+    </script>
 <style>
+    body {
+        overflow: hidden;
+        -ms-overflow-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
     #map_div {
         float: right;
         width: 100%;
@@ -16,27 +105,50 @@
     }
 
     #sidebar {
+        position: relative;
         float: left;
         width: 320px;
         height: 818px;
         background-color: #c7dbd2;
-        border: 2px solid #000000;
+        border: 2px solid black;
+        border-top: none;
     }
+
 
     #traffic_information {
         background-color: white;
         border: 1px solid #20c997;
+        overflow: scroll;
+        -ms-overflow-style: none;
         margin: 3%;
-        height: 95%;
+        height: 97%;
         padding: 10%;
     }
-</style>
-<body>
-<th:block th:replace="/kmj/header :: header"></th:block>
-</body>
-<div id="sidebar" style="text-align: center
-">
+    #traffic_information::-webkit-scrollbar{
+        display:none;
+    }
 
+    .trafficCount{
+        position: center;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        width: 220px;
+        height: 26px;
+        font-size: 10px;
+    }
+
+    .box{
+        display: block;
+    }
+</style>
+
+</head>
+<body onload="initTmap();">
+<div>
+<th:block th:replace="/kmj/header :: header"></th:block>
+</div>
+<div>
+<div id="sidebar" style="text-align: center">
     <div id="traffic_information">
         <h3>신호등추가</h3>
         <hr>
@@ -44,65 +156,46 @@
         <i id="red" th:onclick="trafficRed()" class="fa-solid fa-circle"></i>
         <i id="green" th:onclick="trafficGreen()" class="fa-solid fa-circle"></i>
         <hr>
-        <div style="display: inline-flex; ">
-            <div style="display: inline-block;width: 150px;height: 100px">
+        <div class="box">
+            <div>
                 <div>
-                    <input type="text" placeholder="적색불로 바뀐 시간" style="width:150px;height:26px;font-size:10px;">
+                    <input type="text" placeholder="적색불로 바뀐 시간" class="trafficCount">
                 </div>
                 <div>
-                    <input type="text" placeholder="적색불로 바뀐 시간" style="width:150px;height:26px;font-size:10px;">
+                    <input type="text" placeholder="적색불로 바뀐 시간" class="trafficCount">
                 </div>
                 <div>
-                    <input type="text" placeholder="적색불로 바뀐 시간" style="width:150px;height:26px;font-size:10px;">
+                    <input type="text" placeholder="적색불로 바뀐 시간" class="trafficCount">
                 </div>
-            </div>
-            <div style="display: inline-block">
-                <input type="button" value="시간 기록" style="outline-color: #0d6efd; width: 190px;height: 100px; top: 1%">
             </div>
         </div>
+            <div style="display: block">
+                <input type="button" value="시간 기록" style="outline-color: #0d6efd; width: 190px;height: 100px;margin-top: 5px;position: center;">
+            </div>
         <hr>
-        <div>
-            <input type="text" placeholder="신호등 이름 입력" style="outline-color:#20c997; width:335px;height:26px;font-size:15px;">
+        <div class="box">
+            <h3>신호등 정보</h3>
+            <br />
+            <div>
+                <input type="text" class="trafficCount" placeholder="신호등 이름 입력" style="outline-color:#20c997;;">
+            </div>
+            <input type="text" class="trafficCount" placeholder="청색불 점화 시간"> <br>
+            <input type="text" class="trafficCount" placeholder="적색불 점화 시간">
         </div>
-        <input type="text" placeholder="청색불 점화 시간" style="width:335px;height:26px;font-size:15px;"> <br>
-        <input type="text" placeholder="적색불 점화 시간" style="width:335px;height:26px;font-size:15px;">
         <hr>
         <h4>적용 시간대</h4>
-        <input type="text" placeholder="00:00:00" style="outline-color:#20c997; width:335px;height:26px;font-size:15px; text-align: center">
+        <br />
+        <input type="text" class="trafficCount" placeholder="00:00:00" style="outline-color:#20c997;text-align: center">
         <div style="text-align: center">
             ||
         </div>
-        <input type="text" placeholder="00:00:00" style="outline-color:#20c997; width:335px;height:26px;font-size:15px; text-align: center">
+        <input type="text" class="trafficCount" placeholder="00:00:00" style="outline-color:#20c997;text-align: center">
     <hr>
         <button type="button" class="btn btn-check">저장</button>
     </div>
 </div>
-</body>
-<script type="text/javascript">
-    function initTmap() {
-        // 1. 지도 띄우기
-        map = new Tmapv2.Map("map_div", {
-            center: new Tmapv2.LatLng(37.570028, 126.989072),
-            width: "75%",
-            height: "817px",
-            zoom: 15,
-            zoomControl: true,
-            scrollwheel: true
-        });
-    }
-</script>
-<body onload="initTmap();">
+</div>
 <div id="map_div"></div>
 </body>
-<script th:inline="javascript">
-    function trafficRed() {
-        const red = document.getElementById("red");
-        red.style.color = "red";
-    }
-
-    function trafficGreen() {
-        const green = document.getElementById("green");
-        green.style.color = "green";
-    }
 </script>
 </html>

@@ -89,7 +89,11 @@
             }
 
             function tap4() {
-                location.href = "/4tapTest";
+                if(map == null) {
+                    location.href = "/4tapTest";
+                }else {
+                    location.href = "/4tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
             }
 
             function save() {

@@ -53,7 +53,7 @@
             }
 
             li a.tapes{
-                border-top: 2px solid green;
+                margin-top: 2px;
                 border-bottom: 2px solid black;
             }
 
@@ -65,11 +65,14 @@
 
         </style>
         <script>
+            var settingPage;
             function tapCheck(a){
                 const tap_color = document.getElementById(a);
+                tap_color.style.marginTop = "0px";
                 tap_color.style.backgroundColor = "#c7dbd2";
                 tap_color.style.border = "2px solid black";
                 tap_color.style.borderBottom = "2px solid #c7dbd2";
+                settingPage = a;
             }
             var map= null;
             function tap1() {
@@ -103,6 +106,29 @@
             function myPage() {
                 location.href = "/member/myPage";
             }
+
+            function sidebarHide(){
+                const sidebar = document.getElementById("sidebar");
+                var mapResize = document.getElementById('map_div');//map의 div
+                var width_size = window.outerWidth;
+                const borderBottom = document.getElementById(settingPage);
+                if(map_count == 0) {
+                    sidebar.style.width = "0px";
+                    sidebar.style.border = "none";
+                    mapResize.style.width = width_size - 16 + "px";
+                    borderBottom.style.borderBottom = "2px solid black";
+                    map.resize();
+                    map_count = 1;
+                }else if(map_count == 1){
+                    sidebar.style.width = "320px"
+                    sidebar.style.border = "2px solid black";
+                    sidebar.style.borderTop = "none";
+                    mapResize.style.width = width_size - 336 + "px";
+                    borderBottom.style.borderBottom = "2px solid #c7dbd2";
+                    map.resize();
+                    map_count = 0;
+                }
+            }
         </script>
     </head>
     <body>
@@ -113,14 +139,17 @@
                     <li>
                         <a id="tap1" class="tapes" onclick="tap1()"><i class="fa-solid fa-magnifying-glass fa-3x"></i></a>
                     </li>
-                    <li class="taps">
+                    <li>
                         <a id="tap2" class="tapes" onclick="tap2()"><i class="fa-solid fa-road fa-3x"></i></a>
                     </li>
-                    <li class="taps">
+                    <li>
                         <a id="tap3" class="tapes" onclick="tap3()"><i class="fa-solid fa-file-pen fa-3x"></i></a>
                     </li>
-                    <li class="taps">
+                    <li>
                         <a id="tap4" class="tapes" onclick="tap4()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
+                    </li>
+                    <li style="margin-top: 2px">
+                        <a onclick="sidebarHide()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
                     </li>
                 </ul>
             </nav>

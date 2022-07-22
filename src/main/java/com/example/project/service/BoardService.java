@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.MemberEntity;
@@ -8,6 +9,10 @@ import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
 import com.example.project.repository.TrafficRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,5 +55,46 @@ public class BoardService {
             i++;
         }
         return boardDTOList;
+    }
+
+    public List<BoardDTO> findFree() {
+        List<BoardEntity> boardEntityList = boardRepository.findByBoardType("자유");
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        int i = 0;
+        for (BoardEntity boardEntity : boardEntityList){
+                boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+                boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+
+            i++;
+        }
+        return boardDTOList;
+    }
+
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
+//        page = page - 1; // 삼항연산자
+        page = (page == 1)? 0: (page-1);
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        // Page<BoardEntity> => Page<BoardDTO>
+        // board : BoardEntity 객체
+        // new BoardDTO() 생성자
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getBoardId(),
+                        board.getMemberEntity().getMemberId(),
+                        null,
+                        board.getBoardType(),
+                        board.getBoardTypeLocation1(),
+                        board.getBoardTypeLocation2(),
+                        board.getBoardTitle(),
+                        board.getBoardContents(),
+                        board.getBoardCreatedTime(),
+                        board.getBoardUpdateTime(),
+                        board.getBoardLike(),
+                        board.getBoardDislike(),
+                        board.isManagerCheck(),
+                        board.getMemberEntity().getMemberNickname()
+                ));
+        return boardList;
     }
 }

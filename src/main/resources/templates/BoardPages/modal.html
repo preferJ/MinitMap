@@ -49,7 +49,9 @@
             }
             //Marker 객체 생성
             select_marker = new Tmapv2.Marker({
-                icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                icon: "/icon/Traffic-light.png",
+                iconSize: new Tmapv2.Size(
+                    36, 57),
                 position: new Tmapv2.LatLng(Lat1, Lon1), //Marker의 중심좌표 설정.
                 map: map, //Marker가 표시될 Map 설정.
             });

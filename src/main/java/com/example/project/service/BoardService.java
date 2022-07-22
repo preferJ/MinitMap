@@ -10,6 +10,8 @@ import com.example.project.repository.TrafficRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,5 +32,23 @@ public class BoardService {
             boardEntity = BoardEntity.toBoardSaveEntity(boardDTO, memberEntity.get());
         }
         boardRepository.save(boardEntity);
+    }
+
+    // 이현
+    public List<BoardDTO> findAll() {
+        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        int i = 0;
+        for (BoardEntity boardEntity : boardEntityList){
+            if (boardEntity.getBoardType().equals("신호")){
+                boardDTOList.add(BoardDTO.toTrafficBoardDTO(boardEntity));
+                boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+            }else{
+                boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+                boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+            }
+            i++;
+        }
+        return boardDTOList;
     }
 }

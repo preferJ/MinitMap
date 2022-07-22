@@ -27,7 +27,9 @@ public class BoardController {
     private final TrafficService trafficService;
     // 이현 시작
     @GetMapping
-    public String board(){
+    public String board(Model model){
+        List<BoardDTO> boardDTOList = boardService.findAll();
+        model.addAttribute("boardDTOList",boardDTOList);
         return "/BoardPages/index";
     }
     // 이현

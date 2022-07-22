@@ -162,10 +162,10 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">자유게시판</h1>
+                <h1 class="h2">공지사항</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1" id="boardTypeLocation1"></select>
-                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation()"></select>
+<!--                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1" id="boardTypeLocation1"></select>-->
+<!--                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation()"></select>-->
 
                     <div class="btn-group me-2">
                         <button type="button" th:onclick="saveForm()" class="btn btn-sm btn-outline-secondary">글 쓰기</button>
@@ -209,7 +209,7 @@
         <ul class="pagination justify-content-center">
             <li class="page-item">
                 <!--첫페이지 요청 링크-->
-                <a class="page-link" th:href="@{/board/free(page=1)}">
+                <a class="page-link" th:href="@{/board/admin(page=1)}">
                     <span>First</span>
                 </a>
             </li>
@@ -217,7 +217,7 @@
             <li th:class="${boardDTOList.first} ? 'disabled'" class="page-item">
                 <!--boardList.first: isFirst()
                     boardList.number: getNumber()-->
-                <a class="page-link" th:href="${boardDTOList.first} ? '#' : @{/board/free(page=${boardDTOList.number})}">
+                <a class="page-link" th:href="${boardDTOList.first} ? '#' : @{/board/admin(page=${boardDTOList.number})}">
                     <span><</span> <!-- < -->
                 </a>
             </li>
@@ -225,7 +225,7 @@
             <!-- startPage ~ endPage 까지 숫자를 만들어주는 역할 -->
             <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
                 th:class="${page == boardDTOList.number + 1} ? 'page-item active'" class="page-item">
-                <a class="page-link" th:text="${page}" th:href="@{/board/free(page=${page})}"></a>
+                <a class="page-link" th:text="${page}" th:href="@{/board/admin(page=${page})}"></a>
             </li>
 
             <!-- 다음 페이지 요청
@@ -233,13 +233,13 @@
                 getNumber() 값은 2임.
                 따라서 4페이지를 보고 싶다면 getNumber()+2를 해야 컨트롤러에 4를 요청할 수 있음. -->
             <li th:class="${boardDTOList.last} ? 'disabled'">
-                <a class="page-link" th:href="${boardDTOList.last} ? '#' : @{/board/free(page=${boardDTOList.number + 2})}">
+                <a class="page-link" th:href="${boardDTOList.last} ? '#' : @{/board/admin(page=${boardDTOList.number + 2})}">
                     <span>&gt;</span>
                 </a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" th:href="@{/board/free(page=${boardDTOList.totalPages})}">
+                <a class="page-link" th:href="@{/board/admin(page=${boardDTOList.totalPages})}">
                     <span>Last</span>
                 </a>
             </li>

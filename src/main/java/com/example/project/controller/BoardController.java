@@ -72,21 +72,37 @@ public class BoardController {
     }
 
 //    // 이현 자유게시판 출력
-//    @GetMapping("/free")
-//    public String free(Model model){
-//        List<BoardDTO> boardDTOList = boardService.findFree();
-//        model.addAttribute("boardDTOList",boardDTOList);
-//        return "/BoardPages/free";
-//    }
 
     @GetMapping("/free")
-    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
-        Page<BoardDTO> boardList = boardService.paging(pageable);
+    public String free(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        Page<BoardDTO> boardList = boardService.free(pageable);
         model.addAttribute("boardDTOList", boardList);
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
         int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "/BoardPages/free";
+    }
+//이현
+    @GetMapping("/traffic")
+    public String traffic(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        Page<BoardDTO> boardList = boardService.traffic(pageable);
+        model.addAttribute("boardDTOList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "/BoardPages/traffic";
+    }
+    //이현
+    @GetMapping("/admin")
+    public String admin(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        Page<BoardDTO> boardList = boardService.admin(pageable);
+        model.addAttribute("boardDTOList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "/BoardPages/admin";
     }
 }

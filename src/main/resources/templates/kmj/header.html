@@ -120,6 +120,7 @@
                 var mapResize = document.getElementById('map_div');//map의 div
                 var width_size = window.outerWidth;
                 const borderBottom = document.getElementById(settingPage);
+                const sidebarIcon = document.getElementById("sidebarIcon");
                 if(map_count == 0) {
                     if(width_size == 1920){
                         sidebar.style.width = "0px";
@@ -136,6 +137,7 @@
                         map.resize();
                         map_count = 1;
                     }
+                    sidebarIcon.innerHTML = "<i class='fa-solid fa-angle-right fa-3x'></i>"
                 }else if(map_count == 1){
                     if(width_size == 1920){
                         sidebar.style.width = "320px"
@@ -154,6 +156,7 @@
                         map.resize();
                         map_count = 0;
                     }
+                    sidebarIcon.innerHTML = "<i class='fa-solid fa-angle-left fa-3x'></i>"
                 }
             }
         </script>
@@ -176,7 +179,7 @@
                         <a id="tap4" class="tapes" onclick="tap4()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
                     </li>
                     <li  class="tap-result" style="margin-top: 2px">
-                        <a onclick="sidebarHide()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
+                        <a onclick="sidebarHide()" id="sidebarIcon"><i class="fa-solid fa-angle-left fa-3x"></i></a>
                     </li>
                 </ul>
             </nav>

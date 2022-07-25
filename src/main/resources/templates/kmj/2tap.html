@@ -217,6 +217,8 @@
                         }
                     });
                 });
+        }
+
             function onClick(e) {
                 // marker 객체의 포지션 상황을 판단하여 출발지인지 도착지인지 확인
                 // 출발지 -> 도착지 순서로 상세조회에서 도착지 설정을 했을 때 출발지로 바로가게 만듬
@@ -473,6 +475,7 @@
                     alert("핑을 다 찍어주세오.")
                 }
             }
+
             function startPing(id) {
                 // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
                 if (s_marker.getPosition() != null) {
@@ -501,7 +504,8 @@
                 s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                 ontestfoot();
             }
-            function endPing(id){
+
+            function endPing(id) {
                 // 도착지가 이미 지정되어 있으면 도착지 마커를 지우고 시작
                 if (e_marker.getPosition() != null) {
                     e_marker.setMap(null);
@@ -527,6 +531,7 @@
                 e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                 ontestfoot();
             }
+
             function drawLine(arrPoint) {
                 var polyline_;
 
@@ -538,7 +543,6 @@
                 });
                 resultdrawArr.push(polyline_);
             }
-        }
 
 
     </script>
@@ -629,6 +633,10 @@
             <div>
                 <input type="text" placeholder="퇴근길">
             </div>
+            <hr>
+            <p id="result"></p>
+            <hr>
+            <div id="course"></div>
         </div>
     </div>
 </div>

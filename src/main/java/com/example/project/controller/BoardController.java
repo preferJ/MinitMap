@@ -137,4 +137,12 @@ public class BoardController {
         model.addAttribute("search",search);
         return "/BoardPages/search";
     }
+
+    @GetMapping("/detail")
+    public String detail(@RequestParam("id") Long id , Model model){
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("board", boardDTO);
+
+        return "/BoardPages/detail";
+    }
 }

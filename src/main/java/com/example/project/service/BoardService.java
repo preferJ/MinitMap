@@ -260,4 +260,15 @@ public class BoardService {
                 ));
         return boardList;
     }
+
+    public BoardDTO findById(Long id) {
+        Optional<BoardEntity> findById = boardRepository.findById(id);
+        BoardEntity boardEntity = findById.get();
+
+        if (boardEntity.getBoardType().equals("신호")){
+            return BoardDTO.toTrafficBoardDTO(boardEntity);
+        }else {
+            return BoardDTO.toBoardDTO(boardEntity);
+        }
+    }
 }

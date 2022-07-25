@@ -12,6 +12,8 @@
         var page_lat = [[${page_lat}]];
         var page_lng = [[${page_lng}]];
         var map;
+        var searchMarkerArr = [];
+        var labelArr = [];
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function (){
             if(map_count == 0) {
@@ -34,7 +36,6 @@
                     mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 164 - 4 + "px";
                 }
-                console.log("width:" + width_size + "height_size:" + height_size);
             }else if(map_count == 1){
                 var width_size = window.outerWidth;
                 // 화면의 height값을 가져오기
@@ -56,7 +57,7 @@
                     sidebarResize.style.height = height_size - 164 - 4 + "px";
                 }
             }
-        })
+        });
 
     </script>
 </head>
@@ -65,7 +66,7 @@
         -ms-overflow-style: none;
         padding: 0;
         margin: 0;
-        /*overflow: hidden;*/
+        overflow: hidden;
     }
     ::-webkit-scrollbar {
         display: none;
@@ -80,45 +81,78 @@
         float: left;
         width: 320px;
         height: 818px;
-        overflow: hidden;
         background-color: #c7dbd2;
         border: 2px solid black;
         border-top: none;
     }
+    .searth-name{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space : nowrap;
+    }
+
+    #traffic_information {
+        background-color: white;
+        border: 1px solid #20c997;
+        overflow: scroll;
+        -ms-overflow-style: none;
+        margin: 3%;
+        height: 97%;
+        padding: 5%;
+    }
+    #traffic_information::-webkit-scrollbar{
+        display:none;
+    }
+
 </style>
 
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
+    <div id="traffic_information">
     <div style="margin-top: 8px">
+        <div>
+        <input type="search" id="searchKeyword" placeholder="장소검색창">
+        <button id="btn_select">검색</button>
+        </div>
+        <br />
+        <div class="title"><strong>Search</strong> Results</div>
+        <div class="rst_wrap">
+            <div class="rst mCustomScrollbar">
+        <ul id="searchResult" name="searchResult">
+            <li>검색결과</li>
+        </ul>
+            </div>
+        </div>
+        <hr>
         <div th:if="${session.loginEmail}">
+            <div>
+                <b>마이플레이스</b> <br>
+                집<i class="fa-solid fa-house"></i><input type="text"> <br>
+                회사<i class="fa-solid fa-buildings"></i><input type="text">
+            </div>
+            <hr>
+            <div>
+                <b>루틴</b> <br>
+                <input type="text" placeholder="출근길"> <br>
+                <input type="text" placeholder="퇴근길">
+            </div>
+            <hr>
+            <div>
+                <b>자주보는 신호등</b> <br>
+                <input type="text" th:value="11"> <br>
+                <input type="text" th:value="11">
+            </div>
+            <hr>
             <button th:onclick="logout()" type="button" class="btn success">로그아웃</button>
+            <hr>
         </div>
         <div th:unless="${session.loginEmail}">
             <button onclick="loginForm()" type="button" class="btn success">로그인</button>
         </div>
-        <hr>
-        <input type="search" placeholder="장소검색창">
-        <hr>
-        <div>
-            <b>마이플레이스</b> <br>
-            집<i class="fa-solid fa-house"></i><input type="text"> <br>
-            회사<i class="fa-solid fa-buildings"></i><input type="text">
-        </div>
-        <hr>
-        <div>
-            <b>루틴</b> <br>
-            <input type="text" placeholder="출근길"> <br>
-            <input type="text" placeholder="퇴근길">
-        </div>
-        <hr>
-        <div>
-            <b>자주보는 신호등</b> <br>
-            <input type="text" th:value="11"> <br>
-            <input type="text" th:value="11">
-        </div>
-        <hr>
+
+    </div>
     </div>
 </div>
 <script th:inline="javascript">
@@ -175,7 +209,117 @@
             });
         }
 
+        $("#btn_select").click(
+            function() {
+                var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
+                $.ajax({
+                    method : "GET", // 요청 방식
+                    url : "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback=result", // url 주소
+                    async : false, // 동기설정
+                    data : { // 요청 데이터 정보
+                        "appKey" : "l7xx71377ca4d61b42018b3da0ede8c234fb", // 발급받은 Appkey
+                        "searchKeyword" : searchKeyword, // 검색 키워드
+                        "resCoordType" : "EPSG3857", // 요청 좌표계
+                        "reqCoordType" : "WGS84GEO", // 응답 좌표계
+                        "count" : 10 // 가져올 갯수
+                    },
+                    success : function(response) {
+                        // 출발지 도착지 세팅을 위한 위도경도 배열 초기화
+                        latLonArr = [];
 
+                        var resultpoisData = response.searchPoiInfo.pois.poi;
+
+                        // 2. 기존 마커, 팝업 제거
+                        if (searchMarkerArr.length > 0) {
+                            for(var i in searchMarkerArr) {
+                                searchMarkerArr[i].setMap(null);
+                            }
+                            searchMarkerArr = [];
+                        }
+
+                        if (labelArr.length > 0) {
+                            for (var i in labelArr) {
+                                labelArr[i].setMap(null);
+                            }
+                            labelArr = [];
+                        }
+
+                        var innerHtml = ""; // Search Reulsts 결과값 노출 위한 변수
+                        //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
+                        var positionBounds = new Tmapv2.LatLngBounds();
+
+                        // 3. POI 마커 표시
+                        for (var k in resultpoisData) {
+                            // POI 마커 정보 저장
+                            var noorLat = Number(resultpoisData[k].noorLat);
+                            var noorLon = Number(resultpoisData[k].noorLon);
+                            var name = resultpoisData[k].name;
+
+                            // 상세정보를 표시하기 위한 id 값인데 지금은 안씀
+                            // POI 정보의 ID
+                            // var id = resultpoisData[k].id;
+
+                            // 좌표 객체 생성
+                            var pointCng = new Tmapv2.Point(
+                                noorLon, noorLat);
+
+                            // EPSG3857좌표계를 WGS84GEO좌표계로 변환
+                            var projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+                                pointCng);
+
+                            var lat = projectionCng._lat;
+                            var lon = projectionCng._lng;
+
+                            // 좌표 설정
+                            var markerPosition = new Tmapv2.LatLng(
+                                lat, lon);
+
+                            // 출발지 도착지를 지정할때 사용할 위도 경도를 모아놓은 배열 넣기
+                            latLonArr.push(markerPosition);
+
+                            // Marker 설정
+                            search_marker = new Tmapv2.Marker(
+                                {
+                                    position : markerPosition, // 마커가 표시될 좌표
+                                    //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
+                                    icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_"
+                                        + k
+                                        + ".png", // 아이콘 등록
+                                    iconSize : new Tmapv2.Size(
+                                        24, 38), // 아이콘 크기 설정
+                                    title : name, // 마커 타이틀
+                                    map : map // 마커가 등록될 지도 객체
+                                });
+
+                            // 결과창에 나타날 검색 결과 html
+                            // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
+                            innerHtml += "<li><div><div class='searth-name'><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span>"
+                                + name
+                                + "</span></div> <button type='button' name='sendBtn' onClick='startPing("
+                                + k
+                                + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
+                                + k
+                                + ");'>도착지</button></div></li>";
+
+                            // 마커들을 담을 배열에 마커 저장
+                            searchMarkerArr.push(search_marker);
+                            positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
+                        }
+
+
+                        $("#searchResult").html(innerHtml); //searchResult 결과값 노출
+                        map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
+                        map.zoomOut();
+                    },
+                    error : function(request, status, error) {
+                        console.log("code:"
+                            + request.status + "\n"
+                            + "message:"
+                            + request.responseText
+                            + "\n" + "error:" + error);
+                    }
+                });
+            });
     }
 
     function logout() {

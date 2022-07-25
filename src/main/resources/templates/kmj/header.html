@@ -18,7 +18,7 @@
                 grid-template-columns: 1fr;
                 background-color: green;
             }
-            ul {
+            .tap {
                 list-style-type: none;
                 display: flex;
                 margin: 0;
@@ -35,7 +35,7 @@
                 clear: both;
             }
 
-            li {
+            .tap-result {
                 float: left;
                 width: 80px;
             }
@@ -84,11 +84,19 @@
             }
 
             function tap2() {
-                location.href = "/2tapTest";
+                if(map == null) {
+                    location.href = "/2tapTest";
+                }else {
+                    location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
             }
 
             function tap3() {
-                location.href = "/board/findAll";
+                if(map == null) {
+                    location.href = "/3tapTest";
+                }else {
+                    location.href = "/3tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
             }
 
             function tap4() {
@@ -113,20 +121,39 @@
                 var width_size = window.outerWidth;
                 const borderBottom = document.getElementById(settingPage);
                 if(map_count == 0) {
-                    sidebar.style.width = "0px";
-                    sidebar.style.border = "none";
-                    mapResize.style.width = width_size - 16 + "px";
-                    borderBottom.style.borderBottom = "2px solid black";
-                    map.resize();
-                    map_count = 1;
+                    if(width_size == 1920){
+                        sidebar.style.width = "0px";
+                        sidebar.style.border = "none";
+                        mapResize.style.width = width_size + "px";
+                        borderBottom.style.borderBottom = "2px solid black";
+                        map.resize();
+                        map_count = 1;
+                    }else {
+                        sidebar.style.width = "0px";
+                        sidebar.style.border = "none";
+                        mapResize.style.width = width_size - 16 + "px";
+                        borderBottom.style.borderBottom = "2px solid black";
+                        map.resize();
+                        map_count = 1;
+                    }
                 }else if(map_count == 1){
-                    sidebar.style.width = "320px"
-                    sidebar.style.border = "2px solid black";
-                    sidebar.style.borderTop = "none";
-                    mapResize.style.width = width_size - 336 + "px";
-                    borderBottom.style.borderBottom = "2px solid #c7dbd2";
-                    map.resize();
-                    map_count = 0;
+                    if(width_size == 1920){
+                        sidebar.style.width = "320px"
+                        sidebar.style.border = "2px solid black";
+                        sidebar.style.borderTop = "none";
+                        mapResize.style.width = width_size - 320 + "px";
+                        borderBottom.style.borderBottom = "2px solid #c7dbd2";
+                        map.resize();
+                        map_count = 0;
+                    }else {
+                        sidebar.style.width = "320px"
+                        sidebar.style.border = "2px solid black";
+                        sidebar.style.borderTop = "none";
+                        mapResize.style.width = width_size - 336 + "px";
+                        borderBottom.style.borderBottom = "2px solid #c7dbd2";
+                        map.resize();
+                        map_count = 0;
+                    }
                 }
             }
         </script>
@@ -135,30 +162,30 @@
     <header>
         <div>
             <nav style="float: left">
-                <ul>
-                    <li>
+                <ul class="tap">
+                    <li class="tap-result">
                         <a id="tap1" class="tapes" onclick="tap1()"><i class="fa-solid fa-magnifying-glass fa-3x"></i></a>
                     </li>
-                    <li>
+                    <li class="tap-result">
                         <a id="tap2" class="tapes" onclick="tap2()"><i class="fa-solid fa-road fa-3x"></i></a>
                     </li>
-                    <li>
+                    <li class="tap-result">
                         <a id="tap3" class="tapes" onclick="tap3()"><i class="fa-solid fa-file-pen fa-3x"></i></a>
                     </li>
-                    <li>
+                    <li class="tap-result">
                         <a id="tap4" class="tapes" onclick="tap4()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
                     </li>
-                    <li style="margin-top: 2px">
+                    <li  class="tap-result" style="margin-top: 2px">
                         <a onclick="sidebarHide()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
                     </li>
                 </ul>
             </nav>
             <nav style="float: right">
-                <ul>
-                    <li>
+                <ul class="tap">
+                    <li class="tap-result">
                         <a onclick="save()"><i class="fa-solid fa-arrow-right-to-bracket fa-3x"></i></a>
                     </li>
-                    <li>
+                    <li class="tap-result">
                         <a onclick="myPage()"><i class="fa-solid fa-user-large fa-3x"></i></a>
                     </li>
                 </ul>

@@ -7,35 +7,57 @@
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script type="text/javascript" th:inline="javascript">
+        var map_count = 0;
         var page_lat = [[${page_lat}]];
         var page_lng = [[${page_lng}]];
+        var map;
         // 화면 크기가 변경될때마다 함수 호출
-        $(window).resize(function () {
-            var width_size = window.outerWidth;
-            // 화면의 height값을 가져오기
-            var height_size = window.outerHeight;
-            var mapResize = document.getElementById('map_div');//map의 div
-            var sidebarResize = document.getElementById("sidebar");
-            if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 147 - 4 + "px";
-                alert("전체화면은 지원하지 않습니다.")
-            } else if (width_size == 1920) {
-                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 147 - 4 + "px";
-            } else {
-                mapResize.style.width = width_size - 336 + "px";//map의 height 변경
-                mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
-                sidebarResize.style.height = height_size - 164 - 4 + "px";
+        $(window).resize(function (){
+            if(map_count == 0) {
+                var width_size = window.outerWidth;
+                // 화면의 height값을 가져오기
+                var height_size = window.outerHeight;
+                var mapResize = document.getElementById('map_div');//map의 div
+                var sidebarResize = document.getElementById("sidebar");
+                if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    alert("전체화면은 지원하지 않습니다.")
+                } else if (width_size == 1920) {
+                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                } else {
+                    mapResize.style.width = width_size - 336 + "px";//map의 height 변경
+                    mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 164 - 4 + "px";
+                }
+            }else if(map_count == 1){
+                var width_size = window.outerWidth;
+                // 화면의 height값을 가져오기
+                var height_size = window.outerHeight;
+                var mapResize = document.getElementById('map_div');//map의 div
+                var sidebarResize = document.getElementById("sidebar");
+                if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+                    mapResize.style.width = width_size - 0 + "px";//map의 height 변경
+                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    alert("전체화면은 지원하지 않습니다.")
+                } else if (width_size == 1920) {
+                    mapResize.style.width = width_size - 0 + "px";//map의 height 변경
+                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                } else {
+                    mapResize.style.width = width_size - 16 + "px";//map의 height 변경
+                    mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 164 - 4 + "px";
+                }
             }
-            console.log("width:" + width_size + "height_size:" + height_size);
-
-        })
+        });
 
         function initTmap() {
-            tapCheck("tap4");
+            tapCheck("tap2");
             var request_lat;
             var request_lng;
             if (page_lat == 0 && page_lng == 0) {
@@ -139,6 +161,15 @@
     </script>
 </head>
 <style>
+    body {
+        -ms-overflow-style: none;
+        padding: 0;
+        margin: 0;
+        /*overflow: hidden;*/
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
     #map_div {
         float: right;
         width: 100%;
@@ -150,7 +181,8 @@
         width: 320px;
         height: 818px;
         background-color: #c7dbd2;
-        border: 2px solid #000000;
+        border: 2px solid black;
+        border-top: none;
     }
 
     #myplace_2 {
@@ -161,12 +193,26 @@
         border: 1px solid #20c997;
         margin-left: 18px;
     }
+
+    #traffic_information {
+        background-color: white;
+        border: 1px solid #20c997;
+        overflow: scroll;
+        -ms-overflow-style: none;
+        margin: 3%;
+        height: 97%;
+        padding: 5%;
+    }
+    #traffic_information::-webkit-scrollbar{
+        display:none;
+    }
 </style>
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <body onload="initTmap();">
 <div id="sidebar">
+    <div id="traffic_information">
     <div style="margin-left: 17px">
         <div>
             <input type="search" class="text_custom" id="startPoint" placeholder="출발지"> <button></button>
@@ -182,7 +228,6 @@
         </div>
     </div>
     <hr>
-    <div id="myplace_2">
         <div style="float: right">
             <i onclick="goSettings()" class="fa-solid fa-gear fa-2x"></i>
         </div>

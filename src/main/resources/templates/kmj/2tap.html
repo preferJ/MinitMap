@@ -6,6 +6,137 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var page_lat = [[${page_lat}]];
+        var page_lng = [[${page_lng}]];
+        // 화면 크기가 변경될때마다 함수 호출
+        $(window).resize(function () {
+            var width_size = window.outerWidth;
+            // 화면의 height값을 가져오기
+            var height_size = window.outerHeight;
+            var mapResize = document.getElementById('map_div');//map의 div
+            var sidebarResize = document.getElementById("sidebar");
+            if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 4 + "px";
+                alert("전체화면은 지원하지 않습니다.")
+            } else if (width_size == 1920) {
+                mapResize.style.width = width_size - 320 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 147 - 4 + "px";
+            } else {
+                mapResize.style.width = width_size - 336 + "px";//map의 height 변경
+                mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 164 - 4 + "px";
+            }
+            console.log("width:" + width_size + "height_size:" + height_size);
+
+        })
+
+        function initTmap() {
+            tapCheck("tap4");
+            var request_lat;
+            var request_lng;
+            if (page_lat == 0 && page_lng == 0) {
+                request_lat = 37.570028;
+                request_lng = 126.989072;
+            } else {
+                request_lat = page_lat;
+                request_lng = page_lng;
+            }
+            console.log(page_lat, page_lng);
+            sidebarResize = document.getElementById("sidebar");
+            var width_size = window.outerWidth;
+            var height_size = window.outerHeight;
+            if (width_size == 1920) {
+                sidebarResize.style.height = height_size - 147 - 4 + "px";
+                // 1. 지도 띄우기
+                map = new Tmapv2.Map("map_div", {
+                    center: new Tmapv2.LatLng(request_lat, request_lng),
+                    width: width_size - 320 + "px",
+                    height: height_size - 147 - 4 + "px",
+                    zoom: [[${page_zoom}]],
+                    zoomControl: true,
+                    scrollwheel: true
+                });
+            } else {
+                sidebarResize.style.height = height_size - 164 + "px";
+                // 1. 지도 띄우기
+                map = new Tmapv2.Map("map_div", {
+                    center: new Tmapv2.LatLng(request_lat, request_lng),
+                    width: width_size - 336 + "px",
+                    height: height_size - 164 - 4 + "px",
+                    zoom: [[${page_zoom}]],
+                    zoomControl: true,
+                    scrollwheel: true
+                });
+            }
+
+            function addMarker(lonlatoption) {
+                // 마커 생성
+                var marker = new Tmapv2.Marker({
+                    position: new Tmapv2.LatLng(lonlatoption.lonlat.latitude(), lonlatoption.lonlat.longitude()), //Marker의 중심좌표 설정.
+                    map: map, //Marker가 표시될 Map 설정..
+                    title: lonlatoption.title //마우스 위치시 출력할 타이틀
+                });
+            }
+
+            //특정 장소를 검색하는 함수입니다.
+            function searchPOI() {
+                var center = map.getCenter();//map의 중심 좌표 값을 받아 옵니다.
+                var optionObj = {
+                    reqCoordType: "WGS84GEO", //요청 좌표계 옵셥 설정입니다.
+                    resCoordType: "WGS84GEO",  //응답 좌표계 옵셥 설정입니다.
+                    centerLon: 126.925356, //POI검색시 중앙좌표의 경도입니다.
+                    centerLat: 37.554034	//POI검색시 중앙좌표의 위도입니다.
+                };
+                var params = {
+                    onComplete: onComplete,
+                    onProgress: onProgress,
+                    onError: onError
+                };
+                var tData = new Tmapv2.extension.TData();
+                tData.getPOIDataFromSearchJson(encodeURIComponent(document.getElementById("startPoint").value), optionObj, params);//encodeURIComponent함수로 해당 파라메터 값을 처리합니다.
+            }
+
+            //POI검색
+            function onComplete() {
+
+                console.log(this._responseData); //json로 데이터를 받은 정보들을 콘솔창에서 확인할 수 있습니다.
+
+                if (this._responseData.searchPoiInfo.pois.poi != '') {
+                    jQuery(this._responseData.searchPoiInfo.pois.poi).each(function () {//결과를 each문으로 돌려 마커를 등록합니다.
+                        //response 데이터중 원하는 값을 find 함수로 찾습니다.
+                        var name = this.name;
+                        var id = this.id;
+                        var lon = this.frontLon;
+                        var lat = this.frontLat;
+                        var lonlatoption = {
+                            title: name,//마커 라벨 text 설정
+                            lonlat: new Tmapv2.LatLng(lat, lon)//마커 라벨 좌표 설정
+                        };
+                        addMarker(lonlatoption);//마커를 추가하는 함수입니다.
+                    });
+                } else {
+                    alert('검색결과가 없습니다.');
+                }
+                map.setCenter(new Tmapv2.LatLng(37.554034, 126.925356));
+                map.setZoom(14);
+            }
+
+            //데이터 로드중 실행하는 함수입니다.
+            function onProgress() {
+
+            }
+
+            //데이터 로드 중 에러가 발생시 실행하는 함수입니다.
+            function onError() {
+                alert("onError");
+            }
+        }
+
+    </script>
 </head>
 <style>
     #map_div {
@@ -21,54 +152,59 @@
         background-color: #c7dbd2;
         border: 2px solid #000000;
     }
-</style>
 
+    #myplace_2 {
+        text-align: center;
+        width: 280px;
+        height: 720px;
+        background-color: white;
+        border: 1px solid #20c997;
+        margin-left: 18px;
+    }
+</style>
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
-<div id="sidebar">
-    <input type="text" class="text_custom" id="searchKeyword" name="searchKeyword" placeholder="주소..">
-    <button id="btn_select">검색</button>
-</div>
-</body>
-<script type="text/javascript">
-    var map, marker;
-    var markerArr = [];
-    var marker_ps = [];
-    var drawInfoArr = [];
-    var resultdrawArr = [];
-    var labelArr = [];
-    var latLonArr = [];
-    // 시작시 marker, marker2 객체를 생성해서 position 값 비교 가능하게 만들기
-    marker = new Tmapv2.Marker({
-        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-        position: null, //Marker의 중심좌표 설정.
-        draggable: true,
-        map: null //Marker가 표시될 Map 설정.
-    });
-    marker2 = new Tmapv2.Marker({
-        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-        position: null, //Marker의 중심좌표 설정.
-        draggable: true,
-        map: null //Marker가 표시될 Map 설정.
-    });
-    map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-
-
-
-    function initTmap() {
-        // 1. 지도 띄우기
-        map = new Tmapv2.Map("map_div", {
-            center: new Tmapv2.LatLng(37.570028, 126.989072),
-            width: "75%",
-            height: "817px",
-            zoom: 18,
-            zoomControl: true,
-            scrollwheel: true
-        });
-    }
-</script>
 <body onload="initTmap();">
-<div id="map_div"></div>
+<div id="sidebar">
+    <div style="margin-left: 17px">
+        <div>
+            <input type="search" class="text_custom" id="startPoint" placeholder="출발지"> <button></button>
+        </div>
+        <div style="margin-right: 30px">
+            <i onclick="pointChange()" class="fa-solid fa-arrows-repeat"></i>
+        </div>
+        <div>
+            <input type="search" class="text_custom" id="endPoint" placeholder="도착지">
+        </div>
+        <div>
+            <button onClick="searchPOI()" style="width: 95%; height: 50px">길찾기</button>
+        </div>
+    </div>
+    <hr>
+    <div id="myplace_2">
+        <div style="float: right">
+            <i onclick="goSettings()" class="fa-solid fa-gear fa-2x"></i>
+        </div>
+        <hr>
+        <h3>마이플레이스</h3>
+        <div>
+            집<i class="fa-solid fa-house"></i><input type="text" value="루틴~">
+        </div>
+        <div>
+            회사<i class="fa-solid fa-building"></i><input type="text" value="루틴~">
+        </div>
+        <hr>
+        <h3>루틴</h3>
+        <div>
+            <input type="text" placeholder="출근길">
+        </div>
+        <div>
+            <input type="text" placeholder="퇴근길">
+        </div>
+    </div>
+</div>
+<div id="map_div">
+</div>
 </body>
 </html>

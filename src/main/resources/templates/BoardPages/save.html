@@ -79,8 +79,10 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="검색어를 입력하세요."
-           aria-label="Search">
+    <form action="/board/search"  class="w-100 rounded-0 border-0">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
+               aria-label="Search" name="search">
+    </form>
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">
             <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
@@ -121,8 +123,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                            추가 있을까?
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
                         </a>
                     </li>
                 </ul>

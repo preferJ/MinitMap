@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ public class BoardService {
         Page<BoardDTO> boardList = boardEntities.map(
                 board -> new BoardDTO(board.getBoardId(),
                         board.getMemberEntity().getMemberId(),
-                        null,
+                        board.getTrafficEntity().getTrafficId(),
                         board.getBoardType(),
                         board.getBoardTypeLocation1(),
                         board.getBoardTypeLocation2(),
@@ -119,6 +120,125 @@ public class BoardService {
 //        page = page - 1; // 삼항연산자
         page = (page == 1)? 0: (page-1);
         Page<BoardEntity> boardEntities = boardRepository.findByBoardType("공지",PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        // Page<BoardEntity> => Page<BoardDTO>
+        // board : BoardEntity 객체
+        // new BoardDTO() 생성자
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getBoardId(),
+                        board.getMemberEntity().getMemberId(),
+                        null,
+                        board.getBoardType(),
+                        board.getBoardTypeLocation1(),
+                        board.getBoardTypeLocation2(),
+                        board.getBoardTitle(),
+                        board.getBoardContents(),
+                        board.getBoardCreatedTime(),
+                        board.getBoardUpdateTime(),
+                        board.getBoardLike(),
+                        board.getBoardDislike(),
+                        board.isManagerCheck(),
+                        board.getMemberEntity().getMemberNickname()
+                ));
+        return boardList;
+    }
+
+    public Page<BoardDTO> findAllList(Pageable pageable) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
+//        page = page - 1; // 삼항연산자
+        page = (page == 1)? 0: (page-1);
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        // Page<BoardEntity> => Page<BoardDTO>
+        // board : BoardEntity 객체
+        // new BoardDTO() 생성자
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getBoardId(),
+                        board.getMemberEntity().getMemberId(),
+                        null,
+                        board.getBoardType(),
+                        board.getBoardTypeLocation1(),
+                        board.getBoardTypeLocation2(),
+                        board.getBoardTitle(),
+                        board.getBoardContents(),
+                        board.getBoardCreatedTime(),
+                        board.getBoardUpdateTime(),
+                        board.getBoardLike(),
+                        board.getBoardDislike(),
+                        board.isManagerCheck(),
+                        board.getMemberEntity().getMemberNickname()
+                ));
+        return boardList;
+    }
+
+    public Page<BoardDTO> location(Pageable pageable, Long id, String local1, String local2) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
+//        page = page - 1; // 삼항연산자
+        page = (page == 1)? 0: (page-1);
+        Page<BoardEntity> boardEntities = null;
+        if (id == 1){
+            boardEntities = boardRepository.findByBoardTypeLocation1AndBoardTypeLocation2(local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        }else if (id==2){
+            boardEntities = boardRepository.findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing("자유",local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        }else if (id==3){
+            boardEntities = boardRepository.findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing("신호",local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        }
+        // Page<BoardEntity> => Page<BoardDTO>
+        // board : BoardEntity 객체
+        // new BoardDTO() 생성자
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getBoardId(),
+                        board.getMemberEntity().getMemberId(),
+                        null,
+                        board.getBoardType(),
+                        board.getBoardTypeLocation1(),
+                        board.getBoardTypeLocation2(),
+                        board.getBoardTitle(),
+                        board.getBoardContents(),
+                        board.getBoardCreatedTime(),
+                        board.getBoardUpdateTime(),
+                        board.getBoardLike(),
+                        board.getBoardDislike(),
+                        board.isManagerCheck(),
+                        board.getMemberEntity().getMemberNickname()
+                ));
+        return boardList;
+    }
+
+    public Page<BoardDTO> search(Pageable pageable, String search) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
+//        page = page - 1; // 삼항연산자
+        page = (page == 1)? 0: (page-1);
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(search,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        // Page<BoardEntity> => Page<BoardDTO>
+        // board : BoardEntity 객체
+        // new BoardDTO() 생성자
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getBoardId(),
+                        board.getMemberEntity().getMemberId(),
+                        null,
+                        board.getBoardType(),
+                        board.getBoardTypeLocation1(),
+                        board.getBoardTypeLocation2(),
+                        board.getBoardTitle(),
+                        board.getBoardContents(),
+                        board.getBoardCreatedTime(),
+                        board.getBoardUpdateTime(),
+                        board.getBoardLike(),
+                        board.getBoardDislike(),
+                        board.isManagerCheck(),
+                        board.getMemberEntity().getMemberNickname()
+                ));
+        return boardList;
+    }
+
+    public Page<BoardDTO> searchPage(Pageable pageable, Long id, String local1, String local2, String search) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
+//        page = page - 1; // 삼항연산자
+        page = (page == 1)? 0: (page-1);
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContainingAndBoardTypeLocation1AndBoardTypeLocation2(search,local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자

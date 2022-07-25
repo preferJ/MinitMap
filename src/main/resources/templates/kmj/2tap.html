@@ -17,6 +17,7 @@
         var resultdrawArr = [];
         var labelArr = [];
         var latLonArr = [];
+        var nameArr = [];
         s_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
@@ -152,6 +153,7 @@
                             //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
                             var positionBounds = new Tmapv2.LatLngBounds();
 
+                            nameArr = [];
                             // 3. POI 마커 표시
                             for (var k in resultpoisData) {
                                 // POI 마커 정보 저장
@@ -172,6 +174,7 @@
                                 var markerPosition = new Tmapv2.LatLng(
                                     lat, lon);
 
+                                nameArr.push(name);
                                 // 출발지 도착지를 지정할때 사용할 위도 경도를 모아놓은 배열 넣기
                                 latLonArr.push(markerPosition);
 
@@ -478,6 +481,8 @@
             }
 
             function startPing(id) {
+            document.getElementById("searchKeyword").value = nameArr[id];
+            console.log(nameArr[id]);
                 // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
                 if (s_marker.getPosition() != null) {
                     s_marker.setMap(null);

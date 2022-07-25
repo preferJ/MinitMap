@@ -27,7 +27,10 @@
                 font-size: 3.5rem;
             }
         }
-
+        tr.colored:hover td{
+            background-color:#f3e9e9 !important;
+            color:#303f39 !important;
+        }
         .b-example-divider {
             height: 3rem;
             background-color: rgba(0, 0, 0, .1);
@@ -196,7 +199,7 @@
                     <tr th:if="${boardDTOList.getTotalElements()} == 0">
                         <td colspan="8" style="text-align: center">등록된 게시글이 없습니다.</td>
                     </tr>
-                    <tr th:each="board : ${boardDTOList}">
+                    <tr th:each="board : ${boardDTOList}" class="colored">
                         <td th:text="${board.boardId}"></td>
                         <td th:text="${board.boardType}"></td>
                         <td th:text="${board.boardTitle}"

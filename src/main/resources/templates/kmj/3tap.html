@@ -6,7 +6,7 @@
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script></head>
-<script>
+<script th:inline="javascript">
     var map_count = 0;
     var page_lat = [[${page_lat}]];
     var page_lng = [[${page_lng}]];
@@ -55,6 +55,62 @@
             }
         }
     });
+    function initTmap() {
+        tapCheck("tap3");
+        var request_lat;
+        var request_lng;
+        if (page_lat == 0 && page_lng == 0) {
+            request_lat = 37.570028;
+            request_lng = 126.989072;
+        } else {
+            request_lat = page_lat;
+            request_lng = page_lng;
+        }
+        console.log(page_lat, page_lng);
+        sidebarResize = document.getElementById("sidebar");
+        var width_size = window.outerWidth;
+        var height_size = window.outerHeight;
+        if(width_size == 1920 ){
+            sidebarResize.style.height = height_size - 147 - 4  + "px";
+            // 1. 지도 띄우기
+            map = new Tmapv2.Map("map_div", {
+                center: new Tmapv2.LatLng(request_lat, request_lng),
+                width: width_size - 320 + "px",
+                height: height_size - 147 - 6 + "px",
+                zoom: [[${page_zoom}]],
+                zoomControl: true,
+                scrollwheel: true
+            });
+        }else {
+            sidebarResize.style.height = height_size - 164 - 4 + "px";
+            // 1. 지도 띄우기
+            map = new Tmapv2.Map("map_div", {
+                center: new Tmapv2.LatLng(request_lat, request_lng),
+                width: width_size - 336 + "px",
+                height: height_size - 164 - 6 + "px",
+                zoom: [[${page_zoom}]],
+                zoomControl: true,
+                scrollwheel: true
+            });
+        }
+
+    }
+    const boardAll = () => {
+        location.href = "/board/findAll";
+    }
+    const trafficAll = () => {
+
+
+    }
+    const freeAll = () => {
+
+    }
+    const adminAll = () => {
+
+    }
+    const goBoardPages = () => {
+        location.href = "/board";
+    }
 </script>
 <style>
     body {
@@ -126,68 +182,8 @@
         <button onclick="goBoardPages()">게시판 이동</button>
     </div>
 </div>
-</body>
-<script type="text/javascript">
-    function initTmap() {
-        tapCheck("tap3");
-        var request_lat;
-        var request_lng;
-        if (page_lat == 0 && page_lng == 0) {
-            request_lat = 37.570028;
-            request_lng = 126.989072;
-        } else {
-            request_lat = page_lat;
-            request_lng = page_lng;
-        }
-        console.log(page_lat, page_lng);
-        sidebarResize = document.getElementById("sidebar");
-        var width_size = window.outerWidth;
-        var height_size = window.outerHeight;
-        if(width_size == 1920 ){
-            sidebarResize.style.height = height_size - 147 - 4  + "px";
-            // 1. 지도 띄우기
-            map = new Tmapv2.Map("map_div", {
-                center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size - 320 + "px",
-                height: height_size - 147 - 6 + "px",
-                zoom: [[${page_zoom}]],
-                zoomControl: true,
-                scrollwheel: true
-            });
-        }else {
-            sidebarResize.style.height = height_size - 164 - 4 + "px";
-            // 1. 지도 띄우기
-            map = new Tmapv2.Map("map_div", {
-                center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size - 336 + "px",
-                height: height_size - 164 - 6 + "px",
-                zoom: [[${page_zoom}]],
-                zoomControl: true,
-                scrollwheel: true
-            });
-        }
 
-    }
-</script>
 <body onload="initTmap();">
 <div id="map_div"></div>
 </body>
-<script th:inline="javascript">
-    const boardAll = () => {
-        location.href = "/board/findAll";
-    }
-    const trafficAll = () => {
-
-
-    }
-    const freeAll = () => {
-
-    }
-    const adminAll = () => {
-
-    }
-    const goBoardPages = () => {
-        location.href = "/board";
-    }
-</script>
 </html>

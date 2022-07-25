@@ -157,6 +157,7 @@
                                 var noorLat = Number(resultpoisData[k].noorLat);
                                 var noorLon = Number(resultpoisData[k].noorLon);
                                 var name = resultpoisData[k].name;
+                                // 좌표 객체 생성
                                 var pointCng = new Tmapv2.Point(
                                     noorLon, noorLat);
 
@@ -194,9 +195,9 @@
                                     + name
                                     + "</span>  <button type='button' name='sendBtn' onClick='startPing("
                                     + k
-                                    + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
+                                    + ");'>출</button> <button type='button' name='sendBtn' onClick='endPing("
                                     + k
-                                    + ");'>도착지</button></div></li>";
+                                    + ");'>도</button></div></li>";
 
                                 // 마커들을 담을 배열에 마커 저장
                                 searchMarkerArr.push(search_marker);
@@ -323,26 +324,6 @@
                         }
                         p_markerArr = [];
                     }
-
-                    // 출발지 도착지는 다른 마커를 사용하기 때문에 경로탐색시 출발지 도착지 마커는 사용 안함
-                    // 2. 시작, 도착 심볼찍기
-                    // 시작
-                    // marker_s = new Tmapv2.Marker(
-                    //     {
-                    //         position: new Tmapv2.LatLng(marker.getPosition().lat(), marker.getPosition().lng()),
-                    //         icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-                    //         iconSize: new Tmapv2.Size(24, 38),
-                    //         map: map
-                    //     });
-                    //
-                    // // 도착
-                    // marker_e = new Tmapv2.Marker(
-                    //     {
-                    //         position: new Tmapv2.LatLng(marker2.getPosition().lat(), marker2.getPosition().lng()),
-                    //         icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
-                    //         iconSize: new Tmapv2.Size(24, 38),
-                    //         map: map
-                    //     });
 
                     // 3. 경로탐색 API 사용요청
                     $.ajax({

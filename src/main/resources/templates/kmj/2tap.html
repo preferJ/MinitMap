@@ -17,6 +17,7 @@
         var resultdrawArr = [];
         var labelArr = [];
         var latLonArr = [];
+        var nameArr = [];
         s_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
@@ -112,6 +113,7 @@
                     zoomControl: true,
                     scrollwheel: true
                 });
+                map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             }
             $("#btn_select").click(
                 function () {
@@ -151,12 +153,14 @@
                             //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
                             var positionBounds = new Tmapv2.LatLngBounds();
 
+                            nameArr = [];
                             // 3. POI 마커 표시
                             for (var k in resultpoisData) {
                                 // POI 마커 정보 저장
                                 var noorLat = Number(resultpoisData[k].noorLat);
                                 var noorLon = Number(resultpoisData[k].noorLon);
                                 var name = resultpoisData[k].name;
+                                // 좌표 객체 생성
                                 var pointCng = new Tmapv2.Point(
                                     noorLon, noorLat);
 
@@ -171,6 +175,7 @@
                                 var markerPosition = new Tmapv2.LatLng(
                                     lat, lon);
 
+                                nameArr.push(name);
                                 // 출발지 도착지를 지정할때 사용할 위도 경도를 모아놓은 배열 넣기
                                 latLonArr.push(markerPosition);
 
@@ -194,9 +199,9 @@
                                     + name
                                     + "</span>  <button type='button' name='sendBtn' onClick='startPing("
                                     + k
-                                    + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
+                                    + ");'>출</button> <button type='button' name='sendBtn' onClick='endPing("
                                     + k
-                                    + ");'>도착지</button></div></li>";
+                                    + ");'>도</button></div></li>";
 
                                 // 마커들을 담을 배열에 마커 저장
                                 searchMarkerArr.push(search_marker);
@@ -323,26 +328,6 @@
                         }
                         p_markerArr = [];
                     }
-
-                    // 출발지 도착지는 다른 마커를 사용하기 때문에 경로탐색시 출발지 도착지 마커는 사용 안함
-                    // 2. 시작, 도착 심볼찍기
-                    // 시작
-                    // marker_s = new Tmapv2.Marker(
-                    //     {
-                    //         position: new Tmapv2.LatLng(marker.getPosition().lat(), marker.getPosition().lng()),
-                    //         icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-                    //         iconSize: new Tmapv2.Size(24, 38),
-                    //         map: map
-                    //     });
-                    //
-                    // // 도착
-                    // marker_e = new Tmapv2.Marker(
-                    //     {
-                    //         position: new Tmapv2.LatLng(marker2.getPosition().lat(), marker2.getPosition().lng()),
-                    //         icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
-                    //         iconSize: new Tmapv2.Size(24, 38),
-                    //         map: map
-                    //     });
 
                     // 3. 경로탐색 API 사용요청
                     $.ajax({
@@ -477,6 +462,8 @@
             }
 
             function startPing(id) {
+            document.getElementById("searchKeyword").value = nameArr[id];
+            console.log(nameArr[id]);
                 // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
                 if (s_marker.getPosition() != null) {
                     s_marker.setMap(null);

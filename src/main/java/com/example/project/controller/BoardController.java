@@ -109,9 +109,8 @@ public class BoardController {
 
     //이현
     @GetMapping("/location")
-    public String local(@PageableDefault(page = 1) Pageable pageable, @RequestParam("type") Long id , @RequestParam("local1") String local1, @RequestParam("local2") String local2,Model model,@RequestParam("search") String search){
+    public String local(@PageableDefault(page = 1) Pageable pageable, @RequestParam("type") Long id , @RequestParam("local1") String local1, @RequestParam("local2") String local2,Model model){
         Page<BoardDTO> boardList = boardService.location(pageable,id,local1,local2);
-
         model.addAttribute("boardDTOList", boardList);
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
         int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
@@ -121,7 +120,6 @@ public class BoardController {
         model.addAttribute("type",id);
         model.addAttribute("local1",local1);
         model.addAttribute("local2",local2);
-        model.addAttribute("search",search);
         return "/BoardPages/type";
     }
 

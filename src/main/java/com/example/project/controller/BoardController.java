@@ -13,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -31,9 +28,13 @@ public class BoardController {
     private final TrafficService trafficService;
     // 이현 시작
     @GetMapping
-    public String board(Model model){
-        List<BoardDTO> boardDTOList = boardService.findAll();
-        model.addAttribute("boardDTOList",boardDTOList);
+    public String board(@PageableDefault(page = 1) Pageable pageable, Model model){
+        Page<BoardDTO> boardList = boardService.findAllList(pageable);
+        model.addAttribute("boardDTOList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "/BoardPages/index";
     }
     // 이현
@@ -104,5 +105,36 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "/BoardPages/admin";
+    }
+
+    //이현
+    @GetMapping("/location")
+    public String local(@PageableDefault(page = 1) Pageable pageable, @RequestParam("type") Long id , @RequestParam("local1") String local1, @RequestParam("local2") String local2,Model model,@RequestParam("search") String search){
+        Page<BoardDTO> boardList = boardService.location(pageable,id,local1,local2);
+
+        model.addAttribute("boardDTOList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        System.out.println(boardList.getTotalElements());
+        model.addAttribute("type",id);
+        model.addAttribute("local1",local1);
+        model.addAttribute("local2",local2);
+        model.addAttribute("search",search);
+        return "/BoardPages/type";
+    }
+
+    //이현
+    @GetMapping("/search")
+    public String search(@PageableDefault(page = 1) Pageable pageable,@RequestParam("search") String search,Model model){
+        Page<BoardDTO> boardList = boardService.search(pageable,search);
+        model.addAttribute("boardDTOList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("search",search);
+        return "/BoardPages/search";
     }
 }

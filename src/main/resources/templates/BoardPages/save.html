@@ -79,8 +79,10 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="검색어를 입력하세요."
-           aria-label="Search">
+    <form action="/board/search"  class="w-100 rounded-0 border-0">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
+               aria-label="Search" name="search">
+    </form>
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">
             <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
@@ -97,7 +99,6 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
-                            <span data-feather="home" class="align-text-bottom"></span>
                             게시판
                         </div>
                     </li>
@@ -109,13 +110,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/board/traffic">
-                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                            <span data-feather="download" class="align-text-bottom"></span>
                             신호등게시판
                         </a>
                     </li>
                     <li class="nav-item">
-                        <<a class="nav-link" href="/board/admin">
-                            <span data-feather="users" class="align-text-bottom"></span>
+                        <a class="nav-link" href="/board/admin">
+                            <span data-feather="alert-triangle" class="align-text-bottom"></span>
                             공지사항
                         </a>
                     </li>
@@ -131,32 +132,31 @@
                     style="font-size: 1.5rem">
                     <span>마이페이지</span>
                     <a class="link-secondary" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle" class="align-text-bottom"></span>
                     </a>
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file-text" class="align-text-bottom"></span>
+                            <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file-text" class="align-text-bottom"></span>
+                            <span data-feather="compass" class="align-text-bottom"></span>
                             루틴
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file-text" class="align-text-bottom"></span>
+                            <span data-feather="tool" class="align-text-bottom"></span>
                             내 신호등 관리
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file-text" class="align-text-bottom"></span>
-                            더 넣을거 있을까?
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
                         </a>
                     </li>
                 </ul>
@@ -165,7 +165,7 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">글쓰기 폼</h1>
+                <h1 class="h2">글 작성</h1>
             </div>
 
             <div class="table-responsive">
@@ -176,7 +176,7 @@
                             <input type="text" th:value="${session.loginNickName}" readonly>
                         </tr>
                         <tr>
-                            <th>게시판 선택 </th>
+                            <th>카테고리</th>
                             <td>
                                 <select th:onchange="typeCheck()" id="boardType" name="boardType">
                                     <option value="">게시판선택</option>
@@ -228,7 +228,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
         crossorigin="anonymous"></script>
-<script src="dashboard.js"></script>
+<script src="/css/dashboard.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script th:inline="javascript">

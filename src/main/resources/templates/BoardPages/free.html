@@ -79,8 +79,10 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="검색어를 입력하세요."
-           aria-label="Search">
+    <form action="/board/search"  class="w-100 rounded-0 border-0">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
+               aria-label="Search" name="search">
+    </form>
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">
             <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
@@ -152,8 +154,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file-text" class="align-text-bottom"></span>
-                            더 넣을거 있을까?
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
                         </a>
                     </li>
                 </ul>
@@ -165,7 +167,7 @@
                 <h1 class="h2">자유게시판</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1" id="boardTypeLocation1"></select>
-                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation()"></select>
+                    <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation2" id="boardTypeLocation2" onchange="searchLocation(2)"></select>
 
                     <div class="btn-group me-2">
                         <button type="button" th:onclick="saveForm()" class="btn btn-sm btn-outline-secondary">글 쓰기</button>
@@ -189,6 +191,9 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <tr th:if="${boardDTOList.getTotalElements()} == 0">
+                        <td colspan="7" style="text-align: center">등록된 게시글이 없습니다.</td>
+                    </tr>
                     <tr th:each="board : ${boardDTOList}">
                         <td th:text="${board.boardId}"></td>
                         <td th:text="${board.boardTitle}" style="width:100%;overflow:hidden;text-overflow:ellipsis;"></td>
@@ -205,7 +210,7 @@
         </main>
     </div>
 
-    <div class="container">
+    <div class="container" th:if="${boardDTOList.getTotalElements()} != 0">
         <ul class="pagination justify-content-center">
             <li class="page-item">
                 <!--첫페이지 요청 링크-->
@@ -259,8 +264,8 @@
 
 <script th:inline="javascript">
     const loginForm = () => {
-        var width = 450;
-        var height = 300;
+        var width = 480;
+        var height = 630;
 
         var left = (window.screen.width / 2) - (width / 2);
         var top = (window.screen.height / 4);
@@ -336,8 +341,10 @@
 
     });
 
-    function searchLocation(){
-        alert("지역별 검색결과 출력")
+    function searchLocation(type){
+        let local1 = document.getElementById("boardTypeLocation1").value;
+        let local2 = document.getElementById("boardTypeLocation2").value;
+        location.href = "/board/location?type=" + type + "&local1=" + local1 + "&local2=" + local2;
     }
 </script>
 </body>

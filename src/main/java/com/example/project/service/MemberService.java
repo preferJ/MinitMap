@@ -54,4 +54,15 @@ public class MemberService {
             return "no";
         }
     }
+
+    public String findPwForm(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if (optionalMemberEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            String result = memberEntity.getMemberPassword();
+            return result;
+        } else {
+            return "no";
+        }
+    }
 }

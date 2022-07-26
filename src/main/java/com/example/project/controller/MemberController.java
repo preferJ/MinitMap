@@ -74,9 +74,15 @@ public class MemberController {
     }
 
     @PostMapping("/findIdForm")
+    // ㅁㅈ 아이디 찾기
     public @ResponseBody String findIdForm(@RequestParam String memberPhone) {
-        System.out.println("memberPhone = " + memberPhone);
         String result = memberService.findIdForm(memberPhone);
+        return result;
+    }
+    @PostMapping("/findPwForm")
+    // 비밀번호 찾기
+    public @ResponseBody String findPwForm(@RequestParam String memberEmail) {
+        String result = memberService.findPwForm(memberEmail);
         return result;
     }
 }

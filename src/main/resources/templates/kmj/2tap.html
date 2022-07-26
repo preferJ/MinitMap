@@ -6,6 +6,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:inline="javascript">
         var map_count = 0;
         var page_lat = [[${page_lat}]];
@@ -776,8 +779,9 @@
 <body onload="initTmap();">
 <div id="sidebar">
     <div id="traffic_information">
-        <div style="margin-left: 17px">
-            <div> <!-- 상단부분 -->
+        <div style="margin-left: 17px;width: 240px;display: block;">
+            <div style="position: relative;">
+            <span style="width: 180px;display: inline-block"> <!-- 상단부분 -->
                 <input type="text" class="text_custom" id="searchKeyword" name="searchKeyword" value="서울시">
                 <div id="start-interface">
                     <button id="btn_select">적용하기</button>
@@ -785,11 +789,6 @@
                         <li>검색결과</li>
                     </ul>
                 </div>
-            </div>
-            <div style="margin-right: 30px">
-                <i onclick="pointChange()" class="fa-solid fa-arrows-repeat"></i>
-            </div>
-            <div>
                 <input type="search" class="text_custom" id="searchKeyword2" placeholder="도착지">
                 <div id="end-interface">
                     <button id="btn_select2">적용하기</button>
@@ -797,12 +796,15 @@
                         <li>검색결과</li>
                     </ul>
                 </div>
+            </span>
+            <span style="display: inline-block;width: 30px;right: 5px;position: absolute;top: 20%">
+                <i onclick="pointChange()" class="fa-solid fa-arrow-rotate-left fa-3x"></i>
+            </span>
             </div>
-            <div>
+            <div style="margin-top: 5px">
                 <button onClick="searchPOI()" style="width: 95%; height: 50px">길찾기</button>
             </div>
         </div>
-        <hr>
         <div id="myplace_2"> <!-- 하단부분 -->
             <div style="float: right">
                 <i onclick="goSettings()" class="fa-solid fa-gear fa-2x"></i>

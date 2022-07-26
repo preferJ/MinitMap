@@ -128,6 +128,9 @@
         </div>
         <hr>
         <div th:if="${session.loginEmail}">
+            <div th:if="${session.loginEmail.toString().equals('admin')}">
+               <a href="/member/admin">관리자 화면으로 이동하기</a>
+            </div>
             <div>
                 <b>마이플레이스</b> <br>
                 집<i class="fa-solid fa-house"></i><input type="text"> <br>

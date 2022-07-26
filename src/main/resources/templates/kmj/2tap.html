@@ -626,6 +626,7 @@
                 }
             }
             function startPing(id) {
+            document.getElementById("searchKeyword").value = nameArr[id];
             console.log(nameArr[id]);
                 // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
                 if (s_marker.getPosition() != null) {

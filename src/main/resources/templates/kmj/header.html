@@ -18,6 +18,7 @@
                 grid-template-columns: 1fr;
                 background-color: green;
             }
+
             .tap {
                 list-style-type: none;
                 display: flex;
@@ -52,7 +53,7 @@
                 background-color: #c7dbd2;
             }
 
-            li a.tapes{
+            li a.tapes {
                 margin-top: 2px;
                 border-bottom: 2px solid black;
             }
@@ -62,11 +63,11 @@
             }
 
 
-
         </style>
         <script>
             var settingPage;
-            function tapCheck(a){
+
+            function tapCheck(a) {
                 const tap_color = document.getElementById(a);
                 tap_color.style.marginTop = "0px";
                 tap_color.style.backgroundColor = "#c7dbd2";
@@ -74,35 +75,37 @@
                 tap_color.style.borderBottom = "2px solid #c7dbd2";
                 settingPage = a;
             }
-            var map= null;
+
+            var map = null;
+
             function tap1() {
-                if(map == null) {
+                if (map == null) {
                     location.href = "/1tapTest";
-                }else {
+                } else {
                     location.href = "/1tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
                 }
             }
 
             function tap2() {
-                if(map == null) {
+                if (map == null) {
                     location.href = "/2tapTest";
-                }else {
+                } else {
                     location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
                 }
             }
 
             function tap3() {
-                if(map == null) {
+                if (map == null) {
                     location.href = "/3tapTest";
-                }else {
+                } else {
                     location.href = "/3tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
                 }
             }
 
             function tap4() {
-                if(map == null) {
+                if (map == null) {
                     location.href = "/4tapTest";
-                }else {
+                } else {
                     location.href = "/4tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
                 }
             }
@@ -111,25 +114,30 @@
                 location.href = "/member/saveForm";
             }
 
-            function myPage() {
-                location.href = "/member/myPage";
+            function myPage(id) {
+                if(id == null) {
+                    alert("로그인이 필요합니다");
+                    location.href = "/1tapTest";
+                }else {
+                    location.href = "/member/myPage/" + id;
+                }
             }
 
-            function sidebarHide(){
+            function sidebarHide() {
                 const sidebar = document.getElementById("sidebar");
                 var mapResize = document.getElementById('map_div');//map의 div
                 var width_size = window.outerWidth;
                 const borderBottom = document.getElementById(settingPage);
                 const sidebarIcon = document.getElementById("sidebarIcon");
-                if(map_count == 0) {
-                    if(width_size == 1920){
+                if (map_count == 0) {
+                    if (width_size == 1920) {
                         sidebar.style.width = "0px";
                         sidebar.style.border = "none";
                         mapResize.style.width = width_size + "px";
                         borderBottom.style.borderBottom = "2px solid black";
                         map.resize();
                         map_count = 1;
-                    }else {
+                    } else {
                         sidebar.style.width = "0px";
                         sidebar.style.border = "none";
                         mapResize.style.width = width_size - 16 + "px";
@@ -138,8 +146,8 @@
                         map_count = 1;
                     }
                     sidebarIcon.innerHTML = "<i class='fa-solid fa-angle-right fa-3x'></i>"
-                }else if(map_count == 1){
-                    if(width_size == 1920){
+                } else if (map_count == 1) {
+                    if (width_size == 1920) {
                         sidebar.style.width = "320px"
                         sidebar.style.border = "2px solid black";
                         sidebar.style.borderTop = "none";
@@ -147,7 +155,7 @@
                         borderBottom.style.borderBottom = "2px solid #c7dbd2";
                         map.resize();
                         map_count = 0;
-                    }else {
+                    } else {
                         sidebar.style.width = "320px"
                         sidebar.style.border = "2px solid black";
                         sidebar.style.borderTop = "none";
@@ -167,7 +175,8 @@
             <nav style="float: left">
                 <ul class="tap">
                     <li class="tap-result">
-                        <a id="tap1" class="tapes" onclick="tap1()"><i class="fa-solid fa-magnifying-glass fa-3x"></i></a>
+                        <a id="tap1" class="tapes" onclick="tap1()"><i
+                                class="fa-solid fa-magnifying-glass fa-3x"></i></a>
                     </li>
                     <li class="tap-result">
                         <a id="tap2" class="tapes" onclick="tap2()"><i class="fa-solid fa-road fa-3x"></i></a>
@@ -178,7 +187,7 @@
                     <li class="tap-result">
                         <a id="tap4" class="tapes" onclick="tap4()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
                     </li>
-                    <li  class="tap-result" style="margin-top: 2px">
+                    <li class="tap-result" style="margin-top: 2px">
                         <a onclick="sidebarHide()" id="sidebarIcon"><i class="fa-solid fa-angle-left fa-3x"></i></a>
                     </li>
                 </ul>
@@ -189,26 +198,12 @@
                         <a onclick="save()"><i class="fa-solid fa-arrow-right-to-bracket fa-3x"></i></a>
                     </li>
                     <li class="tap-result">
-                        <a onclick="myPage()"><i class="fa-solid fa-user-large fa-3x"></i></a>
+                        <a th:onclick="myPage([[${session.loginId}]])"><i class="fa-solid fa-user-large fa-3x"></i></a>
                     </li>
                 </ul>
             </nav>
         </div>
     </header>
-
-    <!--아이콘 사용은 폰트어썸이라는 곳에서 사용 -->
-    <!--    <div id="header">-->
-    <!--        <span style="float: left">-->
-    <!--            <button onclick="tap1()"><i class="fa-solid fa-magnifying-glass fa-5x"></i></button>-->
-    <!--            <button onclick="tap2()"><i class="fa-solid fa-road fa-5x"></i></button>-->
-    <!--            <button onclick="tap3()"><i class="fa-solid fa-file-pen fa-5x"></i></button>-->
-    <!--            <button onclick="tap4()"><i class="fa-solid fa-traffic-light fa-5x"></i></button>-->
-    <!--            </span>-->
-    <!--        <span style="float: right">-->
-    <!--            <button onclick="save()"><i class="fa-solid fa-arrow-right-to-bracket fa-5x"></i></button>-->
-    <!--            <button onclick="myPage()"><i class="fa-solid fa-user-large fa-5x"></i></button>-->
-    <!--        </span>-->
-    <!--    </div>-->
     </body>
 </th:block>
 </html>

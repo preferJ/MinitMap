@@ -14,6 +14,7 @@
         var map;
         var searchMarkerArr = [];
         var labelArr = [];
+        var nameArr = [];
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function (){
             if(map_count == 0) {
@@ -127,6 +128,9 @@
         </div>
         <hr>
         <div th:if="${session.loginEmail}">
+            <div th:if="${session.loginEmail.toString().equals('admin')}">
+               <a href="/member/admin">관리자 화면으로 이동하기</a>
+            </div>
             <div>
                 <b>마이플레이스</b> <br>
                 집<i class="fa-solid fa-house"></i><input type="text"> <br>
@@ -276,6 +280,7 @@
 
                             // 출발지 도착지를 지정할때 사용할 위도 경도를 모아놓은 배열 넣기
                             latLonArr.push(markerPosition);
+                            nameArr.push(name);
 
                             // Marker 설정
                             search_marker = new Tmapv2.Marker(
@@ -320,6 +325,14 @@
                     }
                 });
             });
+    }
+
+    function startPing(id){
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&name="+nameArr[id]+"&lat="+latLonArr[id].lat()+"&lng="+latLonArr[id].lng();
+    }
+
+    function endPing(id){
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name="+nameArr[id]+"&lat="+latLonArr[id].lat()+"&lng="+latLonArr[id].lng();
     }
 
     function logout() {

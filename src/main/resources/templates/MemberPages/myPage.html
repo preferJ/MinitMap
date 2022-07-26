@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <head>
+        <meta charset="UTF-8">
+        <title>header</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+              integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+        <style>
+            header {
+                display: grid;
+                grid-auto-flow: column;
+
+                grid-template-columns: 1fr;
+                background-color: green;
+            }
+            .tap {
+                list-style-type: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+
+            nav {
+                display: inline-block;
+            }
+
+            ul:after {
+                content: '';
+                display: block;
+                clear: both;
+            }
+
+            .tap-result {
+                float: left;
+                width: 80px;
+            }
+
+            li a {
+                display: block;
+                color: black;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            li a:hover:not(.active) {
+                background-color: #c7dbd2;
+            }
+
+            li a.tapes{
+                margin-top: 2px;
+                border-bottom: 2px solid black;
+            }
+
+            .active {
+                background-color: #4CAF50;
+            }
+
+
+
+        </style>
+        <script>
+            var settingPage;
+            function tapCheck(a){
+                const tap_color = document.getElementById(a);
+                tap_color.style.marginTop = "0px";
+                tap_color.style.backgroundColor = "#c7dbd2";
+                tap_color.style.border = "2px solid black";
+                tap_color.style.borderBottom = "2px solid #c7dbd2";
+                settingPage = a;
+            }
+            var map= null;
+            function findById() {
+                if(map == null) {
+                    location.href = "/1tapTest";
+                }else {
+                    location.href = "/1tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
+            }
+
+            function tap2() {
+                if(map == null) {
+                    location.href = "/2tapTest";
+                }else {
+                    location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
+            }
+
+            function tap3() {
+                if(map == null) {
+                    location.href = "/3tapTest";
+                }else {
+                    location.href = "/3tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
+            }
+
+            function tap4() {
+                if(map == null) {
+                    location.href = "/4tapTest";
+                }else {
+                    location.href = "/4tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom();
+                }
+            }
+        </script>
+    </head>
+    <body>
+    <header>
+        <div>
+            <nav style="float: left">
+                <ul class="tap">
+                    <li class="tap-result">
+                        <a id="tap1" class="tapes" onclick="findById()"><i class="fa-solid fa-magnifying-glass fa-3x"></i></a>
+                    </li>
+                    <li class="tap-result">
+                        <a id="tap2" class="tapes" onclick=""><i class="fa-solid fa-road fa-3x"></i></a>
+                    </li>
+                    <li class="tap-result">
+                        <a id="tap3" class="tapes" onclick=""><i class="fa-solid fa-file-pen fa-3x"></i></a>
+                    </li>
+                    <li class="tap-result">
+                        <a id="tap4" class="tapes" onclick=""><i class="fa-solid fa-traffic-light fa-3x"></i></a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+    </body>
+</th:block>
+</html>

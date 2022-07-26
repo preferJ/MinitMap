@@ -32,7 +32,14 @@ public class LikeCheckEntity {
     private boolean likeCheck;
 
 
-    public static LikeCheckEntity toLikeCheckSaveEntity(LikeCheckDTO likeCheckDTO, MemberEntity memberEntity, BoardEntity boardEntity, TrafficEntity trafficEntity){
+    public static LikeCheckEntity toLikeCheckSaveEntity(boolean check, MemberEntity memberEntity, BoardEntity boardEntity){
+        LikeCheckEntity likeCheckEntity = new LikeCheckEntity();
+        likeCheckEntity.setLikeCheck(check);
+        likeCheckEntity.setMemberEntity(memberEntity);
+        likeCheckEntity.setBoardEntity(boardEntity);
+        return likeCheckEntity;
+    }
+    public static LikeCheckEntity toLikeCheckSaveEntity1(LikeCheckDTO likeCheckDTO, MemberEntity memberEntity, BoardEntity boardEntity, TrafficEntity trafficEntity){
         LikeCheckEntity likeCheckEntity = new LikeCheckEntity();
         likeCheckEntity.setLikeCheck(likeCheckDTO.isLikeCheck());
         likeCheckEntity.setMemberEntity(memberEntity);

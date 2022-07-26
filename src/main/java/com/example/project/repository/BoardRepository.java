@@ -18,5 +18,20 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     Page<BoardEntity> findByBoardTypeLocation1AndBoardTypeLocation2(String local1 , String local2 , Pageable pageable);
     Page<BoardEntity> findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing(String type , String local1 , String local2 , Pageable pageable);
     Page<BoardEntity> findByBoardTitleContaining(String search , Pageable pageable);
-    Page<BoardEntity> findByBoardTitleContainingAndBoardTypeLocation1AndBoardTypeLocation2(String search , String local1 , String local2 , Pageable pageable);
+
+    @Modifying
+    @Query(value = "update BoardEntity b set b.boardLike = b.boardLike + 1 where b.boardId = :id")
+    int like(@Param("id") Long id);
+
+    @Modifying
+    @Query(value = "update BoardEntity b set b.boardDislike = b.boardDislike + 1 where b.boardId = :id")
+    int dislike(@Param("id") Long id);
+
+    @Modifying
+    @Query(value = "update BoardEntity b set b.boardLike = b.boardLike - 1 where b.boardId = :id")
+    int UnLike(@Param("id") Long id);
+
+    @Modifying
+    @Query(value = "update BoardEntity b set b.boardDislike = b.boardDislike - 1 where b.boardId = :id")
+    int UnDislike(@Param("id") Long id);
 }

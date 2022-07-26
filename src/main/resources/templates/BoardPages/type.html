@@ -202,7 +202,7 @@
                     <tr th:if="${boardDTOList.getTotalElements()} == 0">
                         <td colspan="8" style="text-align: center">등록된 게시글이 없습니다.</td>
                     </tr>
-                    <tr th:each="board : ${boardDTOList}" class="colored">
+                    <tr th:each="board : ${boardDTOList}" class="colored" th:onclick="detail([[${board.boardId}]])">
                         <td th:text="${board.boardId}"></td>
                         <td th:text="${board.boardType}"></td>
                         <td th:text="${board.boardTitle}"
@@ -361,6 +361,10 @@
         }else {
             location.href = "/board/location?type=" + type + "&local1=" + local1 + "&local2=" + local2;
         }
+    }
+
+    function detail(id){
+        location.href = "/board/detail?id=" + id ;
     }
 </script>
 </body>

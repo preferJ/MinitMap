@@ -2,10 +2,13 @@ package com.example.project.service;
 
 import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
+import com.example.project.dto.LikeCheckDTO;
 import com.example.project.entity.BoardEntity;
+import com.example.project.entity.LikeCheckEntity;
 import com.example.project.entity.MemberEntity;
 import com.example.project.entity.TrafficEntity;
 import com.example.project.repository.BoardRepository;
+import com.example.project.repository.LikeCheckRepository;
 import com.example.project.repository.MemberRepository;
 import com.example.project.repository.TrafficRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +30,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final TrafficRepository trafficRepository;
+    private final LikeCheckRepository likeCheckRepository;
 
     //이현
     public void save(BoardDTO boardDTO, Long memberId) {
@@ -264,11 +269,52 @@ public class BoardService {
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> findById = boardRepository.findById(id);
         BoardEntity boardEntity = findById.get();
-
+        BoardDTO boardDTO = new BoardDTO();
         if (boardEntity.getBoardType().equals("신호")){
-            return BoardDTO.toTrafficBoardDTO(boardEntity);
+            boardDTO = BoardDTO.toTrafficBoardDTO(boardEntity);
         }else {
-            return BoardDTO.toBoardDTO(boardEntity);
+            boardDTO = BoardDTO.toBoardDTO(boardEntity);
         }
+
+        boardDTO.setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+        return boardDTO;
+    }
+
+    @Transactional
+    public void likeCheck(Long like, Long boardId , Long loginId) {
+        Optional<BoardEntity> byId = boardRepository.findById(boardId);
+        LikeCheckEntity likeCheckEntity = likeCheckRepository.findByBoardEntity(byId.get());
+        Optional<MemberEntity> memberId = memberRepository.findById(loginId);
+        // 첫 등록
+        if (likeCheckEntity == null){
+            if (like == 1){ //좋아요
+                LikeCheckEntity likeCheckEntity1 = LikeCheckEntity.toLikeCheckSaveEntity(true, memberId.get() , byId.get());
+                likeCheckRepository.save(likeCheckEntity1);
+                boardRepository.like(boardId);
+            }else{ // 싫어요
+                likeCheckRepository.save(LikeCheckEntity.toLikeCheckSaveEntity(false,memberRepository.findById(loginId).get(),byId.get()));
+                boardRepository.dislike(boardId);
+            }
+
+        }else if(likeCheckEntity.isLikeCheck()){ // 좋아요 누른상태
+            if (like == 1){ //좋아요
+                likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
+            }else{ // 싫어요
+                likeCheckEntity.setLikeCheck(false);
+                likeCheckRepository.save(likeCheckEntity);
+                boardRepository.dislike(boardId);
+            }
+            boardRepository.UnLike(boardId);
+        }else { // 싫어요 누른상태
+            if (like == 1){ //좋아요
+                likeCheckEntity.setLikeCheck(true);
+                likeCheckRepository.save(likeCheckEntity);
+                boardRepository.like(boardId);
+            }else{ // 싫어요
+                likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
+            }
+            boardRepository.UnDislike(boardId);
+        }
+
     }
 }

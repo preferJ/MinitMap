@@ -2,9 +2,13 @@ package com.example.project.controller;
 
 import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
+import com.example.project.dto.LikeCheckDTO;
 import com.example.project.dto.TrafficDTO;
+import com.example.project.entity.BoardEntity;
+import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
 import com.example.project.service.BoardService;
+import com.example.project.service.LikeCheckService;
 import com.example.project.service.MemberService;
 import com.example.project.service.TrafficService;
 import lombok.AllArgsConstructor;
@@ -26,6 +30,8 @@ public class BoardController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final TrafficService trafficService;
+    private final BoardRepository boardRepository;
+    private final LikeCheckService likeCheckService;
     // 이현 시작
     @GetMapping
     public String board(@PageableDefault(page = 1) Pageable pageable, Model model){
@@ -137,10 +143,41 @@ public class BoardController {
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("id") Long id , Model model){
+    public String detail(@RequestParam("id") Long id , Model model ,HttpSession session){
         BoardDTO boardDTO = boardService.findById(id);
+        Long memberId = (Long) session.getAttribute("loginId");
         model.addAttribute("board", boardDTO);
-
+        String check = "빔";
+        LikeCheckDTO likeCheckDTO = new LikeCheckDTO();
+        if (session.getAttribute("loginId") != null){
+            likeCheckDTO = likeCheckService.findCheck(id,memberId);
+            if (likeCheckDTO != null){
+                if (likeCheckDTO.isLikeCheck()==true){
+                    check="참";
+                }else {
+                    check="거짓";
+                }
+            }
+        }
+        System.out.println(check);
+        model.addAttribute("check",check);
         return "/BoardPages/detail";
+    }
+
+    @GetMapping("/like")
+    public String like(@RequestParam("like") Long like , @RequestParam("boardId") Long boardId , HttpSession session){
+        Long id = (Long) session.getAttribute("loginId");
+        boardService.likeCheck(like,boardId,id);
+        return "redirect:/board/detail?id=" + boardId;
+    }
+
+    @GetMapping("trafficMap")
+    public String trafficMap(@RequestParam("boardId") Long id , Model model){
+        BoardEntity boardEntity = boardRepository.findById(id).get();
+        Double dnleh = boardEntity.getTrafficEntity().getTrafficLat();
+        Double rudeh = boardEntity.getTrafficEntity().getTrafficLon();
+        model.addAttribute("dnleh",dnleh);
+        model.addAttribute("rudeh",rudeh);
+        return "/BoardPages/trafficMap";
     }
 }

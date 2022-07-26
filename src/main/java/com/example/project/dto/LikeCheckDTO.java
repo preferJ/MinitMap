@@ -24,4 +24,13 @@ public class LikeCheckDTO {
         likeCheckDTO.setLikeCheck(likeCheckEntity.isLikeCheck());
         return likeCheckDTO;
     }
+
+    public static LikeCheckDTO toLikeBoardCheckDTO(LikeCheckEntity likeCheckEntity){
+        LikeCheckDTO likeCheckDTO = new LikeCheckDTO();
+        likeCheckDTO.setLikeCheckId(likeCheckEntity.getLikeCheckId());
+        likeCheckDTO.setMemberId(likeCheckEntity.getMemberEntity().getMemberId());
+        likeCheckDTO.setBoardId(likeCheckEntity.getBoardEntity().getBoardId());
+        likeCheckDTO.setLikeCheck(likeCheckEntity.isLikeCheck());
+        return likeCheckDTO;
+    }
 }

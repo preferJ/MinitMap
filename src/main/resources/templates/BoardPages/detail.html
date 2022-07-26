@@ -36,6 +36,10 @@
             box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
         }
 
+        .test_obj {
+            resize: none;
+        }
+
         .b-example-vr {
             flex-shrink: 0;
             width: 1.5rem;
@@ -64,6 +68,16 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
         }
+
+        textarea {
+            min-height: 5rem;
+            overflow-y: hidden;
+            resize: none;
+        }
+
+        textarea:focus {
+            outline: none;
+        }
     </style>
 
 
@@ -79,7 +93,7 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <form action="/board/search"  class="w-100 rounded-0 border-0">
+    <form action="/board/search" class="w-100 rounded-0 border-0">
         <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
                aria-label="Search" name="search">
     </form>
@@ -165,7 +179,7 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">전체게시글</h1>
+                <h1 class="h2">상세조회</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group me-2">
                         <button type="button" th:onclick="saveForm()" class="btn btn-sm btn-outline-secondary">글 쓰기
@@ -176,39 +190,83 @@
                 </div>
             </div>
 
+
             <div class="table-responsive">
                 <table class="table table-striped table-sm" style="table-layout:fixed">
                     <thead>
-                    <tr>
-                        <th scope="col">글번호</th>
-                        <th scope="col">카테고리</th>
-                        <th scope="col">제목</th>
-                        <th scope="col">시/도</th>
-                        <th scope="col">군/구</th>
-                        <th scope="col">작성자</th>
-                        <th scope="col">작성시간</th>
-                        <th scope="col">좋아요</th>
-                    </tr>
+                    <!--                    <tr>-->
+                    <!--                        <th scope="col">작성자</th>-->
+                    <!--                        <th scope="col">작성시간</th>-->
+                    <!--                        <th scope="col">시/도</th>-->
+                    <!--                        <th scope="col">군/구</th>-->
+                    <!--                        <th scope="col">제목</th>-->
+                    <!--                        <th scope="col">내용</th>-->
+                    <!--                        <th scope="col">좋아요</th>-->
+                    <!--                        <th scope="col">싫어요</th>-->
+                    <!--                    </tr>-->
                     </thead>
                     <tbody>
-                    <tr th:onclick="detail(board.boardId)">
-                        <td th:text="${board.boardId}"></td>
-                        <td th:text="${board.boardType}"></td>
-                        <td th:text="${board.boardTitle}"
-                            style="width:100%;overflow:hidden;text-overflow:ellipsis;"></td>
-                        <td th:text="${board.boardTypeLocation1}"></td>
-                        <td th:text="${board.boardTypeLocation2}"></td>
-                        <td th:text="${board.memberNickname}"></td>
-                        <td th:if="${board.boardUpdateTime}"
-                            th:text="*{#temporals.format(board.boardUpdateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td th:unless="${board.boardUpdateTime}"
-                            th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td th:text="${board.boardLike}"></td>
+                    <tr>
+                        <th>작성자 : <span th:text="${board.memberNickname}"></span></th>
+                        <th>작성시간 : <span th:if="${board.boardUpdateTime}"
+                                         th:text="*{#temporals.format(board.boardUpdateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            <span th:unless="${board.boardUpdateTime}"
+                                  th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>카테고리 : <span th:text="${board.boardType}"></span>게시판
+                            <button style="border: none" th:if="${board.boardType} == '신호'" th:onclick="trafficMap()">
+                                신호등 보기
+                            </button>
+                        </th>
+                        <th>지역 : <span th:text="${board.boardTypeLocation1}"></span> <span
+                                th:text="${board.boardTypeLocation2}"></span></th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">제목 : <span th:text="${board.boardTitle}"></span></th>
+                    </tr>
+                    <tr>
+                        <th colspan="2" rowspan="5">
+                            <div>내용</div>
+                            <textarea style="border: none" class="test_obj" cols="180" rows="25"
+                                      th:text="${board.boardContents}" readonly></textarea></th>
                     </tr>
                     </tbody>
                 </table>
+                <div><input type="button" value="수정"> <input type="button" value="삭제"> <input type="button"
+                                                                                              value="신호추가"></div>
             </div>
         </main>
+        <div th:if="${check}=='빔'" style="text-align: center">
+            <button th:onclick="like(1)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
+                                                                       src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
+            </button>
+            <button th:onclick="dislike(1)" class="btn" id="btn" type="submit"><img class="btn-img" width="30"
+                                                                                   height="30"
+                                                                                   src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150917_279%2Fccc6976_1442459534587GQ9DB_JPEG%2F%25BD%25C8%25BE%25EE%25BF%25E4.png&type=a340">
+            </button>
+        </div>
+        <div th:if="${check}=='참'" style="text-align: center">
+            <button th:onclick="like(2)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
+                                                                       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0OUp0slzZOK6lEMcXrgPX7tFSXa9_q-Lug&usqp=CAU">
+            </button>
+            <button th:onclick="dislike(2)" class="btn"  type="submit"><img class="btn-img" width="30"
+                                                                                   height="30"
+                                                                                   src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150917_279%2Fccc6976_1442459534587GQ9DB_JPEG%2F%25BD%25C8%25BE%25EE%25BF%25E4.png&type=a340">
+            </button>
+        </div>
+        <div th:if="${check}=='거짓'" style="text-align: center">
+            <button th:onclick="like(3)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
+                                                                       src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
+            </button>
+            <button th:onclick="dislike(3)" class="btn" type="submit"><img class="btn-img" width="30"
+                                                                                   height="30"
+                                                                                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0OUp0slzZOK6lEMcXrgPX7tFSXa9_q-Lug&usqp=CAU">
+            </button>
+        </div>
+        <div style="text-align: center"><span th:text="${board.boardLike}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                th:text="${board.boardDislike}"></span></div>
     </div>
 </div>
 
@@ -249,6 +307,50 @@
         } else {
             loginForm();
         }
+    }
+
+    function like(num) {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            if (num==1){
+                alert("좋아요!")
+            }else if(num==2){
+                alert("좋아요 취소")
+            }else{
+                alert("좋아요!")
+            }
+            location.href = "/board/like?like=1&boardId=" + [[${board.boardId}]];
+        } else {
+            loginForm();
+        }
+    }
+
+    function dislike(num) {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            if (num==1){
+                alert("싫어요 ㅠ")
+            }else if(num==2){
+                alert("싫어요 ㅠ")
+            }else{
+                alert("싫어요 취소")
+            }
+            location.href = "/board/like?like=2&boardId=" + [[${board.boardId}]];
+        } else {
+            loginForm();
+        }
+    }
+
+    function trafficMap() {
+        var width = 1200;
+        var height = 800;
+
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
+
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+        window.open("/board/trafficMap?boardId=" + [[${board.boardId}]], "지도표시", windowStatus);
     }
 </script>
 </body>

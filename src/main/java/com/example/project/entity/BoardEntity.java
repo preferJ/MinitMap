@@ -42,7 +42,7 @@ public class BoardEntity {
     @Column(name = "boardTitle", nullable = false)
     private String boardTitle;
 
-    @Column(name = "boardContents", nullable = false)
+    @Column(name = "boardContents", nullable = false , length = 3000)
     private String boardContents;
 
     @Column(name = "boardHits")

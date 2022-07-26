@@ -88,10 +88,18 @@ public class TestController {
     public String tap2(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
                        @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
+                       @RequestParam(value = "type", required = false,defaultValue = "null")String type,
+                       @RequestParam(value = "name", required = false)String name,
+                       @RequestParam(value = "lat", required = false)Double lat,
+                       @RequestParam(value = "lng", required = false)Double lng,
                        Model model) {
         model.addAttribute("page_lat", page_lat);
         model.addAttribute("page_lng", page_lng);
         model.addAttribute("page_zoom", page_zoom);
+        model.addAttribute("type", type);
+        model.addAttribute("name", name);
+        model.addAttribute("lat", lat);
+        model.addAttribute("lng", lng);
         return "/kmj/2tap";
     }
 

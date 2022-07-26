@@ -305,6 +305,7 @@
         }
     </script>
 </head>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <body onload="start1()">
 <h1 style="text-align: center">로그인</h1>
 <form action="/member/login" method="post">
@@ -313,8 +314,6 @@
             <div class="fadeIn first">
                 <i id="icon" class="fa-solid fa-circle-user"></i>
             </div>
-
-            <!-- Login Form -->
             <form>
                 <input type="text" id="memberEmail" class="fadeIn second" name="memberEmail" placeholder="아이디"> <br>
                 <input type="text" id="memberPassword" class="fadeIn third" name="memberPassword" placeholder="비밀번호">
@@ -328,9 +327,46 @@
             </div>
         </div>
     </div>
+    </div>
+
 </form>
 </body>
 <script th:inline="javascript">
+    function findIdForm() {
+        const phoneConfirm = prompt("000-000-000 형식으로 전화번호를 입력해주세요");
 
+        $.ajax({
+            type: "post",
+            url: "/member/findIdForm",
+            data: {"memberPhone": phoneConfirm},
+            dataType: "text",
+            success: function (result) {
+                if (result) {
+                    alert("당신의 아이디는" + result + "입니다");
+                    location.href = "/member/login";
+                } else {
+                    alert("해당 전화번호가 존재하지 않습니다");
+                }
+            },
+            error: function () {
+                alert("홈페이지 오류");
+            }
+        });
+    }
+    // function findPwForm(){
+    //     const emailConfirm = prompt("아이디를 입력해주세요");
+    //
+    //     $.ajax({
+    //         type: "post",
+    //         url: "/member/findPwForm",
+    //         data: {"memberEmail":emailConfirm},
+    //         dataType: "text",
+    //         success:function (result) {
+    //             if(result == "ok"){
+    //                 alert("당신의 ")
+    //             }
+    //         }
+    //     })
+    // }
 </script>
 </html>

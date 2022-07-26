@@ -59,4 +59,24 @@ public class MemberController {
         session.invalidate();
         return "redirect:/1tapTest";
     }
+
+    @GetMapping("/admin")
+    // ㅁㅈ
+    public String admin(){
+     return "/AdminPages/adminHistory";
+    }
+    @GetMapping("/myPage/{loginId}")
+    public String myPage(@PathVariable Long loginId, Model model) {
+        System.out.println("memberId = " + loginId);;
+        MemberDTO memberDTO = memberService.findById(loginId);
+        model.addAttribute("member", memberDTO);
+        return "/MemberPages/myPage";
+    }
+
+    @PostMapping("/findIdForm")
+    public @ResponseBody String findIdForm(@RequestParam String memberPhone) {
+        System.out.println("memberPhone = " + memberPhone);
+        String result = memberService.findIdForm(memberPhone);
+        return result;
+    }
 }

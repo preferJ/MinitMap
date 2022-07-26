@@ -12,6 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+
     public void save(MemberDTO memberDTO) {
         // ㅁㅈ
         memberRepository.save(MemberEntity.toMemberSaveEntity(memberDTO));
@@ -32,4 +33,25 @@ public class MemberService {
         }
     }
 
+    public MemberDTO findById(Long id) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
+        if (optionalMemberEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            MemberDTO memberDTO = MemberDTO.toMemberDTO(memberEntity);
+            return memberDTO;
+        } else {
+            return null;
+        }
+    }
+
+    public String findIdForm(String memberPhone) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberPhone(memberPhone);
+        if (optionalMemberEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            String result = memberEntity.getMemberEmail();
+            return result;
+        } else {
+            return "no";
+        }
+    }
 }

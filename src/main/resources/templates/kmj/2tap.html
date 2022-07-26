@@ -724,6 +724,40 @@
                 });
             });
 
+        function pointChange(){
+            var startname = document.getElementById("searchKeyword").value;
+            var endname = document.getElementById("searchKeyword2").value;
+            document.getElementById("searchKeyword").value = endname;
+            document.getElementById("searchKeyword2").value = startname;
+            var startLat = 0, startLng = 0, endLat = 0, endLng = 0;
+            if(s_marker.getPosition() != null){
+                startLat = s_marker.getPosition().lat();
+                startLng = s_marker.getPosition().lng();
+            }if(e_marker.getPosition() != null) {
+                endLat = e_marker.getPosition().lat();
+                endLng = e_marker.getPosition().lng();
+            }
+            console.log("start: "+startLat+","+startLng+"end: "+endLng+","+endLat);
+            removeMarkers();
+            if(endLat != 0) {
+                s_marker = new Tmapv2.Marker({
+                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                    position: new Tmapv2.LatLng(endLat, endLng), //Marker의 중심좌표 설정.
+                    draggable: true,
+                    map: map //Marker가 표시될 Map 설정.
+                });
+            s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            }if(startLat != 0) {
+                e_marker = new Tmapv2.Marker({
+                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
+                    position: new Tmapv2.LatLng(startLat, startLng), //Marker의 중심좌표 설정.
+                    draggable: true,
+                    map: map //Marker가 표시될 Map 설정.
+                });
+                e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            }
+            ontestfoot();
+        }
     </script>
 </head>
 <style>
@@ -783,7 +817,7 @@
         <div style="margin-left: 17px;width: 240px;display: block;">
             <div style="position: relative;">
             <span style="width: 180px;display: inline-block"> <!-- 상단부분 -->
-                <input type="text" class="text_custom" id="searchKeyword" name="searchKeyword" value="서울시">
+                <input type="text" class="text_custom" id="searchKeyword" name="searchKeyword" placeholder="출발지">
                 <div id="start-interface">
                     <button id="btn_select">적용하기</button>
                     <ul id="searchResult" name="searchResult">

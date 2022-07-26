@@ -341,11 +341,12 @@
             data: {"memberPhone": phoneConfirm},
             dataType: "text",
             success: function (result) {
-                if (result) {
+                if (result != "no") {
                     alert("당신의 아이디는" + result + "입니다");
-                    location.href = "/member/login";
+                    location.href = "/member/loginForm";
                 } else {
                     alert("해당 전화번호가 존재하지 않습니다");
+                    location.href = "/member/loginForm";
                 }
             },
             error: function () {

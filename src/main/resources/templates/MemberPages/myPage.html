@@ -7,15 +7,13 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.101.0">
     <title>Dashboard Template · Bootstrap v5.2</title>
+
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
+
+
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
     <style>
-        #myPageValue {
-            margin-top: 15%;
-            margin-left: 30%;
-        }
-
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -70,20 +68,27 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Company name</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+    <form action="/board/search" class="w-100 rounded-0 border-0">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
+               aria-label="Search" name="search">
+    </form>
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="/member/logout">로그아웃</a>
+            <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
+            <a th:if="${session.loginEmail}" class="nav-link px-3" th:onclick="logout()">로그아웃</a>
         </div>
+
     </div>
 </header>
 
@@ -93,39 +98,32 @@
             <div class="position-sticky pt-3 sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <span data-feather="home" class="align-text-bottom"></span>
-                            Dashboard
-                        </a>
+                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                            게시판
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="/board/free">
                             <span data-feather="file" class="align-text-bottom"></span>
-                            Orders
+                            자유게시판
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
-                            Products
+                        <a class="nav-link" href="/board/traffic">
+                            <span data-feather="download" class="align-text-bottom"></span>
+                            신호등게시판
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="users" class="align-text-bottom"></span>
-                            Customers
+                        <a class="nav-link" href="/board/admin">
+                            <span data-feather="alert-triangle" class="align-text-bottom"></span>
+                            공지사항
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                            Reports
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="layers" class="align-text-bottom"></span>
-                            Integrations
+                            추가 있을까?
                         </a>
                     </li>
                 </ul>
@@ -155,59 +153,124 @@
                             내 신호등 관리
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">마이페이지</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group me-2">
-                        <button th:onclick="updateForm([[${session.loginId}]])" class="btn btn-lg btn-outline-primary">내정보수정</button>
-                        <button th:onclick="deleteById([[${session.loginId}]])" class="btn btn-lg btn-outline-danger">탈퇴</button>
-                    </div>
-                </div>
+                <h1 class="h2">내 정보(수정,회원탈퇴)</h1>
             </div>
-            <div class="container" id="myPageValue">
-                <table class="nav">
-                    <tr class="mb-3">
-                    <th>아이디</th>
-                        <td><input type="text" name="memberEmail" th:value="${member.memberEmail}" readonly></td>
-                    </tr>
-                    <tr>
-                    <th>비밀번호</th>
-                        <td><input type="password" th:value="${member.memberPassword}" readonly></td>
-                    </tr>
-                    <tr>
-                    <th>별명</th>
-                        <td><input type="text" th:value="${member.memberNickname}" readonly></td>
-                    </tr>
-                    <tr>
-                    <th>핸드폰</th>
-                        <td><input type="text" th:value="${member.memberPhone}" readonly></td>
 
+            <div class="table-responsive">
+                <table class="table table-striped table-sm" style="table-layout:fixed">
+                    <tbody>
+                    <tr th:rowspan="3" style="text-align: center">
+                        <th colspan="4"></th>
+                        <th>이메일 <div  th:text="${member.memberEmail}"></div></th>
+                        <th colspan="4">&nbsp;</th>
                     </tr>
-                    <tr>
-                    <th>회원Lv</th>
-                       <td><input type="text" th:value="${member.memberLevel}" readonly></td>
-
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>비밀번호 <input type="password" placeholder="비밀번호를 입력해주세요."></th>
+                        <th colspan="4">&nbsp;</th>
                     </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>별명<div th:text="${member.memberNickname}" ></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>핸드폰<div th:text="${member.memberPassword}" ></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>회원Lv<div th:text="${member.memberLevel}" ></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tbody>
                 </table>
+                <div style="text-align: right"><input type="button" id="first" th:onclick="updateForm()" class="btn-primary" value="수정/탈퇴"></div>
             </div>
-            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+            <br>
+            <div style="text-align: center;display: none;" id="down">
+                <img width="50" height="50" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqYmsgsJMAmhXR7pHN5F2IxjnSSwTqwNY4Yw&usqp=CAU" alt="">
+            </div>
+            <br>
+            <br>
+
+            <div id="updateForm" class="table-responsive" style="display: none">
+                <table class="table table-striped table-sm" style="table-layout:fixed">
+                    <tbody>
+                    <tr th:rowspan="3" style="text-align: center">
+                        <th colspan="4"></th>
+                        <th>이메일 <div th:text="${member.memberEmail}"></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>비밀번호 <input type="password" placeholder="비밀번호를 입력해주세요."></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>별명<div th:text="${member.memberNickname}" ></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>핸드폰<div th:text="${member.memberPassword}" ></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tr style="text-align: center">
+                        <th colspan="4">&nbsp;</th>
+                        <th>회원Lv<div th:text="${member.memberLevel}" ></div></th>
+                        <th colspan="4">&nbsp;</th>
+                    </tr>
+                    <tbody>
+                </table>
+                <div style="text-align: right"><input type="button" class="btn-primary" onclick="update()" value="수정하기"> <input type="button" onclick="delete1()" class="btn-primary" value="회원탈퇴"></div>
+            </div>
         </main>
     </div>
 </div>
+<script src="/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+        crossorigin="anonymous"></script>
+<script src="/css/dashboard.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
-</body>
 <script th:inline="javascript">
-    function deleteById(id) {
-        location.href = "/member/deleteById/" + id;
+    function logout() {
+        location.href = "/board/logout";
+    }
+    function updateForm(){
+        document.getElementById("first").style.display = "none";
+        document.getElementById("updateForm").style.display="block";
+        document.getElementById("down").style.display = "block";
+    }
+
+    function update(){
+        alert("업데이트")
+    }
+    function delete1(){
+        alert("삭제")
     }
 </script>
+
+</body>
 </html>

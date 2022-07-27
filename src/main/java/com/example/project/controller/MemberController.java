@@ -71,7 +71,7 @@ public class MemberController {
     public String myPage(@PathVariable Long loginId, Model model) {
         MemberDTO memberDTO = memberService.findById(loginId);
         model.addAttribute("member", memberDTO);
-        return "/MemberPages/myPage";
+        return "/LeeHyeon/myPage";
     }
 
     @PostMapping("/findIdForm")

@@ -65,4 +65,12 @@ public class MemberService {
             return "no";
         }
     }
+
+    public void update(MemberDTO memberDTO) {
+        memberRepository.save(MemberEntity.toMemberUpdateEntity(memberDTO));
+    }
+
+//    public void deleteById(Long memberId) {
+//        memberRepository.deleteById(memberId);
+//    }
 }

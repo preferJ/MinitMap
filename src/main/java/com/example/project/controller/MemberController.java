@@ -4,6 +4,8 @@ import com.example.project.dto.MemberDTO;
 import com.example.project.entity.MemberEntity;
 import com.example.project.service.MemberService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +69,6 @@ public class MemberController {
     }
     @GetMapping("/myPage/{loginId}")
     public String myPage(@PathVariable Long loginId, Model model) {
-        System.out.println("memberId = " + loginId);;
         MemberDTO memberDTO = memberService.findById(loginId);
         model.addAttribute("member", memberDTO);
         return "/MemberPages/myPage";
@@ -85,4 +86,5 @@ public class MemberController {
         String result = memberService.findPwForm(memberEmail);
         return result;
     }
+
 }

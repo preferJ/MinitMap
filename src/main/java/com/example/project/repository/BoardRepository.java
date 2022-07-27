@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
@@ -34,4 +36,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     @Modifying
     @Query(value = "update BoardEntity b set b.boardDislike = b.boardDislike - 1 where b.boardId = :id")
     int UnDislike(@Param("id") Long id);
+
+    List<BoardEntity> findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(LocalDateTime start, LocalDateTime end);
+
 }

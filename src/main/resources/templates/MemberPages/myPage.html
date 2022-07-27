@@ -438,8 +438,13 @@
                 console.log(result)
                 if (result != "no") {
                     console.log(result)
-                    alert("비밀번호가 일치합니다!\n성공적으로 탈퇴되었습니다");
-                    location.href = "/member/deleteById/" + id;
+                    alert("비밀번호가 일치합니다!");
+                    if(confirm("정말 탈퇴하시겠습니까?")){
+                        alert("탈퇴되었습니다.");
+                        location.href = "/member/deleteById/" + id;
+                    }else {
+                        alert("탈퇴 안해찌렁~");
+                    }
                 } else {
                     alert("비밀번호가 일치하지 않습니다");
 

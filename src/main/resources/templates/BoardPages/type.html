@@ -168,7 +168,9 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">검색 결과</h1>
+                <h1 th:if="${type}==1" class="h2">전체게시글(지역조회)</h1>
+                <h1 th:if="${type}==2" class="h2">자유게시판(지역조회)</h1>
+                <h1 th:if="${type}==3" class="h2">신호게시판(지역조회)</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <select class="btn btn-sm btn-outline-secondary dropdown-toggle" name="boardTypeLocation1"
                             id="boardTypeLocation1"></select>
@@ -189,7 +191,7 @@
                     <thead>
                     <tr>
                         <th scope="col">글번호</th>
-                        <th scope="col">게시판 타입</th>
+                        <th th:if="${type}==1" scope="col">카테고리</th>
                         <th scope="col">제목</th>
                         <th scope="col">시/도</th>
                         <th scope="col">군/구</th>
@@ -204,7 +206,7 @@
                     </tr>
                     <tr th:each="board : ${boardDTOList}" class="colored" th:onclick="detail([[${board.boardId}]])">
                         <td th:text="${board.boardId}"></td>
-                        <td th:text="${board.boardType}"></td>
+                        <td th:if="${type}==1" th:text="${board.boardType}"></td>
                         <td th:text="${board.boardTitle}"
                             style="width:100%;overflow:hidden;text-overflow:ellipsis;"></td>
                         <td th:text="${board.boardTypeLocation1}"></td>

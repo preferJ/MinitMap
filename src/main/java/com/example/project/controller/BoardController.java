@@ -4,13 +4,11 @@ import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
 import com.example.project.dto.LikeCheckDTO;
 import com.example.project.dto.TrafficDTO;
+import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
-import com.example.project.service.BoardService;
-import com.example.project.service.LikeCheckService;
-import com.example.project.service.MemberService;
-import com.example.project.service.TrafficService;
+import com.example.project.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +30,7 @@ public class BoardController {
     private final TrafficService trafficService;
     private final BoardRepository boardRepository;
     private final LikeCheckService likeCheckService;
+    private final TrafficTimeService trafficTimeService;
     // 이현 시작
     @GetMapping
     public String board(@PageableDefault(page = 1) Pageable pageable, Model model){
@@ -159,6 +158,48 @@ public class BoardController {
                 }
             }
         }
+        if (boardDTO.getBoardType().equals("신호")){
+            TrafficTimeDTO trafficTimeDTO = trafficTimeService.findByTrafficId(boardDTO.getTrafficId());
+//            String startTime = (trafficTimeDTO.getSetStartTime()/10000) + ":" + ((trafficTimeDTO.getSetStartTime()%10000)/100) + ":" + (trafficTimeDTO.getSetStartTime()%100);
+            String startTime ="";
+            if (trafficTimeDTO.getTrafficApplyStart()/10000 <10){
+                startTime += "0" + (trafficTimeDTO.getTrafficApplyStart()/10000) + ":";
+            }else {
+                startTime += (trafficTimeDTO.getTrafficApplyStart()/10000) + ":";
+            }
+
+            if (((trafficTimeDTO.getTrafficApplyStart()%10000)/100)<10){
+                startTime += "0" + ((trafficTimeDTO.getTrafficApplyStart()%10000)/100) + ":";
+            }else {
+                startTime += ((trafficTimeDTO.getTrafficApplyStart()%10000)/100) + ":";
+            }
+
+            if ((trafficTimeDTO.getTrafficApplyStart()%100)<10){
+                startTime += "0" + (trafficTimeDTO.getTrafficApplyStart()%100);
+            }else {
+                startTime += (trafficTimeDTO.getTrafficApplyStart()%100);
+            }
+            String endTime = "";
+            if (trafficTimeDTO.getTrafficApplyEnd()/10000 <10){
+                endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd()/10000) + ":";
+            }else {
+                endTime += (trafficTimeDTO.getTrafficApplyEnd()/10000) + ":";
+            }
+
+            if (((trafficTimeDTO.getTrafficApplyEnd()%10000)/100)<10){
+                endTime += "0" + ((trafficTimeDTO.getTrafficApplyEnd()%10000)/100) + ":";
+            }else {
+                endTime += ((trafficTimeDTO.getTrafficApplyEnd()%10000)/100) + ":";
+            }
+
+            if ((trafficTimeDTO.getTrafficApplyEnd()%100)<10){
+                endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd()%100);
+            }else {
+                endTime += (trafficTimeDTO.getTrafficApplyEnd()%100);
+            }
+            model.addAttribute("trafficStart",startTime);
+            model.addAttribute("trafficEnd",endTime);
+        }
         System.out.println(check);
         model.addAttribute("check",check);
         return "/BoardPages/detail";
@@ -171,7 +212,7 @@ public class BoardController {
         return "redirect:/board/detail?id=" + boardId;
     }
 
-    @GetMapping("trafficMap")
+    @GetMapping("/trafficMap")
     public String trafficMap(@RequestParam("boardId") Long id , Model model){
         BoardEntity boardEntity = boardRepository.findById(id).get();
         Double dnleh = boardEntity.getTrafficEntity().getTrafficLat();
@@ -179,5 +220,26 @@ public class BoardController {
         model.addAttribute("dnleh",dnleh);
         model.addAttribute("rudeh",rudeh);
         return "/BoardPages/trafficMap";
+    }
+
+    @GetMapping("/update")
+    public String updateForm(@RequestParam("boardId") Long id, Model model){
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("board",boardDTO);
+        return "/BoardPages/update";
+    }
+
+    @PostMapping("update")
+    public String update(@ModelAttribute BoardDTO boardDTO , HttpSession session){
+        Long memberId = (Long) session.getAttribute("loginId");
+        boardDTO.setMemberId(memberId);
+        boardService.update(boardDTO);
+        return "redirect:/board/detail?id="+boardDTO.getBoardId();
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("boardId") Long id){
+        boardService.delete(id);
+        return "redirect:/board";
     }
 }

@@ -102,7 +102,7 @@ public class BoardEntity {
         return boardEntity;
     }
 
-    public static BoardEntity toBoardUpdateEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity) {
+    public static BoardEntity toBoardTrafficUpdateEntity(BoardDTO boardDTO, MemberEntity memberEntity, TrafficEntity trafficEntity) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setBoardId(boardDTO.getBoardId());
         boardEntity.setBoardType(boardDTO.getBoardType());
@@ -115,6 +115,21 @@ public class BoardEntity {
         boardEntity.setManagerCheck(boardDTO.isManagerCheck());
         boardEntity.setMemberEntity(memberEntity);
         boardEntity.setTrafficEntity(trafficEntity);
+        return boardEntity;
+    }
+
+    public static BoardEntity toBoardUpdateEntity(BoardDTO boardDTO, MemberEntity memberEntity) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardId(boardDTO.getBoardId());
+        boardEntity.setBoardType(boardDTO.getBoardType());
+        boardEntity.setBoardTypeLocation1(boardDTO.getBoardTypeLocation1());
+        boardEntity.setBoardTypeLocation2(boardDTO.getBoardTypeLocation2());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setBoardLike(boardDTO.getBoardLike());
+        boardEntity.setBoardDislike(boardDTO.getBoardDislike());
+        boardEntity.setManagerCheck(boardDTO.isManagerCheck());
+        boardEntity.setMemberEntity(memberEntity);
         return boardEntity;
     }
 }

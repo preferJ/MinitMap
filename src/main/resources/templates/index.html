@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
 </head>
 <body>
 <!--ㅅㅎ 커밋 연습할때 썻던 텍스트는 다 날렸음 (원랜 삭제 이력 보여야하지만 테스트했던거라 날림)
@@ -12,7 +14,7 @@
 <!--ㅅㅎ 맵 메인 이동 버튼 추가-->
 <a href="/hss">경로 이동</a>
 <a href="/hss/search">검색및경로 이동</a>
-<a href="/kmj/header" >헤더페이지 이동</a>
+<button onclick="startMinitMap()" class="btn btn-primary">미닛맵 시작하기</button>
 <a href="/hss/myprot">마이플및 루틴</a>
 <a href="/hss/trafficChoese">신호등선택</a>
 <a href="/board">게시판 메인 이동</a>
@@ -20,4 +22,9 @@
 <br><br><br><br>
 <a href="/jshTest" style="font-size: 50px">선호 테스트 이동</a>
 </body>
+<script>
+    function startMinitMap() {
+        location.href = "/1tapTest";
+    }
+</script>
 </html>

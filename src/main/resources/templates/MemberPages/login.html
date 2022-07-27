@@ -333,6 +333,28 @@
 </form>
 </body>
 <script th:inline="javascript">
+    function loginCheck() {
+        const email = document.getElementById("memberEmail").value;
+        const pw = document.getElementById("memberPassword").value;
+
+        $.ajax({
+            type:"post",
+            url:"/member/loginCheck",
+            data:{"memberEmail": email, "memberPassword": pw},
+            dataType:"text",
+            success:function (result) {
+                if(result != "no") {
+                    alert("로그인이 성공하였습니다");
+                    loginForm.submit();
+                }else {
+                    alert("아이디와 비밀번호를 확인해주세요");
+                }
+            },
+            error:function (){
+                alert("error");
+            }
+        })
+    }
     function findIdForm() {
         const phoneConfirm = prompt("000-000-000 형식으로 전화번호를 입력해주세요");
 

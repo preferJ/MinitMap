@@ -32,6 +32,16 @@ public class MemberService {
             return null;
         }
     }
+    public String loginCheck(String memberEmail, String memberPassword) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmailAndMemberPassword(memberEmail, memberPassword);
+        if(optionalMemberEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            String result = memberEntity.getMemberEmail();
+            return result;
+        }else {
+            return "no";
+        }
+    }
 
     public MemberDTO findById(Long id) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
@@ -69,6 +79,12 @@ public class MemberService {
     public void update(MemberDTO memberDTO) {
         memberRepository.save(MemberEntity.toMemberUpdateEntity(memberDTO));
     }
+
+    public void deleteById(Long loginId) {
+        memberRepository.deleteById(loginId);
+    }
+
+
 
 //    public void deleteById(Long memberId) {
 //        memberRepository.deleteById(memberId);

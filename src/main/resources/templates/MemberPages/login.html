@@ -355,20 +355,24 @@
             }
         });
     }
-    // function findPwForm(){
-    //     const emailConfirm = prompt("아이디를 입력해주세요");
-    //
-    //     $.ajax({
-    //         type: "post",
-    //         url: "/member/findPwForm",
-    //         data: {"memberEmail":emailConfirm},
-    //         dataType: "text",
-    //         success:function (result) {
-    //             if(result == "ok"){
-    //                 alert("당신의 ")
-    //             }
-    //         }
-    //     })
-    // }
+    function findPwForm(){
+        const emailConfirm = prompt("아이디를 입력해주세요");
+
+        $.ajax({
+            type: "post",
+            url: "/member/findPwForm",
+            data: {"memberEmail":emailConfirm},
+            dataType: "text",
+            success:function (result) {
+                if(result != "no"){
+                    alert("당신의 비밀번호는" + result + "입니다");
+                    location.href = "/member/loginForm";
+                }else {
+                    alert("해당 아이디가 존재하지 않습니다");
+                    location.href = "/member/loginForm";
+                }
+            }
+        })
+    }
 </script>
 </html>

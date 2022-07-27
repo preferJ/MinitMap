@@ -9,5 +9,30 @@
 <body>
 <th:block th:replace="/kmj/header :: header"></th:block>
 
+    <button th:onclick="findAll()">회원명단 출력</button>
+
+    <div class="container">
+        <table class="container">
+            <tr>
+                <th>회원번호</th>
+                <th>회원아이디</th>
+                <th>회원별명</th>
+                <th>회원핸드폰번호</th>
+                <th>회원등급</th>
+            </tr>
+            <tr th:each="member: ${memberList}">
+                <td th:text="${member.memberId}"></td>
+                <td th:text="${member.memberEmail}"></td>
+                <td th:text="${member.memberNickname}"></td>
+                <td th:text="${member.memberPhone}"></td>
+                <td th:text="${member.memberLevel}"></td>
+            </tr>
+        </table>
+    </div>
 </body>
+<script th:inline="javascript">
+    function findAll() {
+        location.href = "/member/findAll";
+    }
+</script>
 </html>

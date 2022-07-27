@@ -35,6 +35,7 @@ public class MemberEntity {
 
     @Column(name = "memberLevel")
     @ColumnDefault("1") //default 1
+
     private Long memberLevel;
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

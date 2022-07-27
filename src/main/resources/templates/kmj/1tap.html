@@ -16,8 +16,8 @@
         var labelArr = [];
         var nameArr = [];
         // 화면 크기가 변경될때마다 함수 호출
-        $(window).resize(function (){
-            if(map_count == 0) {
+        $(window).resize(function () {
+            if (map_count == 0) {
                 var width_size = window.outerWidth;
                 // 화면의 height값을 가져오기
                 var height_size = window.outerHeight;
@@ -37,7 +37,7 @@
                     mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 164 - 4 + "px";
                 }
-            }else if(map_count == 1){
+            } else if (map_count == 1) {
                 var width_size = window.outerWidth;
                 // 화면의 height값을 가져오기
                 var height_size = window.outerHeight;
@@ -69,9 +69,11 @@
         margin: 0;
         overflow: hidden;
     }
+
     ::-webkit-scrollbar {
         display: none;
     }
+
     #map_div {
         float: right;
         width: 100%;
@@ -86,10 +88,11 @@
         border: 2px solid black;
         border-top: none;
     }
-    .searth-name{
+
+    .searth-name {
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space : nowrap;
+        white-space: nowrap;
     }
 
     #traffic_information {
@@ -101,8 +104,9 @@
         height: 97%;
         padding: 5%;
     }
-    #traffic_information::-webkit-scrollbar{
-        display:none;
+
+    #traffic_information::-webkit-scrollbar {
+        display: none;
     }
 
 </style>
@@ -112,54 +116,57 @@
 </body>
 <div id="sidebar">
     <div id="traffic_information">
-    <div style="margin-top: 8px">
-        <div>
-        <input type="search" id="searchKeyword" placeholder="장소검색창">
-        <button id="btn_select">검색</button>
-        </div>
-        <br />
-        <div class="title"><strong>Search</strong> Results</div>
-        <div class="rst_wrap">
-            <div class="rst mCustomScrollbar">
-        <ul id="searchResult" name="searchResult">
-            <li>검색결과</li>
-        </ul>
-            </div>
-        </div>
-        <hr>
-        <div th:if="${session.loginEmail}">
-            <div th:if="${session.loginEmail.toString().equals('admin')}">
-               <a href="/member/admin">관리자 화면으로 이동하기</a>
-            </div>
+        <div style="margin-top: 8px">
             <div>
-                <b>마이플레이스</b> <br>
-                집<i class="fa-solid fa-house"></i><input type="text"> <br>
-                회사<i class="fa-solid fa-buildings"></i><input type="text">
+                <input type="search" id="searchKeyword" placeholder="장소검색창">
+                <button id="btn_select">검색</button>
+            </div>
+            <br/>
+            <div class="title"><strong>Search</strong> Results</div>
+            <div class="rst_wrap">
+                <div class="rst mCustomScrollbar">
+                    <ul id="searchResult" name="searchResult">
+                        <li>검색결과</li>
+                    </ul>
+                </div>
             </div>
             <hr>
-            <div>
-                <b>루틴</b> <br>
-                <input type="text" placeholder="출근길"> <br>
-                <input type="text" placeholder="퇴근길">
+            <div th:if="${session.loginEmail}">
+                <div>
+                    <b>마이플레이스</b> <br>
+                    집<i class="fa-solid fa-house"></i><input type="text"> <br>
+                    회사<i class="fa-solid fa-buildings"></i><input type="text">
+                </div>
+                <hr>
+                <div>
+                    <b>루틴</b> <br>
+                    <input type="text" placeholder="출근길"> <br>
+                    <input type="text" placeholder="퇴근길">
+                </div>
+                <hr>
+                <div>
+                    <b>자주보는 신호등</b> <br>
+                    <input type="text" th:value="11"> <br>
+                    <input type="text" th:value="11">
+                </div>
+                <hr>
+                <div th:if="${session.loginEmail.toString().equals('admin')}">
+                 <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
+                </div>
+                <button th:onclick="logout()" type="button" class="btn success">▶로그아웃</button>
+                <hr>
             </div>
-            <hr>
-            <div>
-                <b>자주보는 신호등</b> <br>
-                <input type="text" th:value="11"> <br>
-                <input type="text" th:value="11">
+            <div th:unless="${session.loginEmail}">
+                <button onclick="loginForm()" type="button" class="btn success">▶로그인</button>
             </div>
-            <hr>
-            <button th:onclick="logout()" type="button" class="btn success">로그아웃</button>
-            <hr>
-        </div>
-        <div th:unless="${session.loginEmail}">
-            <button onclick="loginForm()" type="button" class="btn success">로그인</button>
-        </div>
 
-    </div>
+        </div>
     </div>
 </div>
 <script th:inline="javascript">
+    function loginAdmin() {
+        location.href = "/member/admin";
+    }
     const loginForm = () => {
         var width = 480;
         var height = 630;
@@ -189,8 +196,8 @@
         sidebarResize = document.getElementById("sidebar");
         var width_size = window.outerWidth;
         var height_size = window.outerHeight;
-        if(width_size == 1920 ){
-            sidebarResize.style.height = height_size - 147 - 4  + "px";
+        if (width_size == 1920) {
+            sidebarResize.style.height = height_size - 147 - 4 + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
@@ -200,7 +207,7 @@
                 zoomControl: true,
                 scrollwheel: true
             });
-        }else {
+        } else {
             sidebarResize.style.height = height_size - 164 - 4 + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
@@ -214,20 +221,20 @@
         }
 
         $("#btn_select").click(
-            function() {
+            function () {
                 var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
                 $.ajax({
-                    method : "GET", // 요청 방식
-                    url : "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback=result", // url 주소
-                    async : false, // 동기설정
-                    data : { // 요청 데이터 정보
-                        "appKey" : "l7xx71377ca4d61b42018b3da0ede8c234fb", // 발급받은 Appkey
-                        "searchKeyword" : searchKeyword, // 검색 키워드
-                        "resCoordType" : "EPSG3857", // 요청 좌표계
-                        "reqCoordType" : "WGS84GEO", // 응답 좌표계
-                        "count" : 6 // 가져올 갯수
+                    method: "GET", // 요청 방식
+                    url: "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback=result", // url 주소
+                    async: false, // 동기설정
+                    data: { // 요청 데이터 정보
+                        "appKey": "l7xx71377ca4d61b42018b3da0ede8c234fb", // 발급받은 Appkey
+                        "searchKeyword": searchKeyword, // 검색 키워드
+                        "resCoordType": "EPSG3857", // 요청 좌표계
+                        "reqCoordType": "WGS84GEO", // 응답 좌표계
+                        "count": 6 // 가져올 갯수
                     },
-                    success : function(response) {
+                    success: function (response) {
                         // 출발지 도착지 세팅을 위한 위도경도 배열 초기화
                         latLonArr = [];
                         nameArr = [];
@@ -236,7 +243,7 @@
 
                         // 2. 기존 마커, 팝업 제거
                         if (searchMarkerArr.length > 0) {
-                            for(var i in searchMarkerArr) {
+                            for (var i in searchMarkerArr) {
                                 searchMarkerArr[i].setMap(null);
                             }
                             searchMarkerArr = [];
@@ -288,13 +295,13 @@
                                 {
                                     position : markerPosition, // 마커가 표시될 좌표
                                     //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
-                                    icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_"
+                                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_"
                                         + k
                                         + ".png", // 아이콘 등록
-                                    iconSize : new Tmapv2.Size(
+                                    iconSize: new Tmapv2.Size(
                                         24, 38), // 아이콘 크기 설정
-                                    title : name, // 마커 타이틀
-                                    map : map // 마커가 등록될 지도 객체
+                                    title: name, // 마커 타이틀
+                                    map: map // 마커가 등록될 지도 객체
                                 });
 
                             // 결과창에 나타날 검색 결과 html
@@ -317,7 +324,7 @@
                         map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
                         map.zoomOut();
                     },
-                    error : function(request, status, error) {
+                    error: function (request, status, error) {
                         console.log("code:"
                             + request.status + "\n"
                             + "message:"
@@ -328,12 +335,12 @@
             });
     }
 
-    function startPing(id){
-        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&name="+nameArr[id]+"&lat="+latLonArr[id].lat()+"&lng="+latLonArr[id].lng();
+    function startPing(id) {
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&name=" + nameArr[id] + "&lat=" + latLonArr[id].lat() + "&lng=" + latLonArr[id].lng();
     }
 
-    function endPing(id){
-        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name="+nameArr[id]+"&lat="+latLonArr[id].lat()+"&lng="+latLonArr[id].lng();
+    function endPing(id) {
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name=" + nameArr[id] + "&lat=" + latLonArr[id].lat() + "&lng=" + latLonArr[id].lng();
     }
 
     function logout() {

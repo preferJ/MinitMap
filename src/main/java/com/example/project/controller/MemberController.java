@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -54,6 +55,11 @@ public class MemberController {
             return "MemberPages/login";
         }
     }
+    @PostMapping("/loginCheck")
+    public @ResponseBody String loginCheck(@RequestParam String memberEmail,@RequestParam String memberPassword) {
+        String result = memberService.loginCheck(memberEmail,memberPassword);
+        return result;
+    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -85,6 +91,20 @@ public class MemberController {
     public @ResponseBody String findPwForm(@RequestParam String memberEmail) {
         String result = memberService.findPwForm(memberEmail);
         return result;
+    }
+
+    @GetMapping("/deleteById/{loginId}")
+    public String deleteById(@PathVariable Long loginId, HttpSession session){
+        memberService.deleteById(loginId);
+        session.invalidate();
+        return "redirect:/1tapTest";
+    }
+
+    @GetMapping("/findAll")
+    public String findAll(Model model) {
+       List<MemberDTO> memberDTOList = memberService.findAll();
+       model.addAttribute("memberList", memberDTOList);
+       return "AdminPages/adminHistory";
     }
 
 }

@@ -169,10 +169,10 @@
             </div>
 
             <div class="table-responsive">
-                <form action="/board/save" method="post">
+                <form action="/board/update" method="post">
+                    <input type="hidden" name="boardId" th:value="${board.boardId}">
                     <input type="hidden" id="trafficId" name="trafficId" readonly>
                     <table class="table table-striped table-sm">
-                        <input type="hidden" th:value="${session.loginNickName}" readonly>
                         <tbody>
                         <tr>
                             <th>게시판  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -180,12 +180,12 @@
                                     <option value="">게시판선택</option>
                                     <option value="자유">자유게시판</option>
                                     <option value="신호">신호게시판</option>
-                                    <option th:if="${session.loginEmail == 'admin'}" value="공지">공지게시판</option>
+                                    <option value="공지">공지게시판</option>
                                 </select>
                                 <span style="display: inline-block">
                                     <input type="text" id="trafficName" style="display: none" readonly>
                                     <input type="button" id="trafficChoice" value="신호선택" style="display: none"
-                                        th:onclick="selectTraffic()">
+                                           th:onclick="selectTraffic()">
                                 </span>
                             </th>
                         </tr>
@@ -197,17 +197,17 @@
                         </tr>
                         <tr>
                             <th>제목 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="text" name="boardTitle" style="width: 1000px;" placeholder="제목을 입력해주세요.">
+                                <input th:value="${board.boardTitle}" type="text" name="boardTitle" style="width: 1000px;" placeholder="제목을 입력해주세요.">
                             </th>
                         </tr>
                         <tr>
                             <th colspan="2" rowspan="5">
                                 <div>내용</div>
-                                <textarea placeholder="내용을 입력해주세요." name="boardContents" id="" cols="180" rows="25"></textarea></th>
+                                <textarea placeholder="내용을 입력해주세요." name="boardContents" id="" cols="180" rows="25" th:text="${board.boardContents}"></textarea></th>
                         </tr>
                         <tbody>
                     </table>
-                    <input type="submit" class="btn-primary" value="작성완료">
+                    <input type="submit" class="btn-primary" value="수정하기">
                 </form>
             </div>
         </main>

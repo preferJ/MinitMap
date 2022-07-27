@@ -238,34 +238,6 @@ public class BoardService {
         return boardList;
     }
 
-//    public Page<BoardDTO> searchPage(Pageable pageable, Long id, String local1, String local2, String search) {
-//        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
-//        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
-////        page = page - 1; // 삼항연산자
-//        page = (page == 1)? 0: (page-1);
-//        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContainingAndBoardTypeLocation1AndBoardTypeLocation2(search,local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
-//        // Page<BoardEntity> => Page<BoardDTO>
-//        // board : BoardEntity 객체
-//        // new BoardDTO() 생성자
-//        Page<BoardDTO> boardList = boardEntities.map(
-//                board -> new BoardDTO(board.getBoardId(),
-//                        board.getMemberEntity().getMemberId(),
-//                        null,
-//                        board.getBoardType(),
-//                        board.getBoardTypeLocation1(),
-//                        board.getBoardTypeLocation2(),
-//                        board.getBoardTitle(),
-//                        board.getBoardContents(),
-//                        board.getBoardCreatedTime(),
-//                        board.getBoardUpdateTime(),
-//                        board.getBoardLike(),
-//                        board.getBoardDislike(),
-//                        board.isManagerCheck(),
-//                        board.getMemberEntity().getMemberNickname()
-//                ));
-//        return boardList;
-//    }
-
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> findById = boardRepository.findById(id);
         BoardEntity boardEntity = findById.get();
@@ -316,5 +288,22 @@ public class BoardService {
             boardRepository.UnDislike(boardId);
         }
 
+    }
+
+    public void update(BoardDTO boardDTO) {
+        MemberEntity memberEntity = memberRepository.findById(boardDTO.getMemberId()).get();
+        System.out.println(memberEntity.getMemberId());
+        System.out.println(boardDTO);
+        if (boardDTO.getBoardType().equals("신호")){
+            TrafficEntity trafficEntity = trafficRepository.findById(boardDTO.getTrafficId()).get();
+            boardRepository.save(BoardEntity.toBoardTrafficUpdateEntity(boardDTO,memberEntity,trafficEntity));
+        }else{
+            boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO,memberEntity));
+        }
+
+    }
+
+    public void delete(Long id) {
+        boardRepository.deleteById(id);
     }
 }

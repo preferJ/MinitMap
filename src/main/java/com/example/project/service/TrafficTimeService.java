@@ -32,4 +32,9 @@ public class TrafficTimeService {
         }
         return trafficTimeDTOList;
     }
+
+    public TrafficTimeDTO findByTrafficId(Long trafficId) {
+        Optional<TrafficEntity> entity = trafficRepository.findById(trafficId);
+        return TrafficTimeDTO.toTrafficTimeDTO(trafficTimeRepository.findByTrafficEntity(entity.get()));
+    }
 }

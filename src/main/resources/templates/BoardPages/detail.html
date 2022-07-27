@@ -194,16 +194,6 @@
             <div class="table-responsive">
                 <table class="table table-striped table-sm" style="table-layout:fixed">
                     <thead>
-                    <!--                    <tr>-->
-                    <!--                        <th scope="col">작성자</th>-->
-                    <!--                        <th scope="col">작성시간</th>-->
-                    <!--                        <th scope="col">시/도</th>-->
-                    <!--                        <th scope="col">군/구</th>-->
-                    <!--                        <th scope="col">제목</th>-->
-                    <!--                        <th scope="col">내용</th>-->
-                    <!--                        <th scope="col">좋아요</th>-->
-                    <!--                        <th scope="col">싫어요</th>-->
-                    <!--                    </tr>-->
                     </thead>
                     <tbody>
                     <tr>
@@ -224,7 +214,9 @@
                                 th:text="${board.boardTypeLocation2}"></span></th>
                     </tr>
                     <tr>
-                        <th colspan="2">제목 : <span th:text="${board.boardTitle}"></span></th>
+                        <th th:if="${board.boardType} != '신호'" colspan="2">제목 : <span th:text="${board.boardTitle}"></span></th>
+                        <th th:if="${board.boardType} == '신호'">제목 : <span th:text="${board.boardTitle}"></span></th>
+                        <th th:if="${board.boardType} == '신호'">운영시간 : <span th:text="${trafficStart}"></span> ~ <span th:text="${trafficEnd}"></span></th>
                     </tr>
                     <tr>
                         <th colspan="2" rowspan="5">
@@ -234,10 +226,15 @@
                     </tr>
                     </tbody>
                 </table>
-                <div><input type="button" value="수정"> <input type="button" value="삭제"> <input type="button"
-                                                                                              value="신호추가"></div>
+                <div th:if="${session.loginNickName == board.memberNickname}"><input type="button" th:onclick="update()" value="수정"> <input type="button" th:onclick="delete1()" value="삭제"> <input th:if="${board.boardType == '신호'}" type="button"
+                                                                                              value="신호추가"><input th:if="${session.loginEmail == 'admin'}" style="float: right" type="button" value="글 확인"></div>
+                <div th:if="${session.loginNickName != board.memberNickname}and${session.loginEmail == 'admin'}"><input type="button" th:onclick="delete1()" value="삭제"><input style="float: right" type="button" value="글 확인"></div>
+                <div th:if="${session.loginId} and ${session.loginEmail != 'admin'} and ${session.loginNickName != board.memberNickname}"><input th:if="${board.boardType == '신호'}" type="button"
+                                                                                                                          value="신호추가"><input style="float: right" type="button" value="신고"></div>
             </div>
+            <br><br>
         </main>
+
         <div th:if="${check}=='빔'" style="text-align: center">
             <button th:onclick="like(1)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
                                                                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
@@ -351,6 +348,15 @@
         var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
 
         window.open("/board/trafficMap?boardId=" + [[${board.boardId}]], "지도표시", windowStatus);
+    }
+
+    function update(){
+        location.href = "/board/update?boardId=" + [[${board.boardId}]];
+    }
+
+    function delete1(){
+        alert("글이 삭제되었습니다.")
+        location.href = "/board/delete?boardId=" + [[${board.boardId}]];
     }
 </script>
 </body>

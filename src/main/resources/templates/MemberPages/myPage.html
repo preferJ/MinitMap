@@ -173,37 +173,55 @@
                     <tbody>
                     <tr th:rowspan="3" style="text-align: center">
                         <th colspan="4"></th>
-                        <th>이메일 <div  th:text="${member.memberEmail}"></div></th>
+                        <th>이메일
+                            <div th:text="${member.memberEmail}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>비밀번호 <input type="password" placeholder="비밀번호를 입력해주세요."></th>
+                        <th>비밀번호
+                            <div th:text="${member.memberPassword}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>별명<div th:text="${member.memberNickname}" ></div></th>
+                        <th>별명
+                            <div th:text="${member.memberNickname}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>핸드폰<div th:text="${member.memberPassword}" ></div></th>
+                        <th>핸드폰
+                            <div th:text="${member.memberPassword}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>회원Lv<div th:text="${member.memberLevel}" ></div></th>
+                        <th>회원Lv
+                            <div th:text="${member.memberLevel}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tbody>
                 </table>
-                <div style="text-align: right"><input type="button" id="first" th:onclick="updateForm()" class="btn-primary" value="수정/탈퇴"></div>
+                <div style="text-align: right">
+                    <input type="button" class="btn-primary" th:onclick="update()" value="수정하기">
+                    <input type="button" th:onclick="pwCheck([[${session.loginId}]])" class="btn-primary" value="회원탈퇴">
+                </div>
             </div>
+            <!--                <div style="text-align: right"><input type="button" id="first" th:onclick="updateForm()"-->
+            <!--                                                      class="btn-primary" value="수정/탈퇴"></div>-->
+            <!--            </div>-->
 
             <br>
             <div style="text-align: center;display: none;" id="down">
-                <img width="50" height="50" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqYmsgsJMAmhXR7pHN5F2IxjnSSwTqwNY4Yw&usqp=CAU" alt="">
+                <img width="50" height="50"
+                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqYmsgsJMAmhXR7pHN5F2IxjnSSwTqwNY4Yw&usqp=CAU"
+                     alt="">
             </div>
             <br>
             <br>
@@ -213,7 +231,9 @@
                     <tbody>
                     <tr th:rowspan="3" style="text-align: center">
                         <th colspan="4"></th>
-                        <th>이메일 <div th:text="${member.memberEmail}"></div></th>
+                        <th>이메일
+                            <div th:text="${member.memberEmail}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
@@ -223,23 +243,33 @@
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>별명<div th:text="${member.memberNickname}" ></div></th>
+                        <th>별명
+                            <div th:text="${member.memberNickname}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>핸드폰<div th:text="${member.memberPassword}" ></div></th>
+                        <th>핸드폰
+                            <div th:text="${member.memberPassword}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tr style="text-align: center">
                         <th colspan="4">&nbsp;</th>
-                        <th>회원Lv<div th:text="${member.memberLevel}" ></div></th>
+                        <th>회원Lv
+                            <div th:text="${member.memberLevel}"></div>
+                        </th>
                         <th colspan="4">&nbsp;</th>
                     </tr>
                     <tbody>
                 </table>
-                <div style="text-align: right"><input type="button" class="btn-primary" onclick="update()" value="수정하기"> <input type="button" onclick="delete1()" class="btn-primary" value="회원탈퇴"></div>
+                <div style="text-align: right">
+                    <input type="button" class="btn-primary" th:onclick="update()" value="수정하기">
+                    <input type="button" th:onclick="pwCheck([[${session.loginId}]])" class="btn-primary" value="회원탈퇴">
+                </div>
             </div>
+
         </main>
     </div>
 </div>
@@ -255,20 +285,62 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script th:inline="javascript">
+    function loginForm() {
+        location.href = "/member/loginForm";
+    }
+
     function logout() {
         location.href = "/board/logout";
     }
-    function updateForm(){
+
+    function updateForm() {
         document.getElementById("first").style.display = "none";
-        document.getElementById("updateForm").style.display="block";
+        document.getElementById("updateForm").style.display = "block";
         document.getElementById("down").style.display = "block";
     }
 
-    function update(){
-        alert("업데이트")
-    }
-    function delete1(){
-        alert("삭제")
+    // function update() {
+    //     const pw = prompt("비밀번호를 입력해주세요")
+    //
+    //     $.ajax({
+    //         type: "post",
+    //         url: "/member/passwordCheck",
+    //         data: {"memberPassword": pw},
+    //         dataType: "text",
+    //         success: function (result) {
+    //             if (result != "no") {
+    //                 alert("비밀번호가 일치합니다");
+    //             } else {
+    //                 alert("비밀번호가 일치하지 않습니다");
+    //
+    //             }
+    //         }
+    //     })
+    // }
+
+    function pwCheck(id) {
+        const pw = prompt("비밀번호를 입력해주세요");
+
+        $.ajax({
+            type: "post",
+            url: "/member/pwCheck",
+            data: {"memberPassword": pw},
+            dataType: "text",
+            success: function (result) {
+                console.log(result)
+                if (result != "no") {
+                    console.log(result)
+                    alert("비밀번호가 일치합니다!\n성공적으로 탈퇴되었습니다");
+                    location.href = "/member/deleteById/" + id;
+                } else {
+                    alert("비밀번호가 일치하지 않습니다");
+
+                }
+            },
+            error: function () {
+                alert("error");
+            }
+        });
     }
 </script>
 

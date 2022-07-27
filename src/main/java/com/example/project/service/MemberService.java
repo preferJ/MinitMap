@@ -79,14 +79,6 @@ public class MemberService {
         }
     }
 
-    public void update(MemberDTO memberDTO) {
-        memberRepository.save(MemberEntity.toMemberUpdateEntity(memberDTO));
-    }
-
-    public void deleteById(Long loginId) {
-        memberRepository.deleteById(loginId);
-    }
-
     public List<MemberDTO> findAll() {
         List<MemberEntity> memberEntityList = memberRepository.findAll();
         List<MemberDTO> memberDTOList = new ArrayList<>();
@@ -96,8 +88,18 @@ public class MemberService {
         return memberDTOList;
     }
 
+    public String findByMemberPassword(String memberPassword) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberPassword(memberPassword);
+        if(optionalMemberEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            String result = memberEntity.getMemberPassword();
+            return result;
+        }else {
+            return "no";
+        }
+    }
 
-//    public void deleteById(Long memberId) {
-//        memberRepository.deleteById(memberId);
-//    }
+    public void deleteById(Long loginId) {
+        memberRepository.deleteById(loginId);
+    }
 }

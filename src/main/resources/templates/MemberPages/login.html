@@ -393,8 +393,11 @@
                     alert("해당 아이디가 존재하지 않습니다");
                     location.href = "/member/loginForm";
                 }
+            },
+            error: function () {
+                alert("홈페이지 오류");
             }
-        })
+        });
     }
 </script>
 </html>

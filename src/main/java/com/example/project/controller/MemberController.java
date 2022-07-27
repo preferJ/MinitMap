@@ -49,15 +49,17 @@ public class MemberController {
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
             session.setAttribute("loginId", loginResult.getMemberId());
-            session.setAttribute("loginNickName",loginResult.getMemberNickname());
+            session.setAttribute("loginNickName", loginResult.getMemberNickname());
             return "/MemberPages/login";
         } else {
             return "MemberPages/login";
         }
     }
+
     @PostMapping("/loginCheck")
-    public @ResponseBody String loginCheck(@RequestParam String memberEmail,@RequestParam String memberPassword) {
-        String result = memberService.loginCheck(memberEmail,memberPassword);
+    // ㅁㅈ
+    public @ResponseBody String loginCheck(@RequestParam String memberEmail, @RequestParam String memberPassword) {
+        String result = memberService.loginCheck(memberEmail, memberPassword);
         return result;
     }
 
@@ -70,10 +72,12 @@ public class MemberController {
 
     @GetMapping("/admin")
     // ㅁㅈ
-    public String admin(){
-     return "/AdminPages/adminHistory";
+    public String admin() {
+        return "/AdminPages/adminHistory";
     }
+
     @GetMapping("/myPage/{loginId}")
+    // ㅁㅈ
     public String myPage(@PathVariable Long loginId, Model model) {
         MemberDTO memberDTO = memberService.findById(loginId);
         model.addAttribute("member", memberDTO);
@@ -86,25 +90,37 @@ public class MemberController {
         String result = memberService.findIdForm(memberPhone);
         return result;
     }
+
     @PostMapping("/findPwForm")
-    // 비밀번호 찾기
+    // 비밀번호 찾기 ㅁㅈ
     public @ResponseBody String findPwForm(@RequestParam String memberEmail) {
         String result = memberService.findPwForm(memberEmail);
         return result;
     }
 
+    @PostMapping("/pwCheck")
+    // ㅁㅈ
+    public @ResponseBody String passwordCheck(@RequestParam String memberPassword) {
+        System.out.println("memberPassword = " + memberPassword);
+        String result = memberService.findByMemberPassword(memberPassword);
+        return result;
+    }
+
     @GetMapping("/deleteById/{loginId}")
-    public String deleteById(@PathVariable Long loginId, HttpSession session){
+    // ㅁㅈ
+    public String deleteById(@PathVariable Long loginId, HttpSession session) {
+        System.out.println("loginId = " + loginId);
         memberService.deleteById(loginId);
         session.invalidate();
         return "redirect:/1tapTest";
     }
 
     @GetMapping("/findAll")
+    // ㅁㅈ
     public String findAll(Model model) {
-       List<MemberDTO> memberDTOList = memberService.findAll();
-       model.addAttribute("memberList", memberDTOList);
-       return "AdminPages/adminHistory";
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        model.addAttribute("memberList", memberDTOList);
+        return "AdminPages/adminHistory";
     }
 
 }

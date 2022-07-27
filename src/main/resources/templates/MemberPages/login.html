@@ -323,8 +323,9 @@
 
             <!-- Remind Passowrd -->
             <div id="formFooter">
-                <a class="underlineHover" th:onclick="findIdForm()" href="/member/findIdForm">아이디찾기</a> ｜
-                <a class="underlineHover" th:onclick="findPwForm()" href="/member/findPwForm">비밀번호찾기</a>
+                <a class="underlineHover" onclick="findIdForm()" href="/member/findIdForm">아이디찾기</a> ｜
+                <a class="underlineHover" onclick="findPwForm()" href="/member/findPwForm">비밀번호찾기</a> ｜
+                <a class="underlineHover" onclick="saveForm()" href="/member/saveForm">회원가입</a>
             </div>
         </div>
     </div>
@@ -333,6 +334,9 @@
 </form>
 </body>
 <script th:inline="javascript">
+    function saveForm() {
+        location.href = "/member/saveForm";
+    }
     function loginCheck() {
         const email = document.getElementById("memberEmail").value;
         const pw = document.getElementById("memberPassword").value;

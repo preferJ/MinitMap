@@ -758,6 +758,21 @@
             }
             ontestfoot();
         }
+        const loginForm = () => {
+            var width = 480;
+            var height = 630;
+
+            var left = (window.screen.width / 2) - (width / 2);
+            var top = (window.screen.height / 4);
+
+            var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+            window.open("/member/loginForm", "로그인", windowStatus);
+
+        }
+        function logout() {
+            location.href = "/member/logout";
+        }
     </script>
 </head>
 <style>
@@ -817,14 +832,14 @@
         <div style="margin-left: 17px;width: 240px;display: block;">
             <div style="position: relative;">
             <span style="width: 180px;display: inline-block"> <!-- 상단부분 -->
-                <input type="text" class="text_custom" id="searchKeyword" name="searchKeyword" placeholder="출발지">
+                <input type="text" class="text_custom mt-2 mb-2" id="searchKeyword" name="searchKeyword" placeholder="출발지">
                 <div id="start-interface">
                     <button id="btn_select">적용하기</button>
                     <ul id="searchResult" name="searchResult">
                         <li>검색결과</li>
                     </ul>
                 </div>
-                <input type="search" class="text_custom" id="searchKeyword2" placeholder="도착지">
+                <input type="search" class="text_custom mb-2" id="searchKeyword2" placeholder="도착지">
                 <div id="end-interface">
                     <button id="btn_select2">적용하기</button>
                     <ul id="searchResult2" name="searchResult">
@@ -840,31 +855,38 @@
                 <button onClick="searchPOI()" style="width: 95%; height: 50px">길찾기</button>
             </div>
         </div>
-        <div id="myplace_2"> <!-- 하단부분 -->
+        <div id="myplace_2" th:if="${session.loginEmail}"> <!-- 하단부분 -->
             <div style="float: right">
                 <i onclick="goSettings()" class="fa-solid fa-gear fa-2x"></i>
             </div>
             <hr>
             <h3>마이플레이스</h3>
-            <div>
-                집<i class="fa-solid fa-house"></i><input type="text" value="루틴~">
+            <div class="mt-2">
+                집&nbsp;<i class="fa-solid fa-house"></i>&nbsp;<input type="text" value="루틴~">
             </div>
-            <div>
-                회사<i class="fa-solid fa-building"></i><input type="text" value="루틴~">
+            <div class="mt-2">
+                회사&nbsp;<i class="fa-solid fa-building"></i>&nbsp;<input type="text" value="루틴~">
             </div>
             <hr>
             <h3>루틴</h3>
-            <div>
+            <div class="mt-2">
                 <input type="text" placeholder="출근길">
             </div>
-            <div>
+            <div class="mt-2">
                 <input type="text" placeholder="퇴근길">
             </div>
             <hr>
-            <p id="result"></p>
-            <hr>
-            <div id="course"></div>
+            <button th:onclick="logout()" type="button" class="btn success">로그아웃</button>
         </div>
+        <div th:unless="${session.loginEmail}">
+            <hr>
+            <button onclick="loginForm()" type="button" class="btn success">로그인</button>
+        </div>
+        <hr>
+    <p id="result">거리시간</p>
+    <hr>
+    <div id="course">길안내</div>
+    <hr>
     </div>
 </div>
 <div id="map_div">

@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -305,5 +308,24 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    public List<BoardDTO> hots() {
+        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0,0,0));
+        LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
+        List<BoardEntity> allByBoardCreatedTimeBetween = boardRepository.findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(startDatetime,endDatetime);
+        List<BoardDTO> boardDTOS = new ArrayList<>();
+        int i = 0;
+        for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
+            if (boardEntity.getBoardType().equals("신호")){
+                boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
+                boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+            }else{
+                boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
+                boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+            }
+            i++;
+        }
+        return boardDTOS;
     }
 }

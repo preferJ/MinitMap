@@ -242,4 +242,12 @@ public class BoardController {
         boardService.delete(id);
         return "redirect:/board";
     }
+
+    @GetMapping("/hots")
+    public String hots(Model model){
+        List<BoardDTO> boardDTOS= boardService.hots();
+        model.addAttribute("boardDTOList", boardDTOS );
+        System.out.println(boardDTOS);
+        return "/kmj/3tap";
+    }
 }

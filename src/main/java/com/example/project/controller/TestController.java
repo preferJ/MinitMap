@@ -4,6 +4,7 @@ import com.example.project.dto.*;
 import com.example.project.dto.TrafficDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
+import com.example.project.service.BoardService;
 import com.example.project.service.TrafficService;
 import com.example.project.service.TrafficTestService;
 import com.example.project.service.TrafficTimeService;
@@ -24,6 +25,7 @@ public class TestController {
     private final TrafficService trafficService;
     private final TrafficTimeService trafficTimeService;
     private final TrafficTestService trafficTestService;
+    private final BoardService boardService;
 
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
@@ -109,6 +111,8 @@ public class TestController {
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
                        @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
                        Model model) {
+        List<BoardDTO> boardDTOS= boardService.hots();
+        model.addAttribute("boardDTOList", boardDTOS );
         model.addAttribute("page_lat",page_lat);
         model.addAttribute("page_lng",page_lng);
         model.addAttribute("page_zoom", page_zoom);

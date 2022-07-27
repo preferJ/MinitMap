@@ -1,11 +1,14 @@
 package com.example.project.service;
 
+import com.example.project.dto.ErrorDTO;
 import com.example.project.dto.MemberDTO;
 import com.example.project.entity.MemberEntity;
 import com.example.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -84,6 +87,14 @@ public class MemberService {
         memberRepository.deleteById(loginId);
     }
 
+    public List<MemberDTO> findAll() {
+        List<MemberEntity> memberEntityList = memberRepository.findAll();
+        List<MemberDTO> memberDTOList = new ArrayList<>();
+        for(MemberEntity member : memberEntityList) {
+            memberDTOList.add(MemberDTO.toMemberDTO(member));
+        }
+        return memberDTOList;
+    }
 
 
 //    public void deleteById(Long memberId) {

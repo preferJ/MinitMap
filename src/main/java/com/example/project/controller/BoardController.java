@@ -259,4 +259,12 @@ public class BoardController {
             return boardDTOS;
         }
     }
+    @GetMapping("/findByIdList/{loginId}")
+    public String findByIdList(@PathVariable Long loginId, Model model){
+        List<BoardDTO> boardDTOList = boardService.findByList(loginId);
+        System.out.println("boardDTOList = " + boardDTOList);
+        model.addAttribute("boardList", boardDTOList);
+        return "/BoardPages/mySave";
+    }
+
 }

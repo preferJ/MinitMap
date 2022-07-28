@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "myTraffoc")
+@Table(name = "myTraffic")
 public class MyTrafficEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,9 @@ public class MyTrafficEntity {
     @JoinColumn(name = "trafficId")
     private TrafficEntity trafficEntity;
 
-    public static MyTrafficEntity toSaveMyTrafficEntity(MyTrafficDTO myTrafficDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
+    public static MyTrafficEntity toSaveMyTrafficEntity(String myTrafficName, MemberEntity memberEntity, TrafficEntity trafficEntity){
         MyTrafficEntity myTrafficEntity = new MyTrafficEntity();
-        myTrafficEntity.setMyTrafficName(myTrafficDTO.getMyTrafficName());
+        myTrafficEntity.setMyTrafficName(myTrafficName);
         myTrafficEntity.setMemberEntity(memberEntity);
         myTrafficEntity.setTrafficEntity(trafficEntity);
         return myTrafficEntity;

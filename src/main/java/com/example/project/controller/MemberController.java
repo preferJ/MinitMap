@@ -101,7 +101,6 @@ public class MemberController {
     @PostMapping("/pwCheck")
     // ㅁㅈ
     public @ResponseBody String passwordCheck(@RequestParam String memberPassword) {
-        System.out.println("memberPassword = " + memberPassword);
         String result = memberService.findByMemberPassword(memberPassword);
         return result;
     }
@@ -122,5 +121,16 @@ public class MemberController {
         model.addAttribute("memberList", memberDTOList);
         return "AdminPages/adminHistory";
     }
-
+//    @GetMapping("/updateForm/{loginId}")
+//    public String updateForm(@PathVariable Long loginId, Model model) {
+//        System.out.println("loginId = " + loginId);
+//       MemberDTO memberDTO = memberService.findById(loginId);
+//       model.addAttribute("member", memberDTO);
+//       return "/MemberPages/update";
+//    }
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberDTO memberDTO) {
+        memberService.update(memberDTO);
+        return "redirect:/member/myPage/" + memberDTO.getMemberId();
+    }
 }

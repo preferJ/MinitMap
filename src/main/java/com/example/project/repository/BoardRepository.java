@@ -37,6 +37,5 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     @Query(value = "update BoardEntity b set b.boardDislike = b.boardDislike - 1 where b.boardId = :id")
     int UnDislike(@Param("id") Long id);
 
-    List<BoardEntity> findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(LocalDateTime start, LocalDateTime end);
-
+    List<BoardEntity> findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(LocalDateTime start, LocalDateTime end); // 전체
 }

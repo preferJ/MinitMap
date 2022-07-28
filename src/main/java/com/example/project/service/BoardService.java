@@ -310,21 +310,43 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-    public List<BoardDTO> hots() {
+    public List<BoardDTO> hots(String type) {
         LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0,0,0));
         LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
         List<BoardEntity> allByBoardCreatedTimeBetween = boardRepository.findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(startDatetime,endDatetime);
         List<BoardDTO> boardDTOS = new ArrayList<>();
         int i = 0;
-        for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
-            if (boardEntity.getBoardType().equals("신호")){
-                boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
-                boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
-            }else{
-                boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
-                boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+        if (type.equals("전체")){
+            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
+                if (boardEntity.getBoardType().equals("신호")){
+                    boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
+                }else{
+                    boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
+                }
+                i++;
             }
-            i++;
+        }else if (type.equals("신호")){
+            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
+                if (boardEntity.getBoardType().equals("신호")){
+                    boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
+                    boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+                }
+                i++;
+            }
+        }else if (type.equals("자유")){
+            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
+                if (boardEntity.getBoardType().equals("자유")){
+                    boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
+                }
+                i++;
+            }
+        }else{
+            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
+                if (boardEntity.getBoardType().equals("공지")){
+                    boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
+                }
+                i++;
+            }
         }
         return boardDTOS;
     }

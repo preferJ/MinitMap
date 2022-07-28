@@ -17,6 +17,14 @@ public class MyPlaceDTO {
     private Long icon;
     private boolean bookmark;
 
+    public MyPlaceDTO(Long memberId, String myPlaceName, Double myPlaceLat, Double myPlaceLon, Long icon) {
+        this.memberId = memberId;
+        this.myPlaceName = myPlaceName;
+        this.myPlaceLat = myPlaceLat;
+        this.myPlaceLon = myPlaceLon;
+        this.icon = icon;
+    }
+
     public static MyPlaceDTO toMyplaceDTO(MyPlaceEntity myPlaceEntity){
         MyPlaceDTO myPlaceDTO = new MyPlaceDTO();
         myPlaceDTO.setMyPlaceId(myPlaceEntity.getMyPlaceId());

@@ -15,6 +15,7 @@
         var searchMarkerArr = [];
         var labelArr = [];
         var nameArr = [];
+        var latLonArr = [];
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function () {
             if (map_count == 0) {
@@ -109,6 +110,16 @@
         display: none;
     }
 
+    .myPlaceTap{
+        width: 100%;
+    }
+
+    tr.myPlaceTap:hover td{
+        background-color:#f3e9e9 !important;
+        color:#303f39 !important;
+    }
+
+
 </style>
 
 <body>
@@ -134,8 +145,16 @@
             <div th:if="${session.loginEmail}">
                 <div>
                     <b>마이플레이스</b> <br>
-                    집<i class="fa-solid fa-house"></i><input type="text"> <br>
-                    회사<i class="fa-solid fa-buildings"></i><input type="text">
+                    <table>
+                        <div th:each="myplace: ${myPlaceList}" th:id="|mpt${myplace.myPlaceId}|">
+                            <tr class="myPlaceTap">
+                                <td><p th:text="${myplace.myPlaceName}" th:onclick="|myPlaceClick(${myplace.myPlaceId})|"></p></td>
+                            </tr>
+                            <tr style="margin-bottom: 5px;">
+                                <td style="display: none;" th:id="|myPlace${myplace.myPlaceId}|"><input type="button" th:onclick="|startMyPlace(${myplace.myPlaceLat},${myplace.myPlaceLon})|" value="출발지"></td>
+                            </tr>
+                        </div>
+                    </table>
                 </div>
                 <hr>
                 <div>
@@ -312,7 +331,9 @@
                                 + k
                                 + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
                                 + k
-                                + ");'>도착지</button></div></li>";
+                                + ");'>도착지</button><div th:if=" + [[${session.loginEmail}]] + "> <input type='button' name='sendBtn' onClick='myPlaceSave("
+                                + k
+                                + ");' value='저장'></div></div></li>";
 
                             // 마커들을 담을 배열에 마커 저장
                             searchMarkerArr.push(search_marker);
@@ -335,12 +356,38 @@
             });
     }
 
+    function myPlaceClick(id){
+        var myPlaceButton = document.getElementById("myPlace" + id);
+        var mypButton = $(".mypButton");
+        if(myPlaceButton.style.display == "inline") {
+            myPlaceButton.style.display = "none";
+        }else if(myPlaceButton.style.display == "none"){
+            myPlaceButton.style.display = "inline";
+        }
+    }
+
     function startPing(id) {
         location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&name=" + nameArr[id] + "&lat=" + latLonArr[id].lat() + "&lng=" + latLonArr[id].lng();
     }
 
     function endPing(id) {
         location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name=" + nameArr[id] + "&lat=" + latLonArr[id].lat() + "&lng=" + latLonArr[id].lng();
+    }
+
+    function myPlaceSave(id){
+        var lat = latLonArr[id].lat();
+        var lng = latLonArr[id].lng();
+        var name = nameArr[id];
+        console.log(lat +"," + lng + "," + name);
+
+        var width = 800;
+        var height = 800;
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
+
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+        window.open("/myPlace/save?myPlaceLat="+lat+"&myPlaceLng="+lng+"&myPlaceName="+name, "값불러오기", windowStatus);
     }
 
     function logout() {

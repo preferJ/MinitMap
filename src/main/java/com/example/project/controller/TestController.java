@@ -4,10 +4,7 @@ import com.example.project.dto.*;
 import com.example.project.dto.TrafficDTO;
 import com.example.project.entity.TestEntity;
 import com.example.project.repository.TestRepository;
-import com.example.project.service.BoardService;
-import com.example.project.service.TrafficService;
-import com.example.project.service.TrafficTestService;
-import com.example.project.service.TrafficTimeService;
+import com.example.project.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +24,8 @@ public class TestController {
     private final TrafficTimeService trafficTimeService;
     private final TrafficTestService trafficTestService;
     private final BoardService boardService;
+
+    private final MyPlaceService myPlaceService;
 
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
@@ -79,10 +78,16 @@ public class TestController {
     public String tap1(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
                        @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
+                       HttpSession session,
                        Model model) {
         model.addAttribute("page_lat",page_lat);
         model.addAttribute("page_lng",page_lng);
         model.addAttribute("page_zoom", page_zoom);
+        String email = (String) session.getAttribute("loginEmail");
+        if(session.getAttribute("loginEmail") != null){
+            List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
+            model.addAttribute("myPlaceList", myPlaceList);
+        }
         return "/kmj/1tap";
     }
 

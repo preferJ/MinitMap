@@ -394,6 +394,7 @@
                     });
                     // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
                     s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    ontestfoot();
                 } else if (e_marker.getPosition() == null) {
                     var result = e.latLng;
                     var resultDiv = document.getElementById("result");

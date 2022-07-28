@@ -150,8 +150,9 @@
                             <tr class="myPlaceTap">
                                 <td><p th:text="${myplace.myPlaceName}" th:onclick="|myPlaceClick(${myplace.myPlaceId})|"></p></td>
                             </tr>
-                            <tr style="margin-bottom: 5px;">
-                                <td style="display: none;" th:id="|myPlace${myplace.myPlaceId}|"><input type="button" th:onclick="|startMyPlace(${myplace.myPlaceLat},${myplace.myPlaceLon})|" value="출발지"></td>
+                            <tr style="margin-bottom: 5px;display: none;" th:id="|myPlace${myplace.myPlaceId}|">
+                                <td><input type="button" th:onclick="startMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="출발지"></td>
+                                <td><input type="button" th:onclick="endMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="도착지"></td>
                             </tr>
                         </div>
                     </table>
@@ -372,6 +373,14 @@
 
     function endPing(id) {
         location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name=" + nameArr[id] + "&lat=" + latLonArr[id].lat() + "&lng=" + latLonArr[id].lng();
+    }
+
+    function startMyPlace(lat,lng,name) {
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&name=" + name + "&lat=" + lat + "&lng=" + lng;
+    }
+
+    function endMyPlace(lat,lng,name) {
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name=" + name + "&lat=" + lat + "&lng=" + lng;
     }
 
     function myPlaceSave(id){

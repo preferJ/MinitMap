@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -243,11 +244,19 @@ public class BoardController {
         return "redirect:/board";
     }
 
-    @GetMapping("/hots")
-    public String hots(Model model){
-        List<BoardDTO> boardDTOS= boardService.hots();
-        model.addAttribute("boardDTOList", boardDTOS );
-        System.out.println(boardDTOS);
-        return "/kmj/3tap";
+    @GetMapping("/3tap")
+    public @ResponseBody List<BoardDTO> tap3(@RequestParam("type") String type){
+        List<BoardDTO> boardDTOS = boardService.hots(type);
+        // 주간 인기글은 50개만 가져감
+        List<BoardDTO> boardDTOList  = new ArrayList<>();
+        if (boardDTOS.size() > 50){
+            for (int i = 0; i < 50; i++) {
+                boardDTOList.add(boardDTOS.get(i));
+            }
+            System.out.println(boardDTOList);
+            return boardDTOList;
+        }else{
+            return boardDTOS;
+        }
     }
 }

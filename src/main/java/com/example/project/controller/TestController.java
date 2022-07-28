@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -107,12 +108,21 @@ public class TestController {
 
     @GetMapping("/3tapTest")
     // ㅁㅈ
+    // 이현 수정
     public String tap3(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
                        @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
                        Model model) {
-        List<BoardDTO> boardDTOS= boardService.hots();
-        model.addAttribute("boardDTOList", boardDTOS );
+        String type = "전체";
+        List<BoardDTO> boardDTOS = boardService.hots(type);
+        // 주간 인기글은 50개만 가져감
+        List<BoardDTO> boardDTOList  = new ArrayList<>();
+        if (boardDTOS.size() > 50){
+            for (int i = 0; i < 50; i++) {
+                boardDTOList.add(boardDTOS.get(i));
+            }
+        }
+        model.addAttribute("boardDTOList", boardDTOList);
         model.addAttribute("page_lat",page_lat);
         model.addAttribute("page_lng",page_lng);
         model.addAttribute("page_zoom", page_zoom);

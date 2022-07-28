@@ -283,7 +283,7 @@
                     </tr>
                     <tbody>
                 </table>
-                <div style="text-align: right">
+                <div id="first"style="text-align: right">
                     <input type="button" class="btn-primary" th:onclick="update()" value="수정하기">
                     <input type="button" th:onclick="pwCheck([[${session.loginId}]])" class="btn-primary" value="회원탈퇴">
                 </div>
@@ -300,51 +300,58 @@
             </div>
             <br>
             <br>
-
+            <form action="/member/update" method="post">
             <div id="updateForm" class="table-responsive" style="display: none">
                 <table class="table table-striped table-sm" style="table-layout:fixed">
-                    <tbody>
-                    <tr th:rowspan="3" style="text-align: center">
-                        <th colspan="4"></th>
-                        <th>이메일
-                            <div th:text="${member.memberEmail}"></div>
-                        </th>
-                        <th colspan="4">&nbsp;</th>
-                    </tr>
-                    <tr style="text-align: center">
-                        <th colspan="4">&nbsp;</th>
-                        <th>비밀번호 <input type="password" placeholder="비밀번호를 입력해주세요."></th>
-                        <th colspan="4">&nbsp;</th>
-                    </tr>
-                    <tr style="text-align: center">
-                        <th colspan="4">&nbsp;</th>
-                        <th>별명
-                            <div th:text="${member.memberNickname}"></div>
-                        </th>
-                        <th colspan="4">&nbsp;</th>
-                    </tr>
-                    <tr style="text-align: center">
-                        <th colspan="4">&nbsp;</th>
-                        <th>핸드폰
-                            <div th:text="${member.memberPassword}"></div>
-                        </th>
-                        <th colspan="4">&nbsp;</th>
-                    </tr>
-                    <tr style="text-align: center">
-                        <th colspan="4">&nbsp;</th>
-                        <th>회원Lv
-                            <div th:text="${member.memberLevel}"></div>
-                        </th>
-                        <th colspan="4">&nbsp;</th>
-                    </tr>
-                    <tbody>
-                </table>
-                <div style="text-align: right">
-                    <input type="button" class="btn-primary" th:onclick="update()" value="수정하기">
-                    <input type="button" th:onclick="pwCheck([[${session.loginId}]])" class="btn-primary" value="회원탈퇴">
-                </div>
-            </div>
+                        <tbody>
+                        <input type="hidden" name="memberId" th:value="${member.memberId}">
 
+                        <tr th:rowspan="3" style="text-align: center">
+                            <th colspan="4"></th>
+                            <th>이메일 <!-- 수정용 memberEmail값 -->
+                                <div th:text="${member.memberEmail}"></div>
+                                <input type="hidden" name="memberEmail" th:value="${member.memberEmail}">
+                            </th>
+                            <th colspan="4">&nbsp;</th>
+                        </tr>
+
+                        <tr style="text-align: center">
+                            <th colspan="4">&nbsp;</th> <!-- 수정용 memberPassword값 -->
+                            <th>비밀번호 <input type="text" name="memberPassword" placeholder="비밀번호를 입력해주세요."></th>
+                            <th colspan="4">&nbsp;</th>
+                        </tr>
+
+                        <tr style="text-align: center">
+                            <th colspan="4">&nbsp;</th>
+                            <th>별명
+                                <div th:text="${member.memberNickname}" ></div>
+                                <input type="text" name="memberNickname" th:value="${member.memberNickname}">
+                            </th>
+                            <th colspan="4">&nbsp;</th>
+                        </tr>
+
+                        <tr style="text-align: center">
+                            <th colspan="4">&nbsp;</th>
+                            <th>핸드폰
+                                <div th:text="${member.memberPassword}"></div>
+                                <input type="hidden" name="memberPhone" th:value="${member.memberPhone}">
+                            </th>
+                            <th colspan="4">&nbsp;</th>
+                        </tr>
+
+                        <tr style="text-align: center">
+                            <th colspan="4">&nbsp;</th>
+                            <th>회원Lv
+                                <div th:text="${member.memberLevel}"></div>
+                                <input type="hidden" name="memberLevel" th:value="${member.memberLevel}">
+                            </th>
+                            <th colspan="4">&nbsp;</th>
+                        </tr>
+                        </tbody>
+                        <input type="submit" class="btn btn-outline-primary" value="수정">
+                </table>
+            </div>
+            </form>
         </main>
     </div>
 </div>
@@ -368,30 +375,34 @@
         location.href = "/board/logout";
     }
 
-    function updateForm() {
+    function updateForm(id) {
         document.getElementById("first").style.display = "none";
         document.getElementById("updateForm").style.display = "block";
         document.getElementById("down").style.display = "block";
     }
 
-    // function update() {
-    //     const pw = prompt("비밀번호를 입력해주세요")
-    //
-    //     $.ajax({
-    //         type: "post",
-    //         url: "/member/passwordCheck",
-    //         data: {"memberPassword": pw},
-    //         dataType: "text",
-    //         success: function (result) {
-    //             if (result != "no") {
-    //                 alert("비밀번호가 일치합니다");
-    //             } else {
-    //                 alert("비밀번호가 일치하지 않습니다");
-    //
-    //             }
-    //         }
-    //     })
-    // }
+    function update(id) {
+        const pw = prompt("비밀번호를 입력해주세요")
+
+        $.ajax({
+            type: "post",
+            url: "/member/pwCheck",
+            data: {"memberPassword": pw},
+            dataType: "text",
+            success: function (result) {
+                if (result != "no") {
+                    alert("비밀번호가 일치합니다");
+                    updateForm(id);
+                } else {
+                    alert("비밀번호가 일치하지 않습니다");
+
+                }
+            },
+            error: function () {
+                alert("error");
+            }
+        })
+    }
 
     function pwCheck(id) {
         const pw = prompt("비밀번호를 입력해주세요");
@@ -402,14 +413,12 @@
             data: {"memberPassword": pw},
             dataType: "text",
             success: function (result) {
-                console.log(result)
                 if (result != "no") {
-                    console.log(result)
                     alert("비밀번호가 일치합니다!");
-                    if(confirm("정말 탈퇴하시겠습니까?")){
+                    if (confirm("정말 탈퇴하시겠습니까?")) {
                         alert("탈퇴되었습니다.");
                         location.href = "/member/deleteById/" + id;
-                    }else {
+                    } else {
                         alert("탈퇴 안해찌렁~");
                     }
                 } else {

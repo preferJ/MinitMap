@@ -35,13 +35,14 @@ public class MemberService {
             return null;
         }
     }
+
     public String loginCheck(String memberEmail, String memberPassword) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmailAndMemberPassword(memberEmail, memberPassword);
-        if(optionalMemberEntity.isPresent()) {
+        if (optionalMemberEntity.isPresent()) {
             MemberEntity memberEntity = optionalMemberEntity.get();
             String result = memberEntity.getMemberEmail();
             return result;
-        }else {
+        } else {
             return "no";
         }
     }
@@ -82,7 +83,7 @@ public class MemberService {
     public List<MemberDTO> findAll() {
         List<MemberEntity> memberEntityList = memberRepository.findAll();
         List<MemberDTO> memberDTOList = new ArrayList<>();
-        for(MemberEntity member : memberEntityList) {
+        for (MemberEntity member : memberEntityList) {
             memberDTOList.add(MemberDTO.toMemberDTO(member));
         }
         return memberDTOList;
@@ -90,16 +91,20 @@ public class MemberService {
 
     public String findByMemberPassword(String memberPassword) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberPassword(memberPassword);
-        if(optionalMemberEntity.isPresent()) {
+        if (optionalMemberEntity.isPresent()) {
             MemberEntity memberEntity = optionalMemberEntity.get();
             String result = memberEntity.getMemberPassword();
             return result;
-        }else {
+        } else {
             return "no";
         }
     }
 
     public void deleteById(Long loginId) {
         memberRepository.deleteById(loginId);
+    }
+
+    public void update(MemberDTO memberDTO) {
+        memberRepository.save(MemberEntity.toMemberUpdateEntity(memberDTO));
     }
 }

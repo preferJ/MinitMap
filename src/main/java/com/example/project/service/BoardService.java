@@ -53,11 +53,11 @@ public class BoardService {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
         int i = 0;
-        for (BoardEntity boardEntity : boardEntityList){
-            if (boardEntity.getBoardType().equals("신호")){
+        for (BoardEntity boardEntity : boardEntityList) {
+            if (boardEntity.getBoardType().equals("신호")) {
                 boardDTOList.add(BoardDTO.toTrafficBoardDTO(boardEntity));
                 boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
-            }else{
+            } else {
                 boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
                 boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
             }
@@ -70,8 +70,8 @@ public class BoardService {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
-        page = (page == 1)? 0: (page-1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("자유",PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        page = (page == 1) ? 0 : (page - 1);
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("자유", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -98,8 +98,8 @@ public class BoardService {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
-        page = (page == 1)? 0: (page-1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("신호",PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        page = (page == 1) ? 0 : (page - 1);
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("신호", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -126,8 +126,8 @@ public class BoardService {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
-        page = (page == 1)? 0: (page-1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("공지",PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        page = (page == 1) ? 0 : (page - 1);
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("공지", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -154,7 +154,7 @@ public class BoardService {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
-        page = (page == 1)? 0: (page-1);
+        page = (page == 1) ? 0 : (page - 1);
         Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
@@ -182,14 +182,14 @@ public class BoardService {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
-        page = (page == 1)? 0: (page-1);
+        page = (page == 1) ? 0 : (page - 1);
         Page<BoardEntity> boardEntities = null;
-        if (id == 1){
-            boardEntities = boardRepository.findByBoardTypeLocation1AndBoardTypeLocation2(local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
-        }else if (id==2){
-            boardEntities = boardRepository.findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing("자유",local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
-        }else if (id==3){
-            boardEntities = boardRepository.findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing("신호",local1,local2,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        if (id == 1) {
+            boardEntities = boardRepository.findByBoardTypeLocation1AndBoardTypeLocation2(local1, local2, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        } else if (id == 2) {
+            boardEntities = boardRepository.findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing("자유", local1, local2, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        } else if (id == 3) {
+            boardEntities = boardRepository.findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing("신호", local1, local2, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         }
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
@@ -217,8 +217,8 @@ public class BoardService {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
-        page = (page == 1)? 0: (page-1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(search,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        page = (page == 1) ? 0 : (page - 1);
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(search, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -245,9 +245,9 @@ public class BoardService {
         Optional<BoardEntity> findById = boardRepository.findById(id);
         BoardEntity boardEntity = findById.get();
         BoardDTO boardDTO = new BoardDTO();
-        if (boardEntity.getBoardType().equals("신호")){
+        if (boardEntity.getBoardType().equals("신호")) {
             boardDTO = BoardDTO.toTrafficBoardDTO(boardEntity);
-        }else {
+        } else {
             boardDTO = BoardDTO.toBoardDTO(boardEntity);
         }
 
@@ -256,36 +256,36 @@ public class BoardService {
     }
 
     @Transactional
-    public void likeCheck(Long like, Long boardId , Long loginId) {
+    public void likeCheck(Long like, Long boardId, Long loginId) {
         Optional<BoardEntity> byId = boardRepository.findById(boardId);
         LikeCheckEntity likeCheckEntity = likeCheckRepository.findByBoardEntity(byId.get());
         Optional<MemberEntity> memberId = memberRepository.findById(loginId);
         // 첫 등록
-        if (likeCheckEntity == null){
-            if (like == 1){ //좋아요
-                LikeCheckEntity likeCheckEntity1 = LikeCheckEntity.toLikeCheckSaveEntity(true, memberId.get() , byId.get());
+        if (likeCheckEntity == null) {
+            if (like == 1) { //좋아요
+                LikeCheckEntity likeCheckEntity1 = LikeCheckEntity.toLikeCheckSaveEntity(true, memberId.get(), byId.get());
                 likeCheckRepository.save(likeCheckEntity1);
                 boardRepository.like(boardId);
-            }else{ // 싫어요
-                likeCheckRepository.save(LikeCheckEntity.toLikeCheckSaveEntity(false,memberRepository.findById(loginId).get(),byId.get()));
+            } else { // 싫어요
+                likeCheckRepository.save(LikeCheckEntity.toLikeCheckSaveEntity(false, memberRepository.findById(loginId).get(), byId.get()));
                 boardRepository.dislike(boardId);
             }
 
-        }else if(likeCheckEntity.isLikeCheck()){ // 좋아요 누른상태
-            if (like == 1){ //좋아요
+        } else if (likeCheckEntity.isLikeCheck()) { // 좋아요 누른상태
+            if (like == 1) { //좋아요
                 likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
-            }else{ // 싫어요
+            } else { // 싫어요
                 likeCheckEntity.setLikeCheck(false);
                 likeCheckRepository.save(likeCheckEntity);
                 boardRepository.dislike(boardId);
             }
             boardRepository.UnLike(boardId);
-        }else { // 싫어요 누른상태
-            if (like == 1){ //좋아요
+        } else { // 싫어요 누른상태
+            if (like == 1) { //좋아요
                 likeCheckEntity.setLikeCheck(true);
                 likeCheckRepository.save(likeCheckEntity);
                 boardRepository.like(boardId);
-            }else{ // 싫어요
+            } else { // 싫어요
                 likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
             }
             boardRepository.UnDislike(boardId);
@@ -297,11 +297,11 @@ public class BoardService {
         MemberEntity memberEntity = memberRepository.findById(boardDTO.getMemberId()).get();
         System.out.println(memberEntity.getMemberId());
         System.out.println(boardDTO);
-        if (boardDTO.getBoardType().equals("신호")){
+        if (boardDTO.getBoardType().equals("신호")) {
             TrafficEntity trafficEntity = trafficRepository.findById(boardDTO.getTrafficId()).get();
-            boardRepository.save(BoardEntity.toBoardTrafficUpdateEntity(boardDTO,memberEntity,trafficEntity));
-        }else{
-            boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO,memberEntity));
+            boardRepository.save(BoardEntity.toBoardTrafficUpdateEntity(boardDTO, memberEntity, trafficEntity));
+        } else {
+            boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO, memberEntity));
         }
 
     }
@@ -311,43 +311,55 @@ public class BoardService {
     }
 
     public List<BoardDTO> hots(String type) {
-        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0,0,0));
-        LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
-        List<BoardEntity> allByBoardCreatedTimeBetween = boardRepository.findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(startDatetime,endDatetime);
+        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
+        LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        List<BoardEntity> allByBoardCreatedTimeBetween = boardRepository.findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(startDatetime, endDatetime);
         List<BoardDTO> boardDTOS = new ArrayList<>();
         int i = 0;
-        if (type.equals("전체")){
-            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
-                if (boardEntity.getBoardType().equals("신호")){
+        if (type.equals("전체")) {
+            for (BoardEntity boardEntity : allByBoardCreatedTimeBetween) {
+                if (boardEntity.getBoardType().equals("신호")) {
                     boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
-                }else{
+                } else {
                     boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
                 }
                 i++;
             }
-        }else if (type.equals("신호")){
-            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
-                if (boardEntity.getBoardType().equals("신호")){
+        } else if (type.equals("신호")) {
+            for (BoardEntity boardEntity : allByBoardCreatedTimeBetween) {
+                if (boardEntity.getBoardType().equals("신호")) {
                     boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
                     boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
                 }
                 i++;
             }
-        }else if (type.equals("자유")){
-            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
-                if (boardEntity.getBoardType().equals("자유")){
+        } else if (type.equals("자유")) {
+            for (BoardEntity boardEntity : allByBoardCreatedTimeBetween) {
+                if (boardEntity.getBoardType().equals("자유")) {
                     boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
                 }
                 i++;
             }
-        }else{
-            for(BoardEntity boardEntity : allByBoardCreatedTimeBetween){
-                if (boardEntity.getBoardType().equals("공지")){
+        } else {
+            for (BoardEntity boardEntity : allByBoardCreatedTimeBetween) {
+                if (boardEntity.getBoardType().equals("공지")) {
                     boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
                 }
                 i++;
             }
         }
         return boardDTOS;
+    }
+
+    public List<BoardDTO> findByList(Long loginId) {
+        List<BoardEntity> boardEntityList = boardRepository.findAllByMemberEntityMemberId(loginId);
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        int i = 0;
+        for (BoardEntity boardEntity : boardEntityList) {
+            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+
+            boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
+        }
+        return boardDTOList;
     }
 }

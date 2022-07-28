@@ -38,4 +38,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     int UnDislike(@Param("id") Long id);
 
     List<BoardEntity> findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(LocalDateTime start, LocalDateTime end); // 전체
+
+    List<BoardEntity> findAllByMemberEntityMemberId(Long memberId);
 }

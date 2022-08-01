@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class TrafficDTO {
     private Long trafficId;
     private Long memberId;
-    private String trafficName;
     private Double trafficLat;
     private Double trafficLon;
     private Long trafficLike;
@@ -21,7 +20,6 @@ public class TrafficDTO {
         TrafficDTO trafficDTO = new TrafficDTO();
         trafficDTO.setTrafficId(trafficEntity.getTrafficId());
         trafficDTO.setMemberId(trafficEntity.getMemberEntity().getMemberId());
-        trafficDTO.setTrafficName(trafficEntity.getTrafficName());
         trafficDTO.setTrafficLat(trafficEntity.getTrafficLat());
         trafficDTO.setTrafficLon(trafficEntity.getTrafficLon());
         trafficDTO.setTrafficLike(trafficEntity.getTrafficLike());

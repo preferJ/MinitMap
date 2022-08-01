@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyTrafficDTO {
-    Long myTrafficId;
-    Long memberId;
-    Long trafficId;
-    String myTrafficName;
+    private Long myTrafficId;
+    private Long memberId;
+    private String myTrafficName;
+    private Double myTrafficLat;
+    private Double myTrafficLon;
     public static MyTrafficDTO toSaveMyTrafficDTO(MyTrafficEntity myTrafficEntity){
         MyTrafficDTO myTrafficDTO = new MyTrafficDTO();
         myTrafficDTO.setMyTrafficName(myTrafficEntity.getMyTrafficName());
         myTrafficDTO.setMyTrafficId(myTrafficEntity.getMyTrafficId());
-        myTrafficDTO.setTrafficId(myTrafficEntity.getTrafficEntity().getTrafficId());
         myTrafficDTO.setMemberId(myTrafficEntity.getMemberEntity().getMemberId());
         return myTrafficDTO;
     }

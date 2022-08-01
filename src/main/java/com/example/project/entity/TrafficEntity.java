@@ -23,9 +23,6 @@ public class TrafficEntity {
     @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
-    @Column(name = "trafficName", nullable = false)
-    private String trafficName;
-
     @Column(name = "trafficLat", nullable = false)
     private Double trafficLat;
 
@@ -55,12 +52,9 @@ public class TrafficEntity {
     @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MyTrafficEntity> myTrafficEntityList = new ArrayList<>();
 
     public static TrafficEntity trafficSaveEntity(TrafficDTO trafficDTO, MemberEntity memberEntity){
         TrafficEntity trafficEntity = new TrafficEntity();
-        trafficEntity.setTrafficName(trafficDTO.getTrafficName());
         trafficEntity.setTrafficLat(trafficDTO.getTrafficLat());
         trafficEntity.setTrafficLon(trafficDTO.getTrafficLon());
         trafficEntity.setMemberEntity(memberEntity);
@@ -68,7 +62,6 @@ public class TrafficEntity {
     }
     public static TrafficEntity trafficUpdateEntity(TrafficDTO trafficDTO, MemberEntity memberEntity){
         TrafficEntity trafficEntity = new TrafficEntity();
-        trafficEntity.setTrafficName(trafficDTO.getTrafficName());
         trafficEntity.setTrafficLat(trafficDTO.getTrafficLat());
         trafficEntity.setTrafficLon(trafficDTO.getTrafficLon());
         trafficEntity.setTrafficLike(trafficDTO.getTrafficLike());

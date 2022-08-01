@@ -279,6 +279,7 @@ public class BoardController {
 
     @GetMapping("/report")
     public String report() {
+        // 신고 탭 이동
     return "/BoardPages/report";
     }
 }

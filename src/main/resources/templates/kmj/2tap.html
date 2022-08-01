@@ -10,6 +10,7 @@
           integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:inline="javascript">
+        var marker;
         var map_count = 0;
         var page_lat = [[${page_lat}]];
         var page_lng = [[${page_lng}]];
@@ -775,6 +776,111 @@
         function logout() {
             location.href = "/member/logout";
         }
+
+
+        function markerRemove(){
+            if(marker != null) {
+                marker.setMap(null);
+                marker = null;
+            }
+        }
+        function clickPing(lat,lng,name){
+            markerRemove();
+
+            marker = new Tmapv2.Marker({
+                position: new Tmapv2.LatLng(lat,lng), //Marker의 중심좌표 설정.
+                draggable:true,
+                iconSize: new Tmapv2.Size(
+                    24, 38), // 아이콘 크기 설정
+                title: name, // 마커 타이틀
+                map: map //Marker가 표시될 Map 설정.
+            });
+
+            map.setCenter(new Tmapv2.LatLng(lat,lng));
+            map.setZoom(17);
+        }
+        var clickId = 0;
+        function myPlaceClick(id,lat,lng,name){
+            console.log(id+","+lat+","+lng+","+name);
+            var myPlaceButton = document.getElementById("myPlace" + id);
+            var mypButton = $(".mypButton");
+            if(myPlaceButton.style.display == "inline") {
+                myPlaceButton.style.display = "none";
+                clickId = 0;
+                markerRemove();
+            }else if(myPlaceButton.style.display == "none"){
+                if(clickId == 0) {
+                    myPlaceButton.style.display = "inline";
+                    clickId = id;
+                    clickPing(lat,lng,name);
+                }else if(clickId != 0){
+                    document.getElementById("myPlace" + clickId).style.display = "none";
+                    myPlaceButton.style.display = "inline";
+                    clickId = id;
+                    clickPing(lat,lng,name);
+                }
+            }
+        }
+        function startMyPlace(lat,lng,name) {
+            document.getElementById("myPlace" + clickId).style.display = "none";
+            markerRemove();
+            startMYPPing(lat,lng,name);
+        }
+
+        function endMyPlace(lat,lng,name) {
+            document.getElementById("myPlace" + clickId).style.display = "none";
+            markerRemove();
+            endMYPPing(lat,lng,name);
+        }
+
+        function startMYPPing(lat,lng,name) {
+            document.getElementById("searchKeyword").value = name;
+            // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
+            if (s_marker.getPosition() != null) {
+                s_marker.setMap(null);
+                s_marker = new Tmapv2.Marker({
+                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                    position: null, //Marker의 중심좌표 설정.
+                    draggable: true,
+                    map: null //Marker가 표시될 Map 설정.
+                });
+            }
+
+            //Marker 객체 생성.
+            s_marker = new Tmapv2.Marker({
+                icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                position: new Tmapv2.LatLng(lat, lng), //Marker의 중심좌표 설정.
+                draggable: true,
+                map: map //Marker가 표시될 Map 설정.
+            });
+            s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            ontestfoot();
+        }
+
+        function endMYPPing(lat,lng,name) {
+            document.getElementById("searchKeyword2").value = name;
+            // 도착지가 이미 지정되어 있으면 도착지 마커를 지우고 시작
+            if (e_marker.getPosition() != null) {
+                e_marker.setMap(null);
+                e_marker = new Tmapv2.Marker({
+                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                    position: null, //Marker의 중심좌표 설정.
+                    draggable: true,
+                    map: null //Marker가 표시될 Map 설정.
+                });
+            }
+
+            //Marker 객체 생성.
+            e_marker = new Tmapv2.Marker({
+                icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
+                position: new Tmapv2.LatLng(lat, lng), //Marker의 중심좌표 설정.
+                draggable: true,
+                map: map //Marker가 표시될 Map 설정.
+            });
+            e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            ontestfoot();
+        }
+
     </script>
 </head>
 <style>
@@ -862,12 +968,19 @@
                 <i onclick="goSettings()" class="fa-solid fa-gear fa-2x"></i>
             </div>
             <hr>
-            <h3>마이플레이스</h3>
-            <div class="mt-2">
-                집&nbsp;<i class="fa-solid fa-house"></i>&nbsp;<input type="text" value="루틴~">
-            </div>
-            <div class="mt-2">
-                회사&nbsp;<i class="fa-solid fa-building"></i>&nbsp;<input type="text" value="루틴~">
+            <div>
+                <b>마이플레이스</b> <br>
+                <table>
+                    <div th:each="myplace: ${myPlaceList}" th:id="|mpt${myplace.myPlaceId}|">
+                        <tr class="myPlaceTap">
+                            <td><p th:text="${myplace.myPlaceName}" th:onclick="myPlaceClick([[${myplace.myPlaceId}]],[[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])"></p></td>
+                        </tr>
+                        <tr style="margin-bottom: 5px;display: none;" th:id="|myPlace${myplace.myPlaceId}|">
+                            <td><input type="button" th:onclick="startMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="출발지"></td>
+                            <td><input type="button" th:onclick="endMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="도착지"></td>
+                        </tr>
+                    </div>
+                </table>
             </div>
             <hr>
             <h3>루틴</h3>

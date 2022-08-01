@@ -8,6 +8,7 @@
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>
+        var marker;
         var map_count = 0;
         var page_lat = [[${page_lat}]];
         var page_lng = [[${page_lng}]];
@@ -357,14 +358,48 @@
             });
     }
 
+    function markerRemove(){
+        if(marker != null) {
+            marker.setMap(null);
+            marker = null;
+        }
+    }
+    function clickPing(lat,lng,name){
+        markerRemove();
+
+        marker = new Tmapv2.Marker({
+            icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+            position: new Tmapv2.LatLng(lat,lng), //Marker의 중심좌표 설정.
+            draggable:true,
+            iconSize: new Tmapv2.Size(
+                24, 38), // 아이콘 크기 설정
+            title: name, // 마커 타이틀
+            map: map //Marker가 표시될 Map 설정.
+        });
+
+        map.setCenter(new Tmapv2.LatLng(lat,lng));
+        map.setZoom(17);
+    }
+var clickId = 0;
     function myPlaceClick(id,lat,lng,name){
         console.log(id+","+lat+","+lng+","+name);
         var myPlaceButton = document.getElementById("myPlace" + id);
         var mypButton = $(".mypButton");
         if(myPlaceButton.style.display == "inline") {
             myPlaceButton.style.display = "none";
+            clickId = 0;
+            markerRemove();
         }else if(myPlaceButton.style.display == "none"){
-            myPlaceButton.style.display = "inline";
+            if(clickId == 0) {
+                myPlaceButton.style.display = "inline";
+                clickId = id;
+                clickPing(lat,lng,name);
+            }else if(clickId != 0){
+                document.getElementById("myPlace" + clickId).style.display = "none";
+                myPlaceButton.style.display = "inline";
+                clickId = id;
+                clickPing(lat,lng,name);
+            }
         }
     }
 

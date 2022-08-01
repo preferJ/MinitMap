@@ -1,10 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.common.PagingConst;
-import com.example.project.dto.BoardDTO;
-import com.example.project.dto.LikeCheckDTO;
-import com.example.project.dto.TrafficDTO;
-import com.example.project.dto.TrafficTimeDTO;
+import com.example.project.dto.*;
 import com.example.project.entity.BoardEntity;
 import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
@@ -278,8 +275,12 @@ public class BoardController {
     }
 
     @GetMapping("/report")
+    // ㅁㅈ / 신고 탭 이동
     public String report() {
-        // 신고 탭 이동
     return "/BoardPages/report";
     }
+//    @GetMapping("/reportSave")
+//    public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
+//
+//    }
 }

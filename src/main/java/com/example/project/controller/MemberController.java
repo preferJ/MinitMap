@@ -31,7 +31,7 @@ public class MemberController {
     public String save(@ModelAttribute MemberDTO memberDTO) {
         System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
-        return "/index";
+        return "/MemberPages/login";
     }
 
 

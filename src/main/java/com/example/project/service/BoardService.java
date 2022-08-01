@@ -352,7 +352,6 @@ public class BoardService {
             for (BoardEntity boardEntity : allByBoardCreatedTimeBetween) {
                 if (boardEntity.getBoardType().equals("신호")) {
                     boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
-                    boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
                 }
                 i++;
             }

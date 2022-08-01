@@ -111,7 +111,15 @@
             }
 
             function save() {
-                location.href = "/member/saveForm";
+                var width = 480;
+                var height = 600;
+
+                var left = (window.screen.width / 2) - (width / 2);
+                var top = (window.screen.height / 4);
+
+                var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+                window.open("/member/saveForm", "회원가입", windowStatus);
             }
 
             function myPage(id) {

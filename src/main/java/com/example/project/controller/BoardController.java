@@ -269,7 +269,6 @@ public class BoardController {
         }
     }
     @GetMapping("/findByIdList/{loginId}")
-    public String findByIdList(@PathVariable Long loginId, Model model) {
     // ㅁㅈ  내가 쓴 글 보러 가는 메서드
     public String findByIdList(@PathVariable Long loginId, Model model){
         List<BoardDTO> boardDTOList = boardService.findByList(loginId);

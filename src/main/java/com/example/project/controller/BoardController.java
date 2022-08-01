@@ -260,6 +260,7 @@ public class BoardController {
         }
     }
     @GetMapping("/findByIdList/{loginId}")
+    // ㅁㅈ  내가 쓴 글 보러 가는 메서드
     public String findByIdList(@PathVariable Long loginId, Model model){
         List<BoardDTO> boardDTOList = boardService.findByList(loginId);
         System.out.println("boardDTOList = " + boardDTOList);
@@ -267,4 +268,8 @@ public class BoardController {
         return "/BoardPages/mySave";
     }
 
+    @GetMapping("/report")
+    public String report() {
+    return "/BoardPages/report";
+    }
 }

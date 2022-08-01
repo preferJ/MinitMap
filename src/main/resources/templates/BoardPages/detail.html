@@ -214,9 +214,11 @@
                                 th:text="${board.boardTypeLocation2}"></span></th>
                     </tr>
                     <tr>
-                        <th th:if="${board.boardType} != '신호'" colspan="2">제목 : <span th:text="${board.boardTitle}"></span></th>
+                        <th th:if="${board.boardType} != '신호'" colspan="2">제목 : <span
+                                th:text="${board.boardTitle}"></span></th>
                         <th th:if="${board.boardType} == '신호'">제목 : <span th:text="${board.boardTitle}"></span></th>
-                        <th th:if="${board.boardType} == '신호'">운영시간 : <span th:text="${trafficStart}"></span> ~ <span th:text="${trafficEnd}"></span></th>
+                        <th th:if="${board.boardType} == '신호'">운영시간 : <span th:text="${trafficStart}"></span> ~ <span
+                                th:text="${trafficEnd}"></span></th>
                     </tr>
                     <tr>
                         <th colspan="2" rowspan="5">
@@ -226,40 +228,50 @@
                     </tr>
                     </tbody>
                 </table>
-                <div th:if="${session.loginNickName == board.memberNickname}"><input type="button" th:onclick="update()" value="수정"> <input type="button" th:onclick="delete1()" value="삭제"> <input th:if="${board.boardType == '신호'}" type="button"
-                                                                                              th:onclick="traffic([[${board.boardId}]])" value="신호추가"><input th:if="${session.loginEmail == 'admin'}" style="float: right" type="button" value="글 확인"></div>
-                <div th:if="${session.loginNickName != board.memberNickname}and${session.loginEmail == 'admin'}"><input type="button" th:onclick="delete1()" value="삭제"><input style="float: right" type="button" value="글 확인"></div>
-                <div th:if="${session.loginId} and ${session.loginEmail != 'admin'} and ${session.loginNickName != board.memberNickname}"><input th:if="${board.boardType == '신호'}" type="button"
-                                                                                                                         th:onclick="traffic([[${board.boardId}]])" value="신호추가"><input style="float: right" type="button" value="신고"></div>
+                <div th:if="${session.loginNickName == board.memberNickname}"><input type="button" th:onclick="update()"
+                                                                                     value="수정"> <input type="button"
+                                                                                                        th:onclick="delete1()"
+                                                                                                        value="삭제">
+                    <input th:if="${board.boardType == '신호'}" type="button"
+                           th:onclick="traffic([[${board.boardId}]])" value="신호추가"><input
+                            th:if="${session.loginEmail == 'admin'}" style="float: right" type="button" value="글 확인">
+                </div>
+                <div th:if="${session.loginNickName != board.memberNickname}and${session.loginEmail == 'admin'}">
+                    <input type="button" th:onclick="delete1()" value="삭제"><input style="float: right" type="button"
+                                                                                  value="글 확인"></div>
+                <div th:if="${session.loginId} and ${session.loginEmail != 'admin'} and ${session.loginNickName != board.memberNickname}">
+                    <input th:if="${board.boardType == '신호'}" type="button" th:onclick="traffic([[${board.boardId}]])"
+                           value="신호추가">
+                    <input style="float: right" type="button" th:onclick="report()" value="신고"></div>
             </div>
             <br><br>
         </main>
 
         <div th:if="${check}=='빔'" style="text-align: center">
             <button th:onclick="like(1)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
-                                                                       src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
+                                                                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
             </button>
             <button th:onclick="dislike(1)" class="btn" id="btn" type="submit"><img class="btn-img" width="30"
-                                                                                   height="30"
-                                                                                   src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150917_279%2Fccc6976_1442459534587GQ9DB_JPEG%2F%25BD%25C8%25BE%25EE%25BF%25E4.png&type=a340">
+                                                                                    height="30"
+                                                                                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150917_279%2Fccc6976_1442459534587GQ9DB_JPEG%2F%25BD%25C8%25BE%25EE%25BF%25E4.png&type=a340">
             </button>
         </div>
         <div th:if="${check}=='참'" style="text-align: center">
             <button th:onclick="like(2)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
-                                                                       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0OUp0slzZOK6lEMcXrgPX7tFSXa9_q-Lug&usqp=CAU">
+                                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0OUp0slzZOK6lEMcXrgPX7tFSXa9_q-Lug&usqp=CAU">
             </button>
-            <button th:onclick="dislike(2)" class="btn"  type="submit"><img class="btn-img" width="30"
-                                                                                   height="30"
-                                                                                   src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150917_279%2Fccc6976_1442459534587GQ9DB_JPEG%2F%25BD%25C8%25BE%25EE%25BF%25E4.png&type=a340">
+            <button th:onclick="dislike(2)" class="btn" type="submit"><img class="btn-img" width="30"
+                                                                           height="30"
+                                                                           src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150917_279%2Fccc6976_1442459534587GQ9DB_JPEG%2F%25BD%25C8%25BE%25EE%25BF%25E4.png&type=a340">
             </button>
         </div>
         <div th:if="${check}=='거짓'" style="text-align: center">
             <button th:onclick="like(3)" class="btn" type="submit"><img class="btn-img" width="30" height="30"
-                                                                       src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
+                                                                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNjExMDNfMTgg%2FMDAxNDc4MTM0OTMwMjQ4.7qMFT72OVT7UERgbzv9JBmVg30BGuL86VzFCX0JuLsYg.BkQm0icJD7HDXLz3iJE64ts0oNTLboZEGS9g0cCCHcUg.PNG.moiba1%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25C0%25BD.png&type=a340">
             </button>
             <button th:onclick="dislike(3)" class="btn" type="submit"><img class="btn-img" width="30"
-                                                                                   height="30"
-                                                                                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0OUp0slzZOK6lEMcXrgPX7tFSXa9_q-Lug&usqp=CAU">
+                                                                           height="30"
+                                                                           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0OUp0slzZOK6lEMcXrgPX7tFSXa9_q-Lug&usqp=CAU">
             </button>
         </div>
         <div style="text-align: center"><span th:text="${board.boardLike}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
@@ -292,6 +304,17 @@
         window.open("/member/loginForm", "로그인", windowStatus);
 
     }
+    function report() {
+        var width = 553;
+        var height = 400;
+
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
+
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+        window.open("/board/report", "신고", windowStatus);
+    }
 
     function logout() {
         location.href = "/board/logout";
@@ -309,11 +332,11 @@
     function like(num) {
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
-            if (num==1){
+            if (num == 1) {
                 alert("좋아요!")
-            }else if(num==2){
+            } else if (num == 2) {
                 alert("좋아요 취소")
-            }else{
+            } else {
                 alert("좋아요!")
             }
             location.href = "/board/like?like=1&boardId=" + [[${board.boardId}]];
@@ -325,11 +348,11 @@
     function dislike(num) {
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
-            if (num==1){
+            if (num == 1) {
                 alert("싫어요 ㅠ")
-            }else if(num==2){
+            } else if (num == 2) {
                 alert("싫어요 ㅠ")
-            }else{
+            } else {
                 alert("싫어요 취소")
             }
             location.href = "/board/like?like=2&boardId=" + [[${board.boardId}]];
@@ -350,41 +373,41 @@
         window.open("/board/trafficMap?boardId=" + [[${board.boardId}]], "지도표시", windowStatus);
     }
 
-    function update(){
+    function update() {
         location.href = "/board/update?boardId=" + [[${board.boardId}]];
     }
 
-    function delete1(){
+    function delete1() {
         alert("글이 삭제되었습니다.")
         location.href = "/board/delete?boardId=" + [[${board.boardId}]];
     }
 
-    function traffic(id){
+    function traffic(id) {
 
         $.ajax({
             url: "/myTraffic/save",
-            type:"get",
-            dataType:"text",
-            data:{
-                "id":id
+            type: "get",
+            dataType: "text",
+            data: {
+                "id": id
             },
-            success: function (result){
-                if (result == "ok"){
-                    let title = prompt('신호등명을 입력해주세요','');
+            success: function (result) {
+                if (result == "ok") {
+                    let title = prompt('신호등명을 입력해주세요', '');
                     $.ajax({
                         url: "/myTraffic/save?id=" + [[${board.boardId}]],
                         type: "post",
-                        data:{
-                            "title":title,
-                            "id":id
+                        data: {
+                            "title": title,
+                            "id": id
                         },
-                        success: function (result){
-                            if (result == "ok"){
+                        success: function (result) {
+                            if (result == "ok") {
                                 alert("신호등이 추가되었습니다!")
                             }
                         }
                     })
-                }else {
+                } else {
                     alert("이미 등록 되어 있는 신호등 입니다.")
                 }
             }

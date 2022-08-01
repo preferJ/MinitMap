@@ -39,6 +39,9 @@ public class TrafficTimeEntity {
     @Column(name = "setStartTime", nullable = false)
     private Long setStartTime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "myTrafficId", nullable = false)
+    private MyTrafficEntity myTrafficEntity;
     public static TrafficTimeEntity toTrafficTimeSaveEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity){
         TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
         trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());

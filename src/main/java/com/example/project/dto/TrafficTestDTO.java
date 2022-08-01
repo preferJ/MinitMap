@@ -40,7 +40,6 @@ public class TrafficTestDTO {
         Long nowTime = Long.valueOf(hour * 10000 + minute * 100 + second);
         trafficTestDTO.setTrafficId(trafficEntity.getTrafficId());
         trafficTestDTO.setMemberId(trafficEntity.getTrafficId());
-        trafficTestDTO.setTrafficName(trafficEntity.getTrafficName());
         trafficTestDTO.setTrafficLat(trafficEntity.getTrafficLat());
         trafficTestDTO.setTrafficLon(trafficEntity.getTrafficLon());
         trafficTestDTO.setTrafficLike(trafficEntity.getTrafficLike());

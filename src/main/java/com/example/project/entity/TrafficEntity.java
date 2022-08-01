@@ -52,8 +52,6 @@ public class TrafficEntity {
     @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeCheckEntity> likeCheckEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MyTrafficEntity> myTrafficEntityList = new ArrayList<>();
 
     public static TrafficEntity trafficSaveEntity(TrafficDTO trafficDTO, MemberEntity memberEntity){
         TrafficEntity trafficEntity = new TrafficEntity();

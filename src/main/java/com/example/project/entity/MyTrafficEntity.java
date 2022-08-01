@@ -31,14 +31,6 @@ public class MyTrafficEntity {
     @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trafficId")
-    private TrafficEntity trafficEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "myTrafficId")
-    private MyTrafficEntity myTrafficEntity;
-
     @OneToMany(mappedBy = "myTrafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficTimeEntity> trafficTimeEntityList = new ArrayList<>();
 

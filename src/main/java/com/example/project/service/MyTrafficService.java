@@ -31,7 +31,7 @@ public class MyTrafficService {
     }
 
     public String save(Long id, Long loginId, String name) {
-        Long save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(name, memberRepository.findById(loginId).get(), boardRepository.findById(id).get().getTrafficEntity())).getMyTrafficId();
+        Long save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(name, memberRepository.findById(loginId).get())).getMyTrafficId();
         if (save>0){
             return "ok";
         }else{

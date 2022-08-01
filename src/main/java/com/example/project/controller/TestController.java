@@ -27,6 +27,8 @@ public class TestController {
 
     private final MyPlaceService myPlaceService;
 
+    private final RutinService rutinService;
+
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
     @GetMapping("/")
@@ -84,9 +86,12 @@ public class TestController {
         model.addAttribute("page_lng",page_lng);
         model.addAttribute("page_zoom", page_zoom);
         String email = (String) session.getAttribute("loginEmail");
+        Long memberId = (Long) session.getAttribute("loginId");
         if(session.getAttribute("loginEmail") != null){
             List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
             model.addAttribute("myPlaceList", myPlaceList);
+            List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
+            model.addAttribute("rutinList", rutinList);
         }
         return "/kmj/1tap";
     }
@@ -110,9 +115,12 @@ public class TestController {
         model.addAttribute("lat", lat);
         model.addAttribute("lng", lng);
         String email = (String) session.getAttribute("loginEmail");
+        Long memberId = (Long) session.getAttribute("loginId");
         if(session.getAttribute("loginEmail") != null){
             List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
             model.addAttribute("myPlaceList", myPlaceList);
+            List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
+            model.addAttribute("rutinList", rutinList);
         }
         return "/kmj/2tap";
     }

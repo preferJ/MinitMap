@@ -148,7 +148,7 @@
                     <table>
                         <div th:each="myplace: ${myPlaceList}" th:id="|mpt${myplace.myPlaceId}|">
                             <tr class="myPlaceTap">
-                                <td><p th:text="${myplace.myPlaceName}" th:onclick="|myPlaceClick(${myplace.myPlaceId})|"></p></td>
+                                <td><p th:text="${myplace.myPlaceName}" th:onclick="myPlaceClick([[${myplace.myPlaceId}]],[[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])"></p></td>
                             </tr>
                             <tr style="margin-bottom: 5px;display: none;" th:id="|myPlace${myplace.myPlaceId}|">
                                 <td><input type="button" th:onclick="startMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="출발지"></td>
@@ -357,7 +357,8 @@
             });
     }
 
-    function myPlaceClick(id){
+    function myPlaceClick(id,lat,lng,name){
+        console.log(id+","+lat+","+lng+","+name);
         var myPlaceButton = document.getElementById("myPlace" + id);
         var mypButton = $(".mypButton");
         if(myPlaceButton.style.display == "inline") {

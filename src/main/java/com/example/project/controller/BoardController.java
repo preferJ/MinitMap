@@ -32,9 +32,10 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final LikeCheckService likeCheckService;
     private final TrafficTimeService trafficTimeService;
+
     // 이현 시작
     @GetMapping
-    public String board(@PageableDefault(page = 1) Pageable pageable, Model model){
+    public String board(@PageableDefault(page = 1) Pageable pageable, Model model) {
         Page<BoardDTO> boardList = boardService.findAllList(pageable);
         model.addAttribute("boardDTOList", boardList);
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
@@ -43,30 +44,34 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/index";
     }
+
     // 이현
     @GetMapping("/save")
-    public String saveForm(){
+    public String saveForm() {
         return "/BoardPages/save";
     }
+
     // 이현
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/board";
     }
+
     // 이현
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO,HttpSession session){
+    public String save(@ModelAttribute BoardDTO boardDTO, HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginId");
-        boardService.save(boardDTO ,memberId);
+        boardService.save(boardDTO, memberId);
         return "redirect:/board";
     }
+
     // 이현
     @GetMapping("/trafficChoice")
-    public String trafficChoice(Model model,HttpSession session){
+    public String trafficChoice(Model model, HttpSession session) {
         Long id = (Long) session.getAttribute("loginId");
         List<TrafficDTO> trafficDTOList = trafficService.findByMemberId(id);
-        model.addAttribute("trafficDTOList",trafficDTOList);
+        model.addAttribute("trafficDTOList", trafficDTOList);
         return "/BoardPages/modal";
     }
 
@@ -90,7 +95,8 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/free";
     }
-//이현
+
+    //이현
     @GetMapping("/traffic")
     public String traffic(@PageableDefault(page = 1) Pageable pageable, Model model) {
         Page<BoardDTO> boardList = boardService.traffic(pageable);
@@ -101,6 +107,7 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/traffic";
     }
+
     //이현
     @GetMapping("/admin")
     public String admin(@PageableDefault(page = 1) Pageable pageable, Model model) {
@@ -115,152 +122,160 @@ public class BoardController {
 
     //이현
     @GetMapping("/location")
-    public String local(@PageableDefault(page = 1) Pageable pageable, @RequestParam("type") Long id , @RequestParam("local1") String local1, @RequestParam("local2") String local2,Model model){
-        Page<BoardDTO> boardList = boardService.location(pageable,id,local1,local2);
+    public String local(@PageableDefault(page = 1) Pageable pageable, @RequestParam("type") Long id, @RequestParam("local1") String local1, @RequestParam("local2") String local2, Model model) {
+        Page<BoardDTO> boardList = boardService.location(pageable, id, local1, local2);
         model.addAttribute("boardDTOList", boardList);
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
         int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         System.out.println(boardList.getTotalElements());
-        model.addAttribute("type",id);
-        model.addAttribute("local1",local1);
-        model.addAttribute("local2",local2);
+        model.addAttribute("type", id);
+        model.addAttribute("local1", local1);
+        model.addAttribute("local2", local2);
         return "/BoardPages/type";
     }
 
     //이현
     @GetMapping("/search")
-    public String search(@PageableDefault(page = 1) Pageable pageable,@RequestParam("search") String search,Model model){
-        Page<BoardDTO> boardList = boardService.search(pageable,search);
+    public String search(@PageableDefault(page = 1) Pageable pageable, @RequestParam("search") String search, Model model) {
+        Page<BoardDTO> boardList = boardService.search(pageable, search);
         model.addAttribute("boardDTOList", boardList);
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
         int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        model.addAttribute("search",search);
+        model.addAttribute("search", search);
         return "/BoardPages/search";
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("id") Long id , Model model ,HttpSession session){
+    public String detail(@RequestParam("id") Long id, Model model, HttpSession session) {
+        BoardEntity boardEntity = boardRepository.findById(id).get();
+        if (boardEntity.getBoardType().equals("신호")) {
+            Double dnleh = boardEntity.getTrafficEntity().getTrafficLat();
+            Double rudeh = boardEntity.getTrafficEntity().getTrafficLon();
+            model.addAttribute("dnleh", dnleh);
+            model.addAttribute("rudeh", rudeh);
+        }
         BoardDTO boardDTO = boardService.findById(id);
         Long memberId = (Long) session.getAttribute("loginId");
         model.addAttribute("board", boardDTO);
         String check = "빔";
         LikeCheckDTO likeCheckDTO = new LikeCheckDTO();
-        if (session.getAttribute("loginId") != null){
-            likeCheckDTO = likeCheckService.findCheck(id,memberId);
-            if (likeCheckDTO != null){
-                if (likeCheckDTO.isLikeCheck()==true){
-                    check="참";
-                }else {
-                    check="거짓";
+        if (session.getAttribute("loginId") != null) {
+            likeCheckDTO = likeCheckService.findCheck(id, memberId);
+            if (likeCheckDTO != null) {
+                if (likeCheckDTO.isLikeCheck() == true) {
+                    check = "참";
+                } else {
+                    check = "거짓";
                 }
             }
         }
-        if (boardDTO.getBoardType().equals("신호")){
+        if (boardDTO.getBoardType().equals("신호")) {
             TrafficTimeDTO trafficTimeDTO = trafficTimeService.findByTrafficId(boardDTO.getTrafficId());
 //            String startTime = (trafficTimeDTO.getSetStartTime()/10000) + ":" + ((trafficTimeDTO.getSetStartTime()%10000)/100) + ":" + (trafficTimeDTO.getSetStartTime()%100);
-            String startTime ="";
-            if (trafficTimeDTO.getTrafficApplyStart()/10000 <10){
-                startTime += "0" + (trafficTimeDTO.getTrafficApplyStart()/10000) + ":";
-            }else {
-                startTime += (trafficTimeDTO.getTrafficApplyStart()/10000) + ":";
+            String startTime = "";
+            if (trafficTimeDTO.getTrafficApplyStart() / 10000 < 10) {
+                startTime += "0" + (trafficTimeDTO.getTrafficApplyStart() / 10000) + ":";
+            } else {
+                startTime += (trafficTimeDTO.getTrafficApplyStart() / 10000) + ":";
             }
 
-            if (((trafficTimeDTO.getTrafficApplyStart()%10000)/100)<10){
-                startTime += "0" + ((trafficTimeDTO.getTrafficApplyStart()%10000)/100) + ":";
-            }else {
-                startTime += ((trafficTimeDTO.getTrafficApplyStart()%10000)/100) + ":";
+            if (((trafficTimeDTO.getTrafficApplyStart() % 10000) / 100) < 10) {
+                startTime += "0" + ((trafficTimeDTO.getTrafficApplyStart() % 10000) / 100) + ":";
+            } else {
+                startTime += ((trafficTimeDTO.getTrafficApplyStart() % 10000) / 100) + ":";
             }
 
-            if ((trafficTimeDTO.getTrafficApplyStart()%100)<10){
-                startTime += "0" + (trafficTimeDTO.getTrafficApplyStart()%100);
-            }else {
-                startTime += (trafficTimeDTO.getTrafficApplyStart()%100);
+            if ((trafficTimeDTO.getTrafficApplyStart() % 100) < 10) {
+                startTime += "0" + (trafficTimeDTO.getTrafficApplyStart() % 100);
+            } else {
+                startTime += (trafficTimeDTO.getTrafficApplyStart() % 100);
             }
             String endTime = "";
-            if (trafficTimeDTO.getTrafficApplyEnd()/10000 <10){
-                endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd()/10000) + ":";
-            }else {
-                endTime += (trafficTimeDTO.getTrafficApplyEnd()/10000) + ":";
+            if (trafficTimeDTO.getTrafficApplyEnd() / 10000 < 10) {
+                endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd() / 10000) + ":";
+            } else {
+                endTime += (trafficTimeDTO.getTrafficApplyEnd() / 10000) + ":";
             }
 
-            if (((trafficTimeDTO.getTrafficApplyEnd()%10000)/100)<10){
-                endTime += "0" + ((trafficTimeDTO.getTrafficApplyEnd()%10000)/100) + ":";
-            }else {
-                endTime += ((trafficTimeDTO.getTrafficApplyEnd()%10000)/100) + ":";
+            if (((trafficTimeDTO.getTrafficApplyEnd() % 10000) / 100) < 10) {
+                endTime += "0" + ((trafficTimeDTO.getTrafficApplyEnd() % 10000) / 100) + ":";
+            } else {
+                endTime += ((trafficTimeDTO.getTrafficApplyEnd() % 10000) / 100) + ":";
             }
 
-            if ((trafficTimeDTO.getTrafficApplyEnd()%100)<10){
-                endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd()%100);
-            }else {
-                endTime += (trafficTimeDTO.getTrafficApplyEnd()%100);
+            if ((trafficTimeDTO.getTrafficApplyEnd() % 100) < 10) {
+                endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd() % 100);
+            } else {
+                endTime += (trafficTimeDTO.getTrafficApplyEnd() % 100);
             }
-            model.addAttribute("trafficStart",startTime);
-            model.addAttribute("trafficEnd",endTime);
+            model.addAttribute("trafficStart", startTime);
+            model.addAttribute("trafficEnd", endTime);
         }
         System.out.println(check);
-        model.addAttribute("check",check);
+        model.addAttribute("check", check);
         return "/BoardPages/detail";
     }
 
     @GetMapping("/like")
-    public String like(@RequestParam("like") Long like , @RequestParam("boardId") Long boardId , HttpSession session){
+    public String like(@RequestParam("like") Long like, @RequestParam("boardId") Long boardId, HttpSession session) {
         Long id = (Long) session.getAttribute("loginId");
-        boardService.likeCheck(like,boardId,id);
+        boardService.likeCheck(like, boardId, id);
         return "redirect:/board/detail?id=" + boardId;
     }
 
     @GetMapping("/trafficMap")
-    public String trafficMap(@RequestParam("boardId") Long id , Model model){
+    public String trafficMap(@RequestParam("boardId") Long id, Model model) {
         BoardEntity boardEntity = boardRepository.findById(id).get();
         Double dnleh = boardEntity.getTrafficEntity().getTrafficLat();
         Double rudeh = boardEntity.getTrafficEntity().getTrafficLon();
-        model.addAttribute("dnleh",dnleh);
-        model.addAttribute("rudeh",rudeh);
+        model.addAttribute("dnleh", dnleh);
+        model.addAttribute("rudeh", rudeh);
         return "/BoardPages/trafficMap";
     }
 
     @GetMapping("/update")
-    public String updateForm(@RequestParam("boardId") Long id, Model model){
+    public String updateForm(@RequestParam("boardId") Long id, Model model) {
         BoardDTO boardDTO = boardService.findById(id);
-        model.addAttribute("board",boardDTO);
+        model.addAttribute("board", boardDTO);
         return "/BoardPages/update";
     }
 
     @PostMapping("update")
-    public String update(@ModelAttribute BoardDTO boardDTO , HttpSession session){
+    public String update(@ModelAttribute BoardDTO boardDTO, HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginId");
         boardDTO.setMemberId(memberId);
         boardService.update(boardDTO);
-        return "redirect:/board/detail?id="+boardDTO.getBoardId();
+        return "redirect:/board/detail?id=" + boardDTO.getBoardId();
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam("boardId") Long id){
+    public String delete(@RequestParam("boardId") Long id) {
         boardService.delete(id);
         return "redirect:/board";
     }
 
     @GetMapping("/3tap")
-    public @ResponseBody List<BoardDTO> tap3(@RequestParam("type") String type){
+    public @ResponseBody List<BoardDTO> tap3(@RequestParam("type") String type) {
         List<BoardDTO> boardDTOS = boardService.hots(type);
         // 주간 인기글은 50개만 가져감
-        List<BoardDTO> boardDTOList  = new ArrayList<>();
-        if (boardDTOS.size() > 50){
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        if (boardDTOS.size() > 50) {
             for (int i = 0; i < 50; i++) {
                 boardDTOList.add(boardDTOS.get(i));
             }
             System.out.println(boardDTOList);
             return boardDTOList;
-        }else{
+        } else {
             return boardDTOS;
         }
     }
+
     @GetMapping("/findByIdList/{loginId}")
-    public String findByIdList(@PathVariable Long loginId, Model model){
+    public String findByIdList(@PathVariable Long loginId, Model model) {
         List<BoardDTO> boardDTOList = boardService.findByList(loginId);
         System.out.println("boardDTOList = " + boardDTOList);
         model.addAttribute("boardList", boardDTOList);

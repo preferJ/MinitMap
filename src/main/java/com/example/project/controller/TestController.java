@@ -100,6 +100,7 @@ public class TestController {
                        @RequestParam(value = "name", required = false)String name,
                        @RequestParam(value = "lat", required = false)Double lat,
                        @RequestParam(value = "lng", required = false)Double lng,
+                       HttpSession session,
                        Model model) {
         model.addAttribute("page_lat", page_lat);
         model.addAttribute("page_lng", page_lng);
@@ -108,6 +109,11 @@ public class TestController {
         model.addAttribute("name", name);
         model.addAttribute("lat", lat);
         model.addAttribute("lng", lng);
+        String email = (String) session.getAttribute("loginEmail");
+        if(session.getAttribute("loginEmail") != null){
+            List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
+            model.addAttribute("myPlaceList", myPlaceList);
+        }
         return "/kmj/2tap";
     }
 

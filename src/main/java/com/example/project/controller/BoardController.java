@@ -32,7 +32,6 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final LikeCheckService likeCheckService;
     private final TrafficTimeService trafficTimeService;
-
     // 이현 시작
     @GetMapping
     public String board(@PageableDefault(page = 1) Pageable pageable, Model model) {
@@ -44,7 +43,6 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/index";
     }
-
     // 이현
     @GetMapping("/save")
     public String saveForm() {
@@ -57,7 +55,6 @@ public class BoardController {
         session.invalidate();
         return "redirect:/board";
     }
-
     // 이현
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO, HttpSession session) {
@@ -65,7 +62,6 @@ public class BoardController {
         boardService.save(boardDTO, memberId);
         return "redirect:/board";
     }
-
     // 이현
     @GetMapping("/trafficChoice")
     public String trafficChoice(Model model, HttpSession session) {
@@ -107,7 +103,6 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/traffic";
     }
-
     //이현
     @GetMapping("/admin")
     public String admin(@PageableDefault(page = 1) Pageable pageable, Model model) {
@@ -273,13 +268,18 @@ public class BoardController {
             return boardDTOS;
         }
     }
-
     @GetMapping("/findByIdList/{loginId}")
-    public String findByIdList(@PathVariable Long loginId, Model model) {
+    // ㅁㅈ  내가 쓴 글 보러 가는 메서드
+    public String findByIdList(@PathVariable Long loginId, Model model){
         List<BoardDTO> boardDTOList = boardService.findByList(loginId);
         System.out.println("boardDTOList = " + boardDTOList);
         model.addAttribute("boardList", boardDTOList);
         return "/BoardPages/mySave";
     }
 
+    @GetMapping("/report")
+    public String report() {
+        // 신고 탭 이동
+    return "/BoardPages/report";
+    }
 }

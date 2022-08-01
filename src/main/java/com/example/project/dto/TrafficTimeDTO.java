@@ -13,6 +13,7 @@ import java.time.LocalTime;
 public class TrafficTimeDTO {
     private Long trafficTimeId;
     private Long trafficId;
+    private Long myTrafficId;
     private Long trafficApplyStart;
     private Long trafficApplyEnd;
     private String startType;

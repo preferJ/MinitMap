@@ -19,7 +19,7 @@ public class RutinEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
-
+    // 시작지 이름
     @Column(name = "startPoint", nullable = false)
     private String stratPoint;
 
@@ -28,7 +28,7 @@ public class RutinEntity {
 
     @Column(name = "startPointLon", nullable = false)
     private Double startPointLon;
-
+    // 도착지 이름
     @Column(name = "destination", nullable = false)
     private String destination;
 

@@ -26,6 +26,7 @@
         var labelArr2 = [];
         var latLonArr2 = [];
         var nameArr2 = [];
+        var lon,lat;
         s_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
@@ -99,7 +100,7 @@
                         draggable: true,
                         map: map //Marker가 표시될 Map 설정.
                     });
-                    s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                     document.getElementById("searchKeyword").value = name;
                     map.setCenter(new Tmapv2.LatLng(lat,lng));
                     map.setZoom(14);
@@ -114,7 +115,7 @@
                         draggable: true,
                         map: map //Marker가 표시될 Map 설정.
                     });
-                    e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                     document.getElementById("searchKeyword2").value = name;
                     map.setCenter(new Tmapv2.LatLng(lat,lng));
                     map.setZoom(14);
@@ -394,7 +395,8 @@
                         map: map //Marker가 표시될 Map 설정.
                     });
                     // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
-                    s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    reverseGeo(s_marker.getPosition().lng(),s_marker.getPosition().lat(),"searchKeyword");
                     ontestfoot();
                 } else if (e_marker.getPosition() == null) {
                     var result = e.latLng;
@@ -410,8 +412,9 @@
                         map: map //Marker가 표시될 Map 설정.
                     });
                     // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
-                    e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                     // 지도 클릭으로 도착지 설정이 완료되면 출발지는 무조건 설정되어있기 때문에 바로 경로를 탐색시켜 줌
+                    reverseGeo(e_marker.getPosition().lng(),e_marker.getPosition().lat(),"searchKeyword2");
                     ontestfoot();
                 }
                 // 출발지 도착지가 모두 설정되어있을 상황에 한번 더 누르면 출발지 도착지가 모두 지워지고 출발지 설정
@@ -423,6 +426,19 @@
 
             // 드래그를 놓았을 때 발생하는 함수 출발지 도착지 설정이 완료되어있을 때만 실행됨
             function ontestfoot() {
+                if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
+                    onfoot();
+                }
+            }
+
+            function onStart(){
+                reverseGeo(s_marker.getPosition().lng(),s_marker.getPosition().lat(),"searchKeyword");
+                if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
+                    onfoot();
+                }
+            }
+            function onEnd(){
+                reverseGeo(e_marker.getPosition().lng(),e_marker.getPosition().lat(),"searchKeyword2");
                 if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
                     onfoot();
                 }
@@ -655,7 +671,7 @@
                     draggable: true,
                     map: map //Marker가 표시될 Map 설정.
                 });
-                s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                 ontestfoot();
             }
 
@@ -689,7 +705,7 @@
                     draggable: true,
                     map: map //Marker가 표시될 Map 설정.
                 });
-                e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                 ontestfoot();
             }
 
@@ -853,7 +869,7 @@
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            s_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
         }
 
@@ -877,8 +893,117 @@
                 draggable: true,
                 map: map //Marker가 표시될 Map 설정.
             });
-            e_marker.addListener("dragend", ontestfoot); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+            e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             ontestfoot();
+        }
+        function rutinSave(){
+            if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
+                var memberId = [[${session.loginId}]];
+                var startPoint = document.getElementById("searchKeyword").value;
+                var destination = document.getElementById("searchKeyword2").value;
+                var startPointLat = s_marker.getPosition().lat();
+                var startPointLon = s_marker.getPosition().lng();
+                var endPointLat = e_marker.getPosition().lat();
+                var endPointLon = e_marker.getPosition().lng();
+
+                $.ajax({
+                    type: "post",
+                    url: "/rutin/save",
+                    data: {"memberId": memberId,
+                            "startPoint": startPoint,
+                        "startPointLat": startPointLat,
+                        "startPointLon": startPointLon,
+                        "destination": destination,
+                        "endPointLat": endPointLat,
+                        "endPointLon": endPointLon
+                    },
+                    dataType: "text",
+                    success: function (result) {
+                        if (result == "yes") {
+                            alert("내 루틴에 저장했습니다.");
+                            location.reload();
+                        } else {
+                            alert("실패했습니다.");
+                        }
+                    },
+                    error: function () {
+                        alert("홈페이지 오류");
+                    }
+                });
+            }else{
+                alert("출발지와 도착지를 모두 설정해 주세요.")
+            }
+        }
+
+        function reverseGeo(lon, lat, textId) {
+            $
+                .ajax({
+                    method : "GET",
+                    url : "https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&format=json&callback=result",
+                    async : false,
+                    data : {
+                        "appKey" : "l7xx71377ca4d61b42018b3da0ede8c234fb",
+                        "coordType" : "WGS84GEO",
+                        "addressType" : "A10",
+                        "lon" : lon,
+                        "lat" : lat
+                    },
+                    success : function(response) {
+                        // 3. json에서 주소 파싱
+                        var arrResult = response.addressInfo;
+
+                        //법정동 마지막 문자
+                        var lastLegal = arrResult.legalDong
+                            .charAt(arrResult.legalDong.length - 1);
+
+                        // 새주소
+                        newRoadAddr = arrResult.city_do + ' '
+                            + arrResult.gu_gun + ' ';
+
+                        if (arrResult.eup_myun == ''
+                            && (lastLegal == "읍" || lastLegal == "면")) {//읍면
+                            newRoadAddr += arrResult.legalDong;
+                        } else {
+                            newRoadAddr += arrResult.eup_myun;
+                        }
+                        newRoadAddr += ' ' + arrResult.roadName + ' '
+                            + arrResult.buildingIndex;
+
+                        // 새주소 법정동& 건물명 체크
+                        if (arrResult.legalDong != ''
+                            && (lastLegal != "읍" && lastLegal != "면")) {//법정동과 읍면이 같은 경우
+
+                            if (arrResult.buildingName != '') {//빌딩명 존재하는 경우
+                                newRoadAddr += (' (' + arrResult.legalDong
+                                    + ', ' + arrResult.buildingName + ') ');
+                            } else {
+                                newRoadAddr += (' (' + arrResult.legalDong + ')');
+                            }
+                        } else if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
+                            newRoadAddr += (' (' + arrResult.buildingName + ') ');
+                        }
+
+                        // 구주소
+                        jibunAddr = arrResult.city_do + ' '
+                            + arrResult.gu_gun + ' '
+                            + arrResult.legalDong + ' ' + arrResult.ri
+                            + ' ' + arrResult.bunji;
+                        //구주소 빌딩명 존재
+                        if (arrResult.buildingName != '') {//빌딩명만 존재하는 경우
+                            jibunAddr += (' ' + arrResult.buildingName);
+                        }
+
+                        var resultDiv = document.getElementById(textId);
+                        resultDiv.value = newRoadAddr;
+
+                    },
+                    error : function(request, status, error) {
+                        console.log("code:" + request.status + "\n"
+                            + "message:" + request.responseText + "\n"
+                            + "error:" + error);
+                    }
+                });
+
         }
 
     </script>
@@ -955,13 +1080,12 @@
                     </ul>
                 </div>
             </span>
-            <span style="display: inline-block;width: 30px;right: 5px;position: absolute;top: 20%">
+            <span style="display: inline-block;width: 30px;right: 18px;position: absolute;top: 20%">
                 <i onclick="pointChange()" class="fa-solid fa-arrow-rotate-left fa-3x"></i>
             </span>
             </div>
             <div style="margin-top: 5px" th:if="${session.loginEmail}">
-                <input type="text" placeholder="루틴 이름 지정" style="width: 95%; height: 30px">
-                <button onClick="rutinSave()" style="width: 95%; height: 30px">내 루틴 저장</button>
+                <button onclick="rutinSave()" style="width: 100%; height: 50px">내 루틴 저장</button>
             </div>
         </div>
         <div id="myplace_2" th:if="${session.loginEmail}"> <!-- 하단부분 -->
@@ -984,12 +1108,15 @@
                 </table>
             </div>
             <hr>
-            <h3>루틴</h3>
-            <div class="mt-2">
-                <input type="text" placeholder="출근길">
-            </div>
-            <div class="mt-2">
-                <input type="text" placeholder="퇴근길">
+            <div>
+                <b>루틴</b> <br>
+                <table>
+                    <div th:each="rutin: ${rutinList}" th:id="|rut${rutin.rutinId}|">
+                        <tr class="myPlaceTap">
+                            <td th:onclick="rutinSearch()"><div th:text="${rutin.startPoint}" ></div><div th:text="${rutin.destination}"></div><br /></td>
+                        </tr>
+                    </div>
+                </table>
             </div>
             <hr>
             <button th:onclick="logout()" type="button" class="btn success">로그아웃</button>

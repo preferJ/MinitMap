@@ -16,9 +16,11 @@ public class MyTrafficDTO {
     private Double myTrafficLon;
     public static MyTrafficDTO toSaveMyTrafficDTO(MyTrafficEntity myTrafficEntity){
         MyTrafficDTO myTrafficDTO = new MyTrafficDTO();
-        myTrafficDTO.setMyTrafficName(myTrafficEntity.getMyTrafficName());
         myTrafficDTO.setMyTrafficId(myTrafficEntity.getMyTrafficId());
+        myTrafficDTO.setMyTrafficName(myTrafficEntity.getMyTrafficName());
         myTrafficDTO.setMemberId(myTrafficEntity.getMemberEntity().getMemberId());
+        myTrafficDTO.setMyTrafficLat(myTrafficEntity.getMyTrafficLat());
+        myTrafficDTO.setMyTrafficLon(myTrafficEntity.getMyTrafficLon());
         return myTrafficDTO;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -959,8 +959,9 @@
                 <i onclick="pointChange()" class="fa-solid fa-arrow-rotate-left fa-3x"></i>
             </span>
             </div>
-            <div style="margin-top: 5px">
-                <button onClick="searchPOI()" style="width: 95%; height: 50px">길찾기</button>
+            <div style="margin-top: 5px" th:if="${session.loginEmail}">
+                <input type="text" placeholder="루틴 이름 지정" style="width: 95%; height: 30px">
+                <button onClick="rutinSave()" style="width: 95%; height: 30px">내 루틴 저장</button>
             </div>
         </div>
         <div id="myplace_2" th:if="${session.loginEmail}"> <!-- 하단부분 -->

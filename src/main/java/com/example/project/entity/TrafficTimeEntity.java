@@ -18,7 +18,7 @@ public class TrafficTimeEntity {
     private Long trafficTimeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trafficId", nullable = false)
+    @JoinColumn(name = "trafficId")
     private TrafficEntity trafficEntity;
 
     @Column(name = "trafficApplyStart", nullable = false)
@@ -40,7 +40,7 @@ public class TrafficTimeEntity {
     private Long setStartTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "myTrafficId", nullable = false)
+    @JoinColumn(name = "myTrafficId")
     private MyTrafficEntity myTrafficEntity;
     public static TrafficTimeEntity toTrafficTimeSaveEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity){
         TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
@@ -66,4 +66,17 @@ public class TrafficTimeEntity {
         trafficTimeEntity.setTrafficEntity(trafficEntity);
         return trafficTimeEntity;
     }
+
+    public static TrafficTimeEntity myTrafficToTraffic(TrafficTimeEntity trafficTimeEntity,TrafficEntity trafficEntity){
+        TrafficTimeEntity trafficTimeEntity1 = new TrafficTimeEntity();
+        trafficTimeEntity1.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
+        trafficTimeEntity1.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
+        trafficTimeEntity1.setStartType(trafficTimeEntity.getStartType());
+        trafficTimeEntity1.setGreenOn(trafficTimeEntity.getGreenOn());
+        trafficTimeEntity1.setRedOn(trafficTimeEntity.getRedOn());
+        trafficTimeEntity1.setSetStartTime(trafficTimeEntity.getSetStartTime());
+        trafficTimeEntity1.setTrafficEntity(trafficEntity);
+        return trafficTimeEntity1;
+    }
+
 }

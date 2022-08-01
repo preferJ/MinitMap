@@ -342,18 +342,16 @@
                 <input type="tel" class="fadeIn fifth" name="memberPhone"
                        required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####" placeholder="전화번호"><br>
                 <input type="hidden" name="memberLevel" value="1">
-                <input type="submit" value="가입하기">
+                <input type="submit" th:onclick="saveCheck()" value="가입하기">
             </form>
-            <div id="formFooter">
-                <a class="underlineHover" th:onclick="findIdForm()" href="/member/findIdForm">아이디찾기</a> ｜
-                <a class="underlineHover" th:onclick="findPwForm()" href="/member/findPwForm">비밀번호찾기</a>
-            </div>
         </div>
     </div>
 </div>
 </form>
 </body>
 <script th:inline="javascript">
+    function saveCheck() {
 
+    }
 </script>
 </html>

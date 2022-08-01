@@ -180,7 +180,7 @@
                                     <option value="">게시판선택</option>
                                     <option value="자유">자유게시판</option>
                                     <option value="신호">신호게시판</option>
-                                    <option value="공지">공지게시판</option>
+                                    <option th:if="${session.loginEmail == 'admin'}" value="공지">공지게시판</option>
                                 </select>
                                 <span style="display: inline-block">
                                     <input type="text" id="trafficName" style="display: none" readonly>

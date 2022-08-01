@@ -33,8 +33,14 @@ public class TrafficTimeService {
         return trafficTimeDTOList;
     }
 
-    public TrafficTimeDTO findByTrafficId(Long trafficId) {
+    public List<TrafficTimeDTO> findByTrafficId(Long trafficId) {
         Optional<TrafficEntity> entity = trafficRepository.findById(trafficId);
-        return TrafficTimeDTO.toTrafficTimeDTO(trafficTimeRepository.findByTrafficEntity(entity.get()));
+        List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(entity.get());
+        List<TrafficTimeDTO> trafficTimeDTOList = new ArrayList<>();
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
+            trafficTimeDTOList.add(TrafficTimeDTO.toTrafficTimeDTO(trafficTimeEntity));
+        }
+
+        return trafficTimeDTOList;
     }
 }

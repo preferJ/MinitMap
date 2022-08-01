@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface TrafficRepository extends JpaRepository<TrafficEntity,Long> {
     List<TrafficEntity> findByMemberEntity(MemberEntity memberEntity);
+
 }

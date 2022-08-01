@@ -111,7 +111,7 @@
         });
     }
 </script>
-<body onload="initTmap()"><!-- 맵 생성 실행 -->
+<body onload="initTmap();onTime();"><!-- 맵 생성 실행 -->
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
@@ -241,8 +241,7 @@
                         <th th:if="${board.boardType} != '신호'" colspan="2">제목 : <span
                                 th:text="${board.boardTitle}"></span></th>
                         <th th:if="${board.boardType} == '신호'">제목 : <span th:text="${board.boardTitle}"></span></th>
-                        <th th:if="${board.boardType} == '신호'">운영시간 : <span th:text="${trafficStart}"></span> ~ <span
-                                th:text="${trafficEnd}"></span></th>
+                        <th th:if="${board.boardType} == '신호'">운영시간 : <span id="onTime"></span></th>
                     </tr>
                     <tr>
                         <th rowspan="5">
@@ -439,6 +438,18 @@
         })
     }
 
+    function onTime(){
+        let onTime = document.getElementById("onTime");
+        // 11:00:00 ~ 12:00:00 , 13:00:00~14:00:00
+        let text = "";
+        for (let i = 0 ; i<[[${trafficStart}]].length ; i++){
+            text += [[${trafficStart}]][i] + " ~ " + [[${trafficEnd}]][i];
+            if (i+1 != [[${trafficStart}]].length){
+                text += " , ";
+            }
+        }
+        onTime.innerText = text;
+    }
 </script>
 </body>
 </html>

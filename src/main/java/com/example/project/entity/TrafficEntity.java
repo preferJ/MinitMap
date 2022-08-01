@@ -37,7 +37,7 @@ public class TrafficEntity {
     @ColumnDefault("0") //default 0
     private Long trafficDislike;
 
-    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> boardEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "trafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -67,6 +67,15 @@ public class TrafficEntity {
         trafficEntity.setTrafficLike(trafficDTO.getTrafficLike());
         trafficEntity.setTrafficDislike(trafficDTO.getTrafficDisLike());
         trafficEntity.setMemberEntity(memberEntity);
+        return trafficEntity;
+    }
+
+    public static TrafficEntity myTrafficToTraffic(MemberEntity memberEntity, Double lat , Double lon){
+        TrafficEntity trafficEntity = new TrafficEntity();
+        trafficEntity.setMemberEntity(memberEntity);
+        trafficEntity.setTrafficLat(lat);
+        trafficEntity.setTrafficLon(lon);
+
         return trafficEntity;
     }
 }

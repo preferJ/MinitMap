@@ -3,14 +3,9 @@ package com.example.project.service;
 import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
 import com.example.project.dto.LikeCheckDTO;
-import com.example.project.entity.BoardEntity;
-import com.example.project.entity.LikeCheckEntity;
-import com.example.project.entity.MemberEntity;
-import com.example.project.entity.TrafficEntity;
-import com.example.project.repository.BoardRepository;
-import com.example.project.repository.LikeCheckRepository;
-import com.example.project.repository.MemberRepository;
-import com.example.project.repository.TrafficRepository;
+import com.example.project.dto.MyTrafficDTO;
+import com.example.project.entity.*;
+import com.example.project.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,14 +29,25 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final TrafficRepository trafficRepository;
     private final LikeCheckRepository likeCheckRepository;
+    private final MyTrafficRepository myTrafficRepository;
+    private final TrafficTimeRepository trafficTimeRepository;
 
     //이현
     public void save(BoardDTO boardDTO, Long memberId) {
         Optional<MemberEntity> memberEntity = memberRepository.findById(memberId);
         BoardEntity boardEntity = new BoardEntity();
         if (boardDTO.getBoardType().equals("신호")) {
-            Optional<TrafficEntity> trafficEntity = trafficRepository.findById(boardDTO.getTrafficId());
-            boardEntity = BoardEntity.toBoardTrafficSaveEntity(boardDTO, memberEntity.get(), trafficEntity.get());
+            // 새로운 trafficDTO만드는 작업
+            Optional<MyTrafficEntity> byId = myTrafficRepository.findById(boardDTO.getTrafficId());
+            MyTrafficEntity myTrafficEntity = byId.get();
+            TrafficEntity save = trafficRepository.save(TrafficEntity.myTrafficToTraffic(myTrafficEntity.getMemberEntity(), myTrafficEntity.getMyTrafficLat(), myTrafficEntity.getMyTrafficLon()));
+            // 새로운 trafficDTO 의 시간넣기
+            List<TrafficTimeEntity> byMyTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficEntity);
+            for (TrafficTimeEntity trafficTimeEntity : byMyTrafficEntity){
+                trafficTimeRepository.save(TrafficTimeEntity.myTrafficToTraffic(trafficTimeEntity,save));
+            }
+
+            boardEntity = BoardEntity.toBoardTrafficSaveEntity(boardDTO, memberEntity.get(), save);
         } else {
             boardEntity = BoardEntity.toBoardSaveEntity(boardDTO, memberEntity.get());
         }
@@ -295,13 +301,30 @@ public class BoardService {
 
     public void update(BoardDTO boardDTO) {
         MemberEntity memberEntity = memberRepository.findById(boardDTO.getMemberId()).get();
-        System.out.println(memberEntity.getMemberId());
-        System.out.println(boardDTO);
-        if (boardDTO.getBoardType().equals("신호")) {
-            TrafficEntity trafficEntity = trafficRepository.findById(boardDTO.getTrafficId()).get();
-            boardRepository.save(BoardEntity.toBoardTrafficUpdateEntity(boardDTO, memberEntity, trafficEntity));
-        } else {
-            boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO, memberEntity));
+        BoardEntity boardEntity = boardRepository.findById(boardDTO.getBoardId()).get();
+        // 위는 현재 등록된 엔티티 boardDTO는 바뀐값
+        if (boardEntity.getBoardType().equals("자유")){
+            if (boardDTO.getBoardType().equals("신호")) {
+                // 새로운 trafficDTO만드는 작업
+                Optional<MyTrafficEntity> byId = myTrafficRepository.findById(boardDTO.getTrafficId());
+                MyTrafficEntity myTrafficEntity = byId.get();
+                TrafficEntity save = trafficRepository.save(TrafficEntity.myTrafficToTraffic(myTrafficEntity.getMemberEntity(), myTrafficEntity.getMyTrafficLat(), myTrafficEntity.getMyTrafficLon()));
+                // 새로운 trafficDTO 의 시간넣기
+                List<TrafficTimeEntity> byMyTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficEntity);
+                for (TrafficTimeEntity trafficTimeEntity : byMyTrafficEntity){
+                    trafficTimeRepository.save(TrafficTimeEntity.myTrafficToTraffic(trafficTimeEntity,save));
+                }
+
+                boardRepository.save(BoardEntity.toBoardTrafficUpdateEntity(boardDTO, memberEntity, save));
+            }else {
+                boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO, memberEntity));
+            }
+        }else{
+            if (boardDTO.getBoardType().equals("신호")) {
+                boardRepository.save(BoardEntity.toBoardTrafficUpdateEntity(boardDTO, memberEntity,boardEntity.getTrafficEntity()));
+            } else {
+                boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO, memberEntity));
+            }
         }
 
     }

@@ -174,7 +174,7 @@
                 </div>
                 <hr>
                 <div th:if="${session.loginEmail.toString().equals('admin')}">
-                 <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
+                    <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
                 </div>
                 <button th:onclick="logout()" type="button" class="btn success">▶로그아웃</button>
                 <hr>
@@ -378,7 +378,7 @@
         map.setCenter(new Tmapv2.LatLng(lat,lng));
         map.setZoom(17);
     }
-var clickId = 0;
+    var clickId = 0;
     function myPlaceClick(id,lat,lng,name){
         console.log(id+","+lat+","+lng+","+name);
         var myPlaceButton = document.getElementById("myPlace" + id);

@@ -423,7 +423,29 @@
         var name = nameArr[id];
         console.log(lat +"," + lng + "," + name);
 
-        location.href="/myPlace/save?myPlaceLat="+lat+"&myPlaceLng="+lng+"&myPlaceName="+name
+        $.ajax({
+            url: "/myPlace/saveCheck",
+            type: "get",
+            dataType: "text",
+            data: {
+                "lat": lat,
+                "lon": lng
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    let title = prompt('마이플레이스명을 입력해주세요', '');
+                    $.ajax({
+                        url: "/myPlace/save?myPlaceLat="+lat+"&myPlaceLng="+lng+"&myPlaceName="+title,
+                        type: "get",
+                        success: function () {
+                            alert("마이플레이스에 추가되었습니다 + 마이플레이스출력 ajax 함수 실행")
+                        }
+                    })
+                } else {
+                    alert("이미 등록되어있는 장소입니다!");
+                }
+            }
+        })
     }
 
     function logout() {

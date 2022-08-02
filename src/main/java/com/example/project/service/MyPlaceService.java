@@ -44,4 +44,15 @@ public class MyPlaceService {
             myPlaceRepository.save(myPlaceEntity);
         }
     }
+
+    // 이현
+    public String saveCheck(Double lat, Double lon, Long id) {
+        String check = "ok";
+        Optional<MemberEntity> byId = memberRepository.findById(id);
+        Optional<MyPlaceEntity> myPlaceEntity = myPlaceRepository.findByMemberEntityAndMyPlaceLatAndMyPlaceLon(byId.get(), lat, lon);
+        if (myPlaceEntity.isPresent()){
+            check="no";
+        }
+        return check;
+    }
 }

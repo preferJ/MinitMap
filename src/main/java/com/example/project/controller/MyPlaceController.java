@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,5 +27,13 @@ public class MyPlaceController {
         MyPlaceDTO myPlaceDTO = new MyPlaceDTO(id,myPlaceName,myPlaceLat,myPlaceLng,icon);
         myPlaceService.save(myPlaceDTO);
         return "redirect:/1tapTest";
+    }
+
+    // 이현
+    @GetMapping("/saveCheck")
+    public @ResponseBody String saveCheck(@RequestParam("lat") Double lat , @RequestParam("lon") Double lon,HttpSession session){
+        Long id = (Long) session.getAttribute("loginId");
+        String result = myPlaceService.saveCheck(lat,lon,id);
+        return result;
     }
 }

@@ -437,7 +437,25 @@
                         }
                     })
                 } else {
-                    alert("이미 등록 되어 있는 신호등 입니다.")
+                    if (!confirm("같은 위,경도 의 신호가 있습니다! , 추가하시겠습니까?")) {
+                        alert("신호등 등록 취소.");
+                    } else {
+                        let title = prompt('신호등명을 입력해주세요', '');
+                        $.ajax({
+                            url: "/myTraffic/save?id=" + [[${board.boardId}]],
+                            type: "post",
+                            data: {
+                                "title": title,
+                                "id": id
+                            },
+                            success: function (result) {
+                                if (result == "ok") {
+                                    alert("신호등이 추가되었습니다!")
+                                }
+                            }
+                        })
+                    }
+
                 }
             }
         })

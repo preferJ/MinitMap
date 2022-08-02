@@ -112,7 +112,7 @@ public class BoardService {
         Page<BoardDTO> boardList = boardEntities.map(
                 board -> new BoardDTO(board.getBoardId(),
                         board.getMemberEntity().getMemberId(),
-                        board.getTrafficEntity().getTrafficId(),
+                        null,
                         board.getBoardType(),
                         board.getBoardTypeLocation1(),
                         board.getBoardTypeLocation2(),

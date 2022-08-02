@@ -34,9 +34,11 @@ public class MyTrafficEntity {
     @OneToMany(mappedBy = "myTrafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficTimeEntity> trafficTimeEntityList = new ArrayList<>();
 
-    public static MyTrafficEntity toSaveMyTrafficEntity(String myTrafficName, MemberEntity memberEntity){
+    public static MyTrafficEntity toSaveMyTrafficEntity(Double lat,Double lon,String name, MemberEntity memberEntity){
         MyTrafficEntity myTrafficEntity = new MyTrafficEntity();
-        myTrafficEntity.setMyTrafficName(myTrafficName);
+        myTrafficEntity.setMyTrafficLat(lat);
+        myTrafficEntity.setMyTrafficLon(lon);
+        myTrafficEntity.setMyTrafficName(name);
         myTrafficEntity.setMemberEntity(memberEntity);
         return myTrafficEntity;
     }

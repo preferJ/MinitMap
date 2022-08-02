@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -35,5 +36,13 @@ public class MyPlaceController {
         Long id = (Long) session.getAttribute("loginId");
         String result = myPlaceService.saveCheck(lat,lon,id);
         return result;
+    }
+
+    @GetMapping("/list")
+    public @ResponseBody List<MyPlaceDTO> myPlaceDTOList(HttpSession session){
+        String email = (String) session.getAttribute("loginEmail");
+        List<MyPlaceDTO> myPlaceDTOList = myPlaceService.findByEmail(email);
+        System.out.println(myPlaceDTOList);
+        return myPlaceDTOList;
     }
 }

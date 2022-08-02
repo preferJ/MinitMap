@@ -21,7 +21,7 @@ public class ErrorDTO {
     private LocalDateTime errorCreatedTime;
     private boolean managerCheck;
 
-    public ErrorDTO toErrorDTO(ErrorEntity errorEntity){
+    public static ErrorDTO toErrorDTO(ErrorEntity errorEntity){
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setErrorId(errorEntity.getErrorId());
         errorDTO.setTrafficId(errorEntity.getTrafficEntity().getTrafficId());

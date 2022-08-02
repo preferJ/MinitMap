@@ -188,7 +188,8 @@
                 <option value="자유">자유</option>
                 <option value="공지">공지</option>
             </select>
-                <button style="float: right;" class="btn btn-sm btn-outline-secondary" onclick="goBoardPages()">더보기</button>
+                <button style="float: right;" class="btn btn-sm btn-outline-secondary" onclick="goBoardPages()">더보기
+                </button>
             </div>
             <table class="table table-striped table-sm" style="table-layout:fixed">
                 <thead>
@@ -228,7 +229,7 @@
             success: function (result) {
                 let output = "";
                 for (let i in result) {
-                    output += "<tr class='colored' onclick='detail("+result[i].boardId+")'>";
+                    output += "<tr class='colored' onclick='detail(" + result[i].boardId + ")'>";
                     output += "<td>" + result[i].boardType + "</td>";
                     output += "<td style='width:100%;overflow:hidden;text-overflow:ellipsis;'>" + result[i].boardTitle + "</td>";
                     output += "<td>" + result[i].boardLike + "</td>";

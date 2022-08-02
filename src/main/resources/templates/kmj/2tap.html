@@ -209,6 +209,8 @@
                     "searchKeyword": searchKeyword, // 검색 키워드
                     "resCoordType": "EPSG3857", // 요청 좌표계
                     "reqCoordType": "WGS84GEO", // 응답 좌표계
+                    "centerLon" : map.getCenter().lng(),
+                    "centerLat" : map.getCenter().lat(),
                     "count": 5 // 가져올 갯수
                 },
                 success: function (response) {

@@ -22,11 +22,7 @@
         var labelArr = [];
         var latLonArr = [];
         var nameArr = [];
-        var searchMarkerArr2 = [];
-        var labelArr2 = [];
-        var latLonArr2 = [];
-        var nameArr2 = [];
-        var lon, lat;
+        var lon,lat;
         s_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
@@ -213,6 +209,8 @@
                     "searchKeyword": searchKeyword, // 검색 키워드
                     "resCoordType": "EPSG3857", // 요청 좌표계
                     "reqCoordType": "WGS84GEO", // 응답 좌표계
+                    "centerLon" : map.getCenter().lng(),
+                    "centerLat" : map.getCenter().lat(),
                     "count": 5 // 가져올 갯수
                 },
                 success: function (response) {
@@ -281,11 +279,11 @@
 
                         // 결과창에 나타날 검색 결과 html
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span>"
-                            + name
-                            + "</span>  <button type='button' class='startButton' name='sendBtn' onClick='startPing("
+                        innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp("+k+")' onmouseout='searchMouseDown("+k+")'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='startPing("
                             + k
-                            + "), start( " + k + " );'>선택</button></div></li>";
+                            + "), start( " + k + " );'>"
+                            + name
+                            + "</span></div></li>";
 
                         // 마커들을 담을 배열에 마커 저장
                         searchMarkerArr.push(search_marker);
@@ -376,11 +374,11 @@
                             });
                         // 결과창에 나타날 검색 결과 html
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span>"
-                            + name
-                            + "</span><button type='button' class='endButton' name='sendBtn' onClick='endPing("
+                        innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp("+k+")' onmouseout='searchMouseDown("+k+")'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='endPing("
                             + k
-                            + "), end( " + k + " );'>선택</button></div></li>";
+                            + "), end( " + k + " );'>"
+                            + name
+                            + "</span></div></li>";
                         // 마커들을 담을 배열에 마커 저장
                         searchMarkerArr.push(search_marker);
                         positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
@@ -403,6 +401,56 @@
             });
         }
 
+        function searchMouseUp(k){
+            var searchIcon = document.getElementById("searchIcon"+k);
+            searchIcon.src = "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_" + k + ".png";
+            searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_" + k + ".png");
+        }
+        function searchMouseDown(k){
+            var searchIcon = document.getElementById("searchIcon"+k);
+            searchIcon.src = "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png";
+            searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png");
+        }
+
+            function onClick(e) {
+                // marker 객체의 포지션 상황을 판단하여 출발지인지 도착지인지 확인
+                // 출발지 -> 도착지 순서로 상세조회에서 도착지 설정을 했을 때 출발지로 바로가게 만듬
+                if (s_marker.getPosition() == null) {
+                    lonlat = e.latLng;
+                    //Marker 객체 생성.
+                    s_marker = new Tmapv2.Marker({
+                        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                        position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
+                        draggable: true,
+                        map: map //Marker가 표시될 Map 설정.
+                    });
+                    // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
+                    s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    reverseGeo(s_marker.getPosition().lng(),s_marker.getPosition().lat(),"searchKeyword");
+                    ontestfoot();
+                } else if (e_marker.getPosition() == null) {
+                    lonlat = e.latLng;
+                    //Marker 객체 생성.
+                    e_marker = new Tmapv2.Marker({
+                        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
+                        position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
+                        draggable: true,
+                        map: map //Marker가 표시될 Map 설정.
+                    });
+                    // 드래그를 놓았을 때 발생하는 경로탐색 함수를 실행시키는 이벤트 추가
+                    e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                    // 지도 클릭으로 도착지 설정이 완료되면 출발지는 무조건 설정되어있기 때문에 바로 경로를 탐색시켜 줌
+                    reverseGeo(e_marker.getPosition().lng(),e_marker.getPosition().lat(),"searchKeyword2");
+                    ontestfoot();
+                }
+                // 출발지 도착지가 모두 설정되어있을 상황에 한번 더 누르면 출발지 도착지가 모두 지워지고 출발지 설정
+                else if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
+                    document.getElementById("result").innerHTML = "거리/시간";
+                    document.getElementById("course").innerHTML = "길안내";
+                    removeMarkers();
+                    onClick(e);
+                }
+            }
         function onClick(e) {
             // marker 객체의 포지션 상황을 판단하여 출발지인지 도착지인지 확인
             // 출발지 -> 도착지 순서로 상세조회에서 도착지 설정을 했을 때 출발지로 바로가게 만듬
@@ -1067,7 +1115,7 @@
         -ms-overflow-style: none;
         margin: 3%;
         height: 97%;
-        padding: 5%;
+        padding: 3%;
     }
 
     #traffic_information::-webkit-scrollbar {
@@ -1080,6 +1128,11 @@
 
     #end-interface {
         display: none;
+    }
+    .search-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 </style>
 <body>

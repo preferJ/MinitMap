@@ -442,6 +442,13 @@
                             alert("마이플레이스에 추가되었습니다.");
                             myPlaceList();
                             document.getElementById("searchResult").innerHTML = "검색결과";
+                            markerRemove();
+                            if (searchMarkerArr.length > 0) {
+                                for (var i in searchMarkerArr) {
+                                    searchMarkerArr[i].setMap(null);
+                                }
+                                searchMarkerArr = [];
+                            }
                         }
                     })
                 } else {

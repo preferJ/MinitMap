@@ -146,16 +146,18 @@
             <div th:if="${session.loginEmail}">
                 <div>
                     <b>마이플레이스</b>
-                    <
+                    <div style="float: right">
+                        <i onclick="mypTapDown()" class="fa-solid fa-gear fa-2x"></i>
+                    </div>
                     <br>
-                    <table id="">
+                    <table style="display: inline" id="mypTap">
                         <div th:each="myplace: ${myPlaceList}" th:id="|mpt${myplace.myPlaceId}|">
                             <tr class="myPlaceTap">
                                 <td><p th:text="${myplace.myPlaceName}" th:onclick="myPlaceClick([[${myplace.myPlaceId}]],[[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])"></p></td>
                             </tr>
                             <tr style="margin-bottom: 5px;display: none;" th:id="|myPlace${myplace.myPlaceId}|">
-                                <td><input type="button" th:onclick="startMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="출발지"></td>
-                                <td><input type="button" th:onclick="endMyPlace([[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])" value="도착지"></td>
+                                <td><input type="button" th:onclick="|startMyPlace(${myplace.myPlaceId})|" value="출발지"></td>
+                                <td><input type="button" th:onclick="|endMyPlace(${myplace.myPlaceId})|" value="도착지"></td>
                             </tr>
                         </div>
                     </table>
@@ -409,12 +411,12 @@
         location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name=" + nameArr[id] + "&lat=" + latLonArr[id].lat() + "&lng=" + latLonArr[id].lng();
     }
 
-    function startMyPlace(lat,lng,name) {
-        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&name=" + name + "&lat=" + lat + "&lng=" + lng;
+    function startMyPlace(myPlaceId) {
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=start&myPlaceId=" + myPlaceId;
     }
 
-    function endMyPlace(lat,lng,name) {
-        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&name=" + name + "&lat=" + lat + "&lng=" + lng;
+    function endMyPlace(myPlaceId) {
+        location.href = "/2tapTest?page_lat=" + map.getCenter().lat() + "&page_lng=" + map.getCenter().lng() + "&page_zoom=" + map.getZoom() + "&type=end&myPlaceId=" + myPlaceId;
     }
 
     function myPlaceSave(id){
@@ -450,6 +452,15 @@
 
     function logout() {
         location.href = "/member/logout";
+    }
+
+    function mypTapDown(){
+        var mypTap = document.getElementById("mypTap");
+        if(mypTap.style.display == "inline"){
+            mypTap.style.display = "none";
+        }else if(mypTap.style.display == "none"){
+            mypTap.style.display = "inline";
+        }
     }
 </script>
 

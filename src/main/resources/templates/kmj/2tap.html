@@ -89,36 +89,74 @@
         function tap1Setting(){
             var type = [[${type}]];
             if(type != "null"){
-                if(type == "start"){
-                    var lat = [[${lat}]];
-                    var lng = [[${lng}]];
-                    var name = [[${name}]];
-                    //Marker 객체 생성.
-                    s_marker = new Tmapv2.Marker({
-                        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-                        position: new Tmapv2.LatLng(lat,lng), //Marker의 중심좌표 설정.
-                        draggable: true,
-                        map: map //Marker가 표시될 Map 설정.
-                    });
-                    s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-                    document.getElementById("searchKeyword").value = name;
-                    map.setCenter(new Tmapv2.LatLng(lat,lng));
-                    map.setZoom(14);
-                }else if(type == "end"){
-                    var lat = [[${lat}]];
-                    var lng = [[${lng}]];
-                    var name = [[${name}]];
-                    //Marker 객체 생성.
-                    e_marker = new Tmapv2.Marker({
-                        icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
-                        position: new Tmapv2.LatLng(lat,lng), //Marker의 중심좌표 설정.
-                        draggable: true,
-                        map: map //Marker가 표시될 Map 설정.
-                    });
-                    e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-                    document.getElementById("searchKeyword2").value = name;
-                    map.setCenter(new Tmapv2.LatLng(lat,lng));
-                    map.setZoom(14);
+                var myPlaceId = [[${myPlaceId}]];
+                if(myPlaceId != null){
+                    var myPlaceList = [[${myPlaceList}]];
+                    for(var i = 0; i < myPlaceList.length; i++){
+                        if(myPlaceList[i].myPlaceId == myPlaceId){
+                            var lat = myPlaceList[i].myPlaceLat;
+                            var lng = myPlaceList[i].myPlaceLon;
+                            var name = myPlaceList[i].myPlaceName;
+                            if (type == "start") {
+                                //Marker 객체 생성.
+                                s_marker = new Tmapv2.Marker({
+                                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                                    position: new Tmapv2.LatLng(lat, lng), //Marker의 중심좌표 설정.
+                                    draggable: true,
+                                    map: map //Marker가 표시될 Map 설정.
+                                });
+                                s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                                document.getElementById("searchKeyword").value = name;
+                                map.setCenter(new Tmapv2.LatLng(lat, lng));
+                                map.setZoom(17);
+                            } else if (type == "end") {
+                                //Marker 객체 생성.
+                                e_marker = new Tmapv2.Marker({
+                                    icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
+                                    position: new Tmapv2.LatLng(lat, lng), //Marker의 중심좌표 설정.
+                                    draggable: true,
+                                    map: map //Marker가 표시될 Map 설정.
+                                });
+                                e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                                document.getElementById("searchKeyword2").value = name;
+                                map.setCenter(new Tmapv2.LatLng(lat, lng));
+                                map.setZoom(17);
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (type == "start") {
+                        var lat = [[${lat}]];
+                        var lng = [[${lng}]];
+                        var name = [[${name}]];
+                        //Marker 객체 생성.
+                        s_marker = new Tmapv2.Marker({
+                            icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
+                            position: new Tmapv2.LatLng(lat, lng), //Marker의 중심좌표 설정.
+                            draggable: true,
+                            map: map //Marker가 표시될 Map 설정.
+                        });
+                        s_marker.addListener("dragend", onStart); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                        document.getElementById("searchKeyword").value = name;
+                        map.setCenter(new Tmapv2.LatLng(lat, lng));
+                        map.setZoom(14);
+                    } else if (type == "end") {
+                        var lat = [[${lat}]];
+                        var lng = [[${lng}]];
+                        var name = [[${name}]];
+                        //Marker 객체 생성.
+                        e_marker = new Tmapv2.Marker({
+                            icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
+                            position: new Tmapv2.LatLng(lat, lng), //Marker의 중심좌표 설정.
+                            draggable: true,
+                            map: map //Marker가 표시될 Map 설정.
+                        });
+                        e_marker.addListener("dragend", onEnd); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                        document.getElementById("searchKeyword2").value = name;
+                        map.setCenter(new Tmapv2.LatLng(lat, lng));
+                        map.setZoom(14);
+                    }
                 }
             }
         }

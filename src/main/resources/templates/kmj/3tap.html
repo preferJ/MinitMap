@@ -20,6 +20,7 @@
     var page_lat = [[${page_lat}]];
     var page_lng = [[${page_lng}]];
     var map;
+    var my_marker;
     // 화면 크기가 변경될때마다 함수 호출
     $(window).resize(function () {
         if (map_count == 0) {
@@ -67,42 +68,78 @@
 
     function initTmap() {
         tapCheck("tap3");
-        var request_lat;
-        var request_lng;
-        if (page_lat == 0 && page_lng == 0) {
-            request_lat = 37.570028;
-            request_lng = 126.989072;
-        } else {
-            request_lat = page_lat;
-            request_lng = page_lng;
-        }
-        console.log(page_lat, page_lng);
-        sidebarResize = document.getElementById("sidebar");
-        var width_size = window.outerWidth;
-        var height_size = window.outerHeight;
-        if (width_size == 1920) {
-            sidebarResize.style.height = height_size - 147 - 4 + "px";
-            // 1. 지도 띄우기
-            map = new Tmapv2.Map("map_div", {
-                center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size - 320 + "px",
-                height: height_size - 147 - 6 + "px",
-                zoom: [[${page_zoom}]],
-                zoomControl: true,
-                scrollwheel: true
+        if (navigator.geolocation) {
+            // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+            navigator.geolocation.getCurrentPosition(function (position) {
+
+                lat = position.coords.latitude; // 위도
+                lon = position.coords.longitude; // 경도
+
+                var request_lat;
+                var request_lng;
+                if (page_lat == 0 && page_lng == 0) {
+                    request_lat = lat;
+                    request_lng = lon;
+                } else {
+                    request_lat = page_lat;
+                    request_lng = page_lng;
+                }
+                console.log(page_lat, page_lng);
+                sidebarResize = document.getElementById("sidebar");
+                var width_size = window.outerWidth;
+                var height_size = window.outerHeight;
+                if (width_size == 1920) {
+                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    // 1. 지도 띄우기
+                    map = new Tmapv2.Map("map_div", {
+                        center: new Tmapv2.LatLng(request_lat, request_lng),
+                        width: width_size - 320 + "px",
+                        height: height_size - 147 - 6 + "px",
+                        zoom: [[${page_zoom}]],
+                        zoomControl: true,
+                        scrollwheel: true
+                    });
+                } else {
+                    sidebarResize.style.height = height_size - 164 - 4 + "px";
+                    // 1. 지도 띄우기
+                    map = new Tmapv2.Map("map_div", {
+                        center: new Tmapv2.LatLng(request_lat, request_lng),
+                        width: width_size - 336 + "px",
+                        height: height_size - 164 - 6 + "px",
+                        zoom: [[${page_zoom}]],
+                        zoomControl: true,
+                        scrollwheel: true
+                    });
+                }
+                // 내위치 마커찍기
+                my_marker = new Tmapv2.Marker({
+                    position: new Tmapv2.LatLng(37.441549975894425, 126.66850090026895), //Marker의 중심좌표 설정.
+                    map: map, //Marker가 표시될 Map 설정..
+                    icon: 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_g_m_h.png'
+                });
+                now();
             });
-        } else {
-            sidebarResize.style.height = height_size - 164 - 4 + "px";
-            // 1. 지도 띄우기
-            map = new Tmapv2.Map("map_div", {
-                center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size - 336 + "px",
-                height: height_size - 164 - 6 + "px",
-                zoom: [[${page_zoom}]],
-                zoomControl: true,
-                scrollwheel: true
-            });
         }
+    }
+
+    function now() {
+        timer = setInterval(function () {
+            if (navigator.geolocation) {
+                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                navigator.geolocation.getCurrentPosition(function (position) {
+
+                    lat = position.coords.latitude; // 위도
+                    lon = position.coords.longitude; // 경도
+                    my_marker.setMap(null);
+                    my_marker=null;
+                    my_marker = new Tmapv2.Marker({
+                        position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
+                        map: map, //Marker가 표시될 Map 설정..
+                        icon: 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_g_m_h.png'
+                    });
+                });
+            }
+        }, 1000);
 
     }
 

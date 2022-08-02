@@ -112,7 +112,7 @@ public class BoardService {
         Page<BoardDTO> boardList = boardEntities.map(
                 board -> new BoardDTO(board.getBoardId(),
                         board.getMemberEntity().getMemberId(),
-                        board.getTrafficEntity().getTrafficId(),
+                        null,
                         board.getBoardType(),
                         board.getBoardTypeLocation1(),
                         board.getBoardTypeLocation2(),
@@ -352,7 +352,6 @@ public class BoardService {
             for (BoardEntity boardEntity : allByBoardCreatedTimeBetween) {
                 if (boardEntity.getBoardType().equals("신호")) {
                     boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
-                    boardDTOS.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
                 }
                 i++;
             }
@@ -384,5 +383,16 @@ public class BoardService {
             boardDTOList.get(i).setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
         }
         return boardDTOList;
+    }
+
+    public BoardDTO findByBoardId(Long boardId) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardId);
+        if(optionalBoardEntity.isPresent()){
+            BoardEntity boardEntity = optionalBoardEntity.get();
+            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+            return boardDTO;
+        }else {
+            return null;
+        }
     }
 }

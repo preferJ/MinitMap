@@ -30,6 +30,8 @@ public class BoardController {
     private final LikeCheckService likeCheckService;
     private final TrafficTimeService trafficTimeService;
     private final MyTrafficService myTrafficService;
+
+    private final ErrorService errorService;
     // 이현 시작
     @GetMapping
     public String board(@PageableDefault(page = 1) Pageable pageable, Model model) {
@@ -217,6 +219,7 @@ public class BoardController {
             model.addAttribute("trafficStart", startTimeArr);
             model.addAttribute("trafficEnd", endTimeArr);
         }
+        System.out.println(check);
         model.addAttribute("check", check);
         return "/BoardPages/detail";
     }
@@ -296,11 +299,10 @@ public class BoardController {
 
     @GetMapping("/report")
     // ㅁㅈ / 신고 탭 이동
-    public String report() {
-    return "/BoardPages/report";
+    public String report(@RequestParam("id") Long id,Model model) {
+        model.addAttribute("boardId",id);
+        return "/BoardPages/report";
     }
-//    @GetMapping("/reportSave")
-//    public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
-//
-//    }
+
+
 }

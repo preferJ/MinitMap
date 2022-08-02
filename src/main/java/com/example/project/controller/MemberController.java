@@ -29,9 +29,13 @@ public class MemberController {
     // ㅅㅎ 주석 위치 수정
     @PostMapping("/save")
     public String save(@ModelAttribute MemberDTO memberDTO) {
-        System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
         return "/MemberPages/login";
+    }
+    @PostMapping("/saveCheck")
+    public @ResponseBody String saveCheck(@RequestParam String memberEmail) {
+      String result = memberService.saveCheck(memberEmail);
+        return result;
     }
 
 

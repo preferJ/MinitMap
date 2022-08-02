@@ -30,7 +30,9 @@ public class BoardDTO {
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setBoardId(boardEntity.getBoardId());
         boardDTO.setMemberId(boardEntity.getMemberEntity().getMemberId());
-        boardDTO.setTrafficId(boardEntity.getTrafficEntity().getTrafficId());
+        if (boardEntity.getTrafficEntity() != null){
+            boardDTO.setTrafficId(boardEntity.getTrafficEntity().getTrafficId());
+        }
         boardDTO.setBoardType(boardEntity.getBoardType());
         boardDTO.setBoardTypeLocation1(boardEntity.getBoardTypeLocation1());
         boardDTO.setBoardTypeLocation2(boardEntity.getBoardTypeLocation2());

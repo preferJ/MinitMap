@@ -79,4 +79,15 @@ public class TrafficTimeEntity {
         return trafficTimeEntity1;
     }
 
+    public static TrafficTimeEntity trafficToMyTraffic(TrafficTimeEntity trafficTimeEntity,MyTrafficEntity myTrafficEntity){
+        TrafficTimeEntity trafficTimeEntity1 = new TrafficTimeEntity();
+        trafficTimeEntity1.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
+        trafficTimeEntity1.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
+        trafficTimeEntity1.setStartType(trafficTimeEntity.getStartType());
+        trafficTimeEntity1.setGreenOn(trafficTimeEntity.getGreenOn());
+        trafficTimeEntity1.setRedOn(trafficTimeEntity.getRedOn());
+        trafficTimeEntity1.setSetStartTime(trafficTimeEntity.getSetStartTime());
+        trafficTimeEntity1.setMyTrafficEntity(myTrafficEntity);
+        return trafficTimeEntity1;
+    }
 }

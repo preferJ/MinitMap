@@ -46,13 +46,22 @@ public class ErrorEntity {
     @Column(name = "managerCheck")
     private boolean managerCheck;
 
-    public static ErrorEntity toErrorSaveEntity(ErrorDTO errorDTO,TrafficEntity trafficEntity, BoardEntity boardEntity, MemberEntity memberEntity){
+    public static ErrorEntity toBoardErrorSaveEntity(ErrorDTO errorDTO, BoardEntity boardEntity, MemberEntity memberEntity){
+        ErrorEntity errorEntity = new ErrorEntity();
+        errorEntity.setErrorType(errorDTO.getErrorType());
+        errorEntity.setErrorTitle(errorDTO.getErrorTitle());
+        errorEntity.setErrorContents(errorDTO.getErrorContents());
+        errorEntity.setBoardEntity(boardEntity);
+        errorEntity.setMemberEntity(memberEntity);
+        return errorEntity;
+    }
+
+    public static ErrorEntity toTrafficErrorSaveEntity(ErrorDTO errorDTO,TrafficEntity trafficEntity, MemberEntity memberEntity){
         ErrorEntity errorEntity = new ErrorEntity();
         errorEntity.setErrorType(errorDTO.getErrorType());
         errorEntity.setErrorTitle(errorDTO.getErrorTitle());
         errorEntity.setErrorContents(errorDTO.getErrorContents());
         errorEntity.setTrafficEntity(trafficEntity);
-        errorEntity.setBoardEntity(boardEntity);
         errorEntity.setMemberEntity(memberEntity);
         return errorEntity;
     }

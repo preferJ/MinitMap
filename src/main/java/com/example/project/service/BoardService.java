@@ -384,4 +384,15 @@ public class BoardService {
         }
         return boardDTOList;
     }
+
+    public BoardDTO findByBoardId(Long boardId) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardId);
+        if(optionalBoardEntity.isPresent()){
+            BoardEntity boardEntity = optionalBoardEntity.get();
+            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+            return boardDTO;
+        }else {
+            return null;
+        }
+    }
 }

@@ -110,16 +110,21 @@
                 }
             }
 
-            function save() {
-                var width = 480;
-                var height = 600;
+            function save(id) {
+                if(id == null) {
+                    console.log(id);
+                    var width = 480;
+                    var height = 600;
 
-                var left = (window.screen.width / 2) - (width / 2);
-                var top = (window.screen.height / 4);
+                    var left = (window.screen.width / 2) - (width / 2);
+                    var top = (window.screen.height / 4);
 
-                var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+                    var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
 
-                window.open("/member/saveForm", "회원가입", windowStatus);
+                    window.open("/member/saveForm", "회원가입", windowStatus);
+                } else{
+                    alert("이미 로그인이 되어 있습니다");
+                }
             }
 
             function myPage(id) {
@@ -203,7 +208,7 @@
             <nav style="float: right">
                 <ul class="tap">
                     <li class="tap-result">
-                        <a onclick="save()"><i class="fa-solid fa-arrow-right-to-bracket fa-3x"></i></a>
+                        <a th:onclick="save([[${session.loginId}]])"><i class="fa-solid fa-arrow-right-to-bracket fa-3x"></i></a>
                     </li>
                     <li class="tap-result">
                         <a th:onclick="myPage([[${session.loginId}]])"><i class="fa-solid fa-user-large fa-3x"></i></a>

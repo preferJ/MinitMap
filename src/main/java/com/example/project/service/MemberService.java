@@ -21,6 +21,17 @@ public class MemberService {
         memberRepository.save(MemberEntity.toMemberSaveEntity(memberDTO));
     }
 
+    public String saveCheck(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if (optionalMemberEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            String result = memberEntity.getMemberEmail();
+            return result;
+        } else {
+            return "no";
+        }
+    }
+
     public MemberDTO login(MemberDTO memberDTO) {
         // ㅁㅈ
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
@@ -107,4 +118,5 @@ public class MemberService {
     public void update(MemberDTO memberDTO) {
         memberRepository.save(MemberEntity.toMemberUpdateEntity(memberDTO));
     }
+
 }

@@ -50,6 +50,7 @@ public class RutinEntity {
         rutinEntity.setEndPointLat(rutinDTO.getEndPointLat());
         rutinEntity.setEndPointLon(rutinDTO.getEndPointLon());
         rutinEntity.setRutinName(rutinDTO.getRutinName());
+        rutinEntity.setRutinName(rutinDTO.getRutinName());
         rutinEntity.setMemberEntity(memberEntity);
         return rutinEntity;
     }

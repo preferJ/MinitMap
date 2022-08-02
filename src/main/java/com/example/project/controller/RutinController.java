@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -18,7 +19,6 @@ public class RutinController {
 
     @PostMapping("/save")
     public @ResponseBody String save(@ModelAttribute RutinDTO rutinDTO){
-        System.out.println("들어옴");
         System.out.println(rutinDTO);
         Long saveId = rutinService.save(rutinDTO);
         if(saveId != null) {
@@ -26,5 +26,13 @@ public class RutinController {
         }else{
             return "no";
         }
+    }
+
+    //이현
+    @GetMapping("/list")
+    public @ResponseBody List<RutinDTO> rutinList(HttpSession session){
+        Long id = (Long) session.getAttribute("loginId");
+        List<RutinDTO> rutinDTOList = rutinService.findByMemberId(id);
+        return rutinDTOList;
     }
 }

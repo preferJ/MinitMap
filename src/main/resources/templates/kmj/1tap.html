@@ -130,7 +130,8 @@
     <div id="traffic_information">
         <div style="margin-top: 8px">
             <div>
-                <input style="width: 100%" type="search" id="searchKeyword" placeholder="장소검색창" onkeyup="if(window.event.keyCode==13){searchButton()}">
+                <input style="width: 100%" type="search" id="searchKeyword" placeholder="장소검색창"
+                       onkeyup="if(window.event.keyCode==13){searchButton()}">
             </div>
             <br/>
             <div class="title"><strong>Search</strong> Results</div>
@@ -149,9 +150,8 @@
                         <i onclick="mypTapDown()" id="mypIcon" class="fa-solid fa-angle-up fa-2x"></i>
                     </div>
                     <br>
-                        <div id="myPlaceList">
-                        </div>
-                    </table>
+                    <div id="myPlaceList">
+                    </div>
                 </div>
                 <hr>
                 <div>
@@ -237,6 +237,7 @@
         }
 
     }
+
     function searchButton() {
         var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
         $.ajax({
@@ -309,9 +310,9 @@
                         });
                     // 결과창에 나타날 검색 결과 html
                     // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                    innerHtml += "<li><div><div class='searth-name'><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide("+k+")'>"
+                    innerHtml += "<li><div><div class='searth-name'><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide(" + k + ")'>"
                         + name
-                        + "</span></div><div id='searchHide" + k +"' style='display: none'> <button type='button' name='sendBtn' onClick='startPing("
+                        + "</span></div><div id='searchHide" + k + "' style='display: none'> <button type='button' name='sendBtn' onClick='startPing("
                         + k
                         + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
                         + k
@@ -335,17 +336,18 @@
             }
         });
     }
-    function searchHide(k){
+
+    function searchHide(k) {
         var searchHide = document.getElementById("searchHide" + k);
-        for(var i =0;i < searchMarkerArr.length;i++){
-            if(i != k) {
+        for (var i = 0; i < searchMarkerArr.length; i++) {
+            if (i != k) {
                 document.getElementById("searchHide" + i).style.display = "none";
             }
         }
-        if(searchHide.style.display == "none"){
+        if (searchHide.style.display == "none") {
             searchHide.style.display = "inline";
             searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_" + k + ".png");
-        }else{
+        } else {
             searchHide.style.display = "none";
             searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png");
         }
@@ -469,7 +471,7 @@
                 let output = "<table style=\"display: inline\" id=\"mypTap\">";
                 for (let i in result) {
                     output += "<tr className='myPlaceTap'>";
-                    output += "<td>" + "<p onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName +'"' +  ")'>"+ result[i].myPlaceName +"</p>";
+                    output += "<td>" + "<p onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>" + result[i].myPlaceName + "</p>";
                     output += "</td>" + "</tr>";
                     output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace" + result[i].myPlaceId + "'>";
                     output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ")' value='출발지'></td>";

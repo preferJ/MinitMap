@@ -213,14 +213,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
-                        <span data-feather="user" class="align-text-bottom"></span>
+                            <span data-feather="user" class="align-text-bottom"></span>
                             내 정보 수정 및 탈퇴
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/board/traffic">
+                        <a class="nav-link" href="/error/findAll">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
-                            마이플레이스
+                            게시판 신고 관리
                         </a>
                     </li>
                     <li class="nav-item">
@@ -246,34 +246,30 @@
         </nav>
         <main class="col-md-9 ms-lg-auto me-lg-auto col-lg-10 px-md-4 mt-5" style="width: 65%">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">회원정보</h1>
+                <h1 class="h2">게시글 신고 페이지</h1>
             </div>
 
             <div class="container">
                 <table class="container">
                     <tr>
-                        <th>회원번호</th>
-                        <th>회원아이디</th>
-                        <th>회원별명</th>
-                        <th>회원핸드폰번호</th>
-                        <th>회원등급</th>
-                        <th>탈퇴</th>
+                        <th>신고번호</th>
+                        <th>게시글번호</th>
+                        <th>신고자</th>
+                        <th>신고종류</th>
+                        <th>신고제목</th>
+                        <th>신고내용</th>
+                        <th>신고시간</th>
                     </tr>
-                    <tr th:each="member: ${memberList}">
-                        <td th:text="${member.memberId}"></td>
-                        <td th:text="${member.memberEmail}"></td>
-                        <td th:text="${member.memberNickname}"></td>
-                        <td th:text="${member.memberPhone}"></td>
-                        <td th:text="${member.memberLevel}"></td>
-                        <td><button class="btn btn-outline-danger" th:onclick="deleteId([[${member.memberId}]])">탈퇴</button></td>
-
+                    <tr th:each="error: ${errorList}">
+                        <td th:text="${error.errorId}"></td>
+                        <td th:text="${error.boardId}"></td>
+                        <td th:text="${error.memberId}"></td>
+                        <td th:text="${error.errorType}"></td>
+                        <td th:text="${error.errorTitle}"></td>
+                        <td th:text="${error.errorContents}"></td>
+                        <td th:text="*{#temporals.format(error.errorCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     </tr>
                 </table>
-            </div>
-            <div style="text-align: center;display: none;" id="down">
-                <img width="50" height="50"
-                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqYmsgsJMAmhXR7pHN5F2IxjnSSwTqwNY4Yw&usqp=CAU"
-                     alt="">
             </div>
         </main>
     </div>
@@ -290,9 +286,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 <script th:inline="javascript">
-    function deleteId(id) {
-        location.href = "/member/deleteId/"+ id;
-    }
     const loginForm = () => {
         var width = 480;
         var height = 630;

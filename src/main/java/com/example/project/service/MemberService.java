@@ -119,4 +119,7 @@ public class MemberService {
         memberRepository.save(MemberEntity.toMemberUpdateEntity(memberDTO));
     }
 
+    public void deleteId(Long memberId) {
+        memberRepository.deleteById(memberId);
+    }
 }

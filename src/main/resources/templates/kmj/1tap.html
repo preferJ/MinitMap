@@ -146,7 +146,7 @@
                 <div>
                     <b>마이플레이스</b>
                     <div style="float: right">
-                        <i onclick="mypTapDown()" class="fa-solid fa-gear fa-2x"></i>
+                        <i onclick="mypTapDown()" id="mypIcon" class="fa-solid fa-angle-up fa-2x"></i>
                     </div>
                     <br>
                         <div id="myPlaceList">
@@ -237,121 +237,119 @@
         }
 
     }
-        function searchButton() {
-            var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
-            $.ajax({
-                method: "GET", // 요청 방식
-                url: "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback=result", // url 주소
-                async: false, // 동기설정
-                data: { // 요청 데이터 정보
-                    "appKey": "l7xx71377ca4d61b42018b3da0ede8c234fb", // 발급받은 Appkey
-                    "searchKeyword": searchKeyword, // 검색 키워드
-                    "resCoordType": "EPSG3857", // 요청 좌표계
-                    "reqCoordType": "WGS84GEO", // 응답 좌표계
-                    "count": 6 // 가져올 갯수
-                },
-                success: function (response) {
-                    // 출발지 도착지 세팅을 위한 위도경도 배열 초기화
-                    latLonArr = [];
-                    nameArr = [];
-
-                    var resultpoisData = response.searchPoiInfo.pois.poi;
-
-                    // 2. 기존 마커, 팝업 제거
-                    if (searchMarkerArr.length > 0) {
-                        for (var i in searchMarkerArr) {
-                            searchMarkerArr[i].setMap(null);
-                        }
-                        searchMarkerArr = [];
+    function searchButton() {
+        var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
+        $.ajax({
+            method: "GET", // 요청 방식
+            url: "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback=result", // url 주소
+            async: false, // 동기설정
+            data: { // 요청 데이터 정보
+                "appKey": "l7xx71377ca4d61b42018b3da0ede8c234fb", // 발급받은 Appkey
+                "searchKeyword": searchKeyword, // 검색 키워드
+                "resCoordType": "EPSG3857", // 요청 좌표계
+                "reqCoordType": "WGS84GEO", // 응답 좌표계
+                "count": 6 // 가져올 갯수
+            },
+            success: function (response) {
+                // 출발지 도착지 세팅을 위한 위도경도 배열 초기화
+                latLonArr = [];
+                nameArr = [];
+                var resultpoisData = response.searchPoiInfo.pois.poi;
+                // 2. 기존 마커, 팝업 제거
+                if (searchMarkerArr.length > 0) {
+                    for (var i in searchMarkerArr) {
+                        searchMarkerArr[i].setMap(null);
                     }
-
-                    if (labelArr.length > 0) {
-                        for (var i in labelArr) {
-                            labelArr[i].setMap(null);
-                        }
-                        labelArr = [];
-                    }
-
-                    var innerHtml = ""; // Search Reulsts 결과값 노출 위한 변수
-                    //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
-                    var positionBounds = new Tmapv2.LatLngBounds();
-
-                    // 3. POI 마커 표시
-                    for (var k in resultpoisData) {
-                        // POI 마커 정보 저장
-                        var noorLat = Number(resultpoisData[k].noorLat);
-                        var noorLon = Number(resultpoisData[k].noorLon);
-                        var name = resultpoisData[k].name;
-
-                        // 상세정보를 표시하기 위한 id 값인데 지금은 안씀
-                        // POI 정보의 ID
-                        // var id = resultpoisData[k].id;
-
-                        // 좌표 객체 생성
-                        var pointCng = new Tmapv2.Point(
-                            noorLon, noorLat);
-
-                        // EPSG3857좌표계를 WGS84GEO좌표계로 변환
-                        var projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-                            pointCng);
-
-                        var lat = projectionCng._lat;
-                        var lon = projectionCng._lng;
-
-                        // 좌표 설정
-                        var markerPosition = new Tmapv2.LatLng(
-                            lat, lon);
-
-                        // 출발지 도착지를 지정할때 사용할 위도 경도를 모아놓은 배열 넣기
-                        latLonArr.push(markerPosition);
-                        nameArr.push(name);
-
-                        // Marker 설정
-                        search_marker = new Tmapv2.Marker(
-                            {
-                                position: markerPosition, // 마커가 표시될 좌표
-                                //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
-                                icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_"
-                                    + k
-                                    + ".png", // 아이콘 등록
-                                iconSize: new Tmapv2.Size(
-                                    24, 38), // 아이콘 크기 설정
-                                title: name, // 마커 타이틀
-                                map: map // 마커가 등록될 지도 객체
-                            });
-
-                        // 결과창에 나타날 검색 결과 html
-                        // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div><div class='searth-name'><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span>"
-                            + name
-                            + "</span></div> <button type='button' name='sendBtn' onClick='startPing("
-                            + k
-                            + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
-                            + k
-                            + ");'>도착지</button><div th:if=" + [[${session.loginEmail}]] + "> <input type='button' name='sendBtn' onClick='myPlaceSave("
-                            + k
-                            + ");' value='저장'></div></div></li>";
-
-                        // 마커들을 담을 배열에 마커 저장
-                        searchMarkerArr.push(search_marker);
-                        positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
-                    }
-
-
-                    $("#searchResult").html(innerHtml); //searchResult 결과값 노출
-                    map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
-                    map.zoomOut();
-                },
-                error: function (request, status, error) {
-                    console.log("code:"
-                        + request.status + "\n"
-                        + "message:"
-                        + request.responseText
-                        + "\n" + "error:" + error);
+                    searchMarkerArr = [];
                 }
-
-            });
+                if (labelArr.length > 0) {
+                    for (var i in labelArr) {
+                        labelArr[i].setMap(null);
+                    }
+                    labelArr = [];
+                }
+                var innerHtml = ""; // Search Reulsts 결과값 노출 위한 변수
+                //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
+                var positionBounds = new Tmapv2.LatLngBounds();
+                // 3. POI 마커 표시
+                for (var k in resultpoisData) {
+                    // POI 마커 정보 저장
+                    var noorLat = Number(resultpoisData[k].noorLat);
+                    var noorLon = Number(resultpoisData[k].noorLon);
+                    var name = resultpoisData[k].name;
+                    // 상세정보를 표시하기 위한 id 값인데 지금은 안씀
+                    // POI 정보의 ID
+                    // var id = resultpoisData[k].id;
+                    // 좌표 객체 생성
+                    var pointCng = new Tmapv2.Point(
+                        noorLon, noorLat);
+                    // EPSG3857좌표계를 WGS84GEO좌표계로 변환
+                    var projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+                        pointCng);
+                    var lat = projectionCng._lat;
+                    var lon = projectionCng._lng;
+                    // 좌표 설정
+                    var markerPosition = new Tmapv2.LatLng(
+                        lat, lon);
+                    // 출발지 도착지를 지정할때 사용할 위도 경도를 모아놓은 배열 넣기
+                    latLonArr.push(markerPosition);
+                    nameArr.push(name);
+                    // Marker 설정
+                    search_marker = new Tmapv2.Marker(
+                        {
+                            position: markerPosition, // 마커가 표시될 좌표
+                            //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
+                            icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_"
+                                + k
+                                + ".png", // 아이콘 등록
+                            iconSize: new Tmapv2.Size(
+                                24, 38), // 아이콘 크기 설정
+                            title: name, // 마커 타이틀
+                            map: map // 마커가 등록될 지도 객체
+                        });
+                    // 결과창에 나타날 검색 결과 html
+                    // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
+                    innerHtml += "<li><div><div class='searth-name'><img src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide("+k+")'>"
+                        + name
+                        + "</span></div><div id='searchHide" + k +"' style='display: none'> <button type='button' name='sendBtn' onClick='startPing("
+                        + k
+                        + ");'>출발지</button> <button type='button' name='sendBtn' onClick='endPing("
+                        + k
+                        + ");'>도착지</button><div th:if=" + [[${session.loginEmail}]] + "> <input type='button' name='sendBtn' onClick='myPlaceSave("
+                        + k
+                        + ");' value='저장'></div></div></div></li>";
+                    // 마커들을 담을 배열에 마커 저장
+                    searchMarkerArr.push(search_marker);
+                    positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
+                }
+                $("#searchResult").html(innerHtml); //searchResult 결과값 노출
+                map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
+                map.zoomOut();
+            },
+            error: function (request, status, error) {
+                console.log("code:"
+                    + request.status + "\n"
+                    + "message:"
+                    + request.responseText
+                    + "\n" + "error:" + error);
+            }
+        });
+    }
+    function searchHide(k){
+        var searchHide = document.getElementById("searchHide" + k);
+        for(var i =0;i < searchMarkerArr.length;i++){
+            if(i != k) {
+                document.getElementById("searchHide" + i).style.display = "none";
+            }
         }
+        if(searchHide.style.display == "none"){
+            searchHide.style.display = "inline";
+            searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_" + k + ".png");
+        }else{
+            searchHide.style.display = "none";
+            searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png");
+        }
+    }
 
     function markerRemove() {
         if (marker != null) {
@@ -452,10 +450,13 @@
 
     function mypTapDown() {
         var mypTap = document.getElementById("mypTap");
+        var mypIcon = document.getElementById("mypIcon");
         if (mypTap.style.display == "inline") {
             mypTap.style.display = "none";
+            mypIcon.className = "fa-solid fa-angle-down fa-2x"
         } else if (mypTap.style.display == "none") {
             mypTap.style.display = "inline";
+            mypIcon.className = "fa-solid fa-angle-up fa-2x"
         }
     }
 

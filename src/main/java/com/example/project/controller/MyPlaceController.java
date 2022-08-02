@@ -25,6 +25,6 @@ public class MyPlaceController {
         Long id = (Long) session.getAttribute("loginId");
         MyPlaceDTO myPlaceDTO = new MyPlaceDTO(id,myPlaceName,myPlaceLat,myPlaceLng,icon);
         myPlaceService.save(myPlaceDTO);
-        return "hss/tapDown";
+        return "redirect:/1tapTest";
     }
 }

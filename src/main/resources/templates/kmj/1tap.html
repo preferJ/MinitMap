@@ -145,8 +145,10 @@
             <hr>
             <div th:if="${session.loginEmail}">
                 <div>
-                    <b>마이플레이스</b> <br>
-                    <table>
+                    <b>마이플레이스</b>
+                    <
+                    <br>
+                    <table id="">
                         <div th:each="myplace: ${myPlaceList}" th:id="|mpt${myplace.myPlaceId}|">
                             <tr class="myPlaceTap">
                                 <td><p th:text="${myplace.myPlaceName}" th:onclick="myPlaceClick([[${myplace.myPlaceId}]],[[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])"></p></td>
@@ -368,11 +370,7 @@
         markerRemove();
 
         marker = new Tmapv2.Marker({
-            icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: new Tmapv2.LatLng(lat,lng), //Marker의 중심좌표 설정.
-            draggable:true,
-            iconSize: new Tmapv2.Size(
-                24, 38), // 아이콘 크기 설정
             title: name, // 마커 타이틀
             map: map //Marker가 표시될 Map 설정.
         });
@@ -425,14 +423,7 @@ var clickId = 0;
         var name = nameArr[id];
         console.log(lat +"," + lng + "," + name);
 
-        var width = 800;
-        var height = 800;
-        var left = (window.screen.width / 2) - (width / 2);
-        var top = (window.screen.height / 4);
-
-        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
-
-        window.open("/myPlace/save?myPlaceLat="+lat+"&myPlaceLng="+lng+"&myPlaceName="+name, "값불러오기", windowStatus);
+        location.href="/myPlace/save?myPlaceLat="+lat+"&myPlaceLng="+lng+"&myPlaceName="+name
     }
 
     function logout() {

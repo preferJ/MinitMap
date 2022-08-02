@@ -17,6 +17,7 @@ public class RutinDTO {
     private String destination;
     private Double endPointLat;
     private Double endPointLon;
+    private String rutinName;
 
     public static RutinDTO toRutinDTO(RutinEntity rutinEntity){
         RutinDTO rutinDTO = new RutinDTO();
@@ -28,6 +29,7 @@ public class RutinDTO {
         rutinDTO.setDestination(rutinEntity.getDestination());
         rutinDTO.setEndPointLat(rutinEntity.getEndPointLat());
         rutinDTO.setEndPointLon(rutinEntity.getEndPointLon());
+        rutinDTO.setRutinName(rutinEntity.getRutinName());
         return rutinDTO;
     }
 }

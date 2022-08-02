@@ -1098,13 +1098,12 @@
             </div>
         </div>
         <div id="myplace_2" th:if="${session.loginEmail}"> <!-- 하단부분 -->
-            <div style="float: right">
-                <i onclick="goSettings()" class="fa-solid fa-gear fa-2x"></i>
-            </div>
             <hr>
             <div>
-                <b>마이플레이스</b> <br>
-                <table>
+                <b>마이플레이스</b><div style="float: right">
+                <i onclick="mypTapDown()" id="mypIcon" class="fa-solid fa-angle-up fa-2x"></i>
+            </div>
+                <table style="display: inline" id="mypTap">
                     <div th:each="myplace: ${myPlaceList}" th:id="|mpt${myplace.myPlaceId}|">
                         <tr class="myPlaceTap">
                             <td><p th:text="${myplace.myPlaceName}" th:onclick="myPlaceClick([[${myplace.myPlaceId}]],[[${myplace.myPlaceLat}]],[[${myplace.myPlaceLon}]],[[${myplace.myPlaceName}]])"></p></td>
@@ -1144,4 +1143,17 @@
 <div id="map_div">
 </div>
 </body>
+<script>
+    function mypTapDown() {
+        var mypTap = document.getElementById("mypTap");
+        var mypIcon = document.getElementById("mypIcon");
+        if (mypTap.style.display == "inline") {
+            mypTap.style.display = "none";
+            mypIcon.className = "fa-solid fa-angle-down fa-2x"
+        } else if (mypTap.style.display == "none") {
+            mypTap.style.display = "inline";
+            mypIcon.className = "fa-solid fa-angle-up fa-2x"
+        }
+    }
+</script>
 </html>

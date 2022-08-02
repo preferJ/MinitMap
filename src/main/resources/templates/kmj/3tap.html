@@ -231,7 +231,7 @@
                 for (let i in result) {
                     output += "<tr class='colored' onclick='detail(" + result[i].boardId + ")'>";
                     output += "<td>" + result[i].boardType + "</td>";
-                    output += "<td style='width:100%;overflow:hidden;text-overflow:ellipsis;'>" + result[i].boardTitle + "</td>";
+                    output += "<td style='width:100%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;'>" + result[i].boardTitle + "</td>";
                     output += "<td>" + result[i].boardLike + "</td>";
                     output += "</tr>";
                 }

@@ -199,7 +199,7 @@
                     </tr>
                     <tr th:each="board : ${boardDTOList}" class="colored" th:onclick="detail([[${board.boardId}]])">
                         <td th:text="${board.boardId}"></td>
-                        <td th:text="${board.boardTitle}" style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;"></td>
+                        <td th:text="${board.boardTitle}" style="width:100%;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;"></td>
                         <td th:text="${board.boardTypeLocation1}"></td>
                         <td th:text="${board.boardTypeLocation2}"></td>
                         <td th:text="${board.memberNickname}"></td>

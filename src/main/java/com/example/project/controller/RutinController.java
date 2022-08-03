@@ -41,4 +41,22 @@ public class RutinController {
     public String rutin(){
         return "/rutin/rutin";
     }
+
+    @GetMapping("/textUpDown")
+    public @ResponseBody String textUpDown(@RequestParam("one") Long upId , @RequestParam("two") Long downId){
+        rutinService.textUpDown(upId,downId);
+        return "ok";
+    }
+
+    @GetMapping("/deleteMyPlace")
+    public @ResponseBody String deleteMyPlace(@RequestParam("id") Long id){
+        rutinService.deleteById(id);
+        return "ok";
+    }
+
+    @GetMapping("/updateName")
+    public @ResponseBody String updateName(@RequestParam("id") Long id,@RequestParam("name") String name){
+        rutinService.updateName(id,name);
+        return "ok";
+    }
 }

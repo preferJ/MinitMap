@@ -25,7 +25,7 @@ public class ErrorController {
     public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
         System.out.println("errorDTO = " + errorDTO);
         errorService.save(errorDTO);
-        return "/BoardPages/index";
+        return "/index";
     }
     @GetMapping("/findAll")
     public String findAll(Model model){

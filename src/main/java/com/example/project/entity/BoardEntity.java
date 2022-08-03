@@ -65,6 +65,9 @@ public class BoardEntity {
     @Column(name = "managerCheck")
     private boolean managerCheck;
 
+    @Column(name = "boardReport")
+    private Long boardReport;
+
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ErrorEntity> errorEntityList = new ArrayList<>();
 
@@ -83,6 +86,7 @@ public class BoardEntity {
         boardEntity.setBoardHits(0l);
         boardEntity.setBoardLike(0l);
         boardEntity.setBoardDislike(0l);
+        boardEntity.setBoardReport(0l);
         boardEntity.setManagerCheck(false);
         return boardEntity;
     }
@@ -98,6 +102,7 @@ public class BoardEntity {
         boardEntity.setBoardHits(0l);
         boardEntity.setBoardLike(0l);
         boardEntity.setBoardDislike(0l);
+        boardEntity.setBoardReport(0l);
         boardEntity.setManagerCheck(false);
         return boardEntity;
     }
@@ -112,6 +117,7 @@ public class BoardEntity {
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardLike(boardDTO.getBoardLike());
         boardEntity.setBoardDislike(boardDTO.getBoardDislike());
+        boardEntity.setBoardReport(boardDTO.getBoardReport());
         boardEntity.setManagerCheck(boardDTO.isManagerCheck());
         boardEntity.setMemberEntity(memberEntity);
         boardEntity.setTrafficEntity(trafficEntity);
@@ -128,6 +134,7 @@ public class BoardEntity {
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardLike(boardDTO.getBoardLike());
         boardEntity.setBoardDislike(boardDTO.getBoardDislike());
+        boardEntity.setBoardReport(boardDTO.getBoardReport());
         boardEntity.setManagerCheck(boardDTO.isManagerCheck());
         boardEntity.setMemberEntity(memberEntity);
         return boardEntity;

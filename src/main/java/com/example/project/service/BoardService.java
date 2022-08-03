@@ -95,7 +95,8 @@ public class BoardService {
                         board.getBoardLike(),
                         board.getBoardDislike(),
                         board.isManagerCheck(),
-                        board.getMemberEntity().getMemberNickname()
+                        board.getMemberEntity().getMemberNickname(),
+                        board.getBoardReport()
                 ));
         return boardList;
     }
@@ -123,7 +124,8 @@ public class BoardService {
                         board.getBoardLike(),
                         board.getBoardDislike(),
                         board.isManagerCheck(),
-                        board.getMemberEntity().getMemberNickname()
+                        board.getMemberEntity().getMemberNickname(),
+                        board.getBoardReport()
                 ));
         return boardList;
     }
@@ -151,7 +153,8 @@ public class BoardService {
                         board.getBoardLike(),
                         board.getBoardDislike(),
                         board.isManagerCheck(),
-                        board.getMemberEntity().getMemberNickname()
+                        board.getMemberEntity().getMemberNickname(),
+                        board.getBoardReport()
                 ));
         return boardList;
     }
@@ -179,7 +182,8 @@ public class BoardService {
                         board.getBoardLike(),
                         board.getBoardDislike(),
                         board.isManagerCheck(),
-                        board.getMemberEntity().getMemberNickname()
+                        board.getMemberEntity().getMemberNickname(),
+                        board.getBoardReport()
                 ));
         return boardList;
     }
@@ -214,7 +218,8 @@ public class BoardService {
                         board.getBoardLike(),
                         board.getBoardDislike(),
                         board.isManagerCheck(),
-                        board.getMemberEntity().getMemberNickname()
+                        board.getMemberEntity().getMemberNickname(),
+                        board.getBoardReport()
                 ));
         return boardList;
     }
@@ -242,7 +247,8 @@ public class BoardService {
                         board.getBoardLike(),
                         board.getBoardDislike(),
                         board.isManagerCheck(),
-                        board.getMemberEntity().getMemberNickname()
+                        board.getMemberEntity().getMemberNickname(),
+                        board.getBoardReport()
                 ));
         return boardList;
     }

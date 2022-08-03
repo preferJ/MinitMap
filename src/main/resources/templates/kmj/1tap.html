@@ -8,6 +8,7 @@
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>
+        var my_marker;
         var marker;
         var map_count = 0;
         var page_lat = [[${page_lat}]];
@@ -525,9 +526,45 @@
             }
         })
     }
+    function rutinDown(){
+        var rutinTap = document.getElementById("rutinTap");
+        var rutinIcon = document.getElementById("rutinIcon");
+        if (rutinTap.style.display == "inline") {
+            rutinTap.style.display = "none";
+            rutinIcon.className = "fa-solid fa-angle-down fa-2x"
+        } else if (rutinTap.style.display == "none") {
+            rutinTap.style.display = "inline";
+            rutinIcon.className = "fa-solid fa-angle-up fa-2x"
+        }
+    }
+    function myPing(){
+        if (navigator.geolocation) {
+            // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+            navigator.geolocation.getCurrentPosition(function (position) {
+
+                lat = position.coords.latitude; // 위도
+                lon = position.coords.longitude; // 경도
+                if(my_marker != null) {
+                    my_marker.setMap(null);
+                    my_marker = null;
+                }
+                my_marker = new Tmapv2.Marker({
+                    position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
+                    map: map, //Marker가 표시될 Map 설정..
+                    icon: 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_g_m_h.png'
+                });
+                map.setCenter(new Tmapv2.LatLng(lat, lon));
+                map.setZoom(18);
+            });
+        }
+    }
 </script>
 
 <body onload="initTmap();myPlaceList();rutinList();">
 <div id="map_div"></div>
+    <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:120px;right:80px;">
+        <i class="fa-solid fa-circle fa-stack-2x " style="color:white;"></i>
+        <i class="fa-solid fa-location-dot fa-stack-1x" style="color:red;"></i>
+    </span>
 </body>
 </html>

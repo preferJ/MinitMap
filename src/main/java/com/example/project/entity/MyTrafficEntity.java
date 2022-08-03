@@ -45,4 +45,14 @@ public class MyTrafficEntity {
         myTrafficEntity.setMemberEntity(memberEntity);
         return myTrafficEntity;
     }
+    //ㅅㅎ DTO로 세이브하기 추가
+    public static MyTrafficEntity toSaveMyTrafficEntity(MyTrafficDTO myTrafficDTO, MemberEntity memberEntity){
+        MyTrafficEntity myTrafficEntity = new MyTrafficEntity();
+        myTrafficEntity.setMyTrafficLat(myTrafficDTO.getMyTrafficLat());
+        myTrafficEntity.setMyTrafficLon(myTrafficDTO.getMyTrafficLon());
+        myTrafficEntity.setMyTrafficName(myTrafficDTO.getMyTrafficName());
+        myTrafficEntity.setMyTrafficOrderNumber(myTrafficDTO.getMyTrafficOrderNumber());
+        myTrafficEntity.setMemberEntity(memberEntity);
+        return myTrafficEntity;
+    }
 }

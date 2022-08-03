@@ -47,14 +47,16 @@ public class ErrorService {
             }
         }
     }
-//    public List<ErrorDTO> findAll() {
+
+
+    public List<ErrorDTO> findAll() {
 //    오류신고 목록 메서드
-//        List<ErrorEntity> errorEntityList = errorRepository.findAll();
-//        List<ErrorDTO> errorDTOList = new ArrayList<>();
-//        for(ErrorEntity error: errorEntityList) {
-//            errorDTOList.add(ErrorDTO.toErrorDTO(error));
-//            System.out.println("error = " + error);
-//        }
-//        return errorDTOList;
-//    }
+        List<ErrorEntity> errorEntityList = errorRepository.findAll();
+        List<ErrorDTO> errorDTOList = new ArrayList<>();
+        for(ErrorEntity error: errorEntityList) {
+            errorDTOList.add(ErrorDTO.toErrorDTO(error));
+            System.out.println("error = " + error);
+        }
+        return errorDTOList;
+    }
 }

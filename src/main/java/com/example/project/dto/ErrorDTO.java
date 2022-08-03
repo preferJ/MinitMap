@@ -1,5 +1,6 @@
 package com.example.project.dto;
 
+import com.example.project.entity.BoardEntity;
 import com.example.project.entity.ErrorEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class ErrorDTO {
     private String errorContents;
     private LocalDateTime errorCreatedTime;
     private boolean managerCheck;
+    private BoardEntity boardEntity;
 
     public static ErrorDTO toErrorDTO(ErrorEntity errorEntity){
         ErrorDTO errorDTO = new ErrorDTO();
@@ -31,6 +33,7 @@ public class ErrorDTO {
         errorDTO.setErrorContents(errorEntity.getErrorContents());
         errorDTO.setErrorCreatedTime(errorEntity.getErrorCreatedTime());
         errorDTO.setManagerCheck(errorEntity.isManagerCheck());
+        errorDTO.setBoardEntity(errorEntity.getBoardEntity());
         return errorDTO;
     }
 }

@@ -15,7 +15,7 @@
         </div>
         <input type="hidden" name="boardId" th:value="${boardId}">
         <div>
-            <select name="errorType" style="width: 100%">
+            <select name="errorType" style="width: 100%" required="">
                 <option value="----------신고 항목 선택----------">신고 항목 선택</option>
                 <option value="주제와 상관없는 게시글">주제와 상관없는 게시글</option>
                 <option value="비방, 욕설 및 불쾌한 게시글">비방, 욕설 및 불쾌한 게시글</option>
@@ -23,11 +23,11 @@
             </select>
         </div>
         <div>
-            <input type="text" name="errorTitle" placeholder="제목" style="width: 100%">
+            <input type="text" name="errorTitle" placeholder="제목" style="width: 100%" required>
         </div>
         <div>
-            <textarea id="1" cols="71" rows="9" name="errorContents"
-                      style="resize: none;" placeholder="신고할 내용을 구체적으로 입력해주세요"></textarea>
+            <textarea cols="71" rows="9" name="errorContents"
+                      style="resize: none;" placeholder="신고할 내용을 구체적으로 입력해주세요" required></textarea>
         </div>
         <div align="center">
         <input type="submit" class="btn btn-danger" value="신고하기">

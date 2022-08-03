@@ -1,14 +1,301 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Dashboard Template · Bootstrap v5.2</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
+
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .sidebar2 {
+            position: fixed;
+            top: 0;
+            /* rtl:raw:
+            right: 0;
+            */
+            bottom: 0;
+            /* rtl:remove */
+            right: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 48px 0 0; /* Height of navbar */
+            box-shadow: inset 1px 0 0 rgba(0, 0, 0, .1);
+        }
+
+        @media (max-width: 767.98px) {
+            .sidebar2 {
+                top: 5rem;
+            }
+        }
+
+        .sidebar2 .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar2 .nav-link .feather {
+            margin-right: 4px;
+            color: #727272;
+        }
+
+        .sidebar2 .nav-link.active {
+            color: #2470dc;
+        }
+
+        .sidebar2 .nav-link:hover .feather,
+        .sidebar2 .nav-link.active .feather {
+            color: inherit;
+        }
+
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body>
-<div th:each="board: ${boardList}">
-    <p th:text="${board.memberNickname}"></p>
-    <p th:text="${board.boardTitle}"></p>
-    <p th:text="${board.boardContents}"></p>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <form action="/board/search" class="w-100 rounded-0 border-0">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
+               aria-label="Search" name="search">
+    </form>
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
+            <a th:if="${session.loginEmail}" class="nav-link px-3" th:onclick="logout()">로그아웃</a>
+        </div>
+
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3 sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                            게시판
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/free">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            자유게시판
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/traffic">
+                            <span data-feather="download" class="align-text-bottom"></span>
+                            신호등게시판
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/admin">
+                            <span data-feather="alert-triangle" class="align-text-bottom"></span>
+                            공지사항
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+                            추가 있을까?
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
+                    style="font-size: 1.5rem">
+                    <span>마이페이지</span>
+                    <a class="link-secondary" href="#" aria-label="Add a new report">
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="map-pin" class="align-text-bottom"></span>
+                            마이플레이스
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="tool" class="align-text-bottom"></span>
+                            내 신호등 관리
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <nav id="sidebarMenu2" class="col-md-3 col-lg-2 d-md-block bg-light sidebar2 collapse">
+            <div class="position-sticky pt-3 sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                            마이 페이지
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정 및 탈퇴
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/error/findAll">
+                            <span data-feather="map-pin" class="align-text-bottom"></span>
+                            게시판 신고 관리
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/admin">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            내 루틴
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="tool" class="align-text-bottom"></span>
+                            내 신호등 관리
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{|/board/findByIdList/${session.loginId}|}">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            내가 쓴 글 보러가기
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-9 ms-lg-auto me-lg-auto col-lg-10 px-md-4 mt-5" style="width: 65%">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">내가 작성한 글</h1>
+            </div>
+
+            <div class="container">
+                <table class="container">
+                    <tr>
+                        <th>작성자</th>
+                        <th>글 제목</th>
+                        <th>글 내용</th>
+                        <th>글 작성 시간</th>
+                    </tr>
+                    <tr th:each="board: ${boardList}">
+                        <td th:text="${board.memberNickname}"></td>
+                        <td th:text="${board.boardTitle}"></td>
+                        <td th:text="${board.boardContents}"></td>
+                        <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+
+                    </tr>
+                </table>
+            </div>
+        </main>
+    </div>
 </div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+        crossorigin="anonymous"></script>
+<script src="/css/dashboard.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
+<script th:inline="javascript">
+    const loginForm = () => {
+        var width = 480;
+        var height = 630;
+
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
+
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+        window.open("/member/loginForm", "로그인", windowStatus);
+
+    }
+
+    function logout() {
+        location.href = "/board/logout";
+    }
+</script>
 </html>

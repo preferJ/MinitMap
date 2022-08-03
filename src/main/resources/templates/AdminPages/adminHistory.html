@@ -212,15 +212,15 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
-                        <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정 및 탈퇴
+                        <a class="nav-link" href="/member/findAll">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            회원등급조회 및 탈퇴
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/board/traffic">
+                        <a class="nav-link" href="/error/findAll">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
-                            마이플레이스
+                            게시판 신고 관리
                         </a>
                     </li>
                     <li class="nav-item">
@@ -238,7 +238,7 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{|/board/findByIdList/${session.loginId}|}">
                             <span data-feather="file" class="align-text-bottom"></span>
-                            내가 쓴 글 보러가기
+                            공지사항 작성
                         </a>
                     </li>
                 </ul>
@@ -269,11 +269,6 @@
 
                     </tr>
                 </table>
-            </div>
-            <div style="text-align: center;display: none;" id="down">
-                <img width="50" height="50"
-                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqYmsgsJMAmhXR7pHN5F2IxjnSSwTqwNY4Yw&usqp=CAU"
-                     alt="">
             </div>
         </main>
     </div>

@@ -144,7 +144,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="rutin()">
                             <span data-feather="compass" class="align-text-bottom"></span>
                             루틴
                         </a>
@@ -282,6 +282,14 @@
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
         } else {
             loginForm();
         }

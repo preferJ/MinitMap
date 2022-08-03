@@ -22,9 +22,9 @@
             user-select: none;
         }
 
-        tr.colored:hover td{
-            background-color:#f3e9e9 !important;
-            color:#303f39 !important;
+        tr.colored:hover td {
+            background-color: #f3e9e9 !important;
+            color: #303f39 !important;
         }
 
         @media (min-width: 768px) {
@@ -84,7 +84,7 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <form action="/board/search"  class="w-100 rounded-0 border-0">
+    <form action="/board/search" class="w-100 rounded-0 border-0">
         <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
                aria-label="Search" name="search">
     </form>
@@ -147,7 +147,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="rutin()">
                             <span data-feather="compass" class="align-text-bottom"></span>
                             루틴
                         </a>
@@ -159,7 +159,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
                             <span data-feather="user" class="align-text-bottom"></span>
                             내 정보 수정
                         </a>
@@ -299,6 +299,14 @@
             loginForm();
         }
     }
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
     function logout() {
         location.href = "/board/logout";
     }
@@ -368,8 +376,8 @@
         location.href = "/board/location?type=" + type + "&local1=" + local1 + "&local2=" + local2;
     }
 
-    function detail(id){
-        location.href = "/board/detail?id=" + id ;
+    function detail(id) {
+        location.href = "/board/detail?id=" + id;
     }
 </script>
 </body>

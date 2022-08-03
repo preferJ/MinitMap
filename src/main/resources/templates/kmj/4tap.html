@@ -60,6 +60,57 @@
                 }
             }
         })
+        var map;
+
+
+        // function initTmap() {
+        //     tapCheck("tap4");
+        //     var request_lat;
+        //     var request_lng;
+        //     if (page_lat == 0 && page_lng == 0) {
+        //         request_lat = 37.570028;
+        //         request_lng = 126.989072;
+        //     } else {
+        //         request_lat = page_lat;
+        //         request_lng = page_lng;
+        //     }
+        //     console.log(page_lat, page_lng);
+        //     sidebarResize = document.getElementById("sidebar");
+        //     var width_size = window.outerWidth;
+        //     var height_size = window.outerHeight;
+        //     if (width_size == 1920) {
+        //         sidebarResize.style.height = height_size - 147 - 4 + "px";
+        //         // 1. 지도 띄우기
+        //         map = new Tmapv2.Map("map_div", {
+        //             center: new Tmapv2.LatLng(request_lat, request_lng),
+        //             width: width_size - 320 + "px",
+        //             height: height_size - 147 - 4 + "px",
+        //             zoom: [[${page_zoom}]],
+        //             zoomControl: true,
+        //             scrollwheel: true
+        //         });
+        //
+        //
+        //     } else {
+        //         sidebarResize.style.height = height_size - 164 + "px";
+        //         // 1. 지도 띄우기
+        //         map = new Tmapv2.Map("map_div", {
+        //             center: new Tmapv2.LatLng(request_lat, request_lng),
+        //             width: width_size - 336 + "px",
+        //             height: height_size - 164 - 4 + "px",
+        //             zoom: [[${page_zoom}]],
+        //             zoomControl: true,
+        //             scrollwheel: true
+        //         });
+        //
+        //
+        //
+        //     }
+        //
+        //
+        //
+        // }
+
 
         function initTmap() {
             tapCheck("tap4");
@@ -72,7 +123,6 @@
                 request_lat = page_lat;
                 request_lng = page_lng;
             }
-            console.log(page_lat, page_lng);
             sidebarResize = document.getElementById("sidebar");
             var width_size = window.outerWidth;
             var height_size = window.outerHeight;
@@ -87,6 +137,7 @@
                     zoomControl: true,
                     scrollwheel: true
                 });
+                map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             } else {
                 sidebarResize.style.height = height_size - 164 + "px";
                 // 1. 지도 띄우기
@@ -98,9 +149,8 @@
                     zoomControl: true,
                     scrollwheel: true
                 });
+                map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
             }
-
-
         }
 
         let TrafficStatus = 1;
@@ -190,7 +240,7 @@
             }
         }
 
-        function setTimeStartAndEnd(){
+        function setTimeStartAndEnd() {
             let date = new Date();
 
             date.setMinutes(date.getMinutes() - 30);
@@ -201,8 +251,61 @@
             date2.setMinutes(date2.getMinutes() + 30);
             let time2 = date2.toTimeString().split(" ")[0];
             document.getElementById("endTime").value = time2
+        }
 
+        let addTraffic = [];
+        let addTrafficLat;
+        let addTrafficLng;
 
+        function onClick(e) {
+
+            for (var i = 0; i < addTraffic.length; i++) {
+                addTraffic[i].setMap(null);
+            }
+            addTraffic = [];
+
+            let str = e.latLng.toString();
+
+            let [latlat, lnglng] = str.split(',');
+            addTrafficLat = latlat;
+            addTrafficLng = lnglng;
+
+            marker_Traffic = new Tmapv2.Marker(
+                {
+                    position: e.latLng, // 마커가 표시될 좌표
+                    icon: "/icon/Traffic-light.png", // 아이콘 등록
+                    iconSize: new Tmapv2.Size(
+                        36, 57), // 아이콘 크기 설정
+                    title: "marker_Traffic1", // 마커 타이틀
+                    label: "test1",
+                    map: map // 마커가 등록될 지도 객체
+                });
+            addTraffic.push(marker_Traffic);
+        }
+
+        function TrafficSetting(){
+         let myTrafficName = document.getElementById("myTrafficName");
+         let myTrafficLat = document.getElementById("myTrafficLat");
+         let myTrafficLon = document.getElementById("myTrafficLon");
+         let trafficApplyStart = document.getElementById("trafficApplyStart");
+         let trafficApplyEnd = document.getElementById("trafficApplyEnd");
+         let greenOn = document.getElementById("greenOn");
+         let redOn = document.getElementById("redOn");
+         let startType = document.getElementById("startType");
+         let setStartTime = document.getElementById("setStartTime");
+            myTrafficName.value = document.getElementById("trafficName").value;
+            myTrafficLat.value = addTrafficLat;
+            myTrafficLon.value = addTrafficLng;
+            trafficApplyStart.value = document.getElementById("startTime").value;
+            trafficApplyEnd.value = document.getElementById("endTime").value;
+            greenOn.value = document.getElementById("greenOnTime").value;
+            redOn.value = document.getElementById("redOnTime").value;
+            if (TrafficStatus == 1){
+            startType.value = "RED";
+            }else{
+                startType.value = "GREEN";
+            }
+            setStartTime.value = time1;
 
 
 
@@ -333,10 +436,10 @@
             <div style="position: center">
                 <div>a</div>
                 <div>
-                <input type="checkbox" id="toggle" hidden onclick="toggleRedOrGreen()">
-                <label for="toggle" class="toggleSwitch">
-                    <span class="toggleButton" id="toggleBtn"></span>
-                </label>
+                    <input type="checkbox" id="toggle" hidden onclick="toggleRedOrGreen()">
+                    <label for="toggle" class="toggleSwitch">
+                        <span class="toggleButton" id="toggleBtn"></span>
+                    </label>
                 </div>
                 <div>b</div>
             </div>
@@ -366,7 +469,7 @@
                 <br/>
                 <div>
                     <input type="text" class="trafficCount" id="trafficName" placeholder="신호등 이름 입력"
-                           style="outline-color:#20c997;;">
+                           style="outline-color:#20c997;;" onchange="TrafficSetting()">
                 </div>
                 <input type="text" id="greenOnTime" class="trafficCount" placeholder="청색불 점화 시간"> <br>
                 <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간">
@@ -382,9 +485,24 @@
             <input type="text" id="endTime" class="trafficCount" placeholder="00:00:00"
                    style="outline-color:#20c997;text-align: center">
             <hr>
-            <button type="button" class="btn btn-check">저장</button>
+            <form action="">;
+                <input type="text" name="memberId" id="memberId" hidden value="9999">;
+                <input type="text" name="myTrafficName" id="myTrafficName" hidden value="asd">;
+                <input type="text" name="myTrafficLat" id="myTrafficLat" hidden value="asd">;
+                <input type="text" name="myTrafficLon" id="myTrafficLon" hidden value="asd">;
+                <input type="text" name="trafficApplyStart" id="trafficApplyStart" hidden value="asd">;
+                <input type="text" name="trafficApplyEnd" id="trafficApplyEnd" hidden value="asd">;
+                <input type="text" name="startType" id="startType" hidden value="asd">;
+                <input type="text" name="greenOn" id="greenOn" hidden value="asd">;
+                <input type="text" name="redOn" id="redOn" hidden value="asd">;
+                <input type="text" name="setStartTime" id="setStartTime" hidden value="asd">;
+                <button type="button" class="btn btn-primary" style="width: 100px">저장</button>;
+
+            </form>;
+
         </div>
     </div>
+
 </div>
 <div id="map_div"></div>
 </body>

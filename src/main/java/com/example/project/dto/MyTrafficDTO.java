@@ -14,6 +14,8 @@ public class MyTrafficDTO {
     private String myTrafficName;
     private Double myTrafficLat;
     private Double myTrafficLon;
+    private Double myTrafficOrderNumber;
+    //ㅅㅎ 수정 신호등순서필드 추가
     public static MyTrafficDTO toSaveMyTrafficDTO(MyTrafficEntity myTrafficEntity){
         MyTrafficDTO myTrafficDTO = new MyTrafficDTO();
         myTrafficDTO.setMyTrafficId(myTrafficEntity.getMyTrafficId());

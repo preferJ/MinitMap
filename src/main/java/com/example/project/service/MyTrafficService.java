@@ -34,7 +34,7 @@ public class MyTrafficService {
         return check;
     }
 
-    // 마이 트래픽에 신호등 등록하기
+//     마이 트래픽에 신호등 등록하기
     public String save(Long id, Long loginId, String name) {
         Optional<BoardEntity> board = boardRepository.findById(id);
         Optional<MemberEntity> byId = memberRepository.findById(loginId);

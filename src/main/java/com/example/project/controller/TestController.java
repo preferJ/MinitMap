@@ -106,6 +106,7 @@ public class TestController {
                        @RequestParam(value = "lat", required = false)Double lat,
                        @RequestParam(value = "lng", required = false)Double lng,
                        @RequestParam(value = "myPlaceId", required = false)Long myPlaceId,
+                       @RequestParam(value = "rutinIndex", required = false)Long rutinIndex,
                        HttpSession session,
                        Model model) {
         model.addAttribute("page_lat", page_lat);
@@ -116,6 +117,7 @@ public class TestController {
         model.addAttribute("lat", lat);
         model.addAttribute("lng", lng);
         model.addAttribute("myPlaceId", myPlaceId);
+        model.addAttribute("rutinIndex",rutinIndex);
         String email = (String) session.getAttribute("loginEmail");
         Long memberId = (Long) session.getAttribute("loginId");
         if(session.getAttribute("loginEmail") != null){

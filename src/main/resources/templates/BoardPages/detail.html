@@ -269,7 +269,7 @@
                 <div th:if="${session.loginId} and ${session.loginEmail != 'admin'} and ${session.loginNickName != board.memberNickname}">
                     <input th:if="${board.boardType == '신호'}" type="button" th:onclick="traffic([[${board.boardId}]])"
                            value="신호추가">
-                    <input style="float: right" type="button" th:onclick="report()" value="신고"></div>
+                    <input style="float: right" type="button" th:onclick="report([[${board.boardId}]])" value="신고"></div>
             </div>
             <br><br>
         </main>
@@ -332,7 +332,7 @@
 
     }
 
-    function report() {
+    function report(id) {
         var width = 553;
         var height = 400;
 
@@ -341,7 +341,7 @@
 
         var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
 
-        window.open("/board/report?id="+[[${board.boardId}]], "신고하기", windowStatus);
+        window.open("/board/report/"+ id, "신고하기", windowStatus);
     }
 
     function logout() {

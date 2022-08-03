@@ -30,6 +30,7 @@ public class ErrorEntity {
     @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
+
     @Column(name = "errorType", nullable = false)
     private String errorType;
 

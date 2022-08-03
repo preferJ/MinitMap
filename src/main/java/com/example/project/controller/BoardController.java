@@ -32,6 +32,7 @@ public class BoardController {
     private final MyTrafficService myTrafficService;
 
     private final ErrorService errorService;
+
     // 이현 시작
     @GetMapping
     public String board(@PageableDefault(page = 1) Pageable pageable, Model model) {
@@ -43,6 +44,7 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/index";
     }
+
     // 이현
     @GetMapping("/save")
     public String saveForm() {
@@ -55,6 +57,7 @@ public class BoardController {
         session.invalidate();
         return "redirect:/board";
     }
+
     // 이현
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO, HttpSession session) {
@@ -62,6 +65,7 @@ public class BoardController {
         boardService.save(boardDTO, memberId);
         return "redirect:/board";
     }
+
     // 이현
     @GetMapping("/trafficChoice")
     public String trafficChoice(Model model, HttpSession session) {
@@ -103,6 +107,7 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         return "/BoardPages/traffic";
     }
+
     //이현
     @GetMapping("/admin")
     public String admin(@PageableDefault(page = 1) Pageable pageable, Model model) {
@@ -194,7 +199,7 @@ public class BoardController {
                 } else {
                     startTime += (trafficTimeDTO.getTrafficApplyStart() % 100);
                 }
-                startTimeArr[i]=startTime;
+                startTimeArr[i] = startTime;
                 String endTime = "";
                 if (trafficTimeDTO.getTrafficApplyEnd() / 10000 < 10) {
                     endTime += "0" + (trafficTimeDTO.getTrafficApplyEnd() / 10000) + ":";
@@ -213,7 +218,7 @@ public class BoardController {
                 } else {
                     endTime += (trafficTimeDTO.getTrafficApplyEnd() % 100);
                 }
-                endTimeArr[i]=endTime;
+                endTimeArr[i] = endTime;
                 i++;
             }
             model.addAttribute("trafficStart", startTimeArr);
@@ -247,14 +252,14 @@ public class BoardController {
         BoardEntity boardEntity = boardRepository.findById(id).get();
         model.addAttribute("board", boardDTO);
 
-        if (boardDTO.getBoardType().equals("신호")){
+        if (boardDTO.getBoardType().equals("신호")) {
             Double dnleh = boardEntity.getTrafficEntity().getTrafficLat();
             Double rudeh = boardEntity.getTrafficEntity().getTrafficLon();
             model.addAttribute("dnleh", dnleh);
             model.addAttribute("rudeh", rudeh);
-            model.addAttribute("trafficId",boardEntity.getTrafficEntity().getTrafficId());
+            model.addAttribute("trafficId", boardEntity.getTrafficEntity().getTrafficId());
             return "/BoardPages/trafficUpdate";
-        }else{
+        } else {
             return "/BoardPages/update";
         }
     }
@@ -288,19 +293,20 @@ public class BoardController {
             return boardDTOS;
         }
     }
+
     @GetMapping("/findByIdList/{loginId}")
     // ㅁㅈ  내가 쓴 글 보러 가는 메서드
-    public String findByIdList(@PathVariable Long loginId, Model model){
+    public String findByIdList(@PathVariable Long loginId, Model model) {
         List<BoardDTO> boardDTOList = boardService.findByList(loginId);
-        System.out.println("boardDTOList = " + boardDTOList);
         model.addAttribute("boardList", boardDTOList);
         return "/BoardPages/mySave";
     }
 
-    @GetMapping("/report")
+    @GetMapping("/report/{id}")
     // ㅁㅈ / 신고 탭 이동
-    public String report(@RequestParam("id") Long id,Model model) {
-        model.addAttribute("boardId",id);
+    public String report(@PathVariable Long id, Model model) {
+        boardRepository.findByBoardId(id);
+        model.addAttribute("boardId", id);
         return "/BoardPages/report";
     }
 

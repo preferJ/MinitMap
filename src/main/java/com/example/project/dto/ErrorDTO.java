@@ -24,7 +24,6 @@ public class ErrorDTO {
     public static ErrorDTO toErrorDTO(ErrorEntity errorEntity){
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setErrorId(errorEntity.getErrorId());
-        errorDTO.setTrafficId(errorEntity.getTrafficEntity().getTrafficId());
         errorDTO.setBoardId(errorEntity.getBoardEntity().getBoardId());
         errorDTO.setMemberId(errorEntity.getMemberEntity().getMemberId());
         errorDTO.setErrorType(errorEntity.getErrorType());

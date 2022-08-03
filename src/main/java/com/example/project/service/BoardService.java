@@ -386,7 +386,8 @@ public class BoardService {
     }
 
     public BoardDTO findByBoardId(Long boardId) {
-        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardId);
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findByBoardId(boardId);
+        System.out.println("optionalBoardEntity = " + optionalBoardEntity);
         if(optionalBoardEntity.isPresent()){
             BoardEntity boardEntity = optionalBoardEntity.get();
             BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);

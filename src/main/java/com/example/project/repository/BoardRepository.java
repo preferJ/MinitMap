@@ -1,5 +1,6 @@
 package com.example.project.repository;
 
+import com.example.project.dto.BoardDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.MemberEntity;
 import com.example.project.entity.TrafficEntity;
@@ -13,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     Page<BoardEntity> findByBoardType(String q, Pageable pageable);
@@ -40,4 +42,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     List<BoardEntity> findAllByBoardCreatedTimeBetweenOrderByBoardLikeDesc(LocalDateTime start, LocalDateTime end); // 전체
 
     List<BoardEntity> findAllByMemberEntityMemberId(Long memberId);
+
+    Optional<BoardEntity> findByBoardId(Long boardId);
+
 }

@@ -16,6 +16,9 @@ public class MyTrafficDTO {
     private Double myTrafficLon;
     private Double myTrafficOrderNumber;
     //ㅅㅎ 수정 신호등순서필드 추가
+
+
+    // ㅅㅎ수정 soSave메서드에 오더넘버 추가
     public static MyTrafficDTO toSaveMyTrafficDTO(MyTrafficEntity myTrafficEntity){
         MyTrafficDTO myTrafficDTO = new MyTrafficDTO();
         myTrafficDTO.setMyTrafficId(myTrafficEntity.getMyTrafficId());
@@ -23,6 +26,7 @@ public class MyTrafficDTO {
         myTrafficDTO.setMemberId(myTrafficEntity.getMemberEntity().getMemberId());
         myTrafficDTO.setMyTrafficLat(myTrafficEntity.getMyTrafficLat());
         myTrafficDTO.setMyTrafficLon(myTrafficEntity.getMyTrafficLon());
+        myTrafficDTO.setMyTrafficOrderNumber(myTrafficEntity.getMyTrafficOrderNumber());
         return myTrafficDTO;
     }
 }

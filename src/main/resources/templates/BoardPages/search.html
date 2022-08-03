@@ -139,7 +139,7 @@
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
                         </a>
@@ -271,7 +271,8 @@
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
         crossorigin="anonymous"></script>
 <script src="/css/dashboard.js"></script>
-
+<script type="text/JavaScript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/JavaScript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script th:inline="javascript">
     const loginForm = () => {
         var width = 480;
@@ -285,7 +286,14 @@
         window.open("/member/loginForm", "로그인", windowStatus);
 
     }
-
+    function myPlace(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
     function logout() {
         location.href = "/board/logout";
     }

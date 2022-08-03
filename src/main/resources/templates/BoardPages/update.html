@@ -136,7 +136,7 @@
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
                         </a>
@@ -165,7 +165,7 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">글 작성</h1>
+                <h1 class="h2">글 수정</h1>
             </div>
 
             <div class="table-responsive">
@@ -262,7 +262,14 @@
         document.getElementById("trafficName").value = name;
     }
 
-
+    function myPlace(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
     $('document').ready(function () {
         var area0 = ["시/도 선택", "서울특별시", "인천광역시", "대전광역시", "광주광역시", "대구광역시", "울산광역시", "부산광역시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주도"];
         var area1 = ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"];

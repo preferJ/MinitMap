@@ -172,7 +172,7 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" onclick="myPlace()">
               <span data-feather="map-pin" class="align-text-bottom"></span>
               마이플레이스
             </a>
@@ -265,7 +265,14 @@
   function logout() {
     location.href = "/board/logout";
   }
-
+  function myPlace(){
+    let loginCheck = [[${session.loginId}]]
+    if (loginCheck != null) {
+      location.href = "/myPlace/";
+    } else {
+      loginForm();
+    }
+  }
   function typeCheck() {
     alert("신호 게시판 고정입니다.")
   }

@@ -9,5 +9,8 @@ import java.util.Optional;
 
 public interface MyPlaceRepository extends JpaRepository<MyPlaceEntity,Long> {
     List<MyPlaceEntity> findByMemberEntity(MemberEntity memberEntity);
+    List<MyPlaceEntity> findByMemberEntityOrderByMyPlaceNumberDesc(MemberEntity memberEntity);
+    List<MyPlaceEntity> findByMemberEntityOrderByMyPlaceNumberAsc(MemberEntity memberEntity);
     Optional<MyPlaceEntity> findByMemberEntityAndMyPlaceLatAndMyPlaceLon(MemberEntity memberEntity, Double lat, Double lon);
+
 }

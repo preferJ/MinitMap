@@ -4,6 +4,7 @@ import com.example.project.dto.MyPlaceDTO;
 import com.example.project.service.MyPlaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +43,20 @@ public class MyPlaceController {
     public @ResponseBody List<MyPlaceDTO> myPlaceDTOList(HttpSession session){
         String email = (String) session.getAttribute("loginEmail");
         List<MyPlaceDTO> myPlaceDTOList = myPlaceService.findByEmail(email);
-        System.out.println(myPlaceDTOList);
         return myPlaceDTOList;
+    }
+
+    @GetMapping("/")
+    public String myPlace(HttpSession session , Model model){
+        Long id = (Long) session.getAttribute("loginId");
+        List<MyPlaceDTO> myPlaceDTOList = myPlaceService.findByMemberEntity(id);
+        model.addAttribute("myPlaceList",myPlaceDTOList);
+        return "/MyPlace/myPlace";
+    }
+
+    @GetMapping("/textUp")
+    public @ResponseBody String textUp(@RequestParam("one") Long upId , @RequestParam("two") Long downId){
+        myPlaceService.textUp(upId,downId);
+        return "ok";
     }
 }

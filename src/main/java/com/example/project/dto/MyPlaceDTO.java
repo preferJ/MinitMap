@@ -17,6 +17,8 @@ public class MyPlaceDTO {
     private Long icon;
     private boolean bookmark;
 
+    private Long myPlaceNumber;
+
     public MyPlaceDTO(Long memberId, String myPlaceName, Double myPlaceLat, Double myPlaceLon, Long icon) {
         this.memberId = memberId;
         this.myPlaceName = myPlaceName;

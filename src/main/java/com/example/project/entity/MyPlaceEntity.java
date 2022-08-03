@@ -38,13 +38,16 @@ public class MyPlaceEntity {
     @ColumnDefault("0") //default 0
     private boolean bookmark;
 
-    public static MyPlaceEntity toMyPlaceSaveEntity(MyPlaceDTO myPlaceDTO, MemberEntity memberEntity){
+    @Column(name = "myPlaceNumber")
+    private Long myPlaceNumber;
+    public static MyPlaceEntity toMyPlaceSaveEntity(MyPlaceDTO myPlaceDTO, MemberEntity memberEntity,Long size){
         MyPlaceEntity myPlaceEntity = new MyPlaceEntity();
         myPlaceEntity.setMyPlaceName(myPlaceDTO.getMyPlaceName());
         myPlaceEntity.setMyPlaceLat(myPlaceDTO.getMyPlaceLat());
         myPlaceEntity.setMyPlaceLon(myPlaceDTO.getMyPlaceLon());
         myPlaceEntity.setIcon(myPlaceDTO.getIcon());
         myPlaceEntity.setMemberEntity(memberEntity);
+        myPlaceEntity.setMyPlaceNumber(size);
         return myPlaceEntity;
     }
 

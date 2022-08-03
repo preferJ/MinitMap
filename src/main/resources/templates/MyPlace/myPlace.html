@@ -217,29 +217,49 @@
         }
     }
 
-    function textUp(one , two) {
+    function textUpDown(one , two) {
         $.ajax({
-            url:"/myPlace/textUp",
+            url:"/myPlace/textUpDown",
             type: "get",
             data:{
                 "one" : one,
                 "two" : two
             },
             success: function (){
-                alert("변경됨");
                 myPlaceList();
             }
         })
     }
 
-    function textDown(one , tow) {
-        alert("다운")
-    }
-
     function deleteMyPlace(id){
-        alert(id)
+        $.ajax({
+            url:"/myPlace/deleteMyPlace",
+            type: "get",
+            data:{
+                "id" : id
+            },
+            success: function (){
+                alert("삭제되었습니다.")
+                myPlaceList();
+            }
+        })
     }
 
+    function updateName(id){
+        let name = prompt('뭐로변경할까요???', '');
+        $.ajax({
+            url:"/myPlace/updateName",
+            type: "get",
+            data:{
+                "id":id,
+                "name":name
+            },
+            success: function (){
+                alert("변경되었습니다.")
+                myPlaceList();
+            }
+        })
+    }
     function myPlaceList() {
         $.ajax({
             url: "/myPlace/list",
@@ -253,6 +273,7 @@
                     "                        <th scope=\"col\">마이플레이스 이름</th>" +
                     "                        <th scope=\"col\">마이플레이스 위도</th>" +
                     "                        <th scope=\"col\">마이플레이스 경도</th>" +
+                    "                        <th scope=\"col\">이름변경</th>" +
                     "                        <th scope=\"col\">삭제</th>" +
                     "                        <th scope=\"col\">버튼</th>" +
                     "                    </tr>" +
@@ -260,7 +281,9 @@
                     "                    <tbody>";
                 let x = 0;
                 if (result.length == 0){
-                    output += "<tr colspan='6'><td>등록된 마이플레이스가 없습니다!!</td></tr>"
+                    output += "<tr ><th style='text-align: center' colspan='7'>등록된 마이플레이스가 없습니다!!</th></tr>"
+                }else{
+                    output += "<tr><th style='text-align: center' colspan='7'>해당 화면의 순서로 출력됩니다.</th></tr>"
                 }
                 for (let i in result) {
                     output += "<tr className='myPlaceTap'>";
@@ -268,16 +291,17 @@
                     output += "<td>" + result[i].myPlaceName + "</td>";
                     output += "<td>" + result[i].myPlaceLat + "</td>";
                     output += "<td>" + result[i].myPlaceLon + "</td>";
+                    output += "<td><input type='button' onclick='updateName(" + result[i].myPlaceId + ")' value='변경'></td>";
                     output += "<td><input type='button' onclick='deleteMyPlace(" + result[i].myPlaceId + ")' value='삭제'></td>";
                     output += "<td>";
                     if (result.length == 1) {
                     } else if (x == 0) {
-                        output += "<i onclick='textDown(" + result[x].myPlaceId + "," + result[x + 1].myPlaceId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
+                        output += "<i onclick='textUpDown(" + result[x].myPlaceId + "," + result[x + 1].myPlaceId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
                     } else if (x == result.length - 1) {
-                        output += "<i onclick='textUp(" + result[x].myPlaceId + "," + result[x - 1].myPlaceId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
+                        output += "<i onclick='textUpDown(" + result[x].myPlaceId + "," + result[x - 1].myPlaceId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
                     } else {
-                        output += "<i onclick='textUp(" + result[x].myPlaceId + "," + result[x - 1].myPlaceId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
-                        output += "<i onclick='textDown(" + result[x].myPlaceId + "," + result[x + 1].myPlaceId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
+                        output += "<i onclick='textUpDown(" + result[x].myPlaceId + "," + result[x - 1].myPlaceId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
+                        output += "<i onclick='textUpDown(" + result[x].myPlaceId + "," + result[x + 1].myPlaceId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
                     }
                     output += "</td>";
                     output += "</tr>";

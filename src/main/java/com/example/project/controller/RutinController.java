@@ -6,6 +6,7 @@ import com.example.project.service.MyPlaceService;
 import com.example.project.service.RutinService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -34,5 +35,10 @@ public class RutinController {
         Long id = (Long) session.getAttribute("loginId");
         List<RutinDTO> rutinDTOList = rutinService.findByMemberId(id);
         return rutinDTOList;
+    }
+
+    @GetMapping("/")
+    public String rutin(){
+        return "/rutin/rutin";
     }
 }

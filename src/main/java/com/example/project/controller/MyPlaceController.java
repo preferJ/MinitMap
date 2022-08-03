@@ -54,9 +54,21 @@ public class MyPlaceController {
         return "/MyPlace/myPlace";
     }
 
-    @GetMapping("/textUp")
-    public @ResponseBody String textUp(@RequestParam("one") Long upId , @RequestParam("two") Long downId){
-        myPlaceService.textUp(upId,downId);
+    @GetMapping("/textUpDown")
+    public @ResponseBody String textUpDown(@RequestParam("one") Long upId , @RequestParam("two") Long downId){
+        myPlaceService.textUpDown(upId,downId);
+        return "ok";
+    }
+
+    @GetMapping("/deleteMyPlace")
+    public @ResponseBody String deleteMyPlace(@RequestParam("id") Long id){
+        myPlaceService.deleteById(id);
+        return "ok";
+    }
+
+    @GetMapping("/updateName")
+    public @ResponseBody String updateName(@RequestParam("id") Long id,@RequestParam("name") String name){
+        myPlaceService.updateName(id,name);
         return "ok";
     }
 }

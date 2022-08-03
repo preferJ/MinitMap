@@ -184,7 +184,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="rutin()">
                             <span data-feather="compass" class="align-text-bottom"></span>
                             루틴
                         </a>
@@ -355,7 +355,14 @@
             loginForm();
         }
     }
-
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
     function saveForm() {
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
@@ -420,7 +427,6 @@
     }
 
     function traffic(id) {
-    // test
         $.ajax({
             url: "/myTraffic/save",
             type: "get",

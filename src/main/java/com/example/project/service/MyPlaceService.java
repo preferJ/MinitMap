@@ -72,7 +72,7 @@ public class MyPlaceService {
         return myPlaceDTOList;
     }
 
-    public void textUp(Long upId, Long downId) {
+    public void textUpDown(Long upId, Long downId) {
         // upId의 넘버와 downId의 넘버를 바꾼다.
         MyPlaceEntity upNumberEntity = myPlaceRepository.findById(upId).get();
         MyPlaceEntity downNumberEntity = myPlaceRepository.findById(downId).get();
@@ -82,5 +82,15 @@ public class MyPlaceService {
         downNumberEntity.setMyPlaceNumber(upNumber);
         myPlaceRepository.save(upNumberEntity);
         myPlaceRepository.save(downNumberEntity);
+    }
+
+    public void deleteById(Long id) {
+        myPlaceRepository.deleteById(id);
+    }
+
+    public void updateName(Long id, String name) {
+        MyPlaceEntity myPlaceEntity = myPlaceRepository.findById(id).get();
+        myPlaceEntity.setMyPlaceName(name);
+        myPlaceRepository.save(myPlaceEntity);
     }
 }

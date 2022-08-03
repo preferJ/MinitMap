@@ -1,7 +1,6 @@
 package com.example.project.entity;
 
 import com.example.project.dto.MyTrafficDTO;
-import com.example.project.dto.TrafficDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,24 +27,21 @@ public class MyTrafficEntity {
     @Column(name = "myTrafficLon")
     private Double myTrafficLon;
 
-    @Column(name = "myTrafficOrderNumber")
-    private Double myTrafficOrderNumber;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
 
+    @Column(name = "myTrafficOrderNumber")
+    private Double myTrafficOrderNumber;
+
     @OneToMany(mappedBy = "myTrafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficTimeEntity> trafficTimeEntityList = new ArrayList<>();
 
-    public static MyTrafficEntity toSaveMyTrafficEntity(MyTrafficDTO myTrafficDTO, MemberEntity memberEntity) {
+    public static MyTrafficEntity toSaveMyTrafficEntity(Double lat,Double lon,String name, MemberEntity memberEntity){
         MyTrafficEntity myTrafficEntity = new MyTrafficEntity();
-        myTrafficEntity.setMyTrafficId(myTrafficDTO.getMyTrafficId());
-        myTrafficEntity.setMyTrafficLat(myTrafficDTO.getMyTrafficLat());
-        myTrafficEntity.setMyTrafficLon(myTrafficDTO.getMyTrafficLon());
-        myTrafficEntity.setMyTrafficName(myTrafficDTO.getMyTrafficName());
-        myTrafficEntity.setMyTrafficOrderNumber(myTrafficDTO.getMyTrafficOrderNumber());
+        myTrafficEntity.setMyTrafficLat(lat);
+        myTrafficEntity.setMyTrafficLon(lon);
+        myTrafficEntity.setMyTrafficName(name);
         myTrafficEntity.setMemberEntity(memberEntity);
         return myTrafficEntity;
     }

@@ -215,7 +215,7 @@ public class TestController {
     // ㅅㅎ 테스트 페이지 이동 메서드
     @GetMapping("/jshTest")
     public String jshTest() {
-        return "/jsh/Test";
+        return "/jsh/formTest";
     }
 
     // ㅅㅎ 테스트 신호등 저장 메서드

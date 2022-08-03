@@ -2,8 +2,10 @@ package com.example.project.service;
 
 import com.example.project.dto.TrafficDTO;
 import com.example.project.dto.TrafficTimeDTO;
+import com.example.project.entity.MyTrafficEntity;
 import com.example.project.entity.TrafficEntity;
 import com.example.project.entity.TrafficTimeEntity;
+import com.example.project.repository.MyTrafficRepository;
 import com.example.project.repository.TrafficRepository;
 import com.example.project.repository.TrafficTimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +20,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TrafficTimeService {
     private final TrafficRepository trafficRepository;
+    private final MyTrafficRepository myTrafficRepository;
     private final TrafficTimeRepository trafficTimeRepository;
     public void save(Long id, TrafficTimeDTO trafficTimeDTO) {
-        Optional<TrafficEntity> entity = trafficRepository.findById(id);
+        Optional<MyTrafficEntity> entity = myTrafficRepository.findById(id);
+        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
+        System.out.println(entity.get().getMyTrafficId());
+        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
         trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeSaveEntity(trafficTimeDTO,entity.get()));
-
     }
+
     public List<TrafficTimeDTO> findAll() {
         List<TrafficTimeEntity> trafficTimeEntities = trafficTimeRepository.findAll();
         List<TrafficTimeDTO> trafficTimeDTOList = new ArrayList<>();

@@ -231,12 +231,12 @@
         function trafficTimeCal() {
             if (TrafficStatus == 1) {
                 alert("1로 끝남")
-                document.getElementById("greenOnTime").value = Math.round((time2 - time1) / 1000) + "초";
-                document.getElementById("redOnTime").value = Math.round((time3 - time2) / 1000) + "초";
+                document.getElementById("greenOnTime").value = Math.round((time2 - time1) / 1000);
+                document.getElementById("redOnTime").value = Math.round((time3 - time2) / 1000);
             } else if (TrafficStatus == -1) {
                 alert("-1로 끝남")
-                document.getElementById("redOnTime").value = Math.round((time2 - time1) / 1000) + "초";
-                document.getElementById("greenOnTime").value = Math.round((time3 - time2) / 1000) + "초";
+                document.getElementById("redOnTime").value = Math.round((time2 - time1) / 1000);
+                document.getElementById("greenOnTime").value = Math.round((time3 - time2) / 1000);
             }
         }
 
@@ -244,12 +244,12 @@
             let date = new Date();
 
             date.setMinutes(date.getMinutes() - 30);
-            let time = date.toTimeString().split(" ")[0];
+            let time = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
             document.getElementById("startTime").value = time
 
             let date2 = new Date();
             date2.setMinutes(date2.getMinutes() + 30);
-            let time2 = date2.toTimeString().split(" ")[0];
+            let time2 = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
             document.getElementById("endTime").value = time2
         }
 
@@ -283,16 +283,19 @@
             addTraffic.push(marker_Traffic);
         }
 
-        function TrafficSetting(){
-         let myTrafficName = document.getElementById("myTrafficName");
-         let myTrafficLat = document.getElementById("myTrafficLat");
-         let myTrafficLon = document.getElementById("myTrafficLon");
-         let trafficApplyStart = document.getElementById("trafficApplyStart");
-         let trafficApplyEnd = document.getElementById("trafficApplyEnd");
-         let greenOn = document.getElementById("greenOn");
-         let redOn = document.getElementById("redOn");
-         let startType = document.getElementById("startType");
-         let setStartTime = document.getElementById("setStartTime");
+        function TrafficSetting() {
+            alert("세팅중입니다.")
+            let date = new Date();
+            let time = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
+            let myTrafficName = document.getElementById("myTrafficName");
+            let myTrafficLat = document.getElementById("myTrafficLat");
+            let myTrafficLon = document.getElementById("myTrafficLon");
+            let trafficApplyStart = document.getElementById("trafficApplyStart");
+            let trafficApplyEnd = document.getElementById("trafficApplyEnd");
+            let greenOn = document.getElementById("greenOn");
+            let redOn = document.getElementById("redOn");
+            let startType = document.getElementById("startType");
+            let setStartTime = document.getElementById("setStartTime");
             myTrafficName.value = document.getElementById("trafficName").value;
             myTrafficLat.value = addTrafficLat;
             myTrafficLon.value = addTrafficLng;
@@ -300,13 +303,12 @@
             trafficApplyEnd.value = document.getElementById("endTime").value;
             greenOn.value = document.getElementById("greenOnTime").value;
             redOn.value = document.getElementById("redOnTime").value;
-            if (TrafficStatus == 1){
-            startType.value = "RED";
-            }else{
+            if (TrafficStatus == 1) {
+                startType.value = "RED";
+            } else {
                 startType.value = "GREEN";
             }
-            setStartTime.value = time1;
-
+            setStartTime.value = time;
 
 
         }
@@ -432,8 +434,8 @@
 
             <h3>신호등추가</h3>
             <hr>
-            <span style="size: 15px">현재 신호등 상태</span>
-            <div style="position: center">
+            <div style="size: 15px">현재 신호등 상태</div>
+            <div style="position: center;display: inline-flex;align-items: center;">
                 <div>a</div>
                 <div>
                     <input type="checkbox" id="toggle" hidden onclick="toggleRedOrGreen()">
@@ -485,20 +487,23 @@
             <input type="text" id="endTime" class="trafficCount" placeholder="00:00:00"
                    style="outline-color:#20c997;text-align: center">
             <hr>
-            <form action="">;
-                <input type="text" name="memberId" id="memberId" hidden value="9999">;
-                <input type="text" name="myTrafficName" id="myTrafficName" hidden value="asd">;
-                <input type="text" name="myTrafficLat" id="myTrafficLat" hidden value="asd">;
-                <input type="text" name="myTrafficLon" id="myTrafficLon" hidden value="asd">;
-                <input type="text" name="trafficApplyStart" id="trafficApplyStart" hidden value="asd">;
-                <input type="text" name="trafficApplyEnd" id="trafficApplyEnd" hidden value="asd">;
-                <input type="text" name="startType" id="startType" hidden value="asd">;
-                <input type="text" name="greenOn" id="greenOn" hidden value="asd">;
-                <input type="text" name="redOn" id="redOn" hidden value="asd">;
-                <input type="text" name="setStartTime" id="setStartTime" hidden value="asd">;
-                <button type="button" class="btn btn-primary" style="width: 100px">저장</button>;
+            <form action="/myTraffic/saveTraffic" method="post">
+                <input type="text" name="memberId" id="memberId"  value="1">
+                <input type="text" name="myTrafficName" id="myTrafficName"  value="asd">
+                <input type="text" name="myTrafficLat" id="myTrafficLat"  value="asd">
+                <input type="text" name="myTrafficLon" id="myTrafficLon"  value="asd">
+                <input type="text" name="trafficApplyStart" id="trafficApplyStart"  value="asd">
+                <input type="text" name="trafficApplyEnd" id="trafficApplyEnd"  value="asd">
+                <input type="text" name="startType" id="startType"  value="asd">
+                <input type="text" name="greenOn" id="greenOn"  value="asd">
+                <input type="text" name="redOn" id="redOn"  value="asd">
+                <input type="text" name="setStartTime" id="setStartTime"  value="asd">
+                <button type="submit" class="btn btn-primary" style="width: 100px">저장</button>
 
-            </form>;
+            </form>
+
+
+
 
         </div>
     </div>

@@ -26,15 +26,15 @@ public class MyTrafficService {
         String check = "ok";
         Optional<BoardEntity> boardEntity = boardRepository.findById(id);
         Optional<MemberEntity> memberEntity = memberRepository.findById(loginId);
-        Optional<MyTrafficEntity> byMemberEntityAndTrafficEntity = myTrafficRepository.findByMemberEntityAndMyTrafficLonAndMyTrafficLat(memberEntity.get(), boardEntity.get().getTrafficEntity().getTrafficLon(),boardEntity.get().getTrafficEntity().getTrafficLat());
-        if (byMemberEntityAndTrafficEntity.isPresent()){
+        Optional<MyTrafficEntity> byMemberEntityAndTrafficEntity = myTrafficRepository.findByMemberEntityAndMyTrafficLonAndMyTrafficLat(memberEntity.get(), boardEntity.get().getTrafficEntity().getTrafficLon(), boardEntity.get().getTrafficEntity().getTrafficLat());
+        if (byMemberEntityAndTrafficEntity.isPresent()) {
             check = "no";
         }
 
         return check;
     }
 
-//     마이 트래픽에 신호등 등록하기
+    //     마이 트래픽에 신호등 등록하기
     public String save(Long id, Long loginId, String name) {
         Optional<BoardEntity> board = boardRepository.findById(id);
         Optional<MemberEntity> byId = memberRepository.findById(loginId);
@@ -42,12 +42,12 @@ public class MyTrafficService {
         MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(board.get().getTrafficEntity().getTrafficLat(), board.get().getTrafficEntity().getTrafficLon(), name, byId.get()));
         // 신호등 시간 저장
         List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(board.get().getTrafficEntity());
-        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
-            trafficTimeRepository.save(TrafficTimeEntity.trafficToMyTraffic(trafficTimeEntity,save));
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity) {
+            trafficTimeRepository.save(TrafficTimeEntity.trafficToMyTraffic(trafficTimeEntity, save));
         }
-        if (save.getMyTrafficId() != null){
+        if (save.getMyTrafficId() != null) {
             return "ok";
-        }else{
+        } else {
             return "no";
         }
     }
@@ -57,9 +57,18 @@ public class MyTrafficService {
         Optional<MemberEntity> byId = memberRepository.findById(id);
         List<MyTrafficEntity> byMemberEntity = myTrafficRepository.findByMemberEntity(byId.get());
         List<MyTrafficDTO> myTrafficDTOS = new ArrayList<>();
-        for (MyTrafficEntity myTrafficEntity : byMemberEntity){
+        for (MyTrafficEntity myTrafficEntity : byMemberEntity) {
             myTrafficDTOS.add(MyTrafficDTO.toSaveMyTrafficDTO(myTrafficEntity));
         }
         return myTrafficDTOS;
+    }
+
+    //선호 신호등 저장 메서드
+    public Long save(MyTrafficDTO myTrafficDTO, Long loginId) {
+        System.out.println("MyTrafficService.save");
+        Optional<MemberEntity> byId = memberRepository.findById(loginId);
+        System.out.println(byId.get());
+        MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(myTrafficDTO, byId.get()));
+        return save.getMyTrafficId();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.dto.MyTrafficDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,8 @@ public class TrafficTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "myTrafficId")
     private MyTrafficEntity myTrafficEntity;
-    public static TrafficTimeEntity toTrafficTimeSaveEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity){
+
+    public static TrafficTimeEntity toTrafficTimeSaveEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity) {
         TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
         trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());
         trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd());
@@ -51,10 +53,24 @@ public class TrafficTimeEntity {
         trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn());
         trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime());
         trafficTimeEntity.setTrafficEntity(trafficEntity);
+        trafficTimeEntity.setMyTrafficEntity(null);
         return trafficTimeEntity;
     }
 
-    public static TrafficTimeEntity toTrafficTimeUpdateEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity){
+    public static TrafficTimeEntity toTrafficTimeSaveEntity(TrafficTimeDTO trafficTimeDTO, MyTrafficEntity myTrafficEntity) {
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime());
+        trafficTimeEntity.setMyTrafficEntity(myTrafficEntity);
+
+        return trafficTimeEntity;
+    }
+
+    public static TrafficTimeEntity toTrafficTimeUpdateEntity(TrafficTimeDTO trafficTimeDTO, TrafficEntity trafficEntity) {
         TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
         trafficTimeEntity.setTrafficTimeId(trafficTimeDTO.getTrafficTimeId());
         trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());
@@ -67,7 +83,7 @@ public class TrafficTimeEntity {
         return trafficTimeEntity;
     }
 
-    public static TrafficTimeEntity myTrafficToTraffic(TrafficTimeEntity trafficTimeEntity,TrafficEntity trafficEntity){
+    public static TrafficTimeEntity myTrafficToTraffic(TrafficTimeEntity trafficTimeEntity, TrafficEntity trafficEntity) {
         TrafficTimeEntity trafficTimeEntity1 = new TrafficTimeEntity();
         trafficTimeEntity1.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
         trafficTimeEntity1.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
@@ -79,7 +95,7 @@ public class TrafficTimeEntity {
         return trafficTimeEntity1;
     }
 
-    public static TrafficTimeEntity trafficToMyTraffic(TrafficTimeEntity trafficTimeEntity,MyTrafficEntity myTrafficEntity){
+    public static TrafficTimeEntity trafficToMyTraffic(TrafficTimeEntity trafficTimeEntity, MyTrafficEntity myTrafficEntity) {
         TrafficTimeEntity trafficTimeEntity1 = new TrafficTimeEntity();
         trafficTimeEntity1.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
         trafficTimeEntity1.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());

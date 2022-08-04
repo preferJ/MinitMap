@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface RutinRepository extends JpaRepository<RutinEntity,Long> {
     List<RutinEntity> findByMemberEntity(MemberEntity memberEntity);
+
+    List<RutinEntity> findByMemberEntityOrderByRutinNumberAsc(MemberEntity memberEntity);
+    List<RutinEntity> findByMemberEntityOrderByRutinNumberDesc(MemberEntity memberEntity);
 }

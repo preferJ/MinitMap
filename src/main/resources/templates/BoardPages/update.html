@@ -170,6 +170,7 @@
 
             <div class="table-responsive">
                 <form action="/board/update" method="post">
+                    <input type="hidden" name="boardReport" th:value="${board.boardReport}">
                     <input type="hidden" name="boardId" th:value="${board.boardId}">
                     <input type="hidden" id="trafficId" name="trafficId" readonly>
                     <table class="table table-striped table-sm">

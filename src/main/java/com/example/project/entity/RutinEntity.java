@@ -41,7 +41,9 @@ public class RutinEntity {
     @Column(name = "rutinName", nullable = false)
     private String rutinName;
 
-    public static RutinEntity toRutinSaveEntity(RutinDTO rutinDTO, MemberEntity memberEntity){
+    @Column(name = "rutinNumber")
+    private Long rutinNumber;
+    public static RutinEntity toRutinSaveEntity(RutinDTO rutinDTO, MemberEntity memberEntity,Long num){
         RutinEntity rutinEntity = new RutinEntity();
         rutinEntity.setStratPoint(rutinDTO.getStartPoint());
         rutinEntity.setStartPointLat(rutinDTO.getStartPointLat());
@@ -51,6 +53,7 @@ public class RutinEntity {
         rutinEntity.setEndPointLon(rutinDTO.getEndPointLon());
         rutinEntity.setRutinName(rutinDTO.getRutinName());
         rutinEntity.setRutinName(rutinDTO.getRutinName());
+        rutinEntity.setRutinNumber(num);
         rutinEntity.setMemberEntity(memberEntity);
         return rutinEntity;
     }

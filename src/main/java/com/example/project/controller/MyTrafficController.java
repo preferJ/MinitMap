@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.MyTrafficDTO;
+import com.example.project.dto.TrafficIntegratedDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.service.MyTrafficService;
 import com.example.project.service.TrafficTimeService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -36,22 +38,24 @@ public class MyTrafficController {
 
     @PostMapping("/saveTraffic")
     public String saveTraffic(@ModelAttribute MyTrafficDTO myTrafficDTO, @ModelAttribute TrafficTimeDTO trafficTimeDTO,@RequestParam Long memberId, HttpSession session) {
-        System.out.println("MyTrafficController.saveTraffic");
-        System.out.println("myTrafficDTO = " + myTrafficDTO);
-        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
         Long myTrafficId =  myTrafficService.save(myTrafficDTO,memberId);
-        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-        System.out.println(myTrafficId);
-        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
         trafficTimeService.save(myTrafficId,trafficTimeDTO);
 
-        return "/kmj/4tap";
+        return "redirect:/4tapTest";
     }
 
     @PostMapping("/test11")
     public String test11(){
         System.out.println("MyTrafficController.test11");
         return "/jsh/formTest2";
+    }
+
+    @PostMapping ("/inBoundTrafficAll")
+    @ResponseBody
+    public List<TrafficIntegratedDTO> inBoundTrafficAll(@RequestParam("center") String center,HttpSession session){
+        Long memberId = (Long) session.getAttribute("memberId");
+        List<TrafficIntegratedDTO> trafficIntegratedDTOList = myTrafficService.inBoundFindAll(center,memberId);
+        return trafficIntegratedDTOList;
     }
 
 }

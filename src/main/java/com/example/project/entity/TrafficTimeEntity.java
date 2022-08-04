@@ -22,6 +22,7 @@ public class TrafficTimeEntity {
     @JoinColumn(name = "trafficId")
     private TrafficEntity trafficEntity;
 
+
     @Column(name = "trafficApplyStart", nullable = false)
     private Long trafficApplyStart;
 

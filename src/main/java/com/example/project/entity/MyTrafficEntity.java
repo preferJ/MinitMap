@@ -32,7 +32,7 @@ public class MyTrafficEntity {
     private MemberEntity memberEntity;
 
     @Column(name = "myTrafficOrderNumber")
-    private Double myTrafficOrderNumber;
+    private Long myTrafficOrderNumber;
 
     @OneToMany(mappedBy = "myTrafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficTimeEntity> trafficTimeEntityList = new ArrayList<>();

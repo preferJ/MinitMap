@@ -249,7 +249,7 @@
 
             let date2 = new Date();
             date2.setMinutes(date2.getMinutes() + 30);
-            let time2 = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
+            let time2 = date2.getHours() * 10000 + date2.getMinutes() * 100 + date2.getSeconds()
             document.getElementById("endTime").value = time2
         }
 
@@ -310,6 +310,64 @@
             }
             setStartTime.value = time;
 
+
+        }
+
+        function test() {
+            $.ajax({
+                method: "GET", // 요청 방식
+                url: "/jshTestFindAllTraffic",
+                async: true, // 동기 설정
+                dataType: 'json',
+                success: function (response) {
+                    if (trafficMarkerArr.length > 0) {
+                        for(var i in trafficMarkerArr) {
+                            trafficMarkerArr[i].setMap(null);
+                        }
+                        trafficMarkerArr = [];
+                    }
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].trafficApplyStart < time && time < response[i].trafficApplyEnd) {
+                            var leftTime = response[i].leftTime + "초";
+                            if (response[i].startType == 1) {
+                                marker_Traffic = new Tmapv2.Marker(
+                                    {
+                                        position: new Tmapv2.LatLng(response[i].trafficLat, response[i].trafficLon), //Marker의 중심좌표 설정.
+                                        icon: "/icon/greenOn.png", // 아이콘 등록
+                                        iconSize: new Tmapv2.Size(
+                                            36, 57), // 아이콘 크기 설정
+                                        title: 1, // 마커 타이틀
+                                        label: leftTime,
+                                        map: map // 마커가 등록될 지도 객체
+                                    });
+                            } else {
+                                marker_Traffic = new Tmapv2.Marker(
+                                    {
+                                        position: new Tmapv2.LatLng(response[i].trafficLat, response[i].trafficLon), //Marker의 중심좌표 설정.
+                                        icon: "/icon/redOn.png", // 아이콘 등록
+                                        iconSize: new Tmapv2.Size(
+                                            36, 57), // 아이콘 크기 설정
+                                        title: -1, // 마커 타이틀
+                                        label: leftTime,
+                                        map: map // 마커가 등록될 지도 객체
+                                    });
+
+
+                            }
+
+                            trafficMarkerArr.push(marker_Traffic);
+                            trafficLeftTime.push(response[i].leftTime);
+
+                        }
+                    }
+
+                },
+                error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n"
+                        + "message:" + request.responseText + "\n"
+                        + "error:" + error);
+                }
+            });
 
         }
 
@@ -435,6 +493,7 @@
             <h3>신호등추가</h3>
             <hr>
             <div style="size: 15px">현재 신호등 상태</div>
+            <button type="button" onclick="test()">테스트버튼</button>
             <div style="position: center;display: inline-flex;align-items: center;">
                 <div>a</div>
                 <div>

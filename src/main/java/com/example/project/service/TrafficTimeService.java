@@ -24,9 +24,7 @@ public class TrafficTimeService {
     private final TrafficTimeRepository trafficTimeRepository;
     public void save(Long id, TrafficTimeDTO trafficTimeDTO) {
         Optional<MyTrafficEntity> entity = myTrafficRepository.findById(id);
-        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
-        System.out.println(entity.get().getMyTrafficId());
-        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
+        System.out.println(trafficTimeDTO);
         trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeSaveEntity(trafficTimeDTO,entity.get()));
     }
 

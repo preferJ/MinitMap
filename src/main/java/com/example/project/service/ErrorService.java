@@ -1,8 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.dto.BoardDTO;
 import com.example.project.dto.ErrorDTO;
-import com.example.project.dto.MemberDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.ErrorEntity;
 import com.example.project.entity.MemberEntity;
@@ -13,6 +11,7 @@ import com.example.project.repository.MemberRepository;
 import com.example.project.repository.TrafficRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,14 +48,31 @@ public class ErrorService {
     }
 
 
-    public List<ErrorDTO> findAll() {
-//    오류신고 목록 메서드
-        List<ErrorEntity> errorEntityList = errorRepository.findAll();
+//    public List<ErrorDTO> findAll() {
+//        List<ErrorEntity> errorEntityList = errorRepository.findAll();
+//        List<ErrorDTO> errorDTOList = new ArrayList<>();
+//        for(ErrorEntity error: errorEntityList){
+//            errorDTOList.add(ErrorDTO.toErrorDTO(error));
+//        }
+//        return errorDTOList;
+//    }
+
+    public List<ErrorDTO> findDistinctByBoardEntity() {
+        List<ErrorEntity> errorEntityList = errorRepository.findDistinctByBoardEntity();
+        System.out.println("errorEntityList = " + errorEntityList);
         List<ErrorDTO> errorDTOList = new ArrayList<>();
-        for(ErrorEntity error: errorEntityList) {
+        for(ErrorEntity error: errorEntityList){
             errorDTOList.add(ErrorDTO.toErrorDTO(error));
-            System.out.println("error = " + error);
         }
         return errorDTOList;
+    }
+
+    public List<ErrorDTO> findAllByBoardId(Long boardId) {
+       List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
+       List<ErrorDTO> errorDTOList = new ArrayList<>();
+       for(ErrorEntity error: errorEntityList){
+           errorDTOList.add(ErrorDTO.toErrorDTO(error));
+       }
+       return errorDTOList;
     }
 }

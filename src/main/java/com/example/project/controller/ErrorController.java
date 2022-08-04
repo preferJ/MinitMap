@@ -19,12 +19,14 @@ public class ErrorController {
     private final BoardService boardService;
 
     @PostMapping("/reportSave")
+    // ㅁㅈ
     public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
         System.out.println("errorDTO = " + errorDTO);
         errorService.save(errorDTO);
         return "/hss/tapDown";
     }
     @GetMapping("/findAll")
+    // ㅁㅈ
     public String findAll(Model model){
         System.out.println("123123");
        List<ErrorDTO> errorDTOList = errorService.findDistinctByBoardEntity();
@@ -34,6 +36,7 @@ public class ErrorController {
     }
 
     @GetMapping("/detail/{id}")
+    // ㅁㅈ
     public String detail(@PathVariable Long id, Model model){
        List<ErrorDTO> errorDTOList = errorService.findAllByBoardId(id);
        model.addAttribute("errorList", errorDTOList);

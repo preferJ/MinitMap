@@ -58,7 +58,7 @@ public class ErrorService {
 //    }
 
     public List<ErrorDTO> findDistinctByBoardEntity() {
-        // 신고를 받은 글 출력 메서드  / 지금은 중복 글은 하나만 출력 될 수 있게 수정 중
+        //ㅁㅈ 신고를 받은 글 출력 메서드  / 지금은 중복 글은 하나만 출력 될 수 있게 수정 중
         List<ErrorEntity> errorEntityList = errorRepository.findDistinctByBoardEntity();
         System.out.println("errorEntityList = " + errorEntityList);
         List<ErrorDTO> errorDTOList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class ErrorService {
     }
 
     public List<ErrorDTO> findAllByBoardId(Long boardId) {
-        // 해당 글의 신고 출력 메서드
+        //ㅁㅈ 해당 글의 신고 출력 메서드
        List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
        List<ErrorDTO> errorDTOList = new ArrayList<>();
        for(ErrorEntity error: errorEntityList){

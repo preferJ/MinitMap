@@ -57,9 +57,10 @@ public class ErrorService {
 //        return errorDTOList;
 //    }
 
+    @Transactional
     public List<ErrorDTO> findDistinctByBoardEntity() {
         // 신고를 받은 글 출력 메서드  / 지금은 중복 글은 하나만 출력 될 수 있게 수정 중
-        List<ErrorEntity> errorEntityList = errorRepository.findDistinctByBoardEntity();
+        List<ErrorEntity> errorEntityList = errorRepository.findDistinct();
         System.out.println("errorEntityList = " + errorEntityList);
         List<ErrorDTO> errorDTOList = new ArrayList<>();
         for(ErrorEntity error: errorEntityList){

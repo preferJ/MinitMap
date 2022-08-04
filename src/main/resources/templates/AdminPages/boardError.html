@@ -257,6 +257,8 @@
                         <th>게시글 제목</th>
                         <th>게시글 내용</th>
                         <th>신고시간</th>
+                        <th>신고횟수</th>
+                        <th>신고내용 상세보기</th>
                     </tr>
                     <tr th:each="error: ${errorList}">
                         <td th:text="${error.boardId}"></td>
@@ -264,6 +266,8 @@
                         <td th:text="${error.boardEntity.boardTitle}"></td>
                         <td th:text="${error.boardEntity.boardContents}"></td>
                         <td th:text="*{#temporals.format(error.errorCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>example</td>
+                        <td><button class="btn btn-outline-danger" th:onclick="errorDetail([[${error.boardId}]])">신고내용</button></td>
                     </tr>
                 </table>
             </div>
@@ -297,6 +301,10 @@
 
     function logout() {
         location.href = "/board/logout";
+    }
+
+    function errorDetail(id){
+        location.href = "/error/detail/"+ id;
     }
 </script>
 </html>

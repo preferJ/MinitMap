@@ -7,10 +7,7 @@ import com.example.project.service.ErrorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,16 +19,27 @@ public class ErrorController {
     private final BoardService boardService;
 
     @PostMapping("/reportSave")
+    // ㅁㅈ
     public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
         System.out.println("errorDTO = " + errorDTO);
         errorService.save(errorDTO);
-        return "/index";
+        return "/hss/tapDown";
     }
     @GetMapping("/findAll")
+    // ㅁㅈ
     public String findAll(Model model){
-       List<ErrorDTO> errorDTOList = errorService.findAll();
+        System.out.println("123123");
+       List<ErrorDTO> errorDTOList = errorService.findDistinctByBoardEntity();
         System.out.println("errorDTOList = " + errorDTOList);
        model.addAttribute("errorList", errorDTOList);
         return "/AdminPages/boardError";
+    }
+
+    @GetMapping("/detail/{id}")
+    // ㅁㅈ
+    public String detail(@PathVariable Long id, Model model){
+       List<ErrorDTO> errorDTOList = errorService.findAllByBoardId(id);
+       model.addAttribute("errorList", errorDTOList);
+        return "/AdminPages/errorDetail";
     }
 }

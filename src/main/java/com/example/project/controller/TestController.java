@@ -77,17 +77,17 @@ public class TestController {
 
     @GetMapping("/1tapTest")
     // ㅁㅈ
-    public String tap1(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
-                       @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
-                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
+    public String tap1(@RequestParam(value = "page_lat", required = false, defaultValue = "0") Double page_lat,
+                       @RequestParam(value = "page_lng", required = false, defaultValue = "0") Double page_lng,
+                       @RequestParam(value = "page_zoom", required = false, defaultValue = "16") Double page_zoom,
                        HttpSession session,
                        Model model) {
-        model.addAttribute("page_lat",page_lat);
-        model.addAttribute("page_lng",page_lng);
+        model.addAttribute("page_lat", page_lat);
+        model.addAttribute("page_lng", page_lng);
         model.addAttribute("page_zoom", page_zoom);
         String email = (String) session.getAttribute("loginEmail");
         Long memberId = (Long) session.getAttribute("loginId");
-        if(session.getAttribute("loginEmail") != null){
+        if (session.getAttribute("loginEmail") != null) {
             List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
             model.addAttribute("myPlaceList", myPlaceList);
             List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
@@ -98,15 +98,15 @@ public class TestController {
 
     @GetMapping("/2tapTest")
     // ㅁㅈ
-    public String tap2(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
-                       @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
-                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
-                       @RequestParam(value = "type", required = false,defaultValue = "null")String type,
-                       @RequestParam(value = "name", required = false)String name,
-                       @RequestParam(value = "lat", required = false)Double lat,
-                       @RequestParam(value = "lng", required = false)Double lng,
-                       @RequestParam(value = "myPlaceId", required = false)Long myPlaceId,
-                       @RequestParam(value = "rutinIndex", required = false)Long rutinIndex,
+    public String tap2(@RequestParam(value = "page_lat", required = false, defaultValue = "0") Double page_lat,
+                       @RequestParam(value = "page_lng", required = false, defaultValue = "0") Double page_lng,
+                       @RequestParam(value = "page_zoom", required = false, defaultValue = "16") Double page_zoom,
+                       @RequestParam(value = "type", required = false, defaultValue = "null") String type,
+                       @RequestParam(value = "name", required = false) String name,
+                       @RequestParam(value = "lat", required = false) Double lat,
+                       @RequestParam(value = "lng", required = false) Double lng,
+                       @RequestParam(value = "myPlaceId", required = false) Long myPlaceId,
+                       @RequestParam(value = "rutinIndex", required = false) Long rutinIndex,
                        HttpSession session,
                        Model model) {
         model.addAttribute("page_lat", page_lat);
@@ -117,10 +117,10 @@ public class TestController {
         model.addAttribute("lat", lat);
         model.addAttribute("lng", lng);
         model.addAttribute("myPlaceId", myPlaceId);
-        model.addAttribute("rutinIndex",rutinIndex);
+        model.addAttribute("rutinIndex", rutinIndex);
         String email = (String) session.getAttribute("loginEmail");
         Long memberId = (Long) session.getAttribute("loginId");
-        if(session.getAttribute("loginEmail") != null){
+        if (session.getAttribute("loginEmail") != null) {
             List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
             model.addAttribute("myPlaceList", myPlaceList);
             List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
@@ -132,34 +132,34 @@ public class TestController {
     @GetMapping("/3tapTest")
     // ㅁㅈ
     // 이현 수정
-    public String tap3(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
-                       @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
-                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
+    public String tap3(@RequestParam(value = "page_lat", required = false, defaultValue = "0") Double page_lat,
+                       @RequestParam(value = "page_lng", required = false, defaultValue = "0") Double page_lng,
+                       @RequestParam(value = "page_zoom", required = false, defaultValue = "16") Double page_zoom,
                        Model model) {
         String type = "전체";
         List<BoardDTO> boardDTOS = boardService.hots(type);
         // 주간 인기글은 50개만 가져감
-        List<BoardDTO> boardDTOList  = new ArrayList<>();
-        if (boardDTOS.size() > 50){
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        if (boardDTOS.size() > 50) {
             for (int i = 0; i < 50; i++) {
                 boardDTOList.add(boardDTOS.get(i));
             }
         }
         model.addAttribute("boardDTOList", boardDTOList);
-        model.addAttribute("page_lat",page_lat);
-        model.addAttribute("page_lng",page_lng);
+        model.addAttribute("page_lat", page_lat);
+        model.addAttribute("page_lng", page_lng);
         model.addAttribute("page_zoom", page_zoom);
         return "/kmj/3tap";
     }
 
     @GetMapping("/4tapTest")
     // ㅁㅈ
-    public String tap4(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
-                       @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
-                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
+    public String tap4(@RequestParam(value = "page_lat", required = false, defaultValue = "0") Double page_lat,
+                       @RequestParam(value = "page_lng", required = false, defaultValue = "0") Double page_lng,
+                       @RequestParam(value = "page_zoom", required = false, defaultValue = "16") Double page_zoom,
                        Model model) {
-        model.addAttribute("page_lat",page_lat);
-        model.addAttribute("page_lng",page_lng);
+        model.addAttribute("page_lat", page_lat);
+        model.addAttribute("page_lng", page_lng);
         model.addAttribute("page_zoom", page_zoom);
         return "/kmj/4tap";
     }
@@ -219,16 +219,17 @@ public class TestController {
     }
 
     // ㅅㅎ 테스트 신호등 저장 메서드
-    @PostMapping("/jshTestTrafficSave")
-    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
-                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO,
-                                     HttpSession session) {
-        System.out.println("trafficDTO = " + trafficDTO);
-        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
-        Long id = trafficService.save(trafficDTO, 1L);
-        trafficTimeService.save(id, trafficTimeDTO);
-        return "/jsh/Test";
-    }
+    // ㅅㅎ 테스트 끝 주석처리함
+//    @PostMapping("/jshTestTrafficSave")
+//    public String jshTestTrafficSave(@ModelAttribute TrafficDTO trafficDTO,
+//                                     @ModelAttribute TrafficTimeDTO trafficTimeDTO,
+//                                     HttpSession session) {
+//        System.out.println("trafficDTO = " + trafficDTO);
+//        System.out.println("trafficTimeDTO = " + trafficTimeDTO);
+//        Long id = trafficService.save(trafficDTO, 1L);
+//        trafficTimeService.save(id, trafficTimeDTO);
+//        return "/jsh/Test";
+//    }
 
     // ㅅㅎ 테스트 로그인
     @PostMapping("/jshTestlogin")
@@ -238,23 +239,56 @@ public class TestController {
         return "/jsh/Test";
     }
 
-//     ㅅㅎ 일단 다 가져오자 메서드
-    @GetMapping("/jshTestFindAllTraffic")
-    @ResponseBody
-    public List<TrafficTestDTO> jshTestFindAllTraffic() {
-        System.out.println("TestController.jshTestFindAllTraffic");
-        List<TrafficTestDTO> trafficTestDTOList = trafficTestService.findAll();
-        System.out.println(trafficTestDTOList);
-        return trafficTestDTOList;
+    //     ㅅㅎ 일단 다 가져오자 메서드
+    // ㅅㅎ 테스트 끝 주석처리함
 
-    }
+//    @GetMapping("/jshTestFindAllTraffic")
+//    @ResponseBody
+//    public List<TrafficTestDTO> jshTestFindAllTraffic() {
+//        System.out.println("TestController.jshTestFindAllTraffic");
+//        List<TrafficTestDTO> trafficTestDTOList = trafficTestService.findAll();
+//        System.out.println(trafficTestDTOList);
+//        return trafficTestDTOList;
+//
+//    }
 
     @GetMapping("/admin")
     // ㅁㅈ
     // 일단 관리자페이지 메서드만 만들어놓음
-    public String admin(){
-        return"/AdminPages/adminHistory";
+    public String admin() {
+        return "/AdminPages/adminHistory";
     }
 
+
+    //ㅅㅎ 클릭시 멤버아이디1로 로그인 하는 메서드
+    @GetMapping("/loginMemberId1")
+    public String loginMemberId1(HttpSession session) {
+
+        session.setAttribute("loginEmail", "1");
+        session.setAttribute("loginId", 1L);
+        session.setAttribute("loginNickName", "1");
+        return "/index";
+    }
+
+    @GetMapping("/hss/1tap")
+    // ㅁㅈ
+    public String tap1Test(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
+                       @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
+                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
+                       HttpSession session,
+                       Model model) {
+        model.addAttribute("page_lat",page_lat);
+        model.addAttribute("page_lng",page_lng);
+        model.addAttribute("page_zoom", page_zoom);
+        String email = (String) session.getAttribute("loginEmail");
+        Long memberId = (Long) session.getAttribute("loginId");
+        if(session.getAttribute("loginEmail") != null){
+            List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
+            model.addAttribute("myPlaceList", myPlaceList);
+            List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
+            model.addAttribute("rutinList", rutinList);
+        }
+        return "/hss/1tap";
+    }
 
 }

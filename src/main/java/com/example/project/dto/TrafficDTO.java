@@ -16,6 +16,8 @@ public class TrafficDTO {
     private Long trafficLike;
     private Long trafficDisLike;
 
+
+
     public static TrafficDTO toTrafficDTO(TrafficEntity trafficEntity){
         TrafficDTO trafficDTO = new TrafficDTO();
         trafficDTO.setTrafficId(trafficEntity.getTrafficId());

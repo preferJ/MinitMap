@@ -17,48 +17,23 @@
         var page_lng = [[${page_lng}]];
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function () {
-            if (map_count == 0) {
                 var width_size = window.outerWidth;
                 // 화면의 height값을 가져오기
                 var height_size = window.outerHeight;
                 var mapResize = document.getElementById('map_div');//map의 div
                 var sidebarResize = document.getElementById("sidebar");
                 if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
                     mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 147 - 4 + "px";
                     alert("전체화면은 지원하지 않습니다.")
                 } else if (width_size == 1920) {
-                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
                     mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 147 - 4 + "px";
                 } else {
-                    mapResize.style.width = width_size - 336 + "px";//map의 height 변경
                     mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 164 - 4 + "px";
                 }
                 console.log("width:" + width_size + "height_size:" + height_size);
-            } else if (map_count == 1) {
-                var width_size = window.outerWidth;
-                // 화면의 height값을 가져오기
-                var height_size = window.outerHeight;
-                var mapResize = document.getElementById('map_div');//map의 div
-                var sidebarResize = document.getElementById("sidebar");
-                if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                    mapResize.style.width = width_size - 0 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
-                    alert("전체화면은 지원하지 않습니다.")
-                } else if (width_size == 1920) {
-                    mapResize.style.width = width_size - 0 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
-                } else {
-                    mapResize.style.width = width_size - 16 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 164 - 4 + "px";
-                }
-            }
         })
         var map;
 
@@ -131,7 +106,7 @@
                 // 1. 지도 띄우기
                 map = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng(request_lat, request_lng),
-                    width: width_size - 320 + "px",
+                    width: "100%",
                     height: height_size - 147 - 4 + "px",
                     zoom: [[${page_zoom}]],
                     zoomControl: true,
@@ -143,7 +118,7 @@
                 // 1. 지도 띄우기
                 map = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng(request_lat, request_lng),
-                    width: width_size - 336 + "px",
+                    width: "100%",
                     height: height_size - 164 - 4 + "px",
                     zoom: [[${page_zoom}]],
                     zoomControl: true,
@@ -249,7 +224,7 @@
 
             let date2 = new Date();
             date2.setMinutes(date2.getMinutes() + 30);
-            let time2 = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
+            let time2 = date2.getHours() * 10000 + date2.getMinutes() * 100 + date2.getSeconds()
             document.getElementById("endTime").value = time2
         }
 
@@ -313,14 +288,88 @@
 
         }
 
+        function sidebarHide1(){
+            const tapButton = document.getElementById(settingPage);
+            const sidebarIcon = document.getElementById("sidebarHideIcon")
+            var sidebar = document.getElementById("sidebar")
+            if(sidebar.style.left == "-320px"){
+                tapButton.style.borderBottom = "2px solid #c7dbd2";
+                sidebar.style.animation = "seek 1.1s";
+                sidebar.style.left = "0px";
+                sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+            }else{
+                tapButton.style.borderBottom = "2px solid black";
+                sidebar.style.animation = "hide 1.1s";
+                sidebar.style.left = "-320px";
+                sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+            }
+        }
+        function test() {
+            $.ajax({
+                method: "GET", // 요청 방식
+                url: "/jshTestFindAllTraffic",
+                async: true, // 동기 설정
+                dataType: 'json',
+                success: function (response) {
+                    if (trafficMarkerArr.length > 0) {
+                        for(var i in trafficMarkerArr) {
+                            trafficMarkerArr[i].setMap(null);
+                        }
+                        trafficMarkerArr = [];
+                    }
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].trafficApplyStart < time && time < response[i].trafficApplyEnd) {
+                            var leftTime = response[i].leftTime + "초";
+                            if (response[i].startType == 1) {
+                                marker_Traffic = new Tmapv2.Marker(
+                                    {
+                                        position: new Tmapv2.LatLng(response[i].trafficLat, response[i].trafficLon), //Marker의 중심좌표 설정.
+                                        icon: "/icon/greenOn.png", // 아이콘 등록
+                                        iconSize: new Tmapv2.Size(
+                                            36, 57), // 아이콘 크기 설정
+                                        title: 1, // 마커 타이틀
+                                        label: leftTime,
+                                        map: map // 마커가 등록될 지도 객체
+                                    });
+                            } else {
+                                marker_Traffic = new Tmapv2.Marker(
+                                    {
+                                        position: new Tmapv2.LatLng(response[i].trafficLat, response[i].trafficLon), //Marker의 중심좌표 설정.
+                                        icon: "/icon/redOn.png", // 아이콘 등록
+                                        iconSize: new Tmapv2.Size(
+                                            36, 57), // 아이콘 크기 설정
+                                        title: -1, // 마커 타이틀
+                                        label: leftTime,
+                                        map: map // 마커가 등록될 지도 객체
+                                    });
+
+
+                            }
+
+                            trafficMarkerArr.push(marker_Traffic);
+                            trafficLeftTime.push(response[i].leftTime);
+
+                        }
+                    }
+
+                },
+                error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n"
+                        + "message:" + request.responseText + "\n"
+                        + "error:" + error);
+                }
+            });
+
+        }
+
 
     </script>
     <style>
         body {
-            overflow: hidden;
             -ms-overflow-style: none;
             padding: 0;
             margin: 0;
+            overflow: hidden;
         }
 
         ::-webkit-scrollbar {
@@ -334,13 +383,21 @@
         }
 
         #sidebar {
-            position: relative;
             float: left;
+            position: absolute;
+            z-index: 999999;
             width: 320px;
             height: 818px;
             background-color: #c7dbd2;
             border: 2px solid black;
             border-top: none;
+        }
+
+        #sidebar2{
+            width: 100%;
+            height: 100%;
+            z-index: 9999999;
+            position: relative;
         }
 
 
@@ -351,7 +408,7 @@
             -ms-overflow-style: none;
             margin: 3%;
             height: 97%;
-            padding: 10%;
+            padding: 5%;
         }
 
         #traffic_information::-webkit-scrollbar {
@@ -420,6 +477,32 @@
             transition: all 0.2s ease-in;
         }
 
+        #sidebarHide{
+            padding: 8px 5px;;
+            border: solid black 2px;
+            border-left: none;
+            background-color: #c7dbd2;
+            color: #000000;
+            position: absolute;
+            top: 50%;
+            left: 99.9%;
+        }
+        @keyframes hide{
+            0%{
+                left:0px;
+            }
+            100%{
+                left:-320px;
+            }
+        }
+        @keyframes seek{
+            0%{
+                left:-320px;
+            }
+            100%{
+                left:0px;
+            }
+        }
     </style>
 
 </head>
@@ -430,11 +513,16 @@
 </div>
 <div>
     <div id="sidebar" style="text-align: center">
+        <div id="sidebar2">
+            <div id="sidebarHide" onclick="sidebarHide1()">
+                <i id="sidebarHideIcon" class="fa-solid fa-angle-left fa-2xl"></i>
+            </div>
         <div id="traffic_information">
 
             <h3>신호등추가</h3>
             <hr>
             <div style="size: 15px">현재 신호등 상태</div>
+            <button type="button" onclick="test()">테스트버튼</button>
             <div style="position: center;display: inline-flex;align-items: center;">
                 <div>a</div>
                 <div>
@@ -503,6 +591,7 @@
             </form>
 
 
+        </div>
         </div>
     </div>
 

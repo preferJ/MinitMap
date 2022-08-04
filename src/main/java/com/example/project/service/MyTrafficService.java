@@ -1,10 +1,9 @@
 package com.example.project.service;
 
 import com.example.project.dto.MyTrafficDTO;
-import com.example.project.entity.BoardEntity;
-import com.example.project.entity.MemberEntity;
-import com.example.project.entity.MyTrafficEntity;
-import com.example.project.entity.TrafficTimeEntity;
+import com.example.project.dto.TrafficDTO;
+import com.example.project.dto.TrafficIntegratedDTO;
+import com.example.project.entity.*;
 import com.example.project.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MyTrafficService {
     private final MyTrafficRepository myTrafficRepository;
+    private final TrafficTimeRepository trafficTimeRepository;
+    private final TrafficRepository trafficRepository;
+
+
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final TrafficTimeRepository trafficTimeRepository;
 
     //이현 중복신호등 체크
     public String saveCheck(Long id, Long loginId) {
@@ -65,10 +67,35 @@ public class MyTrafficService {
 
     //선호 신호등 저장 메서드
     public Long save(MyTrafficDTO myTrafficDTO, Long loginId) {
-        System.out.println("MyTrafficService.save");
         Optional<MemberEntity> byId = memberRepository.findById(loginId);
-        System.out.println(byId.get());
+        myTrafficDTO.setMyTrafficOrderNumber(myTrafficRepository.count()+1);
         MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(myTrafficDTO, byId.get()));
         return save.getMyTrafficId();
+    }
+
+    public List<TrafficIntegratedDTO> inBoundFindAll(String center, Long memberId) {
+        System.out.println("MyTrafficService.inBoundFindAll");
+        List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
+        String[] latlng = center.split(",");
+        System.out.println(latlng);
+        double lat = Double.parseDouble(latlng[0]);
+        double lng = Double.parseDouble(latlng[1]);
+        System.out.println(lat);
+        System.out.println(lng);
+        List<TrafficEntity> trafficEntityList = trafficRepository.findAll();
+        List<MyTrafficEntity> myTrafficEntityList = myTrafficRepository.findAll();
+        List<TrafficTimeEntity> trafficTimeEntityList = trafficTimeRepository.findAll();
+
+
+        // 변수명 time 은 기준이 되는 trafficTime 객체
+        for (TrafficTimeEntity time :trafficTimeEntityList) {
+           if (time.getTrafficEntity().getTrafficId() == null){
+               // 트래픽ID 가 null 이면 --> 마이트래픽
+               trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(),time));
+
+           }
+        }
+
+        return trafficIntegratedDTOList;
     }
 }

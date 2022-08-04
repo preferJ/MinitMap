@@ -14,7 +14,7 @@ public class MyTrafficDTO {
     private String myTrafficName;
     private Double myTrafficLat;
     private Double myTrafficLon;
-    private Double myTrafficOrderNumber;
+    private Long myTrafficOrderNumber;
     //ㅅㅎ 수정 신호등순서필드 추가
 
 

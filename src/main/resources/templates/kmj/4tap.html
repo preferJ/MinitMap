@@ -24,16 +24,13 @@
                 var mapResize = document.getElementById('map_div');//map의 div
                 var sidebarResize = document.getElementById("sidebar");
                 if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
                     mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 147 - 4 + "px";
                     alert("전체화면은 지원하지 않습니다.")
                 } else if (width_size == 1920) {
-                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
                     mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 147 - 4 + "px";
                 } else {
-                    mapResize.style.width = width_size - 336 + "px";//map의 height 변경
                     mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
                     sidebarResize.style.height = height_size - 164 - 4 + "px";
                 }
@@ -131,7 +128,7 @@
                 // 1. 지도 띄우기
                 map = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng(request_lat, request_lng),
-                    width: width_size - 320 + "px",
+                    width: "100%",
                     height: height_size - 147 - 4 + "px",
                     zoom: [[${page_zoom}]],
                     zoomControl: true,
@@ -143,7 +140,7 @@
                 // 1. 지도 띄우기
                 map = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng(request_lat, request_lng),
-                    width: width_size - 336 + "px",
+                    width: "100%",
                     height: height_size - 164 - 4 + "px",
                     zoom: [[${page_zoom}]],
                     zoomControl: true,
@@ -313,14 +310,29 @@
 
         }
 
-
+        function sidebarHide1(){
+            const tapButton = document.getElementById(settingPage);
+            const sidebarIcon = document.getElementById("sidebarHideIcon")
+            var sidebar = document.getElementById("sidebar")
+            if(sidebar.style.left == "-320px"){
+                tapButton.style.borderBottom = "2px solid #c7dbd2";
+                sidebar.style.animation = "seek 1.1s";
+                sidebar.style.left = "0px";
+                sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+            }else{
+                tapButton.style.borderBottom = "2px solid black";
+                sidebar.style.animation = "hide 1.1s";
+                sidebar.style.left = "-320px";
+                sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+            }
+        }
     </script>
     <style>
         body {
-            overflow: hidden;
             -ms-overflow-style: none;
             padding: 0;
             margin: 0;
+            overflow: hidden;
         }
 
         ::-webkit-scrollbar {
@@ -334,13 +346,21 @@
         }
 
         #sidebar {
-            position: relative;
             float: left;
+            position: absolute;
+            z-index: 999999;
             width: 320px;
             height: 818px;
             background-color: #c7dbd2;
             border: 2px solid black;
             border-top: none;
+        }
+
+        #sidebar2{
+            width: 100%;
+            height: 100%;
+            z-index: 9999999;
+            position: relative;
         }
 
 
@@ -351,7 +371,7 @@
             -ms-overflow-style: none;
             margin: 3%;
             height: 97%;
-            padding: 10%;
+            padding: 5%;
         }
 
         #traffic_information::-webkit-scrollbar {
@@ -420,6 +440,32 @@
             transition: all 0.2s ease-in;
         }
 
+        #sidebarHide{
+            padding: 8px 5px;;
+            border: solid black 2px;
+            border-left: none;
+            background-color: #c7dbd2;
+            color: #000000;
+            position: absolute;
+            top: 50%;
+            left: 99.9%;
+        }
+        @keyframes hide{
+            0%{
+                left:0px;
+            }
+            100%{
+                left:-320px;
+            }
+        }
+        @keyframes seek{
+            0%{
+                left:-320px;
+            }
+            100%{
+                left:0px;
+            }
+        }
     </style>
 
 </head>
@@ -430,6 +476,10 @@
 </div>
 <div>
     <div id="sidebar" style="text-align: center">
+        <div id="sidebar2">
+            <div id="sidebarHide" onclick="sidebarHide1()">
+                <i id="sidebarHideIcon" class="fa-solid fa-angle-left fa-2xl"></i>
+            </div>
         <div id="traffic_information">
 
             <h3>신호등추가</h3>
@@ -503,6 +553,7 @@
             </form>
 
 
+        </div>
         </div>
     </div>
 

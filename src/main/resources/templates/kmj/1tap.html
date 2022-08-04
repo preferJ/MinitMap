@@ -27,18 +27,15 @@
                 var mapResize = document.getElementById('map_div');//map의 div
                 var sidebarResize = document.getElementById("sidebar");
                 if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    mapResize.style.height = height_size - 147 - 1 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 1 + "px";
                     alert("전체화면은 지원하지 않습니다.")
                 } else if (width_size == 1920) {
-                    mapResize.style.width = width_size - 320 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    mapResize.style.height = height_size - 147 - 1 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 1 + "px";
                 } else {
-                    mapResize.style.width = width_size - 336 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 164 - 4 + "px";
+                    mapResize.style.height = height_size - 164 - 1 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 164 - 1 + "px";
                 }
             } else if (map_count == 1) {
                 var width_size = window.outerWidth;
@@ -48,21 +45,37 @@
                 var sidebarResize = document.getElementById("sidebar");
                 if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
                     mapResize.style.width = width_size - 0 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    mapResize.style.height = height_size - 147 - 1 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 1 + "px";
                     alert("전체화면은 지원하지 않습니다.")
                 } else if (width_size == 1920) {
                     mapResize.style.width = width_size - 0 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
+                    mapResize.style.height = height_size - 147 - 1 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 147 - 1 + "px";
                 } else {
                     mapResize.style.width = width_size - 16 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 164 - 4 + "px";
+                    mapResize.style.height = height_size - 164 - 1 + "px";//map의 height 변경
+                    sidebarResize.style.height = height_size - 164 - 1 + "px";
                 }
             }
         });
 
+        function sidebarHide1(){
+            const tapButton = document.getElementById(settingPage);
+            const sidebarIcon = document.getElementById("sidebarHideIcon")
+            var sidebar = document.getElementById("sidebar")
+            if(sidebar.style.left == "-320px"){
+                tapButton.style.borderBottom = "2px solid #c7dbd2";
+                sidebar.style.animation = "seek 1.1s";
+                sidebar.style.left = "0px";
+                sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+            }else{
+                tapButton.style.borderBottom = "2px solid black";
+                sidebar.style.animation = "hide 1.1s";
+                sidebar.style.left = "-320px";
+                sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+            }
+        }
     </script>
 </head>
 <style>
@@ -85,6 +98,8 @@
 
     #sidebar {
         float: left;
+        position: absolute;
+        z-index: 999999;
         width: 320px;
         height: 818px;
         background-color: #c7dbd2;
@@ -96,6 +111,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    #sidebar2{
+        width: 100%;
+        height: 100%;
+        z-index: 9999999;
+        position: relative;
     }
 
     #traffic_information {
@@ -121,6 +143,32 @@
         color: #303f39 !important;
     }
 
+    #sidebarHide{
+        padding: 8px 5px;;
+        border: solid black 2px;
+        border-left: none;
+        background-color: #c7dbd2;
+        color: #000000;
+        position: absolute;
+        top: 50%;
+        left: 99.9%;
+    }
+    @keyframes hide{
+        0%{
+            left:0px;
+        }
+        100%{
+            left:-320px;
+        }
+    }
+    @keyframes seek{
+        0%{
+            left:-320px;
+        }
+        100%{
+            left:0px;
+        }
+    }
 
 </style>
 
@@ -128,59 +176,64 @@
 <th:block th:replace="/kmj/header :: header"></th:block>
 </body>
 <div id="sidebar">
-    <div id="traffic_information">
-        <div style="margin-top: 8px">
-            <div>
-                <input style="width: 100%" type="search" id="searchKeyword" placeholder="장소검색창"
-                       onkeyup="if(window.event.keyCode==13){searchButton()}">
-            </div>
-            <br/>
-            <div class="title"><strong>Search</strong> Results</div>
-            <div class="rst_wrap">
-                <div class="rst mCustomScrollbar">
-                    <ul id="searchResult" name="searchResult">
-                        <li>검색결과</li>
-                    </ul>
-                </div>
-            </div>
-            <hr>
-            <div th:if="${session.loginEmail}">
+    <div id="sidebar2">
+        <div id="sidebarHide" onclick="sidebarHide1()">
+            <i id="sidebarHideIcon" class="fa-solid fa-angle-left fa-2xl"></i>
+        </div>
+        <div id="traffic_information">
+            <div style="margin-top: 8px">
                 <div>
-                    <b>마이플레이스</b>
-                    <div style="float: right">
-                        <i onclick="mypTapDown()" id="mypIcon" class="fa-solid fa-angle-up fa-2x"></i>
-                    </div>
-                    <br>
-                    <div id="myPlaceList">
-                    </div>
+                    <input style="width: 100%" type="search" id="searchKeyword" placeholder="장소검색창"
+                           onkeyup="if(window.event.keyCode==13){searchButton()}">
                 </div>
-                <hr>
-                <div>
-                    <b>루틴</b>
-                    <div style="float: right">
-                        <i onclick="rutinDown()" id="rutinIcon" class="fa-solid fa-angle-up fa-2x"></i>
-                    </div>
-                    <br>
-                    <div id="rutinList">
+                <br/>
+                <div class="title"><strong>Search</strong> Results</div>
+                <div class="rst_wrap">
+                    <div class="rst mCustomScrollbar">
+                        <ul id="searchResult" name="searchResult">
+                            <li>검색결과</li>
+                        </ul>
                     </div>
                 </div>
                 <hr>
-                <div>
-                    <b>자주보는 신호등</b> <br>
-                    <input type="text" th:value="11"> <br>
-                    <input type="text" th:value="11">
+                <div th:if="${session.loginEmail}">
+                    <div>
+                        <b>마이플레이스</b>
+                        <div style="float: right">
+                            <i onclick="mypTapDown()" id="mypIcon" class="fa-solid fa-angle-up fa-2x"></i>
+                        </div>
+                        <br>
+                        <div id="myPlaceList">
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <b>루틴</b>
+                        <div style="float: right">
+                            <i onclick="rutinDown()" id="rutinIcon" class="fa-solid fa-angle-up fa-2x"></i>
+                        </div>
+                        <br>
+                        <div id="rutinList">
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <b>자주보는 신호등</b> <br>
+                        <input type="text" th:value="11"> <br>
+                        <input type="text" th:value="11">
+                    </div>
+                    <hr>
+                    <div th:if="${session.loginEmail.toString().equals('admin')}">
+                        <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
+                    </div>
+                    <button th:onclick="logout()" type="button" class="btn success">▶로그아웃</button>
+                    <hr>
                 </div>
-                <hr>
-                <div th:if="${session.loginEmail.toString().equals('admin')}">
-                    <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
+                <div th:unless="${session.loginEmail}">
+                    <button onclick="loginForm()" type="button" class="btn success">▶로그인</button>
                 </div>
-                <button th:onclick="logout()" type="button" class="btn success">▶로그아웃</button>
-                <hr>
-            </div>
-            <div th:unless="${session.loginEmail}">
-                <button onclick="loginForm()" type="button" class="btn success">▶로그인</button>
-            </div>
 
+            </div>
         </div>
     </div>
 </div>
@@ -215,15 +268,15 @@
             request_lng = page_lng;
         }
         sidebarResize = document.getElementById("sidebar");
-        var width_size = window.outerWidth;
         var height_size = window.outerHeight;
+        var width_size = window.outerWidth;
         if (width_size == 1920) {
             sidebarResize.style.height = height_size - 147 - 4 + "px";
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size - 320 + "px",
-                height: height_size - 147 - 6 + "px",
+                width: "100%",
+                height: height_size - 147 - 3 + "px",
                 zoom: [[${page_zoom}]],
                 zoomControl: true,
                 scrollwheel: true
@@ -233,8 +286,8 @@
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(request_lat, request_lng),
-                width: width_size - 336 + "px",
-                height: height_size - 164 - 6 + "px",
+                width: "100%",
+                height: height_size - 164 - 3 + "px",
                 zoom: [[${page_zoom}]],
                 zoomControl: true,
                 scrollwheel: true
@@ -562,8 +615,8 @@
 
 <body onload="initTmap();myPlaceList();rutinList();">
 <div id="map_div"></div>
-    <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:120px;right:80px;">
-        <i class="fa-solid fa-circle fa-stack-2x " style="color:white;"></i>
+<span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:120px;right:80px;">
+        <i class="fa-solid fa-circle fa-stack-2x" style="color:white;"></i>
         <i class="fa-solid fa-location-dot fa-stack-1x" style="color:red;"></i>
     </span>
 </body>

@@ -26,17 +26,16 @@ public class ErrorController {
         return "/hss/tapDown";
     }
     @GetMapping("/findAll")
-    // ㅁㅈ
+    // ㅁㅈ // 신고받은 게시물 중복 값 없이 출력
     public String findAll(Model model){
         System.out.println("123123");
-       List<ErrorDTO> errorDTOList = errorService.findDistinctByBoardEntity();
-        System.out.println("errorDTOList = " + errorDTOList);
-       model.addAttribute("errorList", errorDTOList);
+        List<BoardDTO> distinctByBoardEntity = errorService.findDistinctByBoardEntity();
+       model.addAttribute("boardList", distinctByBoardEntity);
         return "/AdminPages/boardError";
     }
 
     @GetMapping("/detail/{id}")
-    // ㅁㅈ
+    // ㅁㅈ // 신고게시물 신고내용
     public String detail(@PathVariable Long id, Model model){
        List<ErrorDTO> errorDTOList = errorService.findAllByBoardId(id);
        model.addAttribute("errorList", errorDTOList);

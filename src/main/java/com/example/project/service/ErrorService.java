@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.dto.BoardDTO;
 import com.example.project.dto.ErrorDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.ErrorEntity;
@@ -57,19 +58,18 @@ public class ErrorService {
 //        return errorDTOList;
 //    }
 
-    public List<ErrorDTO> findDistinctByBoardEntity() {
-        //ㅁㅈ 신고를 받은 글 출력 메서드  / 지금은 중복 글은 하나만 출력 될 수 있게 수정 중
-        List<ErrorEntity> errorEntityList = errorRepository.findDistinctByBoardEntity();
-        System.out.println("errorEntityList = " + errorEntityList);
-        List<ErrorDTO> errorDTOList = new ArrayList<>();
-        for(ErrorEntity error: errorEntityList){
-            errorDTOList.add(ErrorDTO.toErrorDTO(error));
+    public List<BoardDTO> findDistinctByBoardEntity() {
+        // 신고를 받은 글 출력 메서드
+        List<BoardEntity> boardEntities = errorRepository.findDistinct();
+        List<BoardDTO> boardDTOS = new ArrayList<>();
+        for (BoardEntity boardEntity : boardEntities){
+            boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
         }
-        return errorDTOList;
+        return boardDTOS;
     }
 
     public List<ErrorDTO> findAllByBoardId(Long boardId) {
-        //ㅁㅈ 해당 글의 신고 출력 메서드
+        // 해당 글의 신고 출력 메서드
        List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
        List<ErrorDTO> errorDTOList = new ArrayList<>();
        for(ErrorEntity error: errorEntityList){

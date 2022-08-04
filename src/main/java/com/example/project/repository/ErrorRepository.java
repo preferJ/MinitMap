@@ -10,10 +10,12 @@ import java.util.List;
 
 public interface ErrorRepository extends JpaRepository<ErrorEntity,Long> {
 
-    @Query(nativeQuery = true , value = "select distinct board_id from error")
-    List<ErrorEntity> findDistinctByBoardEntity();
+//    @Modifying
+//    @Query(value = "SELECT DISTINCT board_id FROM error" , nativeQuery = true)
+//    List<ErrorEntity> findDistinctByBoardEntity();
 
-
+    @Query("select DISTINCT (e.boardEntity) from ErrorEntity e")
+    List<BoardEntity> findDistinct();
 
     List<ErrorEntity> findByBoardEntity(BoardEntity boardEntity);
     // 해당하는 글이 받은 오류신고들

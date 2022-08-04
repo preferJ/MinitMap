@@ -260,14 +260,14 @@
                         <th>신고횟수</th>
                         <th>신고내용 상세보기</th>
                     </tr>
-                    <tr th:each="error: ${errorList}">
-                        <td th:text="${error.boardId}"></td>
-                        <td th:text="${error.boardEntity.boardType}"></td>
-                        <td th:text="${error.boardEntity.boardTitle}"></td>
-                        <td th:text="${error.boardEntity.boardContents}"></td>
-                        <td th:text="*{#temporals.format(error.errorCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td>example</td>
-                        <td><button class="btn btn-outline-danger" th:onclick="errorDetail([[${error.boardId}]])">신고내용</button></td>
+                    <tr th:each="board: ${boardList}">
+                        <td th:text="${board.boardId}"></td>
+                        <td th:text="${board.boardType}"></td>
+                        <td th:text="${board.boardTitle}"></td>
+                        <td th:text="${board.boardContents}"></td>
+                        <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${board.boardReport}"></td>
+                        <td><button class="btn btn-outline-danger" th:onclick="errorDetail([[${board.boardId}]])">신고내용</button></td>
                     </tr>
                 </table>
             </div>

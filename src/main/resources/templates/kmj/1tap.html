@@ -344,6 +344,12 @@
                             iconSize: new Tmapv2.Size(
                                 24, 38), // 아이콘 크기 설정
                             title: name, // 마커 타이틀
+
+                                label: '<div class="btn-group me-2">\n' +
+                                    '                        <div id="onButton' + k + '"><i onclick="onButton(' + k + ')" id="mypIcon" class="fa-solid fa-caret-down fa-2x"></i></div>' +
+                                    '                        <button id="startButton' + k + '" style="display: none" type="button" onclick="startPing(' + k + ')" class="btn btn-sm btn-outline-secondary">출발지</button>\n' +
+                                    '                        <button id="endButton' + k + '" style="display: none" type="button" onclick="endPing(' + k + ')" class="btn btn-sm btn-outline-secondary">도착지</button>\n' +
+                                    '                    </div>',
                             map: map // 마커가 등록될 지도 객체
                         });
                     // 결과창에 나타날 검색 결과 html
@@ -401,6 +407,19 @@
             marker.setMap(null);
             marker = null;
         }
+    }
+
+    function onButton(k) {
+        let onButton = document.getElementById("onButton" + k);
+        let start = document.getElementById("startButton" + k);
+        let end = document.getElementById("endButton" + k);
+        onButton.style.display = "none";
+        start.style.display = "inline";
+        end.style.display = "inline";
+    }
+
+    function test1(k) {
+        alert(k);
     }
 
     function clickPing(lat, lng, name) {
@@ -594,7 +613,7 @@
 <body onload="initTmap();myPlaceList();rutinList();">
 <div id="map_div"></div>
 <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:120px;right:80px;">
-        <i class="fa-solid fa-circle fa-stack-2x" style="color:white;"></i>
+        <i class="fa-solid fa-circle fa-stack-2x " style="color:white;"></i>
         <i class="fa-solid fa-location-dot fa-stack-1x" style="color:red;"></i>
     </span>
 </body>

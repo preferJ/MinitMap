@@ -29,9 +29,8 @@ public class ErrorController {
     // ㅁㅈ
     public String findAll(Model model){
         System.out.println("123123");
-       List<ErrorDTO> errorDTOList = errorService.findDistinctByBoardEntity();
-        System.out.println("errorDTOList = " + errorDTOList);
-       model.addAttribute("errorList", errorDTOList);
+        List<BoardDTO> distinctByBoardEntity = errorService.findDistinctByBoardEntity();
+       model.addAttribute("boardList", distinctByBoardEntity);
         return "/AdminPages/boardError";
     }
 

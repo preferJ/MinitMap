@@ -17,7 +17,6 @@
         var page_lng = [[${page_lng}]];
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function () {
-            if (map_count == 0) {
                 var width_size = window.outerWidth;
                 // 화면의 height값을 가져오기
                 var height_size = window.outerHeight;
@@ -35,27 +34,6 @@
                     sidebarResize.style.height = height_size - 164 - 4 + "px";
                 }
                 console.log("width:" + width_size + "height_size:" + height_size);
-            } else if (map_count == 1) {
-                var width_size = window.outerWidth;
-                // 화면의 height값을 가져오기
-                var height_size = window.outerHeight;
-                var mapResize = document.getElementById('map_div');//map의 div
-                var sidebarResize = document.getElementById("sidebar");
-                if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                    mapResize.style.width = width_size - 0 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
-                    alert("전체화면은 지원하지 않습니다.")
-                } else if (width_size == 1920) {
-                    mapResize.style.width = width_size - 0 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 147 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 147 - 4 + "px";
-                } else {
-                    mapResize.style.width = width_size - 16 + "px";//map의 height 변경
-                    mapResize.style.height = height_size - 164 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 164 - 4 + "px";
-                }
-            }
         })
         var map;
 

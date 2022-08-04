@@ -17,7 +17,7 @@ public interface ErrorRepository extends JpaRepository<ErrorEntity,Long> {
 //    List<ErrorEntity> findDistinctByBoardEntity();
 
     @Query("select DISTINCT (e.boardEntity) from ErrorEntity e")
-    List<ErrorEntity> findDistinct();
+    List<BoardEntity> findDistinct();
     List<ErrorEntity> findByBoardEntity(BoardEntity boardEntity);
     // 해당하는 글이 받은 오류신고들
 }

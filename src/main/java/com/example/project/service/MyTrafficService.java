@@ -6,6 +6,7 @@ import com.example.project.dto.TrafficIntegratedDTO;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -68,7 +69,12 @@ public class MyTrafficService {
     //선호 신호등 저장 메서드
     public Long save(MyTrafficDTO myTrafficDTO, Long loginId) {
         Optional<MemberEntity> byId = memberRepository.findById(loginId);
-        myTrafficDTO.setMyTrafficOrderNumber(myTrafficRepository.count()+1);
+        List<MyTrafficEntity> myTrafficEntityList = myTrafficRepository.findAll(Sort.by(Sort.Direction.DESC, "myTrafficId"));
+        if (myTrafficEntityList == null) {
+            myTrafficDTO.setMyTrafficOrderNumber(1L);
+        } else {
+            myTrafficDTO.setMyTrafficOrderNumber(myTrafficEntityList.get(0).getMyTrafficId() + 1);
+        }
         MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(myTrafficDTO, byId.get()));
         return save.getMyTrafficId();
     }
@@ -88,12 +94,12 @@ public class MyTrafficService {
 
 
         // 변수명 time 은 기준이 되는 trafficTime 객체
-        for (TrafficTimeEntity time :trafficTimeEntityList) {
-           if (time.getTrafficEntity().getTrafficId() == null){
-               // 트래픽ID 가 null 이면 --> 마이트래픽
-               trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(),time));
+        for (TrafficTimeEntity time : trafficTimeEntityList) {
+            if (time.getTrafficEntity().getTrafficId() == null) {
+                // 트래픽ID 가 null 이면 --> 마이트래픽
+                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
 
-           }
+            }
         }
 
         return trafficIntegratedDTOList;

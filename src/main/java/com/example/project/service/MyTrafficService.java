@@ -83,7 +83,7 @@ public class MyTrafficService {
         System.out.println("MyTrafficService.inBoundFindAll");
         List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
         String[] latlng = center.split(",");
-        System.out.println(latlng);
+        System.out.println(latlng[0]);
         double lat = Double.parseDouble(latlng[0]);
         double lng = Double.parseDouble(latlng[1]);
         System.out.println(lat);
@@ -95,12 +95,18 @@ public class MyTrafficService {
 
         // 변수명 time 은 기준이 되는 trafficTime 객체
         for (TrafficTimeEntity time : trafficTimeEntityList) {
-            if (time.getTrafficEntity().getTrafficId() == null) {
+            if (time.getTrafficEntity() == null) {
                 // 트래픽ID 가 null 이면 --> 마이트래픽
                 trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
-
+            } else if (time.getMyTrafficEntity() == null) {
+                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
             }
         }
+        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+     for (int i = 0 ; i <trafficIntegratedDTOList.size() ; i++){
+         System.out.println(trafficIntegratedDTOList.get(i));
+     }
+        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
         return trafficIntegratedDTOList;
     }

@@ -270,7 +270,7 @@ public class TestController {
         return "/index";
     }
 
-    @GetMapping("/hss/1tap")
+    @GetMapping("/Main")
     // ㅁㅈ
     public String tap1Test(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
@@ -288,7 +288,7 @@ public class TestController {
             List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
             model.addAttribute("rutinList", rutinList);
         }
-        return "/hss/1tap";
+        return "/MainPage/Main";
     }
 
     @GetMapping("/listTest")
@@ -297,4 +297,8 @@ public class TestController {
         return "/jsh/4tap";
     }
 
+    @GetMapping("/aaa")
+    public String aass(){
+        return "/hss/aaa";
+    }
 }

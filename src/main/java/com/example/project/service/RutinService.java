@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.dto.MyPlaceDTO;
 import com.example.project.dto.RutinDTO;
 import com.example.project.entity.MemberEntity;
 import com.example.project.entity.MyPlaceEntity;
@@ -50,6 +51,20 @@ public class RutinService {
             }
             return rutinList;
         }else {
+            return null;
+        }
+    }
+    public List<RutinDTO> findByEmail(String memberEmail) {
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findByMemberEmail(memberEmail);
+        if (memberEntityOptional.isPresent()) {
+            MemberEntity memberEntity = memberEntityOptional.get();
+            List<RutinEntity> rutinEntityList = rutinRepository.findByMemberEntityOrderByRutinNumberAsc(memberEntity);
+            List<RutinDTO> rutinList = new ArrayList<>();
+            for (RutinEntity entityList : rutinEntityList) {
+                rutinList.add(RutinDTO.toRutinDTO(entityList));
+            }
+            return rutinList;
+        } else {
             return null;
         }
     }

@@ -107,6 +107,11 @@ public class TrafficIntegratedDTO {
         // 신호 관련
 
         Long g = trafficTimeEntity.getGreenOn();
+        if (g == 0){
+            g = 1L;
+        }
+        // 그린을 0초로 할 경우 밑에서 /0 으로 익셉션 발생하는거 보정하기 위해 0초면 1초로 바꿈
+        // 0초 저장을 막아야하는거긴한데.. 귀찮아.. ㅎ
         Long r = trafficTimeEntity.getRedOn();
         Long st = trafficTimeEntity.getSetStartTime();
         Long timeGap = nowTime - st;

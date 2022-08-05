@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script>
+    function changecss(theClass,element,value){
+      var cssRules;
+      if(document.all){
+        cssRules = 'rules';
+      }else if (document.getElementById){
+        cssRules = 'cssRules';
+      }
+      var added = false;
+      for(var S = 0; S < document.styleSheets.length;S++){
+        for(var R = 0; R < document.styleSheets.length;R++){
+          if(document.styleSheets[S][cssRules][R].selectorText == theClass){
+            if(document.styleSheets[S][cssRules][R].style[element]){
+              document.styleSheets[S][cssRules][R].style[element] = value;
+              added=true;
+              break;
+            }
+          }
+        }
+        if(!added){
+          if(document.styleSheets[S].insertRule){
+            document.styleSheets[S].insertRule(theClass+'{'+element+': '+value+'}',document.styleSheets[S][cssRules].length);
+          }else if(document.styleSheets[S].addRule){
+            document.styleSheets[S].addRule(theClass,element+': '+value+';');
+          }
+        }
+      }
+    }
+  </script>
+    <style>
+        .aaa{
+            background-color: red;
+        }
+        .bbb{
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+<p id="ss" class="aaa">aaaaa</p>
+<p id="aa" class="aaa">sssss</p>
+<p class="bbb">sssss</p>
+<button onclick="changecss('.aaa','background-color','yellow')">www</button>
+</body>
+</html>

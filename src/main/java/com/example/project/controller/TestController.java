@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
 @Controller
@@ -23,6 +22,7 @@ public class TestController {
     private final TrafficService trafficService;
     private final TrafficTimeService trafficTimeService;
     private final TrafficTestService trafficTestService;
+    private final MyTrafficService myTrafficService;
     private final BoardService boardService;
 
     private final MyPlaceService myPlaceService;
@@ -270,7 +270,7 @@ public class TestController {
         return "/index";
     }
 
-    @GetMapping("/hss/1tap")
+    @GetMapping("/Main")
     // ㅁㅈ
     public String tap1Test(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
                        @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
@@ -288,7 +288,17 @@ public class TestController {
             List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
             model.addAttribute("rutinList", rutinList);
         }
-        return "/hss/1tap";
+        return "/MainPage/Main";
     }
 
+    @GetMapping("/listTest")
+    public String listTest(){
+        myTrafficService.inBoundFindAll("1,2",1L);
+        return "/jsh/4tap";
+    }
+
+    @GetMapping("/aaa")
+    public String aass(){
+        return "/hss/aaa";
+    }
 }

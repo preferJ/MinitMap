@@ -305,9 +305,13 @@
             }
         }
         function test() {
+            let center = map.getCenter();
             $.ajax({
-                method: "GET", // 요청 방식
-                url: "/jshTestFindAllTraffic",
+                method: "POST", // 요청 방식
+                url: "/inBoundTrafficAll",
+                data: ({
+                    "center" : center
+                }),
                 async: true, // 동기 설정
                 dataType: 'json',
                 success: function (response) {
@@ -359,6 +363,10 @@
                         + "error:" + error);
                 }
             });
+
+        }
+
+        function testTraffic(){
 
         }
 
@@ -523,6 +531,8 @@
             <hr>
             <div style="size: 15px">현재 신호등 상태</div>
             <button type="button" onclick="test()">테스트버튼</button>
+            <button type="button" onclick="testTraffic()">신호 가져오기 및 뿌리기 버튼</button>
+            <a href="/listTest"> 리스트 테스트 버튼 </a>
             <div style="position: center;display: inline-flex;align-items: center;">
                 <div>a</div>
                 <div>

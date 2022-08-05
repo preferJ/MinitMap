@@ -32,8 +32,8 @@ public class RutinController {
     //이현
     @GetMapping("/list")
     public @ResponseBody List<RutinDTO> rutinList(HttpSession session){
-        Long id = (Long) session.getAttribute("loginId");
-        List<RutinDTO> rutinDTOList = rutinService.findByMemberId(id);
+        String email = (String) session.getAttribute("loginEmail");
+        List<RutinDTO> rutinDTOList = rutinService.findByEmail(email);
         return rutinDTOList;
     }
 

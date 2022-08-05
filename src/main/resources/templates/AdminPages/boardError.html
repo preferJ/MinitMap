@@ -256,9 +256,11 @@
                         <th>게시글 타입</th>
                         <th>게시글 제목</th>
                         <th>게시글 내용</th>
-                        <th>신고시간</th>
+                        <th>게시물 작성 시간</th>
                         <th>신고횟수</th>
+                        <th>게시물 보기</th>
                         <th>신고내용 상세보기</th>
+                        <th>확인 여부</th>
                     </tr>
                     <tr th:each="board: ${boardList}">
                         <td th:text="${board.boardId}"></td>
@@ -267,7 +269,18 @@
                         <td th:text="${board.boardContents}"></td>
                         <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:text="${board.boardReport}"></td>
-                        <td><button class="btn btn-outline-danger" th:onclick="errorDetail([[${board.boardId}]])">신고내용</button></td>
+                        <td>
+                            <button class="btn btn-outline-primary" th:onclick="boardDetail([[${board.boardId}]])">게시물보기</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-danger" th:onclick="errorDetail([[${board.boardId}]])">신고내용</button>
+                        </td>
+                        <td th:if="${board.boardHits == 0}">
+                            확인안함
+                        </td>
+                        <td th:if="${board.boardHits != 0}">
+                            확인함
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -303,8 +316,11 @@
         location.href = "/board/logout";
     }
 
-    function errorDetail(id){
-        location.href = "/error/detail/"+ id;
+    function errorDetail(id) {
+        location.href = "/error/detail/" + id;
+    }
+    function boardDetail(id) {
+        location.href = "/board/detail?id=" + id;
     }
 </script>
 </html>

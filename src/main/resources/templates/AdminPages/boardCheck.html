@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>신고조치</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<h2>신고조치</h2>
+<form action="/error/historySave" method="post">
+    <input type="hidden" name="boardId" th:value="${board.boardId}">
+    <input type="hidden" name="memberId" th:value="${board.memberId}">
+    <input type="text" style="width: 100%; text-align: center" name="historyType" value="신고처리" readonly>
+    <textarea cols="71" rows="9" name="historyMessage"
+    style="resize: none;" placeholder="조치내용을 입력해주세요" required></textarea>
+    <div style="text-align: center">
+    <input type="submit" class="btn btn-outline-warning" value="조치하기">
+    </div>
+</form>
+</body>
+</html>

@@ -32,7 +32,7 @@ public class AdminHistoryEntity {
     @Column(name = "historyTime", updatable = false)
     private LocalDateTime historyTime;
 
-    public static AdminHistoryEntity toAdminHistorySaveEntity(AdminHistoryDTO adminHistoryDTO,MemberEntity memberEntity){
+    public static AdminHistoryEntity toAdminHistorySaveEntity(AdminHistoryDTO adminHistoryDTO, MemberEntity memberEntity){
         AdminHistoryEntity adminHistoryEntity = new AdminHistoryEntity();
         adminHistoryEntity.setHistoryType(adminHistoryDTO.getHistoryType());
         adminHistoryEntity.setHistoryMessage(adminHistoryDTO.getHistoryMessage());

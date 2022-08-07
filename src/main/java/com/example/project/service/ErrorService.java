@@ -48,16 +48,6 @@ public class ErrorService {
         }
     }
 
-
-//    public List<ErrorDTO> findAll() {
-//        List<ErrorEntity> errorEntityList = errorRepository.findAll();
-//        List<ErrorDTO> errorDTOList = new ArrayList<>();
-//        for(ErrorEntity error: errorEntityList){
-//            errorDTOList.add(ErrorDTO.toErrorDTO(error));
-//        }
-//        return errorDTOList;
-//    }
-
     public List<BoardDTO> findDistinctByBoardEntity() {
         // 신고를 받은 글 출력 메서드
         List<BoardEntity> boardEntities = errorRepository.findDistinct();

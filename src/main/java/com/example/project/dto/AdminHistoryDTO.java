@@ -1,10 +1,11 @@
 package com.example.project.dto;
 
 import com.example.project.entity.AdminHistoryEntity;
+import com.example.project.entity.BoardEntity;
+import com.example.project.entity.ErrorEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data

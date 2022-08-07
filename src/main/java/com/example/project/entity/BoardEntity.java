@@ -136,6 +136,7 @@ public class BoardEntity {
         boardEntity.setBoardDislike(boardDTO.getBoardDislike());
         boardEntity.setBoardReport(boardDTO.getBoardReport());
         boardEntity.setManagerCheck(boardDTO.isManagerCheck());
+        boardEntity.setBoardHits(boardDTO.getBoardHits());
         boardEntity.setMemberEntity(memberEntity);
         return boardEntity;
     }

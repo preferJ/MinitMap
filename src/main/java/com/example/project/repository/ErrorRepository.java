@@ -3,18 +3,14 @@ package com.example.project.repository;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.ErrorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ErrorRepository extends JpaRepository<ErrorEntity,Long> {
 
-//    @Modifying
-//    @Query(value = "SELECT DISTINCT board_id FROM error" , nativeQuery = true)
-//    List<ErrorEntity> findDistinctByBoardEntity();
 
-    @Query("select DISTINCT (e.boardEntity) from ErrorEntity e")
+    @Query("select DISTINCT (e.boardEntity) from ErrorEntity e order by e.managerCheck asc")
     List<BoardEntity> findDistinct();
 
     List<ErrorEntity> findByBoardEntity(BoardEntity boardEntity);

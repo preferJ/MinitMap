@@ -14,4 +14,5 @@ public class MapController {
     public String mainWindow(){
         return "/MapPages/mainWindow";
     }
+
 }

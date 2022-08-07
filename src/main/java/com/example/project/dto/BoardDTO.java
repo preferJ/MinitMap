@@ -26,6 +26,7 @@ public class BoardDTO {
     private boolean managerCheck;
     private String memberNickname;
     private Long boardReport;
+    private Long boardHits;
 
     public static BoardDTO toTrafficBoardDTO(BoardEntity boardEntity){
         BoardDTO boardDTO = new BoardDTO();
@@ -62,6 +63,7 @@ public class BoardDTO {
         boardDTO.setBoardDislike(boardEntity.getBoardDislike());
         boardDTO.setManagerCheck(boardEntity.isManagerCheck());
         boardDTO.setBoardReport(boardEntity.getBoardReport());
+        boardDTO.setBoardHits((boardEntity.getBoardHits()));
         return boardDTO;
     }
 }

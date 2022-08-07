@@ -153,7 +153,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myTraffic()">
                             <span data-feather="tool" class="align-text-bottom"></span>
                             내 신호등 관리
                         </a>
@@ -303,6 +303,14 @@
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
+    function myTraffic(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
         } else {
             loginForm();
         }

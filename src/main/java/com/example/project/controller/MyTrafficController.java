@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.MyTrafficDTO;
+import com.example.project.dto.RutinDTO;
 import com.example.project.dto.TrafficIntegratedDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.service.MyTrafficService;
@@ -58,4 +59,33 @@ public class MyTrafficController {
         return trafficIntegratedDTOList;
     }
 
+    @GetMapping("/")
+    public String myTrafficForm(){
+        return "/myTraffic/myTraffic";
+    }
+
+    @GetMapping("/list")
+    public @ResponseBody List<MyTrafficDTO> myTrafficList(HttpSession session){
+        String email = (String) session.getAttribute("loginEmail");
+        List<MyTrafficDTO> myTrafficDTOS = myTrafficService.findByEmail(email);
+        return myTrafficDTOS;
+    }
+
+    @GetMapping("/textUpDown")
+    public @ResponseBody String textUpDown(@RequestParam("one") Long upId , @RequestParam("two") Long downId){
+        myTrafficService.textUpDown(upId,downId);
+        return "ok";
+    }
+
+    @GetMapping("/deleteMyPlace")
+    public @ResponseBody String deleteMyPlace(@RequestParam("id") Long id){
+        myTrafficService.deleteById(id);
+        return "ok";
+    }
+
+    @GetMapping("/updateName")
+    public @ResponseBody String updateName(@RequestParam("id") Long id,@RequestParam("name") String name){
+        myTrafficService.updateName(id,name);
+        return "ok";
+    }
 }

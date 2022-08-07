@@ -47,4 +47,15 @@ public class TrafficTimeService {
 
         return trafficTimeDTOList;
     }
+
+    public List<TrafficTimeDTO> findByMyTrafficId(Long id) {
+        MyTrafficEntity myTrafficEntity = myTrafficRepository.findById(id).get();
+        List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficEntity);
+        List<TrafficTimeDTO> trafficTimeDTOList = new ArrayList<>();
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
+            trafficTimeDTOList.add(TrafficTimeDTO.toMyTrafficTimeDTO(trafficTimeEntity));
+        }
+
+        return trafficTimeDTOList;
+    }
 }

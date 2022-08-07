@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.dto.MyTrafficDTO;
+import com.example.project.dto.RutinDTO;
 import com.example.project.dto.TrafficDTO;
 import com.example.project.dto.TrafficIntegratedDTO;
 import com.example.project.entity.*;
@@ -109,5 +110,42 @@ public class MyTrafficService {
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
         return trafficIntegratedDTOList;
+    }
+
+    public List<MyTrafficDTO> findByEmail(String memberEmail) {
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findByMemberEmail(memberEmail);
+        if (memberEntityOptional.isPresent()) {
+            MemberEntity memberEntity = memberEntityOptional.get();
+            List<MyTrafficEntity> byMemberEntityOrderByMyTrafficOrderNumber = myTrafficRepository.findByMemberEntityOrderByMyTrafficOrderNumber(memberEntity);
+            List<MyTrafficDTO> myTrafficDTOS = new ArrayList<>();
+            for (MyTrafficEntity myTrafficEntity : byMemberEntityOrderByMyTrafficOrderNumber) {
+                myTrafficDTOS.add(MyTrafficDTO.toSaveMyTrafficDTO(myTrafficEntity));
+            }
+            return myTrafficDTOS;
+        } else {
+            return null;
+        }
+    }
+
+    public void textUpDown(Long upId, Long downId) {
+        // upId의 넘버와 downId의 넘버를 바꾼다.
+        MyTrafficEntity upNumber = myTrafficRepository.findById(upId).get();
+        MyTrafficEntity downNumber = myTrafficRepository.findById(downId).get();
+        Long up = upNumber.getMyTrafficOrderNumber();
+        Long down = downNumber.getMyTrafficOrderNumber();
+        upNumber.setMyTrafficOrderNumber(down);
+        downNumber.setMyTrafficOrderNumber(up);
+        myTrafficRepository.save(upNumber);
+        myTrafficRepository.save(downNumber);
+    }
+
+    public void deleteById(Long id) {
+        myTrafficRepository.deleteById(id);
+    }
+
+    public void updateName(Long id, String name) {
+        MyTrafficEntity myTrafficEntity = myTrafficRepository.findById(id).get();
+        myTrafficEntity.setMyTrafficName(name);
+        myTrafficRepository.save(myTrafficEntity);
     }
 }

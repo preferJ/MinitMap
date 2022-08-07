@@ -33,4 +33,17 @@ public class TrafficTimeDTO {
         trafficTimeDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         return trafficTimeDTO;
     }
+
+    public static TrafficTimeDTO toMyTrafficTimeDTO(TrafficTimeEntity trafficTimeEntity){
+        TrafficTimeDTO trafficTimeDTO = new TrafficTimeDTO();
+        trafficTimeDTO.setTrafficTimeId(trafficTimeEntity.getTrafficTimeId());
+        trafficTimeDTO.setMyTrafficId(trafficTimeEntity.getMyTrafficEntity().getMyTrafficId());
+        trafficTimeDTO.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
+        trafficTimeDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
+        trafficTimeDTO.setStartType(trafficTimeEntity.getStartType());
+        trafficTimeDTO.setGreenOn(trafficTimeEntity.getGreenOn());
+        trafficTimeDTO.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
+        return trafficTimeDTO;
+    }
 }

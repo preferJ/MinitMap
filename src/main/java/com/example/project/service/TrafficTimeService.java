@@ -58,4 +58,18 @@ public class TrafficTimeService {
 
         return trafficTimeDTOList;
     }
+
+    public void deleteById(Long id) {
+        trafficTimeRepository.deleteById(id);
+    }
+
+    public void update(TrafficTimeDTO trafficTimeDTO) {
+        TrafficTimeEntity trafficTimeEntity = trafficTimeRepository.findById(trafficTimeDTO.getTrafficTimeId()).get();
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime());
+        trafficTimeRepository.save(trafficTimeEntity);
+    }
 }

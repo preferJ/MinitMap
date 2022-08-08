@@ -5,10 +5,7 @@ import com.example.project.service.TrafficTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -21,13 +18,20 @@ public class TrafficTimeController {
 
     @GetMapping("/")
     public String trafficTImeForm(@RequestParam("id") Long id , Model model){
-        model.addAttribute("id",id);
+        List<TrafficTimeDTO> byMyTrafficId = trafficTimeService.findByMyTrafficId(id);
+        model.addAttribute("myTrafficList",byMyTrafficId);
         return "/myTraffic/myTrafficTime";
     }
 
-    @GetMapping("/list")
-    public @ResponseBody List<TrafficTimeDTO>  trafficTImeList(@RequestParam("id") Long id){
-        List<TrafficTimeDTO> trafficTimeDTOS = trafficTimeService.findByMyTrafficId(id);
-        return trafficTimeDTOS;
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") Long id, @RequestParam("trafficId") Long trafficId){
+        trafficTimeService.deleteById(id);
+        return "redirect:/trafficTime/?id="+trafficId;
+    }
+
+    @GetMapping("/update")
+    public String update(@ModelAttribute TrafficTimeDTO trafficTimeDTO,@RequestParam("id") Long id){
+        trafficTimeService.update(trafficTimeDTO);
+        return "redirect:/trafficTime/?id="+id;
     }
 }

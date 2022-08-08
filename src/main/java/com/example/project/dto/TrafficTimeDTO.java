@@ -29,7 +29,7 @@ public class TrafficTimeDTO {
         trafficTimeDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
         trafficTimeDTO.setStartType(trafficTimeEntity.getStartType());
         trafficTimeDTO.setGreenOn(trafficTimeEntity.getGreenOn());
-        trafficTimeDTO.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeDTO.setRedOn(trafficTimeEntity.getRedOn());
         trafficTimeDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         return trafficTimeDTO;
     }
@@ -42,7 +42,7 @@ public class TrafficTimeDTO {
         trafficTimeDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
         trafficTimeDTO.setStartType(trafficTimeEntity.getStartType());
         trafficTimeDTO.setGreenOn(trafficTimeEntity.getGreenOn());
-        trafficTimeDTO.setRedOn(trafficTimeDTO.getRedOn());
+        trafficTimeDTO.setRedOn(trafficTimeEntity.getRedOn());
         trafficTimeDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         return trafficTimeDTO;
     }

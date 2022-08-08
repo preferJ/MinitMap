@@ -71,7 +71,7 @@ public class MemberController {
     public String logout(HttpSession session) {
         // ㅁㅈ
         session.invalidate();
-        return "redirect:/1tapTest";
+        return "redirect:/Main";
     }
 
     @GetMapping("/admin")

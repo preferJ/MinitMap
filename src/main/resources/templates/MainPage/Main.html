@@ -150,6 +150,24 @@
             }
         }
 
+        function sidebarHide4(){
+            const sidebarIcon = document.getElementById("side4HideIcon");
+            var sidebar = document.getElementById("side4");
+            if(sidebar.style.left == "-395%"){
+                sidebar.style.animation = "seek 0.9s";
+                sidebar.style.left = "100%";
+                setTimeout(function (){
+                    sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+                },900);
+            }else{
+                sidebar.style.animation = "hide 0.9s";
+                sidebar.style.left = "-395%";
+                setTimeout(function (){
+                    sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+                },900)
+            }
+        }
+
         function tap1(){
             const sidebarIcon = document.getElementById("side1HideIcon");
             var sidebar = document.getElementById("side1");
@@ -166,6 +184,8 @@
                         sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
                         onTap = 1;
                     },900);
+            }else if(onTap == 1){
+                sidebarHide1();
             }
             if(onTap == 2){
                 map.removeListener("click",onClick);
@@ -189,6 +209,8 @@
                         sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
                         onTap = 2;
                     },900);
+            }else if(onTap == 2){
+                sidebarHide2();
             }
         }
 
@@ -208,15 +230,63 @@
                         sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
                         onTap = 3;
                     },900);
+            }else if(onTap == 3){
+                sidebarHide3();
             }
             if(onTap == 2){
                 map.removeListener("click",onClick);
             }
         }
+
+        function tap4(){
+            const sidebarIcon = document.getElementById("side4HideIcon");
+            var sidebar = document.getElementById("side4");
+            var sidebar2 = document.getElementById("side"+onTap);
+            if(onTap != 4){
+                if(sidebar2.style.left != "-395%") {
+                    sidebar2.style.animation = "hide 0.9s";
+                }
+                sidebar2.style.left = "-500%";
+                sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+                sidebar.style.animation = "seek 0.9s";
+                sidebar.style.left = "100%";
+                setTimeout(function (){
+                    sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+                    onTap = 4;
+                },900);
+            }else if(onTap == 4){
+                sidebarHide4();
+            }
+            if(onTap == 2){
+                map.removeListener("click",onClick);
+            }
+        }
+
+        function userTap(){
+            var userTap = document.getElementById("user");
+            if(userTap.className != 'show') {
+                userTap.classList.add('show');
+            }else{
+                userTap.classList.remove('show');
+            }
+        }
+
+        $(document).mouseup(function (e){
+            var user = $("#user");
+            var userIcon = $(".userIcon");
+            if(user.has(e.target).length === 0 && userIcon.has(e.target).length === 0){
+                user.removeClass("show");
+            }
+        });
         //사이드바 관련 끝
 
         //로그인
-            const loginAdmin = () => {
+
+        function logout() {
+            location.href = "/member/logout";
+        }
+
+        const loginAdmin = () => {
             location.href = "/member/findAll";
         }
 
@@ -231,6 +301,24 @@
 
             window.open("/member/loginForm", "로그인", windowStatus);
 
+        }
+
+        function save() {
+            var width = 480;
+            var height = 600;
+            var left = (window.screen.width / 2) - (width / 2);
+            var top = (window.screen.height / 4);
+            var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+            window.open("/member/saveForm", "회원가입", windowStatus);
+        }
+
+        function myPage(id) {
+            if(id == null) {
+                alert("로그인이 필요합니다");
+                location.href = "/1tapTest";
+            }else {
+                location.href = "/member/myPage/" + id;
+            }
         }
         //로그인 끝
 
@@ -551,9 +639,6 @@
             })
         }
 
-        function logout() {
-            location.href = "/member/logout";
-        }
 
         function mypTapDown() {
             var mypTap = document.getElementById("mypTap");
@@ -1494,7 +1579,7 @@
             })
         }
         const goBoardPages = () => {
-            window.open("/board")
+            window.open("/board");
         }
         // 탭3 끝
     </script>
@@ -1663,6 +1748,51 @@
             background-color: #f3e9e9 !important;
             color: #303f39 !important;
         }
+        .bottomTap{
+            text-align: center;
+            position: absolute;
+            display: block;
+            width: 60px;
+            top: 93%;
+            margin: 0;
+            padding: 0;
+        }
+        .bottomTap i:hover{
+            color: #0d6efd;
+        }
+        #user{
+            position: absolute;
+            padding: 10px;
+            width: 300px;
+            height: 150px;
+            display: none;
+            text-align: center;
+            border: solid black 1px;
+            right: -520%;
+            bottom: 0px;
+            border-radius: 40px;
+            background-color: rgba(245, 245, 245, 0.8);
+            z-index: 1000000;
+        }
+        #user.show{
+            display: block;
+        }
+        .userContainer{
+            position: relative;
+            background-color: white;
+            border-radius: 35px;
+            width: 280px;
+            height: 130px;
+        }
+        .loginForm{
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            top: 50px;
+        }
+        .logTap{
+            display: inline-block;
+        }
     </style>
 </head>
 <body onload="initTmap();myPlaceList();rutinList();boardList();">
@@ -1688,6 +1818,31 @@
                         <a id="tap4" class="tapes" onclick="tap4()"><i class="fa-solid fa-traffic-light fa-3x"></i></a>
                     </li>
                 </ul>
+                <div class="bottomTap">
+                    <div style="position: relative">
+                        <div class="userIcon">
+                            <i class="fa-solid fa-user-large fa-3x" onclick="userTap()"></i>
+                        </div>
+                        <div id="user">
+                            <div class="userContainer">
+                                <h2 style="color: #0d6efd;">회원관리</h2>
+                                <div class="loginForm">
+                                    <div th:if="${session.loginEmail}">
+                                        <button th:onclick="logout()" type="button" class="btn success logTap">▶로그아웃</button>
+                                        <button th:onclick="|myPage(${session.loginId})|" type="button" class="btn success logTap">▶회원 정보</button>
+                                        <div th:if="${session.loginEmail.toString().equals('admin')}" style="display:inline-block;">
+                                            <button th:onclick="loginAdmin()" type="button" class="btn success logTap">▶관리자 페이지</button>
+                                        </div>
+                                    </div>
+                                    <div th:unless="${session.loginEmail}">
+                                        <button onclick="loginForm()" type="button" class="btn success logTap">▶로그인</button>
+                                        <button onclick="save()" type="button" class="btn success logTap">▶회원가입</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </div>
         <div id="side1" class="sidebars">
@@ -1741,11 +1896,6 @@
                             <div th:if="${session.loginEmail.toString().equals('admin')}">
                                 <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
                             </div>
-                            <button th:onclick="logout()" type="button" class="btn success">▶로그아웃</button>
-                            <hr>
-                        </div>
-                        <div th:unless="${session.loginEmail}">
-                            <button onclick="loginForm()" type="button" class="btn success">▶로그인</button>
                         </div>
                     </div>
                 </div>
@@ -1790,12 +1940,6 @@
                             <div id="rutinList2">
                             </div>
                         </div>
-                        <hr>
-                        <button th:onclick="logout()" type="button" class="btn success">로그아웃</button>
-                    </div>
-                    <div th:unless="${session.loginEmail}">
-                        <hr>
-                        <button onclick="loginForm()" type="button" class="btn success">로그인</button>
                     </div>
                     <hr>
                     <p id="result">거리/시간</p>
@@ -1839,10 +1983,20 @@
                 </div>
             </div>
         </div>
+        <div id="side4" class="sidebars">
+            <div id="side42" class="sideTap">
+                <div id="side4Hide" class="sideHide">
+                    <i id="side4HideIcon" class="fa-solid fa-angle-left fa-2xl" onclick="sidebarHide4()"></i>
+                </div>
+                <div class="traffic_information">
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="map_div"></div>
-    <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:120px;right:80px;">
+    <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:50px;right:80px;">
         <i class="fa-solid fa-circle fa-stack-2x" style="color:white;"></i>
         <i class="fa-solid fa-location-dot fa-stack-1x" style="color:red;"></i>
     </span>

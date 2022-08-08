@@ -403,12 +403,12 @@ public class BoardService {
         }
     }
 
-//    public void updateByBoardHits(BoardDTO boardDTO, Long id) {
-//    // 글 확인 처리한 거 1값 넣고 업데이트 메서드 / 이거 하면 부모 자식 잃음 ㅋㅋ;
-//       Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
-//       if(optionalMemberEntity.isPresent()){
-//          MemberEntity memberEntity = optionalMemberEntity.get();
-//        boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO, memberEntity));
-//       }
-//    }
+    public void updateByBoardHits(BoardDTO boardDTO, Long id) {
+    // 글 확인 처리한 거 1값 넣고 업데이트 메서드 / 이거 하면 부모 자식 잃음 ㅋㅋ;
+       Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
+       if(optionalMemberEntity.isPresent()){
+          MemberEntity memberEntity = optionalMemberEntity.get();
+        boardRepository.save(BoardEntity.toBoardUpdateEntity(boardDTO, memberEntity));
+       }
+    }
 }

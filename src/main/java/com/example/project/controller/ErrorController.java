@@ -22,7 +22,7 @@ public class ErrorController {
     private final AdminHistoryService adminHistoryService;
 
     @PostMapping("/reportSave")
-    // ㅁㅈ
+    // ㅁㅈ / 신고 저장
     public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
         errorService.save(errorDTO);
         return "/hss/tapDown";
@@ -50,13 +50,13 @@ public class ErrorController {
        model.addAttribute("board", boardDTO);
        return "/AdminPages/boardCheck";
     }
-//    @PostMapping("/historySave")
-//    // 신고 처리를 저장 할 때 확인 된거는 확인이라고 띄우기 위한 1값을 넣을 때 업데이트 메서드
-//    public String historySave(@ModelAttribute AdminHistoryDTO adminHistoryDTO,@RequestParam Long boardId){
-//        adminHistoryService.save(adminHistoryDTO);
-//       BoardDTO boardDTO = boardService.findByBoardId(boardId);
-//       boardDTO.setBoardHits(1L);
-//       boardService.updateByBoardHits(boardDTO, adminHistoryDTO.getMemberId());
-//        return "/hss/tapDown";
-//    }
+    @PostMapping("/historySave")
+    // 신고 처리를 저장 할 때 확인 된거는 확인이라고 띄우기 위한 1값을 넣을 때 업데이트 메서드
+    public String historySave(@ModelAttribute AdminHistoryDTO adminHistoryDTO,@RequestParam Long boardId){
+        adminHistoryService.save(adminHistoryDTO);
+       BoardDTO boardDTO = boardService.findByBoardId(boardId);
+       boardDTO.setBoardHits(1L);
+       boardService.updateByBoardHits(boardDTO, adminHistoryDTO.getMemberId());
+        return "/hss/tapDown";
+    }
 }

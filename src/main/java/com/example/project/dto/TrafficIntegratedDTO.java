@@ -24,7 +24,7 @@ public class TrafficIntegratedDTO {
     private Long trafficTimeId;
     private Long trafficApplyStart;
     private Long trafficApplyEnd;
-    private String startType;
+    private Long startType;
     private Long greenOn;
     private Long redOn;
     private Long setStartTime;
@@ -103,7 +103,11 @@ public class TrafficIntegratedDTO {
         integratedDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
         integratedDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         integratedDTO.setLeftTime(1L);
-        integratedDTO.setStartType(trafficTimeEntity.getStartType());
+        if (trafficTimeEntity.getStartType() == "RED"){
+        integratedDTO.setStartType(-1L);
+        }else {
+            integratedDTO.setStartType(1L);
+        }
         // 신호 관련
 
         Long g = trafficTimeEntity.getGreenOn();
@@ -117,19 +121,19 @@ public class TrafficIntegratedDTO {
         Long timeGap = nowTime - st;
         if (timeGap > 0) {
             if (timeGap % (g + r) < g) {
-                integratedDTO.setStartType("GREEN");
+                integratedDTO.setStartType(1L);
                 integratedDTO.setLeftTime(g - timeGap % (g + r));
             } else {
-                integratedDTO.setStartType("RED");
+                integratedDTO.setStartType(-1L);
                 integratedDTO.setLeftTime((g + r) - timeGap % (g + r));
             }
         } else {
             timeGap = Math.abs(timeGap);
             if (timeGap % (g + r) < g) {
-                integratedDTO.setStartType("RED");
+                integratedDTO.setStartType(-1L);
                 integratedDTO.setLeftTime(timeGap % (g + r));
             } else {
-                integratedDTO.setStartType("GREEN");
+                integratedDTO.setStartType(1L);
                 integratedDTO.setLeftTime(timeGap % (g + r) - g);
             }
         }
@@ -164,7 +168,11 @@ public class TrafficIntegratedDTO {
         integratedDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
         integratedDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         integratedDTO.setLeftTime(1L);
-        integratedDTO.setStartType(trafficTimeEntity.getStartType());
+        if (trafficTimeEntity.getStartType() == "RED"){
+            integratedDTO.setStartType(-1L);
+        }else {
+            integratedDTO.setStartType(1L);
+        }
         // 신호 관련
 
         Long g = trafficTimeEntity.getGreenOn();
@@ -173,19 +181,19 @@ public class TrafficIntegratedDTO {
         Long timeGap = nowTime - st;
         if (timeGap > 0) {
             if (timeGap % (g + r) < g) {
-                integratedDTO.setStartType("GREEN");
+                integratedDTO.setStartType(1L);
                 integratedDTO.setLeftTime(g - timeGap % (g + r));
             } else {
-                integratedDTO.setStartType("RED");
+                integratedDTO.setStartType(-1L);
                 integratedDTO.setLeftTime((g + r) - timeGap % (g + r));
             }
         } else {
             timeGap = Math.abs(timeGap);
             if (timeGap % (g + r) < g) {
-                integratedDTO.setStartType("RED");
+                integratedDTO.setStartType(-1L);
                 integratedDTO.setLeftTime(timeGap % (g + r));
             } else {
-                integratedDTO.setStartType("GREEN");
+                integratedDTO.setStartType(1L);
                 integratedDTO.setLeftTime(timeGap % (g + r) - g);
             }
         }

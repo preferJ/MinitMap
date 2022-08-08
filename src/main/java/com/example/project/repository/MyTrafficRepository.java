@@ -12,4 +12,6 @@ public interface MyTrafficRepository extends JpaRepository<MyTrafficEntity,Long>
 
     List<MyTrafficEntity> findByMemberEntity(MemberEntity memberEntity);
     Optional<MyTrafficEntity> findByMemberEntityAndMyTrafficLonAndMyTrafficLat(MemberEntity memberEntity,Double lon,Double lat);
+
+    List<MyTrafficEntity> findByMemberEntityOrderByMyTrafficOrderNumber(MemberEntity memberEntity);
 }

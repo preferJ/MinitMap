@@ -12,6 +12,12 @@
           integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:inline="javascript">
+        function mainIconOver(){
+            document.getElementById("MainIcon").src="/icon/M-Click.png";
+        }
+        function mainIconOut(){
+            document.getElementById("MainIcon").src="/icon/M-removebg-preview.png";
+        }
         function changecss(theClass,element,value){
             var cssRules;
             if(document.all){
@@ -1640,9 +1646,6 @@
             width: 60px;
             height: 60px;
         }
-        #MainIcon:hover{
-            background-color: #bebebe;
-        }
         .tap {
             text-align: center;
             list-style-type: none;
@@ -1668,7 +1671,7 @@
         <div id="sidebar">
             <nav style="float: top">
             <div>
-                <img id="MainIcon" src="/icon/M-removebg-preview.png" onclick="location.href='/Main'">
+                <img id="MainIcon" onmouseover="mainIconOver()" onmouseout="mainIconOut()" src="/icon/M-removebg-preview.png" onclick="location.href='/Main'">
             </div>
                 <ul class="tap">
                     <li class="tap-result">

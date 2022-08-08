@@ -270,8 +270,8 @@ public class BoardService {
     @Transactional
     public void likeCheck(Long like, Long boardId, Long loginId) {
         Optional<BoardEntity> byId = boardRepository.findById(boardId);
-        LikeCheckEntity likeCheckEntity = likeCheckRepository.findByBoardEntity(byId.get());
         Optional<MemberEntity> memberId = memberRepository.findById(loginId);
+        LikeCheckEntity likeCheckEntity = likeCheckRepository.findByBoardEntityAndMemberEntity(byId.get(),memberId.get());
         // 첫 등록
         if (likeCheckEntity == null) {
             if (like == 1) { //좋아요

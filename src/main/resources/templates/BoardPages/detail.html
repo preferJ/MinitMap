@@ -352,14 +352,13 @@
 
         var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
 
-        window.open("/board/report/" + id, "신고하기", windowStatus);
+        window.open("/board/report/"+ id, "신고하기", windowStatus);
     }
 
     function logout() {
         location.href = "/board/logout";
     }
-
-    function myPlace() {
+    function myPlace(){
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/myPlace/";
@@ -367,11 +366,18 @@
             loginForm();
         }
     }
-
-    function rutin() {
+    function rutin(){
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
+    function myTraffic(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
         } else {
             loginForm();
         }
@@ -439,7 +445,6 @@
         alert("글이 삭제되었습니다.")
         location.href = "/board/delete?boardId=" + [[${board.boardId}]];
     }
-
     function buttonCheck(id) {
         var width = 553;
         var height = 350;

@@ -10,4 +10,5 @@ public interface LikeCheckRepository extends JpaRepository<LikeCheckEntity,Long>
     LikeCheckEntity findByBoardEntity (BoardEntity boardEntity);
 
     LikeCheckEntity findByBoardEntityAndMemberEntity (BoardEntity boardEntity , MemberEntity memberEntity);
+
 }

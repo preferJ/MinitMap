@@ -84,9 +84,12 @@ public class MyTrafficService {
         System.out.println("MyTrafficService.inBoundFindAll");
         List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
         String[] latlng = center.split(",");
-        System.out.println(latlng[0]);
         double lat = Double.parseDouble(latlng[0]);
         double lng = Double.parseDouble(latlng[1]);
+        double minLat = lat-0.01;
+        double maxLat = lat+0.01;
+        double minLng = lng-0.01;
+        double maxLng = lng+0.01;
         System.out.println(lat);
         System.out.println(lng);
         List<TrafficEntity> trafficEntityList = trafficRepository.findAll();
@@ -98,9 +101,19 @@ public class MyTrafficService {
         for (TrafficTimeEntity time : trafficTimeEntityList) {
             if (time.getTrafficEntity() == null) {
                 // 트래픽ID 가 null 이면 --> 마이트래픽
+                MyTrafficEntity myTrafficEntity = time.getMyTrafficEntity();
+                Double myLat = myTrafficEntity.getMyTrafficLat();
+                Double myLng = myTrafficEntity.getMyTrafficLon();
+                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng){
                 trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
+                }
             } else if (time.getMyTrafficEntity() == null) {
+                TrafficEntity trafficEntity = time.getTrafficEntity();
+                Double myLat = trafficEntity.getTrafficLat();
+                Double myLng = trafficEntity.getTrafficLon();
+                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng){
                 trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
+                }
             }
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");

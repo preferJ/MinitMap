@@ -38,54 +38,55 @@ public class MyTrafficController {
 
 
     @PostMapping("/saveTraffic")
-    public String saveTraffic(@ModelAttribute MyTrafficDTO myTrafficDTO, @ModelAttribute TrafficTimeDTO trafficTimeDTO,@RequestParam Long memberId, HttpSession session) {
-        Long myTrafficId =  myTrafficService.save(myTrafficDTO,memberId);
-        trafficTimeService.save(myTrafficId,trafficTimeDTO);
+    public String saveTraffic(@ModelAttribute MyTrafficDTO myTrafficDTO, @ModelAttribute TrafficTimeDTO trafficTimeDTO, @RequestParam Long memberId, HttpSession session) {
+        Long myTrafficId = myTrafficService.save(myTrafficDTO, memberId);
+        trafficTimeService.save(myTrafficId, trafficTimeDTO);
 
         return "redirect:/4tapTest";
     }
 
     @PostMapping("/test11")
-    public String test11(){
+    public String test11() {
         System.out.println("MyTrafficController.test11");
         return "/jsh/formTest2";
     }
 
-    @PostMapping ("/inBoundTrafficAll")
-    @ResponseBody
-    public List<TrafficIntegratedDTO> inBoundTrafficAll(@RequestParam("center") String center,HttpSession session){
+    @PostMapping("/inBoundTrafficAll")
+    public @ResponseBody List<TrafficIntegratedDTO> inBoundTrafficAll(@RequestParam("center") String center, HttpSession session) {
+        System.out.println("MyTrafficController.inBoundTrafficAll");
+        System.out.println("center = " + center);
         Long memberId = (Long) session.getAttribute("memberId");
-        List<TrafficIntegratedDTO> trafficIntegratedDTOList = myTrafficService.inBoundFindAll(center,memberId);
+        List<TrafficIntegratedDTO> trafficIntegratedDTOList = myTrafficService.inBoundFindAll(center, memberId);
         return trafficIntegratedDTOList;
     }
 
     @GetMapping("/")
-    public String myTrafficForm(){
+    public String myTrafficForm() {
         return "/myTraffic/myTraffic";
     }
 
     @GetMapping("/list")
-    public @ResponseBody List<MyTrafficDTO> myTrafficList(HttpSession session){
+    public @ResponseBody List<MyTrafficDTO> myTrafficList(HttpSession session) {
         String email = (String) session.getAttribute("loginEmail");
         List<MyTrafficDTO> myTrafficDTOS = myTrafficService.findByEmail(email);
         return myTrafficDTOS;
     }
 
     @GetMapping("/textUpDown")
-    public @ResponseBody String textUpDown(@RequestParam("one") Long upId , @RequestParam("two") Long downId){
-        myTrafficService.textUpDown(upId,downId);
+    public @ResponseBody String textUpDown(@RequestParam("one") Long upId, @RequestParam("two") Long downId) {
+        myTrafficService.textUpDown(upId, downId);
         return "ok";
     }
 
     @GetMapping("/deleteMyPlace")
-    public @ResponseBody String deleteMyPlace(@RequestParam("id") Long id){
+    public @ResponseBody String deleteMyPlace(@RequestParam("id") Long id) {
         myTrafficService.deleteById(id);
         return "ok";
     }
 
     @GetMapping("/updateName")
-    public @ResponseBody String updateName(@RequestParam("id") Long id,@RequestParam("name") String name){
-        myTrafficService.updateName(id,name);
+    public @ResponseBody String updateName(@RequestParam("id") Long id, @RequestParam("name") String name) {
+        myTrafficService.updateName(id, name);
         return "ok";
     }
 }

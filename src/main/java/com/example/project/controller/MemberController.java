@@ -104,8 +104,9 @@ public class MemberController {
 
     @PostMapping("/pwCheck")
     // ㅁㅈ
-    public @ResponseBody String passwordCheck(@RequestParam String memberPassword) {
-        String result = memberService.findByMemberPassword(memberPassword);
+    public @ResponseBody String passwordCheck(@RequestParam String memberPassword , HttpSession session) {
+        Long id = (Long) session.getAttribute("loginId");
+        String result = memberService.findByMemberPassword(memberPassword,id);
         return result;
     }
 

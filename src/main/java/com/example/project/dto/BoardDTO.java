@@ -46,6 +46,7 @@ public class BoardDTO {
         boardDTO.setBoardDislike(boardEntity.getBoardDislike());
         boardDTO.setManagerCheck(boardEntity.isManagerCheck());
         boardDTO.setBoardReport(boardEntity.getBoardReport());
+        boardDTO.setBoardHits((boardEntity.getBoardHits()));
         return boardDTO;
     }
     public static BoardDTO toBoardDTO(BoardEntity boardEntity){

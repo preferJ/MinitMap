@@ -15,7 +15,6 @@ public class MemberDTO {
     private String memberNickname;
     private String memberPhone;
     private Long memberLevel;
-
     public static MemberDTO toMemberDTO(MemberEntity memberEntity){
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setMemberId(memberEntity.getMemberId());

@@ -175,6 +175,10 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">내 신호등</h1>
+
+                <div class="btn-group me-2">
+                    <button type="button" th:onclick="" class="btn btn-sm btn-outline-secondary">시간 추가</button>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -221,7 +225,7 @@
                                     th:onclick="end([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
                             </td>
                             <td><input name="setStartTime" th:id="|set${time.trafficTimeId}|" class="inputStyle" type="text"
-                                       th:value="${time.setStartTime}"> <i th:onclick="set([[${time.trafficTimeId}]],1)"
+                                       th:value="${time.setStartTime}" readonly> <i th:onclick="set([[${time.trafficTimeId}]],1)"
                                                                            class="fa-solid fa-caret-up"></i> <i
                                     th:onclick="set([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
                             </td>

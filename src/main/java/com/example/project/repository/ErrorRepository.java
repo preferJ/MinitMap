@@ -10,7 +10,7 @@ import java.util.List;
 public interface ErrorRepository extends JpaRepository<ErrorEntity,Long> {
 
 
-    @Query("select DISTINCT (e.boardEntity) from ErrorEntity e order by e.managerCheck asc")
+    @Query("select DISTINCT (e.boardEntity) from ErrorEntity e order by e.boardEntity.boardHits asc")
     List<BoardEntity> findDistinct();
 
     List<ErrorEntity> findByBoardEntity(BoardEntity boardEntity);

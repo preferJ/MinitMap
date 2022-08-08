@@ -225,7 +225,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th>작성자 : <span th:text="${board.memberNickname}"></span></th>
+                        <th>작성자 : <span th:text="${board.memberNickname}"></span> <span><img src="" alt=""></span></th>
                         <th>작성시간 : <span th:if="${board.boardUpdateTime}"
                                          th:text="*{#temporals.format(board.boardUpdateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
                             <span th:unless="${board.boardUpdateTime}"
@@ -260,21 +260,15 @@
                                                                                                         th:onclick="delete1()"
                                                                                                         value="삭제">
                     <input th:if="${board.boardType == '신호'}" type="button"
-                           th:onclick="traffic([[${board.boardId}]])" value="신호추가"><input
-                            th:if="${session.loginEmail == 'admin'}" style="float: right" type="button"
-                            th:onclick="buttonCheck([[${board.boardId}]])" value="글 확인">
+                           th:onclick="traffic([[${board.boardId}]])" value="신호추가">
                 </div>
                 <div th:if="${session.loginNickName != board.memberNickname}and${session.loginEmail == 'admin'}">
                     <input type="button" th:onclick="delete1()" value="삭제">
-                    <div>
-                        <div th:if="${board.boardHits == 0}">
-                            <input style="float: right" type="button" th:onclick="buttonCheck([[${board.boardId}]])"
+                    <span th:if="${board.boardReport > 0}">
+                            <input th:if="${board.boardHits == 0}" style="float: right" type="button" th:onclick="buttonCheck([[${board.boardId}]])"
                                    value="글 확인">
-                        </div>
-                        <div th:if="${board.boardHits != 0}">
-                            <input type='button' disabled value='글 확인됨'/>
-                        </div>
-                    </div>
+                            <input th:if="${board.boardHits != 0}" type='button' style="float: right" disabled value='글 확인됨'/>
+                    </span>
                 </div>
                 <div th:if="${session.loginId} and ${session.loginEmail != 'admin'} and ${session.loginNickName != board.memberNickname}">
                     <input th:if="${board.boardType == '신호'}" type="button" th:onclick="traffic([[${board.boardId}]])"

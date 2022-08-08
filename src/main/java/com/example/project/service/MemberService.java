@@ -100,12 +100,11 @@ public class MemberService {
         return memberDTOList;
     }
 
-    public String findByMemberPassword(String memberPassword) {
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberPassword(memberPassword);
-        if (optionalMemberEntity.isPresent()) {
-            MemberEntity memberEntity = optionalMemberEntity.get();
-            String result = memberEntity.getMemberPassword();
-            return result;
+    public String findByMemberPassword(String memberPassword,Long id) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        if (memberEntity.getMemberPassword().equals(memberPassword)) {
+            return "ok";
         } else {
             return "no";
         }

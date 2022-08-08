@@ -32,7 +32,6 @@ public class ErrorController {
     public String findAll(Model model){
         List<BoardDTO> distinctByBoardEntity = errorService.findDistinctByBoardEntity();
        model.addAttribute("boardList", distinctByBoardEntity);
-        System.out.println("distinctByBoardEntity = " + distinctByBoardEntity);
         return "/AdminPages/boardError";
     }
 
@@ -54,9 +53,8 @@ public class ErrorController {
     // 신고 처리를 저장 할 때 확인 된거는 확인이라고 띄우기 위한 1값을 넣을 때 업데이트 메서드
     public String historySave(@ModelAttribute AdminHistoryDTO adminHistoryDTO,@RequestParam Long boardId){
         adminHistoryService.save(adminHistoryDTO);
-       BoardDTO boardDTO = boardService.findByBoardId(boardId);
-       boardDTO.setBoardHits(1L);
-       boardService.updateByBoardHits(boardDTO, adminHistoryDTO.getMemberId());
+       boardService.updateByBoardHits(boardId);
+       errorService.updateManagerCheck(boardId);
         return "/hss/tapDown";
     }
 }

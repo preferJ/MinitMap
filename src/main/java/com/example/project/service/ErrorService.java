@@ -46,6 +46,10 @@ public class ErrorService {
                 }
             }
         }
+        BoardEntity boardEntity = boardRepository.findById(errorDTO.getBoardId()).get();
+        boardEntity.setBoardReport(boardEntity.getBoardReport()+1l);
+        boardRepository.save(boardEntity);
+
     }
 
     public List<BoardDTO> findDistinctByBoardEntity() {
@@ -66,5 +70,14 @@ public class ErrorService {
            errorDTOList.add(ErrorDTO.toErrorDTO(error));
        }
        return errorDTOList;
+    }
+
+    public void updateManagerCheck(Long boardId) {
+        BoardEntity boardEntity = boardRepository.findById(boardId).get();
+        List<ErrorEntity> byBoardEntity = errorRepository.findByBoardEntity(boardEntity);
+        for (ErrorEntity error : byBoardEntity){
+            error.setManagerCheck(true);
+            errorRepository.save(error);
+        }
     }
 }

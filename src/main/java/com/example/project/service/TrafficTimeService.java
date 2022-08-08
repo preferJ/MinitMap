@@ -22,10 +22,11 @@ public class TrafficTimeService {
     private final TrafficRepository trafficRepository;
     private final MyTrafficRepository myTrafficRepository;
     private final TrafficTimeRepository trafficTimeRepository;
+
     public void save(Long id, TrafficTimeDTO trafficTimeDTO) {
         Optional<MyTrafficEntity> entity = myTrafficRepository.findById(id);
         System.out.println(trafficTimeDTO);
-        trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeSaveEntity(trafficTimeDTO,entity.get()));
+        trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeSaveEntity(trafficTimeDTO, entity.get()));
     }
 
     public List<TrafficTimeDTO> findAll() {
@@ -41,7 +42,7 @@ public class TrafficTimeService {
         Optional<TrafficEntity> entity = trafficRepository.findById(trafficId);
         List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(entity.get());
         List<TrafficTimeDTO> trafficTimeDTOList = new ArrayList<>();
-        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity) {
             trafficTimeDTOList.add(TrafficTimeDTO.toTrafficTimeDTO(trafficTimeEntity));
         }
 
@@ -52,7 +53,7 @@ public class TrafficTimeService {
         MyTrafficEntity myTrafficEntity = myTrafficRepository.findById(id).get();
         List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficEntity);
         List<TrafficTimeDTO> trafficTimeDTOList = new ArrayList<>();
-        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity) {
             trafficTimeDTOList.add(TrafficTimeDTO.toMyTrafficTimeDTO(trafficTimeEntity));
         }
 
@@ -73,15 +74,17 @@ public class TrafficTimeService {
         trafficTimeRepository.save(trafficTimeEntity);
     }
 
-    public String timeCheck(Long id, Double start, Double end) {
+    public String timeCheck(Long id, Double start, Double end, Long timeId) {
         List<TrafficTimeEntity> byMyTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficRepository.findById(id).get());
         String check = "ok";
         System.out.println("id = " + id + ", start = " + start + ", end = " + end);
-        for (TrafficTimeEntity trafficTimeEntity : byMyTrafficEntity){
-            if (trafficTimeEntity.getTrafficApplyStart()<start&&trafficTimeEntity.getTrafficApplyEnd()>start){
-                check="no";
-            }else if(trafficTimeEntity.getTrafficApplyStart()<end&&trafficTimeEntity.getTrafficApplyEnd()>start){
-                check="no";
+        for (TrafficTimeEntity trafficTimeEntity : byMyTrafficEntity) {
+            if (trafficTimeEntity.getTrafficTimeId() != timeId) {
+                if (trafficTimeEntity.getTrafficApplyStart() < start && trafficTimeEntity.getTrafficApplyEnd() > start) {
+                    check = "no";
+                } else if (trafficTimeEntity.getTrafficApplyStart() < end && trafficTimeEntity.getTrafficApplyEnd() > start) {
+                    check = "no";
+                }
             }
         }
         return check;

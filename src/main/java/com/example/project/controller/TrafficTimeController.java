@@ -36,8 +36,8 @@ public class TrafficTimeController {
     }
 
     @GetMapping("/check")
-    public @ResponseBody String timeCheck(@RequestParam("start") Double start , @RequestParam("end") Double end , @RequestParam("id") Long id){
-        String check = trafficTimeService.timeCheck(id,start,end);
+    public @ResponseBody String timeCheck(@RequestParam("start") Double start , @RequestParam("end") Double end , @RequestParam("id") Long id ,@RequestParam("timeId") Long timeId){
+        String check = trafficTimeService.timeCheck(id,start,end,timeId);
         return check;
     }
 }

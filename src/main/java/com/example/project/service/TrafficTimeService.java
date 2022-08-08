@@ -72,4 +72,18 @@ public class TrafficTimeService {
         trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime());
         trafficTimeRepository.save(trafficTimeEntity);
     }
+
+    public String timeCheck(Long id, Double start, Double end) {
+        List<TrafficTimeEntity> byMyTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficRepository.findById(id).get());
+        String check = "ok";
+        System.out.println("id = " + id + ", start = " + start + ", end = " + end);
+        for (TrafficTimeEntity trafficTimeEntity : byMyTrafficEntity){
+            if (trafficTimeEntity.getTrafficApplyStart()<start&&trafficTimeEntity.getTrafficApplyEnd()>start){
+                check="no";
+            }else if(trafficTimeEntity.getTrafficApplyStart()<end&&trafficTimeEntity.getTrafficApplyEnd()>start){
+                check="no";
+            }
+        }
+        return check;
+    }
 }

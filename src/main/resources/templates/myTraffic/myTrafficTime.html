@@ -203,7 +203,8 @@
                             <input type="hidden" name="trafficTimeId" th:value="${time.trafficTimeId}">
                             <td th:text="${time.trafficTimeId}"></td>
                             <td th:text="${time.startType}"></td>
-                            <td><input name="greenOn" th:id="|greenOn${time.trafficTimeId}|" class="inputStyle" type="text"
+                            <td><input name="greenOn" th:id="|greenOn${time.trafficTimeId}|" class="inputStyle"
+                                       type="text"
                                        th:value="${time.greenOn}"> <i th:onclick="green([[${time.trafficTimeId}]],1)"
                                                                       class="fa-solid fa-caret-up"></i> <i
                                     th:onclick="green([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
@@ -213,24 +214,30 @@
                                                                     class="fa-solid fa-caret-up"></i> <i
                                     th:onclick="red([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
                             </td>
-                            <td><input name="trafficApplyStart" th:id="|start${time.trafficTimeId}|" class="inputStyle" type="text"
+                            <td><input name="trafficApplyStart" th:id="|start${time.trafficTimeId}|" class="inputStyle"
+                                       type="text"
                                        th:value="${time.trafficApplyStart}"> <i
                                     th:onclick="start([[${time.trafficTimeId}]],1)" class="fa-solid fa-caret-up"></i> <i
                                     th:onclick="start([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
                             </td>
-                            <td><input name="trafficApplyEnd" th:id="|end${time.trafficTimeId}|" class="inputStyle" type="text"
+                            <td><input name="trafficApplyEnd" th:id="|end${time.trafficTimeId}|" class="inputStyle"
+                                       type="text"
                                        th:value="${time.trafficApplyEnd}"> <i
                                     th:onclick="end([[${time.trafficTimeId}]],1)"
                                     class="fa-solid fa-caret-up"></i> <i
                                     th:onclick="end([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
                             </td>
-                            <td><input name="setStartTime" th:id="|set${time.trafficTimeId}|" class="inputStyle" type="text"
-                                       th:value="${time.setStartTime}" readonly> <i th:onclick="set([[${time.trafficTimeId}]],1)"
-                                                                           class="fa-solid fa-caret-up"></i> <i
+                            <td><input name="setStartTime" th:id="|set${time.trafficTimeId}|" class="inputStyle"
+                                       type="text"
+                                       th:value="${time.setStartTime}" readonly> <i
+                                    th:onclick="set([[${time.trafficTimeId}]],1)"
+                                    class="fa-solid fa-caret-up"></i> <i
                                     th:onclick="set([[${time.trafficTimeId}]],-1)" class="fa-solid fa-caret-down"></i>
                             </td>
-                            <td><input type="button" value="수정" onclick="update()"></td>
-                            <td><input type="button" value="삭제" th:onclick="delete1([[${time.trafficTimeId}]],[[${time.myTrafficId}]])"></td>
+                            <td><input type="button" value="수정"
+                                       th:onclick="update([[${time.myTrafficId}]],[[${time.trafficTimeId}]])"></td>
+                            <td><input type="button" value="삭제"
+                                       th:onclick="delete1([[${time.trafficTimeId}]],[[${time.myTrafficId}]])"></td>
                     </tr>
                     </form>
                     <tr>
@@ -254,15 +261,36 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script th:inline="javascript">
-    function delete1(id,trafficId) {
+    function delete1(id, trafficId) {
         location.href = "/trafficTime/delete?id=" + id + "&trafficId=" + trafficId;
         alert("삭제되었습니다!");
     }
 
-    function update(){
-        document.forms["updateForm"].submit();
-        alert("수정되었습니다.")
+    function update(trafficId, timeId) {
+        let start = document.getElementById("start" + timeId).value;
+        let end = document.getElementById("end" + timeId).value;
+
+        $.ajax({
+            url: "/trafficTime/check",
+            type: "get",
+            dataType: "text",
+            data: {
+                "start": start,
+                "end": end,
+                "id": trafficId
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    document.forms["updateForm"].submit();
+                    alert("수정되었습니다.")
+                } else {
+                    alert("겹치는 시간대가 존재합니다 수정해주세요!!!!!!!!!")
+                }
+            }
+        })
+
     }
+
     function green(id, num) {
         let greenOn = document.getElementById("greenOn" + id);
         greenOn.value = Number(greenOn.value) + num;

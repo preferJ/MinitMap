@@ -302,7 +302,19 @@ public class BoardService {
             }
             boardRepository.UnDislike(boardId);
         }
-
+        // 추천 3개시 등급업 처리
+        BoardEntity boardEntity = boardRepository.findById(boardId).get();
+        if (boardEntity.getBoardLike()>3){ // <- 추천기준 갯수
+            if (boardEntity.isManagerCheck() == false){
+                MemberEntity memberEntity = memberRepository.findById(boardEntity.getMemberEntity().getMemberId()).get();
+                if (memberEntity.getMemberLevel()<5){// 레벨이 5보다 작을때만 레벨업
+                    memberEntity.setMemberLevel(memberEntity.getMemberLevel()+1);
+                    memberRepository.save(memberEntity);
+                }
+                boardEntity.setManagerCheck(true);
+                boardRepository.save(boardEntity);
+            }
+        }
     }
 
     public void update(BoardDTO boardDTO) {

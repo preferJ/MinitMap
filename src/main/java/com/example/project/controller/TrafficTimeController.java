@@ -34,4 +34,10 @@ public class TrafficTimeController {
         trafficTimeService.update(trafficTimeDTO);
         return "redirect:/trafficTime/?id="+id;
     }
+
+    @GetMapping("/check")
+    public @ResponseBody String timeCheck(@RequestParam("start") Double start , @RequestParam("end") Double end , @RequestParam("id") Long id){
+        String check = trafficTimeService.timeCheck(id,start,end);
+        return check;
+    }
 }

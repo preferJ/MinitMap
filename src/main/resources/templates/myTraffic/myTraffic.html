@@ -1,183 +1,183 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.101.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
-  <title>Dashboard Template · Bootstrap v5.2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>Dashboard Template · Bootstrap v5.2</title>
 
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
-
-
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-
-    .b-example-divider {
-      height: 3rem;
-      background-color: rgba(0, 0, 0, .1);
-      border: solid rgba(0, 0, 0, .15);
-      border-width: 1px 0;
-      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
-
-    .b-example-vr {
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 100vh;
-    }
-
-    .bi {
-      vertical-align: -.125em;
-      fill: currentColor;
-    }
-
-    .nav-scroller {
-      position: relative;
-      z-index: 2;
-      height: 2.75rem;
-      overflow-y: hidden;
-    }
-
-    .nav-scroller .nav {
-      display: flex;
-      flex-wrap: nowrap;
-      padding-bottom: 1rem;
-      margin-top: -1px;
-      overflow-x: auto;
-      text-align: center;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-    }
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
 
-  </style>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
 
 
-  <!-- Custom styles for this template -->
-  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body onload="myTrafficList()">
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
-          data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
-          aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <form action="/board/search" class="w-100 rounded-0 border-0">
-    <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
-           aria-label="Search" name="search">
-  </form>
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
-      <a th:if="${session.loginEmail}" class="nav-link px-3" th:onclick="logout()">로그아웃</a>
-    </div>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <form action="/board/search" class="w-100 rounded-0 border-0">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="search" placeholder="검색어를 입력하세요."
+               aria-label="Search" name="search">
+    </form>
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a th:unless="${session.loginEmail}" class="nav-link px-3" th:onclick="loginForm()">로그인</a>
+            <a th:if="${session.loginEmail}" class="nav-link px-3" th:onclick="logout()">로그아웃</a>
+        </div>
 
-  </div>
+    </div>
 </header>
 
 <div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3 sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
-              게시판
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3 sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                            게시판
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/free">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            자유게시판
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/traffic">
+                            <span data-feather="download" class="align-text-bottom"></span>
+                            신호등게시판
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/admin">
+                            <span data-feather="alert-triangle" class="align-text-bottom"></span>
+                            공지사항
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+                            추가 있을까?
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
+                    style="font-size: 1.5rem">
+                    <span>마이페이지</span>
+                    <a class="link-secondary" href="#" aria-label="Add a new report">
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="myPlace()">
+                            <span data-feather="map-pin" class="align-text-bottom"></span>
+                            마이플레이스
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="myTraffic()">
+                            <span data-feather="tool" class="align-text-bottom"></span>
+                            내 신호등 관리
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
+                        </a>
+                    </li>
+                </ul>
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/board/free">
-              <span data-feather="file" class="align-text-bottom"></span>
-              자유게시판
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/board/traffic">
-              <span data-feather="download" class="align-text-bottom"></span>
-              신호등게시판
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/board/admin">
-              <span data-feather="alert-triangle" class="align-text-bottom"></span>
-              공지사항
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-              추가 있을까?
-            </a>
-          </li>
-        </ul>
+        </nav>
 
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
-            style="font-size: 1.5rem">
-          <span>마이페이지</span>
-          <a class="link-secondary" href="#" aria-label="Add a new report">
-          </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" onclick="myPlace()">
-              <span data-feather="map-pin" class="align-text-bottom"></span>
-              마이플레이스
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="compass" class="align-text-bottom"></span>
-              루틴
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" onclick="myTraffic()">
-              <span data-feather="tool" class="align-text-bottom"></span>
-              내 신호등 관리
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="user" class="align-text-bottom"></span>
-              내 정보 수정
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">내 신호등</h1>
+            </div>
 
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">내 신호등</h1>
-      </div>
-
-      <div class="table-responsive">
-        <div id="myTrafficList"></div>
-      </div>
-    </main>
-  </div>
+            <div class="table-responsive">
+                <div id="myTrafficList"></div>
+            </div>
+        </main>
+    </div>
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 
@@ -191,142 +191,145 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script th:inline="javascript">
-  function logout() {
-    location.href = "/board/logout";
-  }
-
-  function typeCheck() {
-
-    let type = document.getElementById("boardType").value;
-    let input = document.getElementById("trafficChoice");
-    let choice = document.getElementById("trafficName");
-    if (type == "신호") {
-      input.style.display = 'inline';
-      choice.style.display = 'inline';
-    } else {
-      input.style.display = 'none';
-      choice.style.display = 'none';
-      choice.value = null;
+    function logout() {
+        location.href = "/board/logout";
     }
-  }
-  function myTraffic(){
-    let loginCheck = [[${session.loginId}]]
-    if (loginCheck != null) {
-      location.href = "/myTraffic/";
-    } else {
-      loginForm();
-    }
-  }
-  function myPlace() {
-    let loginCheck = [[${session.loginId}]]
-    if (loginCheck != null) {
-      location.href = "/myPlace/";
-    } else {
-      loginForm();
-    }
-  }
 
-  function textUpDown(one , two) {
-    $.ajax({
-      url:"/myTraffic/textUpDown",
-      type: "get",
-      data:{
-        "one" : one,
-        "two" : two
-      },
-      success: function (){
-        myTrafficList();
-      }
-    })
-  }
+    function typeCheck() {
 
-  function deleteMyTraffic(id){
-    $.ajax({
-      url:"/myTraffic/deleteMyPlace",
-      type: "get",
-      data:{
-        "id" : id
-      },
-      success: function (){
-        alert("삭제되었습니다.")
-        myTrafficList();
-      }
-    })
-  }
-
-  function updateName(id){
-    let name = prompt('뭐로변경할까요???', '');
-    $.ajax({
-      url:"/myTraffic/updateName",
-      type: "get",
-      data:{
-        "id":id,
-        "name":name
-      },
-      success: function (){
-        alert("변경되었습니다.")
-        myTrafficList();
-      }
-    })
-  }
-
-  function myTrafficTime(id){
-    location.href = "/trafficTime/?id=" + id;
-  }
-  function myTrafficList() {
-    $.ajax({
-      url: "/myTraffic/list",
-      type: "get",
-      dataType: "json",
-      success: function (result) {
-        let output = "<table class=\"table table-striped table-sm\" style=\"table-layout:fixed\">" +
-                "                    <thead>" +
-                "                    <tr>" +
-                "                        <th scope=\"col\">내 신호등 번호</th>" +
-                "                        <th scope=\"col\">신호등 이름</th>" +
-                "                        <th scope=\"col\">위도</th>" +
-                "                        <th scope=\"col\">경도</th>" +
-                "                        <th scope=\"col\">이름변경</th>" +
-                "                        <th scope=\"col\">시간편집</th>" +
-                "                        <th scope=\"col\">삭제</th>" +
-                "                    </tr>" +
-                "                    </thead>" +
-                "                    <tbody>";
-        let x = 0;
-        if (result.length == 0){
-          output += "<tr ><th style='text-align: center' colspan='8'>등록된 신호등이 없습니다!!</th></tr>"
-        }else{
-          output += "<tr><th style='text-align: center' colspan='8'>해당 화면의 순서로 출력됩니다.</th></tr>"
+        let type = document.getElementById("boardType").value;
+        let input = document.getElementById("trafficChoice");
+        let choice = document.getElementById("trafficName");
+        if (type == "신호") {
+            input.style.display = 'inline';
+            choice.style.display = 'inline';
+        } else {
+            input.style.display = 'none';
+            choice.style.display = 'none';
+            choice.value = null;
         }
-        for (let i in result) {
-          output += "<tr className='myPlaceTap'>";
-          output += "<td>" + result[i].myTrafficId + "</td>";
-          output += "<td>" + result[i].myTrafficName + "</td>";
-          output += "<td>" + result[i].myTrafficLat + "</td>";
-          output += "<td>" + result[i].myTrafficLon+ "</td>";
-          output += "<td><input type='button' onclick='updateName(" + result[i].myTrafficId + ")' value='변경'></td>";
-          output += "<td><input type='button' onclick='myTrafficTime(" + result[i].myTrafficId + ")' value='편집'></td>";
-          output += "<td><input type='button' onclick='deleteMyTraffic(" + result[i].myTrafficId + ")' value='삭제'></td>";
-          output += "<td>";
-          if (result.length == 1) {
-          } else if (x == 0) {
-            output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x + 1].myTrafficId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
-          } else if (x == result.length - 1) {
-            output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x - 1].myTrafficId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
-          } else {
-            output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x - 1].myTrafficId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
-            output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x + 1].myTrafficId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
-          }
-          output += "</td>";
-          output += "</tr>";
-          x++;
+    }
+
+    function myTraffic() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
+        } else {
+            loginForm();
         }
-        output += "</tbody></table>";
-        document.getElementById("myTrafficList").innerHTML = output
-        console.log(result.length);
-      }
-    })
-  }
+    }
+
+    function myPlace() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
+
+    function textUpDown(one, two) {
+        $.ajax({
+            url: "/myTraffic/textUpDown",
+            type: "get",
+            data: {
+                "one": one,
+                "two": two
+            },
+            success: function () {
+                myTrafficList();
+            }
+        })
+    }
+
+    function deleteMyTraffic(id) {
+        $.ajax({
+            url: "/myTraffic/deleteMyPlace",
+            type: "get",
+            data: {
+                "id": id
+            },
+            success: function () {
+                alert("삭제되었습니다.")
+                myTrafficList();
+            }
+        })
+    }
+
+    function updateName(id) {
+        let name = prompt('뭐로변경할까요???', '');
+        $.ajax({
+            url: "/myTraffic/updateName",
+            type: "get",
+            data: {
+                "id": id,
+                "name": name
+            },
+            success: function () {
+                alert("변경되었습니다.")
+                myTrafficList();
+            }
+        })
+    }
+
+    function myTrafficTime(id) {
+        location.href = "/trafficTime/?id=" + id;
+    }
+
+    function myTrafficList() {
+        $.ajax({
+            url: "/myTraffic/list",
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                let output = "<table class=\"table table-striped table-sm\" style=\"table-layout:fixed\">" +
+                    "                    <thead>" +
+                    "                    <tr>" +
+                    "                        <th scope=\"col\">내 신호등 번호</th>" +
+                    "                        <th scope=\"col\">신호등 이름</th>" +
+                    "                        <th scope=\"col\">위도</th>" +
+                    "                        <th scope=\"col\">경도</th>" +
+                    "                        <th scope=\"col\">이름변경</th>" +
+                    "                        <th scope=\"col\">시간편집</th>" +
+                    "                        <th scope=\"col\">삭제</th>" +
+                    "                    </tr>" +
+                    "                    </thead>" +
+                    "                    <tbody>";
+                let x = 0;
+                if (result.length == 0) {
+                    output += "<tr ><th style='text-align: center' colspan='8'>등록된 신호등이 없습니다!!</th></tr>"
+                } else {
+                    output += "<tr><th style='text-align: center' colspan='8'>해당 화면의 순서로 출력됩니다.</th></tr>"
+                }
+                for (let i in result) {
+                    output += "<tr className='myPlaceTap'>";
+                    output += "<td>" + result[i].myTrafficId + "</td>";
+                    output += "<td>" + result[i].myTrafficName + "</td>";
+                    output += "<td>" + result[i].myTrafficLat + "</td>";
+                    output += "<td>" + result[i].myTrafficLon + "</td>";
+                    output += "<td><input type='button' onclick='updateName(" + result[i].myTrafficId + ")' value='변경'></td>";
+                    output += "<td><input type='button' onclick='myTrafficTime(" + result[i].myTrafficId + ")' value='편집'></td>";
+                    output += "<td><input type='button' onclick='deleteMyTraffic(" + result[i].myTrafficId + ")' value='삭제'></td>";
+                    output += "<td>";
+                    if (result.length == 1) {
+                    } else if (x == 0) {
+                        output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x + 1].myTrafficId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
+                    } else if (x == result.length - 1) {
+                        output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x - 1].myTrafficId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
+                    } else {
+                        output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x - 1].myTrafficId + ")' class=\"fa-solid fa-arrow-up-long fa-2x\"></i>";
+                        output += "<i onclick='textUpDown(" + result[x].myTrafficId + "," + result[x + 1].myTrafficId + ")' class=\"fa-solid fa-arrow-down-long fa-2x\"></i>";
+                    }
+                    output += "</td>";
+                    output += "</tr>";
+                    x++;
+                }
+                output += "</tbody></table>";
+                document.getElementById("myTrafficList").innerHTML = output
+                console.log(result.length);
+            }
+        })
+    }
 </script>
 
 </body>

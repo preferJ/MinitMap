@@ -142,25 +142,25 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="rutin()">
                             <span data-feather="compass" class="align-text-bottom"></span>
                             루틴
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myTraffic()">
                             <span data-feather="tool" class="align-text-bottom"></span>
                             내 신호등 관리
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
                             <span data-feather="user" class="align-text-bottom"></span>
                             내 정보 수정
                         </a>
@@ -335,6 +335,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script th:inline="javascript">
+    function myPlace(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
+    function myTraffic(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
+        } else {
+            loginForm();
+        }
+    }
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
     function loginForm() {
         location.href = "/member/loginForm";
     }

@@ -19,7 +19,7 @@ public class AdminHistoryEntity {
     private Long adminHistoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId", nullable = false)
+    @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
 
     @Column(name = "historyType", nullable = false)
@@ -50,4 +50,5 @@ public class AdminHistoryEntity {
         adminHistoryEntity.setMemberEntity(memberEntity);
         return adminHistoryEntity;
     }
+
 }

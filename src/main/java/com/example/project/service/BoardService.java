@@ -3,6 +3,7 @@ package com.example.project.service;
 import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
 import com.example.project.dto.LikeCheckDTO;
+import com.example.project.dto.MemberDTO;
 import com.example.project.dto.MyTrafficDTO;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
@@ -409,4 +410,5 @@ public class BoardService {
         boardEntity.setBoardHits(1l);
         boardRepository.save(boardEntity);
     }
+
 }

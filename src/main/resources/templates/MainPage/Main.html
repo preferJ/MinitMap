@@ -529,7 +529,7 @@
                             });
                         // 결과창에 나타날 검색 결과 html
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div><div class='search-name'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide("+k+")'>"
+                        innerHtml += "<li><div><div class='search-name'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide("+k+")' title='"+name+"'>"
                             + name
                             + "</span></div><div id='searchHide" + k + "' style='display: none'> <button type='button' name='sendBtn' onClick='startPing("
                             + k
@@ -792,7 +792,7 @@
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
                         innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp("+k+")' onmouseout='searchMouseDown("+k+")'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='startPing("
                             + k
-                            + "), start( " + k + " );'>"
+                            + "), start( " + k + " );' title='"+name+"'>"
                             + name
                             + "</span></div></li>";
 
@@ -889,7 +889,7 @@
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
                         innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp("+k+")' onmouseout='searchMouseDown("+k+")'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='endPing("
                             + k
-                            + "), end( " + k + " );'>"
+                            + "), end( " + k + " );' title='"+name+"'>"
                             + name
                             + "</span></div></li>";
                         // 마커들을 담을 배열에 마커 저장
@@ -1875,7 +1875,7 @@
                     <div style="margin-top: 8px">
                         <div>
                             <input style="width: 100%" type="search" id="searchKeyword" placeholder="장소검색창"
-                                   onkeyup="if(window.event.keyCode==13){searchButton()}">
+                                   onkeyup="if(window.event.keyCode==13){searchButton()}" autocomplete="off">
                         </div>
                         <br/>
                         <div class="title"><strong>Search</strong> Results</div>
@@ -1925,9 +1925,9 @@
                 </div>
                 <div class="traffic_information">
                     <div style="margin-left: 17px;width: 240px;display: block;">
-                        <div style="position: relative;"><span style="width: 180px;display: inline-block"> <!-- 상단부분 --><input type="text" class="text_custom mt-2 mb-2" onkeyup="if(window.event.keyCode==13){searchButton1()}" id="searchKeyword1" name="searchKeyword" placeholder="출발지"><div id="start-interface"><ul id="searchResult1" name="searchResult">
+                        <div style="position: relative;"><span style="width: 180px;display: inline-block"> <!-- 상단부분 --><input type="text" class="text_custom mt-2 mb-2" onkeyup="if(window.event.keyCode==13){searchButton1()}" id="searchKeyword1" name="searchKeyword" placeholder="출발지" autocomplete="off"><div id="start-interface"><ul id="searchResult1" name="searchResult">
                             <li>검색결과</li>
-                        </ul></div><input type="search" class="text_custom mb-2" onkeyup="if(window.event.keyCode==13){searchButton2()}" id="searchKeyword2" placeholder="도착지"><div id="end-interface"><ul id="searchResult2" name="searchResult">
+                        </ul></div><input type="search" class="text_custom mb-2" onkeyup="if(window.event.keyCode==13){searchButton2()}" id="searchKeyword2" placeholder="도착지" autocomplete="off"><div id="end-interface"><ul id="searchResult2" name="searchResult">
                             <li>검색결과</li>
                         </ul></div></span>
                             <span style="display: inline-block;width: 30px;right: 18px;position: absolute;top: 20%"><i onclick="pointChange()" class="fa-solid fa-arrow-rotate-left fa-3x"></i></span>

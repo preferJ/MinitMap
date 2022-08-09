@@ -45,6 +45,7 @@
                 }
             }
         }
+        var tapLock = false;
         var onTap = 1;
         var my_marker;
         var marker;
@@ -169,96 +170,116 @@
         }
 
         function tap1(){
-            const sidebarIcon = document.getElementById("side1HideIcon");
-            var sidebar = document.getElementById("side1");
-            var sidebar2 = document.getElementById("side"+onTap);
-            if(onTap != 1){
-                if(sidebar2.style.left != "-395%") {
-                    sidebar2.style.animation = "hide 0.9s";
-                }
+            if(tapLock == false) {
+                tapLock = true;
+                const sidebarIcon = document.getElementById("side1HideIcon");
+                var sidebar = document.getElementById("side1");
+                var sidebar2 = document.getElementById("side" + onTap);
+                if (onTap != 1) {
                     sidebar2.style.left = "-500%";
+                    sidebar.style.left = "100%";
+                    if (sidebar2.style.left != "-395%") {
+                        sidebar2.style.animation = "hide 0.9s";
+                    }
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
                     sidebar.style.animation = "seek 0.9s";
-                    sidebar.style.left = "100%";
-                    setTimeout(function (){
+                    setTimeout(function () {
                         sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
                         onTap = 1;
-                    },900);
-            }else if(onTap == 1){
-                sidebarHide1();
-            }
-            if(onTap == 2){
-                map.removeListener("click",onClick);
+                        tapLock = false;
+                    }, 900);
+                } else if (onTap == 1) {
+                    sidebarHide1();
+                    tapLock = false;
+                }
+                if (onTap == 2) {
+                    map.removeListener("click", onClick);
+                }
             }
         }
 
         function tap2(){
-            map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-            const sidebarIcon = document.getElementById("side2HideIcon");
-            var sidebar = document.getElementById("side2");
-            var sidebar2 = document.getElementById("side"+onTap);
-            if(onTap != 2){
-                if(sidebar2.style.left != "-395%") {
-                    sidebar2.style.animation = "hide 0.9s";
-                }
+            if(tapLock == false) {
+                tapLock = true;
+                map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                const sidebarIcon = document.getElementById("side2HideIcon");
+                var sidebar = document.getElementById("side2");
+                var sidebar2 = document.getElementById("side" + onTap);
+                if (onTap != 2) {
                     sidebar2.style.left = "-500%";
+                    sidebar.style.left = "100%";
+                    if (sidebar2.style.left != "-395%") {
+                        sidebar2.style.animation = "hide 0.9s";
+                    }
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
                     sidebar.style.animation = "seek 0.9s";
-                    sidebar.style.left = "100%";
-                    setTimeout(function (){
+                    setTimeout(function () {
                         sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
                         onTap = 2;
-                    },900);
-            }else if(onTap == 2){
-                sidebarHide2();
+                        tapLock = false;
+                    }, 900);
+                } else if (onTap == 2) {
+                    sidebarHide2();
+                    tapLock = false;
+                }
             }
         }
 
         function tap3(){
-            const sidebarIcon = document.getElementById("side3HideIcon");
-            var sidebar = document.getElementById("side3");
-            var sidebar2 = document.getElementById("side"+onTap);
-            if(onTap != 3){
-                if(sidebar2.style.left != "-395%") {
-                    sidebar2.style.animation = "hide 0.9s";
-                }
+            if(tapLock == false) {
+                tapLock = true;
+                const sidebarIcon = document.getElementById("side3HideIcon");
+                var sidebar = document.getElementById("side3");
+                var sidebar2 = document.getElementById("side" + onTap);
+                if (onTap != 3) {
                     sidebar2.style.left = "-500%";
+                    sidebar.style.left = "100%";
+                    if (sidebar2.style.left != "-395%") {
+                        sidebar2.style.animation = "hide 0.9s";
+                    }
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
                     sidebar.style.animation = "seek 0.9s";
-                    sidebar.style.left = "100%";
-                    setTimeout(function (){
+                    setTimeout(function () {
                         sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
                         onTap = 3;
-                    },900);
-            }else if(onTap == 3){
-                sidebarHide3();
-            }
-            if(onTap == 2){
-                map.removeListener("click",onClick);
+                        tapLock = false;
+                    }, 900);
+                } else if (onTap == 3) {
+                    sidebarHide3();
+                    tapLock = false;
+                }
+                if (onTap == 2) {
+                    map.removeListener("click", onClick);
+                }
             }
         }
 
         function tap4(){
-            const sidebarIcon = document.getElementById("side4HideIcon");
-            var sidebar = document.getElementById("side4");
-            var sidebar2 = document.getElementById("side"+onTap);
-            if(onTap != 4){
-                if(sidebar2.style.left != "-395%") {
-                    sidebar2.style.animation = "hide 0.9s";
+            if(tapLock == false) {
+                tapLock = true;
+                const sidebarIcon = document.getElementById("side4HideIcon");
+                var sidebar = document.getElementById("side4");
+                var sidebar2 = document.getElementById("side" + onTap);
+                if (onTap != 4) {
+                    sidebar2.style.left = "-500%";
+                    sidebar.style.left = "100%";
+                    if (sidebar2.style.left != "-395%") {
+                        sidebar2.style.animation = "hide 0.9s";
+                    }
+                    sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+                    sidebar.style.animation = "seek 0.9s";
+                    setTimeout(function () {
+                        sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+                        onTap = 4;
+                        tapLock = false;
+                    }, 900);
+                } else if (onTap == 4) {
+                    sidebarHide4();
+                    tapLock = false;
                 }
-                sidebar2.style.left = "-500%";
-                sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
-                sidebar.style.animation = "seek 0.9s";
-                sidebar.style.left = "100%";
-                setTimeout(function (){
-                    sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
-                    onTap = 4;
-                },900);
-            }else if(onTap == 4){
-                sidebarHide4();
-            }
-            if(onTap == 2){
-                map.removeListener("click",onClick);
+                if (onTap == 2) {
+                    map.removeListener("click", onClick);
+                }
             }
         }
 
@@ -655,11 +676,11 @@
         function rutinDown(){
             var rutinTap = document.getElementById("rutinTap");
             var rutinIcon = document.getElementById("rutinIcon");
-            if (rutinTap.style.display == "inline") {
+            if (rutinTap.style.display != "none") {
                 rutinTap.style.display = "none";
                 rutinIcon.className = "fa-solid fa-angle-down fa-2x"
             } else if (rutinTap.style.display == "none") {
-                rutinTap.style.display = "inline";
+                rutinTap.style.display = "table";
                 rutinIcon.className = "fa-solid fa-angle-up fa-2x"
             }
         }
@@ -1540,11 +1561,11 @@
         function rutinDown2(){
             var rutinTap = document.getElementById("rutinTap2");
             var rutinIcon = document.getElementById("rutinIcon2");
-            if (rutinTap.style.display == "inline") {
+            if (rutinTap.style.display != "none") {
                 rutinTap.style.display = "none";
                 rutinIcon.className = "fa-solid fa-angle-down fa-2x"
             } else if (rutinTap.style.display == "none") {
-                rutinTap.style.display = "inline";
+                rutinTap.style.display = "table";
                 rutinIcon.className = "fa-solid fa-angle-up fa-2x"
             }
         }
@@ -1892,10 +1913,6 @@
                                 <input type="text" th:value="11"> <br>
                                 <input type="text" th:value="11">
                             </div>
-                            <hr>
-                            <div th:if="${session.loginEmail.toString().equals('admin')}">
-                                <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1945,7 +1962,6 @@
                     <p id="result">거리/시간</p>
                     <hr>
                     <div id="course">길안내</div>
-                    <hr>
                 </div>
             </div>
         </div>

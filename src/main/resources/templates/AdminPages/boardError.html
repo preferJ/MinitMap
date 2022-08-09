@@ -134,7 +134,7 @@
 </header>
 
 <div class="container-fluid">
-    <div class="row">        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="row">         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="position-sticky pt-3 sidebar-sticky">
             <ul class="nav flex-column">
                 <li class="nav-item">
@@ -174,25 +174,25 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" onclick="myPlace()">
                         <span data-feather="map-pin" class="align-text-bottom"></span>
                         마이플레이스
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" onclick="rutin()">
                         <span data-feather="compass" class="align-text-bottom"></span>
                         루틴
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" onclick="myTraffic()">
                         <span data-feather="tool" class="align-text-bottom"></span>
                         내 신호등 관리
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
                         <span data-feather="user" class="align-text-bottom"></span>
                         내 정보 수정
                     </a>
@@ -306,7 +306,30 @@
         window.open("/member/loginForm", "로그인", windowStatus);
 
     }
-
+    function myPlace(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
+    function myTraffic(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
+        } else {
+            loginForm();
+        }
+    }
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
     function logout() {
         location.href = "/board/logout";
     }

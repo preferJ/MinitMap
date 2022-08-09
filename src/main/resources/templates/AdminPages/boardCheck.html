@@ -7,24 +7,27 @@
 </head>
 <body>
 <h2>신고조치</h2>
-<form action="/error/historySave" method="post" name="saveForm">
+<form action="/error/historySave" method="get" name="saveForm">
     <input type="hidden" name="boardId" th:value="${board.boardId}">
     <input type="hidden" name="memberId" th:value="${board.memberId}">
-    <select name="historyType" style="width: 100%">
+    <select id="history" name="historyType" style="width: 100%">
         <option id="levelDown" value="등급하락">등급하락</option>
         <option value="등급유지">등급유지</option>
     </select>
     <textarea cols="71" rows="9" name="historyMessage"
     style="resize: none;" placeholder="조치내용을 입력해주세요" required></textarea>
     <div style="text-align: center">
-    <input type="button" th:onclick="levelDown([[${board.memberId}]])" class="btn btn-outline-warning" value="조치하기">
+    <input type="submit" th:onclick="levelDown([[${board.memberId}]])" class="btn btn-outline-warning" value="조치하기">
     </div>
 </form>
 </body>
 <script th:inline="javascript">
+
     function levelDown(id) {
-        document.forms["saveForm"].submit();
-        location.href = "/member/levelDown/"+ id;
+        let type = document.getElementById("history").value;
+        if (type == "등급하락"){
+            location.href = "/member/levelDown/"+ id;
+        }
     }
 </script>
 </html>

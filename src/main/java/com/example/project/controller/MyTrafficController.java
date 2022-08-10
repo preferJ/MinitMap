@@ -42,7 +42,7 @@ public class MyTrafficController {
         Long myTrafficId = myTrafficService.save(myTrafficDTO, memberId);
         trafficTimeService.save(myTrafficId, trafficTimeDTO);
 
-        return "redirect:/Main";
+        return "redirect:/4tapTest";
     }
 
     @PostMapping("/test11")

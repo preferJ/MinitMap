@@ -71,7 +71,7 @@ public class MyTrafficService {
     public Long save(MyTrafficDTO myTrafficDTO, Long loginId) {
         Optional<MemberEntity> byId = memberRepository.findById(loginId);
         List<MyTrafficEntity> myTrafficEntityList = myTrafficRepository.findAll(Sort.by(Sort.Direction.DESC, "myTrafficId"));
-        if (myTrafficEntityList == null) {
+        if (myTrafficEntityList.size() == 0) {
             myTrafficDTO.setMyTrafficOrderNumber(1L);
         } else {
             myTrafficDTO.setMyTrafficOrderNumber(myTrafficEntityList.get(0).getMyTrafficId() + 1);

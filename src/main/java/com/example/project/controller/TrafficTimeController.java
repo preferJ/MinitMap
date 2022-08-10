@@ -40,4 +40,11 @@ public class TrafficTimeController {
         String check = trafficTimeService.timeCheck(id,start,end,timeId);
         return check;
     }
+
+    @GetMapping("/timeList")
+    public @ResponseBody List<TrafficTimeDTO> timeList(@RequestParam("id") Long id){
+        List<TrafficTimeDTO> byTrafficId = trafficTimeService.findByTrafficId(id);
+        System.out.println("byTrafficId = " + byTrafficId);
+        return byTrafficId;
+    }
 }

@@ -49,4 +49,14 @@ public class TrafficService {
         MemberEntity memberEntity = memberRepository.findById(id).get();
         return trafficRepository.save(TrafficEntity.trafficSaveEntity(trafficDTO,memberEntity)).getTrafficId();
     }
+
+    public List<TrafficDTO> findByEmail(String email) {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email).get();
+        List<TrafficEntity> byMemberEntity = trafficRepository.findByMemberEntity(memberEntity);
+        List<TrafficDTO> trafficDTOList = new ArrayList<>();
+        for (TrafficEntity trafficEntity : byMemberEntity){
+            trafficDTOList.add(TrafficDTO.toTrafficDTO(trafficEntity));
+        }
+        return trafficDTOList;
+    }
 }

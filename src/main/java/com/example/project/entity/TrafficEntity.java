@@ -67,7 +67,7 @@ public class TrafficEntity {
         trafficEntity.setTrafficLat(trafficDTO.getTrafficLat());
         trafficEntity.setTrafficLon(trafficDTO.getTrafficLon());
         trafficEntity.setTrafficLike(trafficDTO.getTrafficLike());
-        trafficEntity.setTrafficDislike(trafficDTO.getTrafficDisLike());
+        trafficEntity.setTrafficDislike(trafficDTO.getTrafficDislike());
         trafficEntity.setMemberEntity(memberEntity);
         return trafficEntity;
     }

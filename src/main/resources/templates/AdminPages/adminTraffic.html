@@ -69,13 +69,21 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
         }
+
+        .tableNone {
+            display: none;
+        }
+
+        .tableInline {
+            display: inline;
+        }
     </style>
 
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
-<body>
+<body onload="adminTraffic();">
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
@@ -274,127 +282,209 @@
             </form>
 
             <div class="table-responsive">
-                <table class="table table-striped table-sm" style="table-layout:fixed">
-                    <thead>
-                    <tr>
-                        <th scope="col">신호번호</th>
-                        <th scope="col">위도</th>
-                        <th scope="col">경도</th>
-                        <th scope="col">like</th>
-                        <th scope="col">disLike</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr></tr>
-                    </tbody>
-                </table>
+                <div id="adminTraffic"></div>
             </div>
         </main>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-            integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
-            integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
-            crossorigin="anonymous"></script>
-    <script src="/css/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+        crossorigin="anonymous"></script>
+<script src="/css/dashboard.js"></script>
 
-    <script th:inline="javascript">
-        function latSave() {
-            let lat = document.getElementById("lat").value;
-            document.getElementById("lat1").value = lat;
-            document.getElementById("lat2").value = lat;
+<script th:inline="javascript">
+    function latSave() {
+        let lat = document.getElementById("lat").value;
+        document.getElementById("lat1").value = lat;
+        document.getElementById("lat2").value = lat;
+    }
+
+    function lonSave() {
+        let lon = document.getElementById("lon").value;
+        document.getElementById("lon1").value = lon;
+        document.getElementById("lon2").value = lon;
+    }
+
+    function saveTraffic() {
+        let save = document.getElementById("saveForm");
+        if (save.style.display == "none") {
+            save.style.display = "inline";
+        } else {
+            save.style.display = "none";
         }
+    }
 
-        function lonSave() {
-            let lon = document.getElementById("lon").value;
-            document.getElementById("lon1").value = lon;
-            document.getElementById("lon2").value = lon;
+    const loginForm = () => {
+        var width = 480;
+        var height = 630;
+
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
+
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+        window.open("/member/loginForm", "로그인", windowStatus);
+
+    }
+
+    function myPlace() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
         }
+    }
 
-        function saveTraffic() {
-            let save = document.getElementById("saveForm");
-            if (save.style.display == "none") {
-                save.style.display = "inline";
-            } else {
-                save.style.display = "none";
+    function myPage() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/member/myPage/" + loginCheck;
+        } else {
+            loginForm();
+        }
+    }
+
+    function mySave() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/board/findByIdList/" + loginCheck;
+        } else {
+            loginForm();
+        }
+    }
+
+    function myTraffic() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
+        } else {
+            loginForm();
+        }
+    }
+
+    function rutin() {
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
+
+    function logout() {
+        location.href = "/board/logout";
+    }
+
+    function searchLocation(type) {
+        let local1 = document.getElementById("boardTypeLocation1").value;
+        let local2 = document.getElementById("boardTypeLocation2").value;
+        location.href = "/board/location?type=" + type + "&local1=" + local1 + "&local2=" + local2;
+    }
+
+    function detail(id) {
+        location.href = "/board/detail?id=" + id;
+    }
+
+    function adminTraffic() {
+        $.ajax({
+            url: "/traffic/adminList",
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                let output = "<table class=\"table table-sm\" style=\"table-layout:fixed\">\n" +
+                    "                    <thead>\n" +
+                    "                    <tr>\n" +
+                    "                        <th scope=\"col\">신호번호</th>\n" +
+                    "                        <th scope=\"col\">위도</th>\n" +
+                    "                        <th scope=\"col\">경도</th>\n" +
+                    "                        <th scope=\"col\">like</th>\n" +
+                    "                        <th scope=\"col\">disLike</th>\n" +
+                    "                        <th scope=\"col\">수정</th>\n" +
+                    "                        <th scope=\"col\">삭제</th>\n" +
+                    "                    </tr>\n" +
+                    "                    </thead>\n" +
+                    "                    <tbody>\n";
+                if (result.length == 0) {
+                    output += "<tr ><th style='text-align: center' colspan='7'>등록된 신호가 없습니다!!</th></tr>"
+                }
+
+                for (let i in result) {
+                    output += "<tr onclick='zoomTime(" + result[i].trafficId + ")'>";
+                    output += "<td>" + result[i].trafficId + "</td>";
+                    output += "<td>" + result[i].trafficLat + "</td>";
+                    output += "<td>" + result[i].trafficLon + "</td>";
+                    output += "<td>" + result[i].trafficLike + "</td>";
+                    output += "<td>" + result[i].trafficDislike + "</td>";
+                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='변경'></td>";
+                    output += "<td><input type='button' onclick='deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
+                    output += "</td>";
+                    output += "</tr>";
+
+                    $.ajax({
+                        url: "/trafficTime/timeList",
+                        type: "get",
+                        data: {
+                            id: result[i].trafficId
+                        },
+                        async: false,
+                        dataType: "json",
+                        success: function (res) {
+                            output += "                    <tr style='display: none;' id='timeTh" + result[i].trafficId + "' class='timeTh" + result[i].trafficId + "'>\n" +
+                                "                        <th scope=\"col\">녹색</th>\n" +
+                                "                        <th scope=\"col\">적색</th>\n" +
+                                "                        <th scope=\"col\">기준시간</th>\n" +
+                                "                        <th scope=\"col\">시작신호</th>\n" +
+                                "                        <th scope=\"col\">시작시간</th>\n" +
+                                "                        <th scope=\"col\">종료시간</th>\n" +
+                                "                        <th scope=\"col\">수정</th>\n" +
+                                "                    </tr>\n";
+                            for (let x = 0; x < res.length; x++) {
+                                output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
+                                output += "<td>" + res[i].greenOn + "</td>";
+                                output += "<td>" + res[i].redOn + "</td>";
+                                output += "<td>" + res[i].setStartTime + "</td>";
+                                output += "<td>" + res[i].startType + "</td>";
+                                output += "<td>" + res[i].trafficApplyStart + "</td>";
+                                output += "<td>" + res[i].trafficApplyEnd + "</td>";
+                                output += "<td>" + "<input type='button' value='수정' onclick='updateTime()'>" + "</td>";
+                                output += "</tr>";
+                            }
+                        }
+                    })
+                }
+
+                output += "</tbody>" + "</table>";
+                document.getElementById("adminTraffic").innerHTML = output;
             }
+        })
+    }
+
+    function zoomTime(id) {
+        let th = document.getElementById("timeTh" + id);
+        if (th.style.display == "none") {
+            th.style.display = "table-row";
+            th.style.backgroundColor = "#dfc2c4";
+            document.getElementsByClassName("timeTd"+id)[0].style.display = "table-row";
+            document.getElementsByClassName("timeTd"+id)[0].style.backgroundColor = "#dfc2c4";
+            document.getElementsByClassName("timeTd"+id)[1].style.display = "table-row";
+            document.getElementsByClassName("timeTd"+id)[1].style.backgroundColor = "#dfc2c4";
+            document.getElementsByClassName("timeTd"+id)[2].style.display = "table-row";
+            document.getElementsByClassName("timeTd"+id)[2].style.backgroundColor = "#dfc2c4";
+        } else {
+            th.style.display = "none";
+            document.getElementsByClassName("timeTd"+id)[0].style.display = "none";
+            document.getElementsByClassName("timeTd"+id)[1].style.display = "none";
+            document.getElementsByClassName("timeTd"+id)[2].style.display = "none";
         }
+    }
 
-        const loginForm = () => {
-            var width = 480;
-            var height = 630;
-
-            var left = (window.screen.width / 2) - (width / 2);
-            var top = (window.screen.height / 4);
-
-            var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
-
-            window.open("/member/loginForm", "로그인", windowStatus);
-
-        }
-
-        function myPlace() {
-            let loginCheck = [[${session.loginId}]]
-            if (loginCheck != null) {
-                location.href = "/myPlace/";
-            } else {
-                loginForm();
-            }
-        }
-
-        function myPage() {
-            let loginCheck = [[${session.loginId}]]
-            if (loginCheck != null) {
-                location.href = "/member/myPage/" + loginCheck;
-            } else {
-                loginForm();
-            }
-        }
-
-        function mySave() {
-            let loginCheck = [[${session.loginId}]]
-            if (loginCheck != null) {
-                location.href = "/board/findByIdList/" + loginCheck;
-            } else {
-                loginForm();
-            }
-        }
-
-        function myTraffic() {
-            let loginCheck = [[${session.loginId}]]
-            if (loginCheck != null) {
-                location.href = "/myTraffic/";
-            } else {
-                loginForm();
-            }
-        }
-
-        function rutin() {
-            let loginCheck = [[${session.loginId}]]
-            if (loginCheck != null) {
-                location.href = "/rutin/";
-            } else {
-                loginForm();
-            }
-        }
-
-        function logout() {
-            location.href = "/board/logout";
-        }
-
-        function searchLocation(type) {
-            let local1 = document.getElementById("boardTypeLocation1").value;
-            let local2 = document.getElementById("boardTypeLocation2").value;
-            location.href = "/board/location?type=" + type + "&local1=" + local1 + "&local2=" + local2;
-        }
-
-        function detail(id) {
-            location.href = "/board/detail?id=" + id;
-        }
-    </script>
+</script>
 </body>
 </html>

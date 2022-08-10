@@ -14,7 +14,7 @@ public class TrafficDTO {
     private Double trafficLat;
     private Double trafficLon;
     private Long trafficLike;
-    private Long trafficDisLike;
+    private Long trafficDislike;
 
 
 
@@ -25,7 +25,7 @@ public class TrafficDTO {
         trafficDTO.setTrafficLat(trafficEntity.getTrafficLat());
         trafficDTO.setTrafficLon(trafficEntity.getTrafficLon());
         trafficDTO.setTrafficLike(trafficEntity.getTrafficLike());
-        trafficDTO.setTrafficDisLike(trafficEntity.getTrafficDislike());
+        trafficDTO.setTrafficDislike(trafficEntity.getTrafficDislike());
         return trafficDTO;
     }
 

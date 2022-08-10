@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,5 +29,11 @@ public class TrafficController {
         trafficTimeService.adminSave(id,trafficTimeDTO,traffic2DTO,traffic3DTO);
         adminHistoryService.trafficSave(loginId,id);
         return "redirect:/board/adminTraffic";
+    }
+
+    @GetMapping("/adminList")
+    public @ResponseBody List<TrafficDTO> adminList(HttpSession session){
+        String email = (String) session.getAttribute("loginEmail");
+        return trafficService.findByEmail(email);
     }
 }

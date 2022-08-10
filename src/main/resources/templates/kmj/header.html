@@ -131,8 +131,11 @@
                 if(id == null) {
                     alert("로그인이 필요합니다");
                     location.href = "/1tapTest";
-                }else {
+                }
+                if(id != 'admin'){
                     location.href = "/member/myPage/" + id;
+                }if(id == 'admin'){
+                    location.href = "/member/findAll";
                 }
             }
         </script>
@@ -163,7 +166,7 @@
                         <a th:onclick="save([[${session.loginId}]])"><i class="fa-solid fa-arrow-right-to-bracket fa-3x"></i></a>
                     </li>
                     <li class="tap-result">
-                        <a th:onclick="myPage([[${session.loginId}]])"><i class="fa-solid fa-user-large fa-3x"></i></a>
+                        <a th:onclick="myPage([[${session.loginEmail}]])"><i class="fa-solid fa-user-large fa-3x"></i></a>
                     </li>
                 </ul>
             </nav>

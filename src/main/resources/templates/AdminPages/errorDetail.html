@@ -168,80 +168,76 @@
                         </a>
                     </li>
                 </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
-                    style="font-size: 1.5rem">
-                    <span>마이페이지</span>
-                    <a class="link-secondary" href="#" aria-label="Add a new report">
-                    </a>
-                </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                            마이페이지
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="rutin()">
                             <span data-feather="compass" class="align-text-bottom"></span>
                             루틴
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myTraffic()">
                             <span data-feather="tool" class="align-text-bottom"></span>
                             내 신호등 관리
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
                             <span data-feather="user" class="align-text-bottom"></span>
                             내 정보 수정
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <nav id="sidebarMenu2" class="col-md-3 col-lg-2 d-md-block bg-light sidebar2 collapse">
-            <div class="position-sticky pt-3 sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
-                            마이 페이지
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/member/findAll">
-                            <span data-feather="user" class="align-text-bottom"></span>
-                            회원등급조회 및 탈퇴
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/error/findAll">
-                            <span data-feather="map-pin" class="align-text-bottom"></span>
-                            게시판 신고 관리
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/board/admin">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            내 루틴
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="tool" class="align-text-bottom"></span>
-                            내 신호등 관리
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{|/board/findByIdList/${session.loginId}|}">
                             <span data-feather="file" class="align-text-bottom"></span>
-                            공지사항 작성
+                            내가 쓴 글 보러가기
                         </a>
                     </li>
                 </ul>
+                <div th:if="${session.loginEmail.toString().equals('admin')}">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                                관리자 전용
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/member/findAll">
+                                <span data-feather="user" class="align-text-bottom"></span>
+                                회원등급조회 및 탈퇴
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                게시판 신고 관리
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                더미링크1
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                더미링크2
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
         <main class="col-md-9 ms-lg-auto me-lg-auto col-lg-10 px-md-4 mt-5" style="width: 65%">
@@ -285,6 +281,29 @@
 <script th:inline="javascript">
     function deleteId(id) {
         location.href = "/member/deleteId/"+ id;
+    }function myPlace(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
+    function myTraffic(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
+        } else {
+            loginForm();
+        }
+    }
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
     }
     const loginForm = () => {
         var width = 480;

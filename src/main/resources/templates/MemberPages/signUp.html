@@ -50,7 +50,6 @@
             display: flex;
             align-items: center;
             flex-direction: column;
-            justify-content: center;
             width: 100%;
             min-height: 100%;
             padding: 20px;
@@ -339,7 +338,7 @@
     <div id="formContent">
         <div class="fadeIn first">
             <form action="/member/save" method="post" name="saveForm">
-                <input type="text" class="fadeIn second" id="email" name="memberEmail" placeholder="아이디" required> <br>
+                <input type="text" class="fadeIn second" id="email" name="memberEmail" autofocus placeholder="아이디" required> <br>
                 <input type="text" class="fadeIn third" id="pw" name="memberPassword" placeholder="비밀번호" required><br>
                 <input type="text" class="fadeIn fourth" name="memberNickname" placeholder="닉네임" required><br>
                 <input type="tel" class="fadeIn fifth" name="memberPhone"

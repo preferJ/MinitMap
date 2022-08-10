@@ -3,6 +3,7 @@ package com.example.project.service;
 import com.example.project.common.PagingConst;
 import com.example.project.dto.BoardDTO;
 import com.example.project.dto.LikeCheckDTO;
+import com.example.project.dto.MemberDTO;
 import com.example.project.dto.MyTrafficDTO;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
@@ -408,8 +409,7 @@ public class BoardService {
         System.out.println("optionalBoardEntity = " + optionalBoardEntity);
         if(optionalBoardEntity.isPresent()){
             BoardEntity boardEntity = optionalBoardEntity.get();
-            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
-            return boardDTO;
+            return BoardDTO.toBoardDTO(boardEntity);
         }else {
             return null;
         }
@@ -418,7 +418,8 @@ public class BoardService {
 
     public void updateByBoardHits(Long boardId) {
         BoardEntity boardEntity = boardRepository.findById(boardId).get();
-        boardEntity.setBoardHits(1l);
+        boardEntity.setBoardHits(1L);
         boardRepository.save(boardEntity);
     }
+
 }

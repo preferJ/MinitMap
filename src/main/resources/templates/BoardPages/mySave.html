@@ -168,71 +168,34 @@
                         </a>
                     </li>
                 </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
-                    style="font-size: 1.5rem">
-                    <span>마이페이지</span>
-                    <a class="link-secondary" href="#" aria-label="Add a new report">
-                    </a>
-                </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="map-pin" class="align-text-bottom"></span>
-                            마이플레이스
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            루틴
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="tool" class="align-text-bottom"></span>
-                            내 신호등 관리
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <nav id="sidebarMenu2" class="col-md-3 col-lg-2 d-md-block bg-light sidebar2 collapse">
-            <div class="position-sticky pt-3 sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
                         <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
-                            마이 페이지
+                            마이페이지
                         </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
                             <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정 및 탈퇴
+                            내 정보 수정
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/error/findAll">
+                        <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
-                            게시판 신고 관리
+                            마이플레이스
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/board/admin">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            내 루틴
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" onclick="myTraffic()">
                             <span data-feather="tool" class="align-text-bottom"></span>
                             내 신호등 관리
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="rutin()">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
                         </a>
                     </li>
                     <li class="nav-item">
@@ -242,9 +205,42 @@
                         </a>
                     </li>
                 </ul>
+                <div th:if="${session.loginEmail.toString().equals('admin')}">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                                관리자 전용
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/member/findAll">
+                                <span data-feather="user" class="align-text-bottom"></span>
+                                회원등급조회 및 탈퇴
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                게시판 신고 관리
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                더미링크1
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                더미링크2
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
-        <main class="col-md-9 ms-lg-auto me-lg-auto col-lg-10 px-md-4 mt-5" style="width: 65%">
+        <main class="col-md-9 ms-lg-auto me-5 px-md-4 mt-5" style="width: 78%">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">내가 작성한 글</h1>
             </div>
@@ -252,17 +248,21 @@
             <div class="container">
                 <table class="container">
                     <tr>
-                        <th>작성자</th>
+                        <th>글 번호</th>
                         <th>글 제목</th>
                         <th>글 내용</th>
+                        <th>추천 수</th>
                         <th>글 작성 시간</th>
+                        <th></th>
+
                     </tr>
                     <tr th:each="board: ${boardList}">
-                        <td th:text="${board.memberNickname}"></td>
+                        <td th:text="${board.boardId}"></td>
                         <td th:text="${board.boardTitle}"></td>
                         <td th:text="${board.boardContents}"></td>
+                        <td th:text="${board.boardLike}"></td>
                         <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-
+                        <td><a th:href="@{|/board/detail?id=${board.boardId}|}">이 글 보러가기</a></td>
                     </tr>
                 </table>
             </div>
@@ -293,7 +293,30 @@
         window.open("/member/loginForm", "로그인", windowStatus);
 
     }
-
+    function myPlace(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myPlace/";
+        } else {
+            loginForm();
+        }
+    }
+    function myTraffic(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/myTraffic/";
+        } else {
+            loginForm();
+        }
+    }
+    function rutin(){
+        let loginCheck = [[${session.loginId}]]
+        if (loginCheck != null) {
+            location.href = "/rutin/";
+        } else {
+            loginForm();
+        }
+    }
     function logout() {
         location.href = "/board/logout";
     }

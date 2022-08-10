@@ -1,8 +1,12 @@
 package com.example.project.service;
 
+import com.example.project.dto.AdminHistoryDTO;
 import com.example.project.dto.ErrorDTO;
 import com.example.project.dto.MemberDTO;
+import com.example.project.entity.AdminHistoryEntity;
+import com.example.project.entity.BoardEntity;
 import com.example.project.entity.MemberEntity;
+import com.example.project.repository.AdminHistoryRepository;
 import com.example.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final AdminHistoryRepository adminHistoryRepository;
 
     public void save(MemberDTO memberDTO) {
         // ㅁㅈ
@@ -100,7 +105,7 @@ public class MemberService {
         return memberDTOList;
     }
 
-    public String findByMemberPassword(String memberPassword,Long id) {
+    public String findByMemberPassword(String memberPassword, Long id) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
         MemberEntity memberEntity = optionalMemberEntity.get();
         if (memberEntity.getMemberPassword().equals(memberPassword)) {
@@ -120,5 +125,16 @@ public class MemberService {
 
     public void deleteId(Long memberId) {
         memberRepository.deleteById(memberId);
+    }
+
+    public void findByMemberId(Long memberId) {
+        MemberEntity memberEntity = memberRepository.findById(memberId).get();
+        if(memberEntity.getMemberLevel() == 0L){
+            memberRepository.deleteById(memberId);
+
+        }else{
+        memberEntity.setMemberLevel(memberEntity.getMemberLevel()-1);
+        memberRepository.save(memberEntity);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.project.entity;
 
 import com.example.project.dto.MyTrafficDTO;
+import com.example.project.dto.Traffic2DTO;
+import com.example.project.dto.Traffic3DTO;
 import com.example.project.dto.TrafficTimeDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -106,5 +108,30 @@ public class TrafficTimeEntity {
         trafficTimeEntity1.setSetStartTime(trafficTimeEntity.getSetStartTime());
         trafficTimeEntity1.setMyTrafficEntity(myTrafficEntity);
         return trafficTimeEntity1;
+    }
+
+    public static TrafficTimeEntity adminSave2(Traffic2DTO trafficTimeDTO, TrafficEntity trafficEntity) {
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart2());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd2());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType2());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn2());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn2());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime2());
+        trafficTimeEntity.setTrafficEntity(trafficEntity);
+        trafficTimeEntity.setMyTrafficEntity(null);
+        return trafficTimeEntity;
+    }
+    public static TrafficTimeEntity adminSave3(Traffic3DTO trafficTimeDTO, TrafficEntity trafficEntity) {
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart3());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd3());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType3());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn3());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn3());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime3());
+        trafficTimeEntity.setTrafficEntity(trafficEntity);
+        trafficTimeEntity.setMyTrafficEntity(null);
+        return trafficTimeEntity;
     }
 }

@@ -311,5 +311,10 @@ public class BoardController {
         return "/BoardPages/report";
     }
 
+    // 이현 // 관리자 신호등관리
+    @GetMapping("/adminTraffic")
+    public String adminTraffic(){
+        return "/AdminPages/adminTraffic";
+    }
 
 }

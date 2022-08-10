@@ -21,8 +21,15 @@ public class AdminHistoryService {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(adminHistoryDTO.getMemberId());
         if (optionalMemberEntity.isPresent()) {
             MemberEntity memberEntity = optionalMemberEntity.get();
-            System.out.println("memberEntity = " + memberEntity);
           adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO, memberEntity));
         }
+    }
+
+    public void trafficSave(Long loginId, Long id) {
+        MemberEntity memberEntity = memberRepository.findById(loginId).get();
+        AdminHistoryDTO adminHistoryDTO = new AdminHistoryDTO();
+        adminHistoryDTO.setHistoryMessage(id + "번 신호등 등록");
+        adminHistoryDTO.setHistoryType("신호등록");
+        adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
     }
 }

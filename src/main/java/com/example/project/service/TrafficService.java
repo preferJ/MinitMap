@@ -44,4 +44,9 @@ public class TrafficService {
         }
         return trafficDTOList;
     }
+
+    public Long adminSave(TrafficDTO trafficDTO,Long id) {
+        MemberEntity memberEntity = memberRepository.findById(id).get();
+        return trafficRepository.save(TrafficEntity.trafficSaveEntity(trafficDTO,memberEntity)).getTrafficId();
+    }
 }

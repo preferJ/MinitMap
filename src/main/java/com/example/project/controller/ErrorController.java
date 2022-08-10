@@ -25,7 +25,6 @@ public class ErrorController {
     // ㅁㅈ / 신고 저장
     public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
         errorService.save(errorDTO);
-        System.out.println("errorDTO = " + errorDTO);
         return "/hss/tapDown";
     }
     @GetMapping("/findAll")
@@ -50,10 +49,9 @@ public class ErrorController {
        model.addAttribute("board", boardDTO);
        return "/AdminPages/boardCheck";
     }
-    @GetMapping("/historySave")
+    @PostMapping("/historySave")
     // 신고 처리를 저장 할 때 확인 된거는 확인이라고 띄우기 위한 1값을 넣을 때 업데이트 메서드
     public String historySave(@ModelAttribute AdminHistoryDTO adminHistoryDTO,@RequestParam Long boardId){
-        System.out.println("adminHistoryDTO = " + adminHistoryDTO + ", boardId = " + boardId);
         adminHistoryService.save(adminHistoryDTO);
        boardService.updateByBoardHits(boardId);
        errorService.updateManagerCheck(boardId);

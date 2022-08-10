@@ -246,7 +246,6 @@ public class BoardController {
         return "/BoardPages/trafficMap";
     }
 
-
     @GetMapping("/update")
     public String updateForm(@RequestParam("boardId") Long id, Model model) {
         BoardDTO boardDTO = boardService.findById(id);

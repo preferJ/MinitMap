@@ -276,16 +276,276 @@
                 if (onTap == 4) {
                     map.removeListener("click", onClickTap4);
                 }
+                //ㅅㅎ 신호등 찍은것만 지우는 메서드
+                if (addTraffic.length > 0) {
+
+                    for (var i = 0; i < addTraffic.length; i++) {
+                        addTraffic[i].setMap(null);
+                    }
+                    addTraffic = [];
+                }
             }
         }
+
+
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+
+
+        let TrafficStatus = 1;
+        let time1
+        let time2
+        let time3
+
+        function toggleRedOrGreen() {
+            const left_px = parseInt($('#' + "toggleBtn").css('left'));
+            if (left_px > 10) {
+                alert("적색")
+                TrafficStatus = 1;
+                document.getElementById("timeCheck1").placeholder = "청색불로 바뀐 시간"
+                document.getElementById("timeCheck1").style.border = "solid 3px green"
+                document.getElementById("timeCheck2").placeholder = "적색불로 바뀐 시간"
+                document.getElementById("timeCheck3").placeholder = "청색불로 바뀐 시간"
+
+            } else {
+                alert("녹색")
+                TrafficStatus = -1;
+                document.getElementById("timeCheck1").placeholder = "적색불로 바뀐 시간"
+                document.getElementById("timeCheck1").style.border = "solid 3px red"
+                document.getElementById("timeCheck2").placeholder = "청색불로 바뀐 시간"
+                document.getElementById("timeCheck3").placeholder = "적색불로 바뀐 시간"
+
+            }
+        }
+
+        let timeCheckCounrt = 1;
+
+        function timeCheck() {
+            let today = new Date();
+            let time = today.toTimeString().split(" ")[0];
+
+            if (timeCheckCounrt == 1) {
+                document.getElementById("timeCheck1").style.border = "solid 2px gray"
+                document.getElementById("timeCheck1").value = time;
+                time1 = today;
+                console.log("현재 카운트 1 , 타임 값 찍기 밑 그레이 실행함")
+                $("#toggle").attr("disabled", true); //설정
+                if (TrafficStatus == 1) {
+                    document.getElementById("timeCheck2").style.border = "solid 3px red"
+                    console.log("현재 카운트 1  상태 1, 2번에 레드 적용")
+
+                } else {
+                    document.getElementById("timeCheck2").style.border = "solid 3px green"
+                    console.log("현재 카운트 1  상태 -1, 2번에 그린 적용")
+
+                }
+
+            }
+            if (timeCheckCounrt == 2) {
+                document.getElementById("timeCheck2").value = time;
+                document.getElementById("timeCheck2").style.border = "solid 2px gray"
+                time2 = today;
+
+                if (TrafficStatus == 1) {
+                    document.getElementById("timeCheck3").style.border = "solid 3px red"
+                } else {
+                    document.getElementById("timeCheck3").style.border = "solid 3px green"
+                }
+            }
+            if (timeCheckCounrt == 3) {
+                document.getElementById("timeCheck3").value = time;
+                time3 = today;
+                document.getElementById("timeCheck3").style.border = "solid 2px gray"
+                $("#timeCheckBtn").attr("disabled", true); //설정
+                trafficTimeCal();
+                setTimeStartAndEnd();
+                document.getElementById("trafficName").focus();
+            }
+            TrafficStatus *= -1;
+            timeCheckCounrt++;
+        }
+
+        function trafficTimeCal() {
+            if (TrafficStatus == 1) {
+                document.getElementById("greenOnTime").value = Math.round((time2 - time1) / 1000);
+                document.getElementById("redOnTime").value = Math.round((time3 - time2) / 1000);
+            } else if (TrafficStatus == -1) {
+                document.getElementById("redOnTime").value = Math.round((time2 - time1) / 1000);
+                document.getElementById("greenOnTime").value = Math.round((time3 - time2) / 1000);
+            }
+        }
+
+        function setTimeStartAndEnd() {
+            let date = new Date();
+
+            date.setMinutes(date.getMinutes() - 30);
+            let time = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
+            document.getElementById("startTime").value = time
+
+            let date2 = new Date();
+            date2.setMinutes(date2.getMinutes() + 30);
+            let time2 = date2.getHours() * 10000 + date2.getMinutes() * 100 + date2.getSeconds()
+            document.getElementById("endTime").value = time2
+        }
+
+
+        let addTraffic = [];
+        let addTrafficLat = 0;
+        let addTrafficLon = 0;
+
+        function checklatlon() {
+            if (addTraffic == 0) {
+                alert("신호를 등록할 위치를 클릭해주세요");
+            } else if (addTrafficLon == 0) {
+                alert("신호를 등록할 위치를 클릭해주세요");
+            }
+        }
+
+        function onClickTap4(e) {
+            if (addTraffic.length > 0) {
+
+                for (var i = 0; i < addTraffic.length; i++) {
+                    addTraffic[i].setMap(null);
+                }
+                addTraffic = [];
+            }
+            let str = e.latLng.toString();
+
+            let [latlat, lnglng] = str.split(',');
+            addTrafficLat = latlat;
+            addTrafficLon = lnglng;
+
+            marker_Traffic = new Tmapv2.Marker(
+                {
+                    position: e.latLng, // 마커가 표시될 좌표
+                    icon: "/icon/Traffic-light.png", // 아이콘 등록
+                    iconSize: new Tmapv2.Size(
+                        36, 57), // 아이콘 크기 설정
+                    title: "marker_Traffic1", // 마커 타이틀
+                    label: "test1",
+                    map: map // 마커가 등록될 지도 객체
+                });
+            addTraffic.push(marker_Traffic);
+        }
+
+        let trafficArray = [];
+        let startCheck = 0;
+        let trafficOnMapArray = [];
+        printStart = function () {
+            printTraffic = setInterval(function () {
+                if (trafficOnMapArray.length > 0) {
+                    for (var i in trafficOnMapArray) {
+                        trafficOnMapArray[i].setMap(null);
+                    }
+                    trafficOnMapArray = [];
+                }
+
+                console.log("프린트 프린트")
+                let today = new Date();
+                let hours = today.getHours();
+                let minutes = today.getMinutes();
+                let seconds = today.getSeconds();
+                let time = hours * 10000 + minutes * 100 + seconds;
+                for (let i = 0; i < trafficArray[0].length; i++) {
+                    // console.log(trafficArray[0][i])
+                    if (trafficArray[0][i].trafficApplyStart < time && time < trafficArray[0][i].trafficApplyEnd) {
+                        var leftTime = trafficArray[0][i].leftTime + "초";
+                        if (trafficArray[0][i].startType == 1) {
+                            marker_Traffic = new Tmapv2.Marker(
+                                {
+                                    position: new Tmapv2.LatLng(trafficArray[0][i].trafficLat, trafficArray[0][i].trafficLon), //Marker의 중심좌표 설정.
+                                    icon: "/icon/greenOn.png", // 아이콘 등록
+                                    iconSize: new Tmapv2.Size(
+                                        36, 57), // 아이콘 크기 설정
+                                    title: 1, // 마커 타이틀
+                                    label: leftTime,
+                                    map: map // 마커가 등록될 지도 객체
+                                });
+                            trafficOnMapArray.push(marker_Traffic);
+                            trafficArray[0][i].leftTime--;
+                            console.log(trafficArray[0][i].leftTime)
+                            if (trafficArray[0][i].leftTime <= 0) {
+                                trafficArray[0][i].startType *= -1;
+                                trafficArray[0][i].leftTime = trafficArray[0][i].redOn
+                            }
+
+
+                        } else {
+                            marker_Traffic = new Tmapv2.Marker(
+                                {
+                                    position: new Tmapv2.LatLng(trafficArray[0][i].trafficLat, trafficArray[0][i].trafficLon), //Marker의 중심좌표 설정.
+                                    icon: "/icon/redOn.png", // 아이콘 등록
+                                    iconSize: new Tmapv2.Size(
+                                        36, 57), // 아이콘 크기 설정
+                                    title: -1, // 마커 타이틀
+                                    label: leftTime,
+                                    map: map // 마커가 등록될 지도 객체
+                                });
+                            trafficOnMapArray.push(marker_Traffic);
+                            trafficArray[0][i].leftTime--;
+                            console.log(trafficArray[0][i].leftTime)
+                            if (trafficArray[0][i].leftTime <= 0) {
+                                trafficArray[0][i].startType *= -1;
+                                trafficArray[0][i].leftTime = trafficArray[0][i].greenOn;
+                            }
+
+
+                        }
+
+                    }
+
+
+                }
+                console.log(time)
+
+            }, 1000);
+        };
+
+        function TrafficSetting() {
+            let date = new Date();
+            let time = date.getHours() * 10000 + date.getMinutes() * 100 + date.getSeconds()
+            let myTrafficName = document.getElementById("myTrafficName");
+            let myTrafficLat = document.getElementById("myTrafficLat");
+            let myTrafficLon = document.getElementById("myTrafficLon");
+            let trafficApplyStart = document.getElementById("trafficApplyStart");
+            let trafficApplyEnd = document.getElementById("trafficApplyEnd");
+            let greenOn = document.getElementById("greenOn");
+            let redOn = document.getElementById("redOn");
+            let startType = document.getElementById("startType");
+            let setStartTime = document.getElementById("setStartTime");
+            myTrafficName.value = document.getElementById("trafficName").value;
+            myTrafficLat.value = addTrafficLat;
+            myTrafficLon.value = addTrafficLon;
+            trafficApplyStart.value = document.getElementById("startTime").value;
+            trafficApplyEnd.value = document.getElementById("endTime").value;
+            greenOn.value = document.getElementById("greenOnTime").value;
+            redOn.value = document.getElementById("redOnTime").value;
+            if (TrafficStatus == 1) {
+                startType.value = "RED";
+            } else {
+                startType.value = "GREEN";
+            }
+            setStartTime.value = time;
+
+
+        }
+
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+        // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
 
         function tap4(){
             if(tapLock == false) {
                 tapLock = true;
+                removeMarkers();
                 const sidebarIcon = document.getElementById("side4HideIcon");
                 var sidebar = document.getElementById("side4");
                 var sidebar2 = document.getElementById("side" + onTap);
                 if (onTap != 4) {
+                    map.addListener("click", onClickTap4); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                     sidebar2.style.left = "-500%";
                     sidebar.style.left = "100%";
                     if (sidebar2.style.left != "-395%") {
@@ -2028,6 +2288,10 @@
                                 <input type="text" th:value="11"> <br>
                                 <input type="text" th:value="11">
                             </div>
+                            <hr>
+                            <div th:if="${session.loginEmail.toString().equals('admin')}">
+                                <button th:onclick="loginAdmin()" type="button" class="btn success">▶관리자 전용</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2120,95 +2384,80 @@
                     <i id="side4HideIcon" class="fa-solid fa-angle-left fa-2xl" onclick="sidebarHide4()"></i>
                 </div>
                 <div class="traffic_information">
-                    <div>
-                        <div id="sidebar2">
-                            <div id="sidebarHide" onclick="sidebarHide1()">
-                                <i id="sidebarHideIcon" class="fa-solid fa-angle-left fa-2xl"></i>
+                    <h3>신호등추가</h3>
+                    <hr>
+                    <div style="size: 15px">현재 신호등 상태</div>
+                    <div style="position: center;display: inline-flex;align-items: center;">
+                        <div>a</div>
+                        <div>
+                            <input type="checkbox" id="toggle" hidden onclick="toggleRedOrGreen()">
+                            <label for="toggle" class="toggleSwitch">
+                                <span class="toggleButton" id="toggleBtn"></span>
+                            </label>
+                        </div>
+                        <div>b</div>
+                    </div>
+                    <hr>
+                    <div class="box" align="left">
+                        <div>
+                            <div>
+                                <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"
+                                       class="timeCheckInputBoxGreen"
+                                >
                             </div>
-                            <div id="traffic_information">
-
-                                <h3>신호등추가</h3>
-                                <hr>
-                                <div style="size: 15px">현재 신호등 상태</div>
-                                <div style="position: center;display: inline-flex;align-items: center;">
-                                    <div>a</div>
-                                    <div>
-                                        <input type="checkbox" id="toggle" hidden onclick="toggleRedOrGreen()">
-                                        <label for="toggle" class="toggleSwitch">
-                                            <span class="toggleButton" id="toggleBtn"></span>
-                                        </label>
-                                    </div>
-                                    <div>b</div>
-                                </div>
-                                <hr>
-                                <div class="box" align="left">
-                                    <div>
-                                        <div>
-                                            <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"
-                                                   class="timeCheckInputBoxGreen"
-                                            >
-                                        </div>
-                                        <div>
-                                            <input type="text" id="timeCheck2" placeholder="적색불로 바뀐 시간"
-                                                   class="timeCheckInputBox">
-                                        </div>
-                                        <div>
-                                            <input type="text" id="timeCheck3" placeholder="청색불로 바뀐 시간"
-                                                   class="timeCheckInputBox">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: block">
-                                    <input type="button" value="시간 기록"
-                                           style="outline-color: #0d6efd; width: 190px;height: 100px;margin-top: 5px;position: center;"
-                                           onclick="timeCheck();" id="timeCheckBtn">
-                                </div>
-                                <hr>
-                                <div class="box">
-                                    <h3>신호등 정보</h3>
-                                    <br/>
-                                    <div>
-                                        <input type="text" class="trafficCount" id="trafficName" placeholder="신호등 이름 입력"
-                                               style="outline-color:#20c997;;" onblur="TrafficSetting();TrafficSetting();checklatlon()">
-                                    </div>
-                                    <input type="text" id="greenOnTime" class="trafficCount" placeholder="청색불 점화 시간"
-                                           onblur="TrafficSetting()">
-                                    <br>
-                                    <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간"
-                                           onblur="TrafficSetting()">
-                                </div>
-                                <hr>
-                                <h4>적용 시간대</h4>
-                                <br/>
-                                <input type="text" id="startTime" class="trafficCount" placeholder="00:00:00"
-                                       style="outline-color:#20c997;text-align: center">
-                                <div style="text-align: center">
-                                    ||
-                                </div>
-                                <input type="text" id="endTime" class="trafficCount" placeholder="00:00:00"
-                                       style="outline-color:#20c997;text-align: center">
-                                <hr>
-                                <h1>강제 수정 및 커밋용 h1</h1>
-                                <form action="/myTraffic/saveTraffic" method="post">
-                                    <input type="text" name="memberId" id="memberId" th:value="${session.loginId}">
-                                    <input type="text" name="myTrafficName" id="myTrafficName" value="asd">
-                                    <input type="text" name="myTrafficLat" id="myTrafficLat" value="asd">
-                                    <input type="text" name="myTrafficLon" id="myTrafficLon" value="asd">
-                                    <input type="text" name="trafficApplyStart" id="trafficApplyStart" value="asd">
-                                    <input type="text" name="trafficApplyEnd" id="trafficApplyEnd" value="asd">
-                                    <input type="text" name="startType" id="startType" value="asd">
-                                    <input type="text" name="greenOn" id="greenOn" value="asd">
-                                    <input type="text" name="redOn" id="redOn" value="asd">
-                                    <input type="text" name="setStartTime" id="setStartTime" value="asd">
-                                    <button type="submit" class="btn btn-primary" style="width: 100px">저장</button>
-
-                                </form>
-
-
+                            <div>
+                                <input type="text" id="timeCheck2" placeholder="적색불로 바뀐 시간"
+                                       class="timeCheckInputBox">
+                            </div>
+                            <div>
+                                <input type="text" id="timeCheck3" placeholder="청색불로 바뀐 시간"
+                                       class="timeCheckInputBox">
                             </div>
                         </div>
-
                     </div>
+                    <div style="display: block">
+                        <input type="button" value="시간 기록"
+                               style="outline-color: #0d6efd; width: 190px;height: 100px;margin-top: 5px;position: center;"
+                               onclick="timeCheck();" id="timeCheckBtn">
+                    </div>
+                    <hr>
+                    <div class="box">
+                        <h3>신호등 정보</h3>
+                        <br/>
+                        <div>
+                            <input type="text" class="trafficCount" id="trafficName" placeholder="신호등 이름 입력"
+                                   style="outline-color:#20c997;;" onblur="TrafficSetting();TrafficSetting();checklatlon()">
+                        </div>
+                        <input type="text" id="greenOnTime" class="trafficCount" placeholder="청색불 점화 시간"
+                               onblur="TrafficSetting()">
+                        <br>
+                        <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간"
+                               onblur="TrafficSetting()">
+                    </div>
+                    <hr>
+                    <h4>적용 시간대</h4>
+                    <br/>
+                    <input type="text" id="startTime" class="trafficCount" placeholder="00:00:00"
+                           style="outline-color:#20c997;text-align: center">
+                    <div style="text-align: center">
+                        ||
+                    </div>
+                    <input type="text" id="endTime" class="trafficCount" placeholder="00:00:00"
+                           style="outline-color:#20c997;text-align: center">
+                    <hr>
+                    <form action="/myTraffic/saveTraffic" method="post">
+                        <input type="text" name="memberId" id="memberId" th:value="${session.loginId}">
+                        <input type="text" name="myTrafficName" id="myTrafficName" value="asd">
+                        <input type="text" name="myTrafficLat" id="myTrafficLat" value="asd">
+                        <input type="text" name="myTrafficLon" id="myTrafficLon" value="asd">
+                        <input type="text" name="trafficApplyStart" id="trafficApplyStart" value="asd">
+                        <input type="text" name="trafficApplyEnd" id="trafficApplyEnd" value="asd">
+                        <input type="text" name="startType" id="startType" value="asd">
+                        <input type="text" name="greenOn" id="greenOn" value="asd">
+                        <input type="text" name="redOn" id="redOn" value="asd">
+                        <input type="text" name="setStartTime" id="setStartTime" value="asd">
+                        <button type="submit" class="btn btn-primary" style="width: 100px">저장</button>
+                    </form>
                 </div>
             </div>
         </div>

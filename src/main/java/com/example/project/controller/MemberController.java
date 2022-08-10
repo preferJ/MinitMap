@@ -2,8 +2,6 @@ package com.example.project.controller;
 
 import com.example.project.dto.MemberDTO;
 import com.example.project.entity.MemberEntity;
-import com.example.project.repository.BoardRepository;
-import com.example.project.service.BoardService;
 import com.example.project.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
-    private final BoardService boardService;
 
     // ㅁㅈ
     @GetMapping("/saveForm")
@@ -146,10 +143,5 @@ public class MemberController {
     public String deleteId(@PathVariable Long id) {
         memberService.deleteId(id);
         return "redirect:/member/findAll";
-    }
-    @GetMapping("/levelDown/{id}")
-    public String levelDown(@PathVariable Long id){
-    memberService.findByMemberId(id);
-    return "/hss/tapDown";
     }
 }

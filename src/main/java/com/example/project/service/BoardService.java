@@ -409,8 +409,7 @@ public class BoardService {
         System.out.println("optionalBoardEntity = " + optionalBoardEntity);
         if(optionalBoardEntity.isPresent()){
             BoardEntity boardEntity = optionalBoardEntity.get();
-            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
-            return boardDTO;
+            return BoardDTO.toBoardDTO(boardEntity);
         }else {
             return null;
         }
@@ -419,7 +418,7 @@ public class BoardService {
 
     public void updateByBoardHits(Long boardId) {
         BoardEntity boardEntity = boardRepository.findById(boardId).get();
-        boardEntity.setBoardHits(1l);
+        boardEntity.setBoardHits(1L);
         boardRepository.save(boardEntity);
     }
 

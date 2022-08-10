@@ -137,18 +137,20 @@
                 </ul>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem"></div>
+                        <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                            마이페이지
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="rutin()">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            루틴
                         </a>
                     </li>
                     <li class="nav-item">
@@ -158,9 +160,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
-                            <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정
+                        <a class="nav-link" onclick="rutin()">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
                         </a>
                     </li>
                     <li class="nav-item">
@@ -202,12 +204,13 @@
                             </a>
                         </li>
                     </ul>
+
                 </div>
             </div>
         </nav>
         <main class="col-md-9 ms-lg-auto me-5 px-md-4 mt-5" style="width: 78%">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">내 정보(수정,회원탈퇴)</h1>
+                <h1 class="h2">마이페이지</h1>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-sm" style="table-layout:fixed">
@@ -333,7 +336,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script th:inline="javascript">
-    function myPlace(){
+    function myPlace() {
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/myPlace/";
@@ -341,7 +344,8 @@
             loginForm();
         }
     }
-    function myTraffic(){
+
+    function myTraffic() {
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/myTraffic/";
@@ -349,7 +353,8 @@
             loginForm();
         }
     }
-    function rutin(){
+
+    function rutin() {
         let loginCheck = [[${session.loginId}]]
         if (loginCheck != null) {
             location.href = "/rutin/";
@@ -357,6 +362,7 @@
             loginForm();
         }
     }
+
     function loginForm() {
         location.href = "/member/loginForm";
     }

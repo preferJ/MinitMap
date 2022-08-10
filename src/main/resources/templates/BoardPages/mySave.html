@@ -175,15 +175,15 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="myPlace()">
-                            <span data-feather="map-pin" class="align-text-bottom"></span>
-                            마이플레이스
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="rutin()">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            루틴
+                        <a class="nav-link" onclick="myPlace()">
+                            <span data-feather="map-pin" class="align-text-bottom"></span>
+                            마이플레이스
                         </a>
                     </li>
                     <li class="nav-item">
@@ -193,9 +193,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
-                            <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정
+                        <a class="nav-link" onclick="rutin()">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
                         </a>
                     </li>
                     <li class="nav-item">
@@ -251,6 +251,7 @@
                         <th>글 번호</th>
                         <th>글 제목</th>
                         <th>글 내용</th>
+                        <th>추천 수</th>
                         <th>글 작성 시간</th>
                         <th></th>
 
@@ -259,6 +260,7 @@
                         <td th:text="${board.boardId}"></td>
                         <td th:text="${board.boardTitle}"></td>
                         <td th:text="${board.boardContents}"></td>
+                        <td th:text="${board.boardLike}"></td>
                         <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td><a th:href="@{|/board/detail?id=${board.boardId}|}">이 글 보러가기</a></td>
                     </tr>

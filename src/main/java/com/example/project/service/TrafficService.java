@@ -59,4 +59,34 @@ public class TrafficService {
         }
         return trafficDTOList;
     }
+
+    public List<TrafficDTO> adminLike(String email, Long num) {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email).get();
+        List<TrafficEntity> trafficEntities ;
+        if (num == 1){
+            trafficEntities = trafficRepository.findByMemberEntityOrderByTrafficLikeDesc(memberEntity);
+        }else{
+            trafficEntities = trafficRepository.findByMemberEntityOrderByTrafficLikeAsc(memberEntity);
+        }
+        List<TrafficDTO> trafficDTOList = new ArrayList<>();
+        for (TrafficEntity trafficEntity : trafficEntities){
+            trafficDTOList.add(TrafficDTO.toTrafficDTO(trafficEntity));
+        }
+        return trafficDTOList;
+    }
+
+    public List<TrafficDTO> adminDislike(String email, Long num) {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email).get();
+        List<TrafficEntity> trafficEntities ;
+        if (num == 1){
+            trafficEntities = trafficRepository.findByMemberEntityOrderByTrafficDislikeDesc(memberEntity);
+        }else{
+            trafficEntities = trafficRepository.findByMemberEntityOrderByTrafficDislikeAsc(memberEntity);
+        }
+        List<TrafficDTO> trafficDTOList = new ArrayList<>();
+        for (TrafficEntity trafficEntity : trafficEntities){
+            trafficDTOList.add(TrafficDTO.toTrafficDTO(trafficEntity));
+        }
+        return trafficDTOList;
+    }
 }

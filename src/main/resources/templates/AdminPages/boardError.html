@@ -257,6 +257,9 @@
                         <th>신고내용 상세보기</th>
                         <th>확인 여부</th>
                     </tr>
+                    <tr style="text-align: center" th:if="${boardList.size() == 0}">
+                        <td colspan="9">등록된 글이 없습니다!</td>
+                    </tr>
                     <tr th:each="board: ${boardList}">
                         <td th:text="${board.boardId}"></td>
                         <td th:text="${board.boardType}"></td>

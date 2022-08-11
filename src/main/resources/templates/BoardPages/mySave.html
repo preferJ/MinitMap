@@ -175,15 +175,15 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
-                            <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="rutin()">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
                         </a>
                     </li>
                     <li class="nav-item">
@@ -193,9 +193,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="rutin()">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            루틴
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
                         </a>
                     </li>
                     <li class="nav-item">
@@ -255,6 +255,9 @@
                         <th>글 작성 시간</th>
                         <th></th>
 
+                    </tr>
+                    <tr style="text-align: center" th:if="${boardList.size() == 0}">
+                        <td colspan="6">등록된 글이 없습니다!</td>
                     </tr>
                     <tr th:each="board: ${boardList}">
                         <td th:text="${board.boardId}"></td>

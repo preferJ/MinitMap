@@ -142,15 +142,15 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
-                            <span data-feather="user" class="align-text-bottom"></span>
-                            내 정보 수정
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" onclick="myPlace()">
                             <span data-feather="map-pin" class="align-text-bottom"></span>
                             마이플레이스
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="rutin()">
+                            <span data-feather="compass" class="align-text-bottom"></span>
+                            루틴
                         </a>
                     </li>
                     <li class="nav-item">
@@ -160,9 +160,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="rutin()">
-                            <span data-feather="compass" class="align-text-bottom"></span>
-                            루틴
+                        <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">
+                            <span data-feather="user" class="align-text-bottom"></span>
+                            내 정보 수정
                         </a>
                     </li>
                     <li class="nav-item">
@@ -192,9 +192,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/error/findAll">
+                            <a class="nav-link" href="/board/adminTraffic">
                                 <span data-feather="map-pin" class="align-text-bottom"></span>
-                                더미링크1
+                                관리자 신호등 관리
                             </a>
                         </li>
                         <li class="nav-item">

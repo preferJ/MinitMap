@@ -321,7 +321,7 @@
                 data: { // 보낼 데이터 (Object , String, Array)
                     "center": center,
                 },
-                async : false,
+                async: false,
                 success: function (response) { // 결과 성공 콜백함수
                     console.log("함수 정상 실행")
                     trafficArray = response;
@@ -517,7 +517,7 @@
                         var leftTime = trafficArray[i].leftTime + "초";
                         if (trafficArray[i].startType == 1) {
                             console.log(trafficArray[i]);
-                            marker_Traffic = new Tmapv2.Marker(
+                            var marker_Traffic = new Tmapv2.Marker(
                                 {
                                     position: new Tmapv2.LatLng(trafficArray[i].trafficLat, trafficArray[i].trafficLon), //Marker의 중심좌표 설정.
                                     icon: "/icon/greenOn.png", // 아이콘 등록
@@ -527,6 +527,13 @@
                                     label: leftTime,
                                     map: map // 마커가 등록될 지도 객체
                                 });
+                            marker_Traffic.addListener("click", function(evt) {
+                                console.log(evt)
+                                console.log(evt.toString())
+                                console.log(evt.map)
+                                document.getElementById("jshTest").innerHTML = 'Mouse Click!';
+                            });
+
                             trafficOnMapArray.push(marker_Traffic);
                             trafficArray[i].leftTime--;
                             if (trafficArray[i].leftTime <= 0) {
@@ -560,6 +567,7 @@
 
 
                 }
+
                 console.log(time)
 
             }, 1000);
@@ -702,8 +710,8 @@
                     myPlacesList = result;
                     let output = "<table style=\"display: inline\" id=\"mypTap\">";
                     for (let i in result) {
-                        output += "<tr class='myPlaceTap'>";
-                        output += "<td>" + "<p onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>" + result[i].myPlaceName + "</p>";
+                        output += "<tr class='myPlaceTap' onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
+                        output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
                         output += "</td>" + "</tr>";
                         output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace" + result[i].myPlaceId + "'>";
                         output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ");tap2();' value='출발지'></td>";
@@ -714,8 +722,8 @@
                     document.getElementById("myPlaceList").innerHTML = output
                     output = "<table style=\"display: inline\" id=\"mypTap2\">";
                     for (let i in result) {
-                        output += "<tr class='myPlaceTap'>";
-                        output += "<td>" + "<p onclick='myPlaceClick2(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>" + result[i].myPlaceName + "</p>";
+                        output += "<tr class='myPlaceTap' onclick='myPlaceClick2(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
+                        output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
                         output += "</td>" + "</tr>";
                         output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace2" + result[i].myPlaceId + "'>";
                         output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ")' value='출발지'></td>";
@@ -1767,13 +1775,17 @@
 
         function startMyPlace(id) {
             var index = 0;
-            for (var i = 0; i < rutinsList.length; i++) {
-                if (rutinsList[i].rutinId == id) {
+            for (var i = 0; i < myPlacesList.length; i++) {
+                if (myPlacesList[i].myPlaceId == id) {
                     index = i;
                 }
             }
-            document.getElementById("myPlace" + clickId).style.display = "none";
-            document.getElementById("myPlace2" + clickId).style.display = "none";
+            if(clickId != 0) {
+                document.getElementById("myPlace" + clickId).style.display = "none";
+            }
+            if(clickId2 != 0){
+                document.getElementById("myPlace2" + clickId2).style.display = "none";
+            }
             markerRemove();
             document.getElementById("searchKeyword1").value = myPlacesList[index].myPlaceName;
             if (s_marker.getPosition() != null) {
@@ -1792,8 +1804,8 @@
 
         function endMyPlace(id) {
             var index = 0;
-            for (var i = 0; i < rutinsList.length; i++) {
-                if (rutinsList[i].rutinId == id) {
+            for (var i = 0; i < myPlacesList.length; i++) {
+                if (myPlacesList[i].myPlaceId == id) {
                     index = i;
                 }
             }
@@ -2082,7 +2094,7 @@
 
         .myPlaceTap {
             display: inline-block;
-            width: 100%;
+            width: 250px;
         }
 
         .myPlaceTap:hover {
@@ -2463,6 +2475,8 @@
                             <label for="toggle" class="toggleSwitch">
                                 <span class="toggleButton" id="toggleBtn"></span>
                             </label>
+                            <p id="jshTest"/>
+
                         </div>
                         <div>b</div>
                     </div>

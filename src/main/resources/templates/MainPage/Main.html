@@ -1046,25 +1046,53 @@
         }
 
         function myPing() {
-            if (navigator.geolocation) {
-                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-                navigator.geolocation.getCurrentPosition(function (position) {
+            var myPingColor = document.getElementById("myPingColor");
+            if(myPingColor.style.color == "red"){
+                myPingColor.style.color = "green";
+                if (navigator.geolocation) {
+                    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                    navigator.geolocation.getCurrentPosition(function (position) {
 
-                    lat = position.coords.latitude; // 위도
-                    lon = position.coords.longitude; // 경도
-                    if (my_marker != null) {
-                        my_marker.setMap(null);
-                        my_marker = null;
-                    }
-                    my_marker = new Tmapv2.Marker({
-                        position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
-                        map: map, //Marker가 표시될 Map 설정..
-                        icon: 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_g_m_h.png'
+                        lat = position.coords.latitude; // 위도
+                        lon = position.coords.longitude; // 경도
+                        if (my_marker != null) {
+                            my_marker.setMap(null);
+                            my_marker = null;
+                        }
+                        my_marker = new Tmapv2.Marker({
+                            position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
+                            map: map, //Marker가 표시될 Map 설정..
+                            icon: 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_g_m_h.png'
+                        });
+                        map.setCenter(new Tmapv2.LatLng(lat, lon));
+                        map.setZoom(18);
                     });
-                    map.setCenter(new Tmapv2.LatLng(lat, lon));
-                    map.setZoom(18);
-                });
+                    playAlert = setInterval(function() {
+                        if (navigator.geolocation) {
+                            // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                            navigator.geolocation.getCurrentPosition(function (position) {
+
+                                lat = position.coords.latitude; // 위도
+                                lon = position.coords.longitude; // 경도
+                                if (my_marker != null) {
+                                    my_marker.setMap(null);
+                                    my_marker = null;
+                                }
+                                my_marker = new Tmapv2.Marker({
+                                    position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
+                                    map: map, //Marker가 표시될 Map 설정..
+                                    icon: 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_g_m_h.png'
+                                });
+                            });
+                        }
+                        console.log("내위치 찍기")
+                    }, 5000);
+                }
+            }else{
+                myPingColor.style.color = "red";
+                clearInterval(playAlert);
             }
+
         }
 
         // 탭1 끝
@@ -1322,7 +1350,7 @@
             // 출발지 도착지가 모두 설정되어있을 상황에 한번 더 누르면 출발지 도착지가 모두 지워지고 출발지 설정
             else if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
                 document.getElementById("result").innerHTML = "거리/시간";
-                document.getElementById("course").innerHTML = "길안내";
+                // document.getElementById("course").innerHTML = "길안내";
                 removeMarkers();
                 onClick(e);
             }
@@ -1404,10 +1432,11 @@
 
         // 경로탐색을 위한 함수
         function onfoot() {
-            // 경로 상세 내용을 표기하기 위해 만들어줄 div 태그를 지정
-            const course = document.getElementById("course");
-            // 경로 상세 내용을 초기화
-            course.innerHTML = "";
+
+            // // 경로 상세 내용을 표기하기 위해 만들어줄 div 태그를 지정
+            // const course = document.getElementById("course");
+            // // 경로 상세 내용을 초기화
+            // course.innerHTML = "";
 
             // 실행 시에 출발지 도착지가 설정되어있어야만 실행되며 안되어있으면 alert 창 실행
             if (e_marker.getPosition() != null && s_marker.getPosition() != null) {
@@ -1436,6 +1465,16 @@
                         "endName": "도착지"
                     },
                     success: function (response) {
+
+                        var positionBounds = new Tmapv2.LatLngBounds();
+
+                        var markerPosition = new Tmapv2.LatLng(
+                            s_marker.getPosition().lat(),s_marker.getPosition().lng());
+                        positionBounds.extend(markerPosition);
+                        markerPosition = new Tmapv2.LatLng(
+                            e_marker.getPosition().lat(),e_marker.getPosition().lng());
+                        positionBounds.extend(markerPosition);
+
                         var resultData = response.features;
 
                         //결과 출력
@@ -1531,13 +1570,15 @@
                                 // 포인트 객체 초기화를 위해 배열에 현제 포인트 정보를 추가
                                 p_markerArr.push(marker_p);
                             }
-                            if (geometry.type != "LineString") {
-                                console.log(properties.description);
-                                course.innerHTML += properties.description + "<br />";
-                            }
+                            // if (geometry.type != "LineString") {
+                            //     console.log(properties.description);
+                            //     course.innerHTML += properties.description + "<br />";
+                            // }
                         }
                         //for문 [E]
                         drawLine(drawInfoArr);
+                        map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
+                        map.zoomOut();
                     },
                     error: function (request, status, error) {
                         console.log("code:" + request.status + "\n"
@@ -1572,7 +1613,7 @@
             // 출발지가 이미 지정되어 있으면 출발지 마커를 지우고 시작
             if (s_marker.getPosition() != null) {
                 document.getElementById("result").innerHTML = "거리/시간";
-                document.getElementById("course").innerHTML = "길안내";
+                // document.getElementById("course").innerHTML = "길안내";
                 s_marker.setMap(null);
                 s_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
@@ -1605,7 +1646,7 @@
             // 도착지가 이미 지정되어 있으면 도착지 마커를 지우고 시작
             if (e_marker.getPosition() != null) {
                 document.getElementById("result").innerHTML = "거리/시간";
-                document.getElementById("course").innerHTML = "길안내";
+                // document.getElementById("course").innerHTML = "길안내";
                 e_marker.setMap(null);
                 e_marker = new Tmapv2.Marker({
                     icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
@@ -2420,7 +2461,7 @@
                     <hr>
                     <p id="result">거리/시간</p>
                     <hr>
-                    <div id="course">길안내</div>
+<!--                    <div id="course">길안내</div>-->
                 </div>
             </div>
         </div>
@@ -2464,13 +2505,13 @@
                 <div id="side4Hide" class="sideHide">
                     <i id="side4HideIcon" class="fa-solid fa-angle-left fa-2xl" onclick="sidebarHide4()"></i>
                 </div>
-                <div class="traffic_information">
+                <div class="traffic_information" style="text-align: center">
                     <h3>신호등추가</h3>
                     <hr>
                     <div style="size: 15px">현재 신호등 상태</div>
                     <div style="position: center;display: inline-flex;align-items: center;">
-                        <div>a</div>
-                        <div>
+                        <div>적신호</div>
+                        <div style="margin-top: 20px;">
                             <input type="checkbox" id="toggle" hidden onclick="toggleRedOrGreen()">
                             <label for="toggle" class="toggleSwitch">
                                 <span class="toggleButton" id="toggleBtn"></span>
@@ -2478,10 +2519,10 @@
                             <p id="jshTest"/>
 
                         </div>
-                        <div>b</div>
+                        <div>녹신호</div>
                     </div>
                     <hr>
-                    <div class="box" align="left">
+                    <div class="box" >
                         <div>
                             <div>
                                 <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"
@@ -2530,16 +2571,16 @@
                            style="outline-color:#20c997;text-align: center">
                     <hr>
                     <form action="/myTraffic/saveTraffic" method="post">
-                        <input type="text" name="memberId" id="memberId" th:value="${session.loginId}">
-                        <input type="text" name="myTrafficName" id="myTrafficName" value="asd">
-                        <input type="text" name="myTrafficLat" id="myTrafficLat" value="asd">
-                        <input type="text" name="myTrafficLon" id="myTrafficLon" value="asd">
-                        <input type="text" name="trafficApplyStart" id="trafficApplyStart" value="asd">
-                        <input type="text" name="trafficApplyEnd" id="trafficApplyEnd" value="asd">
-                        <input type="text" name="startType" id="startType" value="asd">
-                        <input type="text" name="greenOn" id="greenOn" value="asd">
-                        <input type="text" name="redOn" id="redOn" value="asd">
-                        <input type="text" name="setStartTime" id="setStartTime" value="asd">
+                        <input type="hidden" name="memberId" id="memberId" th:value="${session.loginId}">
+                        <input type="hidden" name="myTrafficName" id="myTrafficName" value="asd">
+                        <input type="hidden" name="myTrafficLat" id="myTrafficLat" value="asd">
+                        <input type="hidden" name="myTrafficLon" id="myTrafficLon" value="asd">
+                        <input type="hidden" name="trafficApplyStart" id="trafficApplyStart" value="asd">
+                        <input type="hidden" name="trafficApplyEnd" id="trafficApplyEnd" value="asd">
+                        <input type="hidden" name="startType" id="startType" value="asd">
+                        <input type="hidden" name="greenOn" id="greenOn" value="asd">
+                        <input type="hidden" name="redOn" id="redOn" value="asd">
+                        <input type="hidden" name="setStartTime" id="setStartTime" value="asd">
                         <button type="submit" class="btn btn-primary" style="width: 100px">저장</button>
                     </form>
                 </div>
@@ -2550,7 +2591,7 @@
 <div id="map_div"></div>
 <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:50px;right:80px;">
         <i class="fa-solid fa-circle fa-stack-2x" style="color:white;"></i>
-        <i class="fa-solid fa-location-dot fa-stack-1x" style="color:red;"></i>
+        <i class="fa-solid fa-location-dot fa-stack-1x" id="myPingColor" style="color:red;"></i>
     </span>
 </body>
 </html>

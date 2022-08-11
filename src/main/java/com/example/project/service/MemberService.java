@@ -129,12 +129,15 @@ public class MemberService {
 
     public void findByMemberId(Long memberId) {
         MemberEntity memberEntity = memberRepository.findById(memberId).get();
+        System.out.println("memberEntity = " + memberEntity);
         if(memberEntity.getMemberLevel() == 0L){
             memberRepository.deleteById(memberId);
+
 
         }else{
         memberEntity.setMemberLevel(memberEntity.getMemberLevel()-1);
         memberRepository.save(memberEntity);
         }
     }
+
 }

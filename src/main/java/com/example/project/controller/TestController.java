@@ -272,17 +272,17 @@ public class TestController {
 
     @GetMapping("/Main")
     // ㅁㅈ
-    public String tap1Test(@RequestParam(value = "page_lat", required = false,defaultValue = "0") Double page_lat,
-                       @RequestParam(value = "page_lng", required = false,defaultValue = "0") Double page_lng,
-                       @RequestParam(value = "page_zoom", required = false,defaultValue = "16")Double page_zoom,
-                       HttpSession session,
-                       Model model) {
-        model.addAttribute("page_lat",page_lat);
-        model.addAttribute("page_lng",page_lng);
+    public String tap1Test(@RequestParam(value = "page_lat", required = false, defaultValue = "0") Double page_lat,
+                           @RequestParam(value = "page_lng", required = false, defaultValue = "0") Double page_lng,
+                           @RequestParam(value = "page_zoom", required = false, defaultValue = "16") Double page_zoom,
+                           HttpSession session,
+                           Model model) {
+        model.addAttribute("page_lat", page_lat);
+        model.addAttribute("page_lng", page_lng);
         model.addAttribute("page_zoom", page_zoom);
         String email = (String) session.getAttribute("loginEmail");
         Long memberId = (Long) session.getAttribute("loginId");
-        if(session.getAttribute("loginEmail") != null){
+        if (session.getAttribute("loginEmail") != null) {
             List<MyPlaceDTO> myPlaceList = myPlaceService.findByEmail(email);
             model.addAttribute("myPlaceList", myPlaceList);
             List<RutinDTO> rutinList = rutinService.findByMemberId(memberId);
@@ -292,13 +292,20 @@ public class TestController {
     }
 
     @GetMapping("/listTest")
-    public String listTest(){
-        myTrafficService.inBoundFindAll("1,2",1L);
+    public String listTest() {
+        myTrafficService.inBoundFindAll("1,2", 1L);
         return "/jsh/4tap";
     }
 
     @GetMapping("/aaa")
-    public String aass(){
+    public String aass() {
         return "/hss/aaa";
     }
+
+    @GetMapping("/markerClickTest")
+    public String markerClickTest() {
+        return "/trash/markerClickTest";
+    }
+
+
 }

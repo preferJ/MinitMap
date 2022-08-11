@@ -321,7 +321,7 @@
                 data: { // 보낼 데이터 (Object , String, Array)
                     "center": center,
                 },
-                async : false,
+                async: false,
                 success: function (response) { // 결과 성공 콜백함수
                     console.log("함수 정상 실행")
                     trafficArray = response;
@@ -517,7 +517,7 @@
                         var leftTime = trafficArray[i].leftTime + "초";
                         if (trafficArray[i].startType == 1) {
                             console.log(trafficArray[i]);
-                            marker_Traffic = new Tmapv2.Marker(
+                            var marker_Traffic = new Tmapv2.Marker(
                                 {
                                     position: new Tmapv2.LatLng(trafficArray[i].trafficLat, trafficArray[i].trafficLon), //Marker의 중심좌표 설정.
                                     icon: "/icon/greenOn.png", // 아이콘 등록
@@ -527,6 +527,13 @@
                                     label: leftTime,
                                     map: map // 마커가 등록될 지도 객체
                                 });
+                            marker_Traffic.addListener("click", function(evt) {
+                                console.log(evt)
+                                console.log(evt.toString())
+                                console.log(evt.map)
+                                document.getElementById("jshTest").innerHTML = 'Mouse Click!';
+                            });
+
                             trafficOnMapArray.push(marker_Traffic);
                             trafficArray[i].leftTime--;
                             if (trafficArray[i].leftTime <= 0) {
@@ -560,6 +567,7 @@
 
 
                 }
+
                 console.log(time)
 
             }, 1000);
@@ -2463,6 +2471,8 @@
                             <label for="toggle" class="toggleSwitch">
                                 <span class="toggleButton" id="toggleBtn"></span>
                             </label>
+                            <p id="jshTest"/>
+
                         </div>
                         <div>b</div>
                     </div>

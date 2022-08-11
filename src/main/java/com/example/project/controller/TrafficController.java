@@ -6,10 +6,7 @@ import com.example.project.service.TrafficService;
 import com.example.project.service.TrafficTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -35,5 +32,17 @@ public class TrafficController {
     public @ResponseBody List<TrafficDTO> adminList(HttpSession session){
         String email = (String) session.getAttribute("loginEmail");
         return trafficService.findByEmail(email);
+    }
+
+    @GetMapping("/adminLike")
+    public @ResponseBody List<TrafficDTO> adminLike(HttpSession session , @RequestParam("num") Long num){
+        String email = (String) session.getAttribute("loginEmail");
+        return trafficService.adminLike(email,num);
+    }
+
+    @GetMapping("/adminDislike")
+    public @ResponseBody List<TrafficDTO> adminDislike(HttpSession session, @RequestParam("num") Long num){
+        String email = (String) session.getAttribute("loginEmail");
+        return trafficService.adminDislike(email,num);
     }
 }

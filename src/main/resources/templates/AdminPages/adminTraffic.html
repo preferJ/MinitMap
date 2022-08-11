@@ -8,6 +8,9 @@
     <meta name="generator" content="Hugo 0.101.0">
     <title>Dashboard Template · Bootstrap v5.2</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
 
@@ -404,8 +407,8 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
-                    "                        <th scope=\"col\">like</th>\n" +
-                    "                        <th scope=\"col\">disLike</th>\n" +
+                    "                        <th scope=\"col\">like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></i></th>\n" +
+                    "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">수정</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
                     "                    </tr>\n" +
@@ -466,6 +469,161 @@
         })
     }
 
+    function upAdminTraffic(num) {
+        $.ajax({
+            url: "/traffic/adminLike",
+            type: "get",
+            dataType: "json",
+            data:{
+              "num":num
+            },
+            success: function (result) {
+                let output = "<table class=\"table table-sm\" style=\"table-layout:fixed\">\n" +
+                    "                    <thead>\n" +
+                    "                    <tr>\n" +
+                    "                        <th scope=\"col\">신호번호</th>\n" +
+                    "                        <th scope=\"col\">위도</th>\n" +
+                    "                        <th scope=\"col\">경도</th>\n" +
+                    "                        <th scope=\"col\">like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></i></th>\n" +
+                    "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
+                    "                        <th scope=\"col\">수정</th>\n" +
+                    "                        <th scope=\"col\">삭제</th>\n" +
+                    "                    </tr>\n" +
+                    "                    </thead>\n" +
+                    "                    <tbody>\n";
+                if (result.length == 0) {
+                    output += "<tr ><th style='text-align: center' colspan='7'>등록된 신호가 없습니다!!</th></tr>"
+                }
+
+                for (let i in result) {
+                    output += "<tr onclick='zoomTime(" + result[i].trafficId + ")'>";
+                    output += "<td>" + result[i].trafficId + "</td>";
+                    output += "<td>" + result[i].trafficLat + "</td>";
+                    output += "<td>" + result[i].trafficLon + "</td>";
+                    output += "<td>" + result[i].trafficLike + "</td>";
+                    output += "<td>" + result[i].trafficDislike + "</td>";
+                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='변경'></td>";
+                    output += "<td><input type='button' onclick='deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
+                    output += "</td>";
+                    output += "</tr>";
+
+                    $.ajax({
+                        url: "/trafficTime/timeList",
+                        type: "get",
+                        data: {
+                            id: result[i].trafficId
+                        },
+                        async: false,
+                        dataType: "json",
+                        success: function (res) {
+                            output += "                    <tr style='display: none;' id='timeTh" + result[i].trafficId + "' class='timeTh" + result[i].trafficId + "'>\n" +
+                                "                        <th scope=\"col\">녹색</th>\n" +
+                                "                        <th scope=\"col\">적색</th>\n" +
+                                "                        <th scope=\"col\">기준시간</th>\n" +
+                                "                        <th scope=\"col\">시작신호</th>\n" +
+                                "                        <th scope=\"col\">시작시간</th>\n" +
+                                "                        <th scope=\"col\">종료시간</th>\n" +
+                                "                        <th scope=\"col\">수정</th>\n" +
+                                "                    </tr>\n";
+                            for (let x = 0; x < res.length; x++) {
+                                output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
+                                output += "<td>" + res[i].greenOn + "</td>";
+                                output += "<td>" + res[i].redOn + "</td>";
+                                output += "<td>" + res[i].setStartTime + "</td>";
+                                output += "<td>" + res[i].startType + "</td>";
+                                output += "<td>" + res[i].trafficApplyStart + "</td>";
+                                output += "<td>" + res[i].trafficApplyEnd + "</td>";
+                                output += "<td>" + "<input type='button' value='수정' onclick='updateTime()'>" + "</td>";
+                                output += "</tr>";
+                            }
+                        }
+                    })
+                }
+
+                output += "</tbody>" + "</table>";
+                document.getElementById("adminTraffic").innerHTML = output;
+            }
+        })
+    }
+
+    function downAdminTraffic(num) {
+        $.ajax({
+            url: "/traffic/adminDislike",
+            type: "get",
+            dataType: "json",
+            data:{
+                "num":num
+            },
+            success: function (result) {
+                let output = "<table class=\"table table-sm\" style=\"table-layout:fixed\">\n" +
+                    "                    <thead>\n" +
+                    "                    <tr>\n" +
+                    "                        <th scope=\"col\">신호번호</th>\n" +
+                    "                        <th scope=\"col\">위도</th>\n" +
+                    "                        <th scope=\"col\">경도</th>\n" +
+                    "                        <th scope=\"col\">like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></i></th>\n" +
+                    "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
+                    "                        <th scope=\"col\">수정</th>\n" +
+                    "                        <th scope=\"col\">삭제</th>\n" +
+                    "                    </tr>\n" +
+                    "                    </thead>\n" +
+                    "                    <tbody>\n";
+                if (result.length == 0) {
+                    output += "<tr ><th style='text-align: center' colspan='7'>등록된 신호가 없습니다!!</th></tr>"
+                }
+
+                for (let i in result) {
+                    output += "<tr onclick='zoomTime(" + result[i].trafficId + ")'>";
+                    output += "<td>" + result[i].trafficId + "</td>";
+                    output += "<td>" + result[i].trafficLat + "</td>";
+                    output += "<td>" + result[i].trafficLon + "</td>";
+                    output += "<td>" + result[i].trafficLike + "</td>";
+                    output += "<td>" + result[i].trafficDislike + "</td>";
+                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='변경'></td>";
+                    output += "<td><input type='button' onclick='deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
+                    output += "</td>";
+                    output += "</tr>";
+
+                    $.ajax({
+                        url: "/trafficTime/timeList",
+                        type: "get",
+                        data: {
+                            id: result[i].trafficId
+                        },
+                        async: false,
+                        dataType: "json",
+                        success: function (res) {
+                            output += "                    <tr style='display: none;' id='timeTh" + result[i].trafficId + "' class='timeTh" + result[i].trafficId + "'>\n" +
+                                "                        <th scope=\"col\">녹색</th>\n" +
+                                "                        <th scope=\"col\">적색</th>\n" +
+                                "                        <th scope=\"col\">기준시간</th>\n" +
+                                "                        <th scope=\"col\">시작신호</th>\n" +
+                                "                        <th scope=\"col\">시작시간</th>\n" +
+                                "                        <th scope=\"col\">종료시간</th>\n" +
+                                "                        <th scope=\"col\">수정</th>\n" +
+                                "                    </tr>\n";
+                            for (let x = 0; x < res.length; x++) {
+                                output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
+                                output += "<td>" + res[i].greenOn + "</td>";
+                                output += "<td>" + res[i].redOn + "</td>";
+                                output += "<td>" + res[i].setStartTime + "</td>";
+                                output += "<td>" + res[i].startType + "</td>";
+                                output += "<td>" + res[i].trafficApplyStart + "</td>";
+                                output += "<td>" + res[i].trafficApplyEnd + "</td>";
+                                output += "<td>" + "<input type='button' value='수정' onclick='updateTime()'>" + "</td>";
+                                output += "</tr>";
+                            }
+                        }
+                    })
+                }
+
+                output += "</tbody>" + "</table>";
+                document.getElementById("adminTraffic").innerHTML = output;
+            }
+        })
+    }
+
+
     function zoomTime(id) {
         let th = document.getElementById("timeTh" + id);
         if (th.style.display == "none") {
@@ -484,7 +642,6 @@
             document.getElementsByClassName("timeTd"+id)[2].style.display = "none";
         }
     }
-
 </script>
 </body>
 </html>

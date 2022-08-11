@@ -92,6 +92,7 @@ public class TrafficIntegratedDTO {
 
         integratedDTO.setMyTrafficId(myTrafficEntity.getMyTrafficId());
         integratedDTO.setMyTrafficName(myTrafficEntity.getMyTrafficName());
+        integratedDTO.setMemberId(myTrafficEntity.getMemberEntity().getMemberId());
         // id , name 값
         integratedDTO.setTrafficLat(myTrafficEntity.getMyTrafficLat());
         integratedDTO.setTrafficLon(myTrafficEntity.getMyTrafficLon());
@@ -157,6 +158,8 @@ public class TrafficIntegratedDTO {
         TrafficIntegratedDTO integratedDTO = new TrafficIntegratedDTO();
 
         integratedDTO.setTrafficId(integratedDTO.getTrafficId());
+        integratedDTO.setMemberId(trafficEntity.getMemberEntity().getMemberId());
+
         // id , name 값
         integratedDTO.setTrafficLat(trafficEntity.getTrafficLat());
         integratedDTO.setTrafficLon(trafficEntity.getTrafficLat());

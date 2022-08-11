@@ -86,10 +86,10 @@ public class MyTrafficService {
         String[] latlng = center.split(",");
         double lat = Double.parseDouble(latlng[0]);
         double lng = Double.parseDouble(latlng[1]);
-        double minLat = lat-0.01;
-        double maxLat = lat+0.01;
-        double minLng = lng-0.01;
-        double maxLng = lng+0.01;
+        double minLat = lat - 0.01;
+        double maxLat = lat + 0.01;
+        double minLng = lng - 0.01;
+        double maxLng = lng + 0.01;
         System.out.println(lat);
         System.out.println(lng);
         List<TrafficEntity> trafficEntityList = trafficRepository.findAll();
@@ -104,22 +104,22 @@ public class MyTrafficService {
                 MyTrafficEntity myTrafficEntity = time.getMyTrafficEntity();
                 Double myLat = myTrafficEntity.getMyTrafficLat();
                 Double myLng = myTrafficEntity.getMyTrafficLon();
-                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng){
-                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
+                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
+                    trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
                 }
             } else if (time.getMyTrafficEntity() == null) {
                 TrafficEntity trafficEntity = time.getTrafficEntity();
                 Double myLat = trafficEntity.getTrafficLat();
                 Double myLng = trafficEntity.getTrafficLon();
-                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng){
-                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
+                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
+                    trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
                 }
             }
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-     for (int i = 0 ; i <trafficIntegratedDTOList.size() ; i++){
-         System.out.println(trafficIntegratedDTOList.get(i));
-     }
+        for (int i = 0; i < trafficIntegratedDTOList.size(); i++) {
+            System.out.println(trafficIntegratedDTOList.get(i));
+        }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
         return trafficIntegratedDTOList;

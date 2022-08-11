@@ -157,12 +157,12 @@ public class TrafficIntegratedDTO {
 
         TrafficIntegratedDTO integratedDTO = new TrafficIntegratedDTO();
 
-        integratedDTO.setTrafficId(integratedDTO.getTrafficId());
+        integratedDTO.setTrafficId(trafficEntity.getTrafficId());
         integratedDTO.setMemberId(trafficEntity.getMemberEntity().getMemberId());
 
         // id , name 값
         integratedDTO.setTrafficLat(trafficEntity.getTrafficLat());
-        integratedDTO.setTrafficLon(trafficEntity.getTrafficLat());
+        integratedDTO.setTrafficLon(trafficEntity.getTrafficLon());
         // 위도 경도
 
         integratedDTO.setGreenOn(trafficTimeEntity.getGreenOn());

@@ -18,16 +18,29 @@
                 height: "400px"
             });
             //마커생성
-            var marker = new Tmapv2.Marker({
+            var marker1 = new Tmapv2.Marker({
                 position: new Tmapv2.LatLng(37.566481622437934, 126.98502302169841), //Marker의 중심좌표 설정.
                 draggable: true,
+                label : "asd",
+                map: map //Marker가 표시될 Map 설정.
+            });
+
+            var marker = new Tmapv2.Marker({
+                position: new Tmapv2.LatLng(37.566503591549385, 126.98453307151836), //Marker의 중심좌표 설정.
+                draggable: true,
+                label : "qwe",
+                name : "qwe",
                 map: map //Marker가 표시될 Map 설정.
             });
             //Marker에 클릭이벤트 등록.
             marker.addListener("click", function (evt) {
+                console.log("★★★★★★★★★★★★★")
                 console.log(evt)
                 console.log(evt.toString())
-                console.log(evt.map)
+                console.log(marker.lat)
+                console.log(marker.label)
+                console.log("★★★★★★★★★★★★★")
+
                 document.getElementById("jshTest").innerHTML = 'Mouse Click!';
             });
             //Marker에 우클릭이벤트 등록
@@ -49,7 +62,12 @@
             });
             //Marker draggable: true일때, 마커의 움직임이 끝날때 이벤트 등록
             marker.addListener("dragend", function (evt) {
-                console.log("dragend=" + evt.latLng);
+                console.log(evt)
+                console.log(evt.toString())
+                console.log(marker)
+                console.log(marker.label)
+                let info ="정보 정보 정보입니다.";
+                label(evt.latLng._lat,evt.latLng._lng,info);
             });
 
             //모바일상에서 Marker draggable: true일때, 마커 터치를 시작할때 이벤트 등록
@@ -67,43 +85,64 @@
 
         }
 
+
         let labelArray = [];
+        let labelCount = 0;
+        function tset(a,b,c){
+            let aa = a ;
+            console.log(b)
+            let asd = "aaa"+c
+        }
 
-        function label() {
+        function label(lat,lng,asd) {
+            console.log("라벨 호출")
+            if (labelArray.length != 0) {
+                onClose();
+                labelArray = [];
+            }
+            let qq =asd ;
 
-            var content = "<div style='position: static; top: 320px; left : 320px; display: flex; font-size: 14px; box-shadow: 5px 5px 5px #00000040; border-radius: 10px; width : 400px; height:100px; background-color: rgba(0, 0, 0, 0.6); align-items: center; padding: 5px; color: #fff;'>" +
+            var content = "<div class='m-pop' style='position: static; top: 180px; left : 320px; display: flex; font-size: 14px; box-shadow: 5px 5px 5px #00000040; border-radius: 10px; width : 400px; height:100px; background-color: #FFFFFF; align-items: center; padding: 5px;'>" +
                 "<div class='img-box' style='width: 110px; height: 90px; border-radius: 10px; background: #f5f5f5 url(/icon/greenOn.png) no-repeat center;'></div>" +
-                "<div class='info-box' style='margin-left: 10px;'>" +
+                "<div class='info-box' style='margin-left : 10px'>" +
                 "<p style='margin-bottom: 7px;'>" +
                 "<span class='tit' style=' font-size: 16px; font-weight: bold;'>티맵 모빌리티</span>" +
-                "<a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #41A0FF; font-size: 13px; margin-left: 10px;'>홈페이지</a>" +
+                "<a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>홈페이지</a></p>" +
                 "<p>" +
-                "<span class='new-addr'>테스트 1번</span>" +
+                "<span class='new-addr'>서울 중구 삼일대로 343 (우)04538</span><br>" +
+                "<span class='new-addr' >"+qq+"</span>" +
+                "<span class='new-addr'>asdasdasd</span>" +
                 "</p>" +
                 "<p>" +
-                "<span class='old-addr'>테스트 1번</span>" +
+                "<span class='old-addr' style='color: #707070;'>(지번) 저동1가 114</span>" +
                 "</p>" +
                 "</div>" +
-                "<a href='javascript:void(0)' onclick='onClose()' class='btn-close' style='position: absolute; top: 10px; right: 10px; display: block; width: 15px; height: 15px; background: url(/icon/greenOn.png) no-repeat center;'></a>" +
+                "<a href='javascript:void(0)' onclick='labelOnClose(labelCount)' class='btn-close' style='position: absolute; top: 10px; right: 10px; display: block; width: 15px; height: 15px; background: url(/icon/greenOn.png) no-repeat center;'></a>" +
                 "</div>";
-            var infoWindow = new Tmapv2.InfoWindow({
-                position: new Tmapv2.LatLng(37.566481622437934, 126.98502302169841),
-                content: content,
-                border: '0px solid #FF0000',
-                type: 2,
-                map: map
+            //Popup 객체 생성.
+            let infoWindow = new Tmapv2.InfoWindow({
+                position: new Tmapv2.LatLng(lat, lng), //Popup 이 표출될 맵 좌표
+                content: content, //Popup 표시될 text
+                border: '0px solid #FF0000', //Popup의 테두리 border 설정.
+                type: 2, //Popup의 type 설정.
+                map: map //Popup이 표시될 맵 객체
             });
+            labelCount++;
+            labelArray.push(infoWindow)
 
-            labelArray.push(infoWindow);
 
+        }
+
+        function labelOnClose() {
+            labelArray[0].setVisible(false);
         }
 
     </script>
 </head>
 <body onload="initTmap()"><!-- 맵 생성 실행 -->
+<button onclick="label();"> 라벨 보기</button>
 <div id="map_div"></div>
 <p id="jshTest"/><br>
 <p id="result"/> <br>
-<button onclick="label();"> 라벨 보기</button>
 </body>
 </html>

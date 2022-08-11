@@ -308,4 +308,10 @@ public class TestController {
     }
 
 
+    @GetMapping("/labelTest")
+    public String labelTest() {
+        return "/trash/labelTest";
+    }
+
+
 }

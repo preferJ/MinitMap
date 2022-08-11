@@ -23,12 +23,14 @@
 </body>
 <script th:inline="javascript">
 
-    function levelDown(id) {
-        alert("등급하락")
-        let type = document.getElementById("history").value;
-        if (type == "등급하락"){
-            location.href = "/member/levelDown/"+ id;
-        }
-    }
+   function levelDown(id) {
+       console.log(id)
+       let type = document.getElementById("history").value;
+       const lvdown = document.getElementById("lv1").value;
+
+       if (type === lvdown){
+           location.href = "/member/levelDown/" + id;
+       }
+   }
 </script>
 </html>

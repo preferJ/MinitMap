@@ -246,7 +246,6 @@ public class BoardController {
         return "/BoardPages/trafficMap";
     }
 
-
     @GetMapping("/update")
     public String updateForm(@RequestParam("boardId") Long id, Model model) {
         BoardDTO boardDTO = boardService.findById(id);
@@ -311,5 +310,10 @@ public class BoardController {
         return "/BoardPages/report";
     }
 
+    // 이현 // 관리자 신호등관리
+    @GetMapping("/adminTraffic")
+    public String adminTraffic(){
+        return "/AdminPages/adminTraffic";
+    }
 
 }

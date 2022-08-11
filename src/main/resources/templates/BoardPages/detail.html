@@ -171,38 +171,7 @@
                 </ul>
 
                 <div th:if="${session.loginEmail}">
-                    <ul th:if="${session.loginEmail == 'admin'}" class="nav flex-column">
-                        <li class="nav-item">
-                            <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
-                                관리자 전용
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/member/findAll">
-                                <span data-feather="user" class="align-text-bottom"></span>
-                                회원등급조회 및 탈퇴
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/error/findAll">
-                                <span data-feather="map-pin" class="align-text-bottom"></span>
-                                게시판 신고 관리
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/error/findAll">
-                                <span data-feather="map-pin" class="align-text-bottom"></span>
-                                더미링크1
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/error/findAll">
-                                <span data-feather="map-pin" class="align-text-bottom"></span>
-                                더미링크2
-                            </a>
-                        </li>
-                    </ul>
-                    <ul th:unless="${session.loginEmail == 'admin'}" class="nav flex-column">
+                    <ul  class="nav flex-column">
                         <li class="nav-item">
                             <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
                                 마이페이지
@@ -236,6 +205,38 @@
                             <a class="nav-link" th:href="@{|/board/findByIdList/${session.loginId}|}">
                                 <span data-feather="file" class="align-text-bottom"></span>
                                 내가 쓴 글 보러가기
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul th:if="${session.loginEmail == 'admin'}" class="nav flex-column">
+                        <li class="nav-item">
+                            <div class="nav-link active" aria-current="page" style="font-size: 1.5rem">
+                                관리자 전용
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/member/findAll">
+                                <span data-feather="user" class="align-text-bottom"></span>
+                                회원등급조회 및 탈퇴
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                게시판 신고 관리
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/board/adminTraffic">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                관리자 신호등 관리
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/error/findAll">
+                                <span data-feather="map-pin" class="align-text-bottom"></span>
+                                더미링크2
                             </a>
                         </li>
                     </ul>

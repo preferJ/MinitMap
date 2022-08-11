@@ -1,5 +1,7 @@
 package com.example.project.service;
 
+import com.example.project.dto.Traffic2DTO;
+import com.example.project.dto.Traffic3DTO;
 import com.example.project.dto.TrafficDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.MyTrafficEntity;
@@ -88,5 +90,12 @@ public class TrafficTimeService {
             }
         }
         return check;
+    }
+
+    public void adminSave(Long id, TrafficTimeDTO trafficTimeDTO, Traffic2DTO traffic2DTO, Traffic3DTO traffic3DTO) {
+        TrafficEntity trafficEntity = trafficRepository.findById(id).get();
+        trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeSaveEntity(trafficTimeDTO,trafficEntity));
+        trafficTimeRepository.save(TrafficTimeEntity.adminSave2(traffic2DTO,trafficEntity));
+        trafficTimeRepository.save(TrafficTimeEntity.adminSave3(traffic3DTO,trafficEntity));
     }
 }

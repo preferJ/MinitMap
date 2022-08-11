@@ -30,7 +30,7 @@ public class MemberEntity {
     @Column(name = "memberNickname", nullable = false, unique = true)
     private String memberNickname;
 
-    @Column(name = "memberPhone", nullable = false)
+    @Column(name = "memberPhone")
     private String memberPhone;
 
     @Column(name = "memberLevel")

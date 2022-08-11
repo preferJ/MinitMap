@@ -316,9 +316,11 @@ public class BoardController {
         return "/AdminPages/adminTraffic";
     }
 
-//    @GetMapping("/trafficLikeFindAll")
-//    public String trafficLikeFindAll(Model model) {
-//        boardService.findByBoardType1();
-//    }
+    @GetMapping("/likeTraffic")
+    public String likeTraffic(Model model){
+        List<BoardDTO> boardDTOS = boardService.findLikeTraffic();
+        model.addAttribute("boardDTOList",boardDTOS);
+        return "/AdminPages/likeTraffic";
+    }
 
 }

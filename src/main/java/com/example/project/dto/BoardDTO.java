@@ -49,6 +49,7 @@ public class BoardDTO {
         boardDTO.setBoardReport(boardEntity.getBoardReport());
         boardDTO.setBoardHits((boardEntity.getBoardHits()));
         boardDTO.setToAdmin(boardEntity.isToAdmin());
+        boardDTO.setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
         return boardDTO;
     }
     public static BoardDTO toBoardDTO(BoardEntity boardEntity){
@@ -68,6 +69,7 @@ public class BoardDTO {
         boardDTO.setBoardReport(boardEntity.getBoardReport());
         boardDTO.setBoardHits((boardEntity.getBoardHits()));
         boardDTO.setToAdmin(boardEntity.isToAdmin());
+        boardDTO.setMemberNickname(boardEntity.getMemberEntity().getMemberNickname());
         return boardDTO;
     }
 }

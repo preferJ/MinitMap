@@ -23,7 +23,7 @@ public class BoardEntity {
     private Long boardId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId", nullable = false)
+    @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
-    Page<BoardEntity> findByBoardType(String q, Pageable pageable);
+    Page<BoardEntity> findByBoardTypeContaining(String q, Pageable pageable);
 
     Page<BoardEntity> findByBoardTypeLocation1AndBoardTypeLocation2(String local1 , String local2 , Pageable pageable);
     Page<BoardEntity> findByBoardTypeContainingAndBoardTypeLocation1ContainingAndBoardTypeLocation2Containing(String type , String local1 , String local2 , Pageable pageable);
@@ -44,4 +44,5 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     List<BoardEntity> findAllByMemberEntityMemberId(Long memberId);
 
     Optional<BoardEntity> findByBoardId(Long boardId);
+
 }

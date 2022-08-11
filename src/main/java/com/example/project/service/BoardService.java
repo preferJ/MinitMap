@@ -1,10 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.common.PagingConst;
-import com.example.project.dto.BoardDTO;
-import com.example.project.dto.LikeCheckDTO;
-import com.example.project.dto.MemberDTO;
-import com.example.project.dto.MyTrafficDTO;
+import com.example.project.dto.*;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +75,7 @@ public class BoardService {
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
         page = (page == 1) ? 0 : (page - 1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("자유", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTypeContaining("자유", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -97,7 +94,8 @@ public class BoardService {
                         board.getBoardDislike(),
                         board.isManagerCheck(),
                         board.getMemberEntity().getMemberNickname(),
-                        board.getBoardReport(),board.getBoardHits()
+                        board.getBoardReport(),board.getBoardHits(),
+                        board.isToAdmin()
                 ));
         return boardList;
     }
@@ -107,7 +105,7 @@ public class BoardService {
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
         page = (page == 1) ? 0 : (page - 1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("신호", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTypeContaining("신호", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -126,7 +124,8 @@ public class BoardService {
                         board.getBoardDislike(),
                         board.isManagerCheck(),
                         board.getMemberEntity().getMemberNickname(),
-                        board.getBoardReport(),board.getBoardHits()
+                        board.getBoardReport(),board.getBoardHits(),
+                        board.isToAdmin()
                 ));
         return boardList;
     }
@@ -136,7 +135,7 @@ public class BoardService {
         // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
 //        page = page - 1; // 삼항연산자
         page = (page == 1) ? 0 : (page - 1);
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardType("공지", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTypeContaining("공지", PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardId")));
         // Page<BoardEntity> => Page<BoardDTO>
         // board : BoardEntity 객체
         // new BoardDTO() 생성자
@@ -155,7 +154,8 @@ public class BoardService {
                         board.getBoardDislike(),
                         board.isManagerCheck(),
                         board.getMemberEntity().getMemberNickname(),
-                        board.getBoardReport(),board.getBoardHits()
+                        board.getBoardReport(),board.getBoardHits(),
+                        board.isToAdmin()
                 ));
         return boardList;
     }
@@ -184,7 +184,8 @@ public class BoardService {
                         board.getBoardDislike(),
                         board.isManagerCheck(),
                         board.getMemberEntity().getMemberNickname(),
-                        board.getBoardReport(),board.getBoardHits()
+                        board.getBoardReport(),board.getBoardHits(),
+                        board.isToAdmin()
                 ));
         return boardList;
     }
@@ -220,7 +221,8 @@ public class BoardService {
                         board.getBoardDislike(),
                         board.isManagerCheck(),
                         board.getMemberEntity().getMemberNickname(),
-                        board.getBoardReport(),board.getBoardHits()
+                        board.getBoardReport(),board.getBoardHits(),
+                        board.isToAdmin()
                 ));
         return boardList;
     }
@@ -249,7 +251,8 @@ public class BoardService {
                         board.getBoardDislike(),
                         board.isManagerCheck(),
                         board.getMemberEntity().getMemberNickname(),
-                        board.getBoardReport(),board.getBoardHits()
+                        board.getBoardReport(),board.getBoardHits(),
+                        board.isToAdmin()
                 ));
         return boardList;
     }
@@ -421,5 +424,6 @@ public class BoardService {
         boardEntity.setBoardHits(1L);
         boardRepository.save(boardEntity);
     }
+
 
 }

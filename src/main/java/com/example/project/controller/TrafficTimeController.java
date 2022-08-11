@@ -47,4 +47,10 @@ public class TrafficTimeController {
         System.out.println("byTrafficId = " + byTrafficId);
         return byTrafficId;
     }
+
+    @GetMapping("/adminTimeUpdate")
+    public String adminTimeUpdate(@ModelAttribute TrafficTimeDTO trafficTimeDTO){
+        trafficTimeService.update(trafficTimeDTO);
+        return "redirect:/board/adminTraffic";
+    }
 }

@@ -79,7 +79,6 @@ public class TrafficTimeService {
     public String timeCheck(Long id, Double start, Double end, Long timeId) {
         List<TrafficTimeEntity> byMyTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficRepository.findById(id).get());
         String check = "ok";
-        System.out.println("id = " + id + ", start = " + start + ", end = " + end);
         for (TrafficTimeEntity trafficTimeEntity : byMyTrafficEntity) {
             if (trafficTimeEntity.getTrafficTimeId() != timeId) {
                 if (trafficTimeEntity.getTrafficApplyStart() < start && trafficTimeEntity.getTrafficApplyEnd() > start) {
@@ -97,5 +96,12 @@ public class TrafficTimeService {
         trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeSaveEntity(trafficTimeDTO,trafficEntity));
         trafficTimeRepository.save(TrafficTimeEntity.adminSave2(traffic2DTO,trafficEntity));
         trafficTimeRepository.save(TrafficTimeEntity.adminSave3(traffic3DTO,trafficEntity));
+    }
+
+    public void adminUpdate(Long id, TrafficTimeDTO trafficTimeDTO, Traffic2DTO traffic2DTO, Traffic3DTO traffic3DTO) {
+        TrafficEntity trafficEntity = trafficRepository.findById(id).get();
+        trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeUpdateEntity(trafficTimeDTO,trafficEntity));
+        trafficTimeRepository.save(TrafficTimeEntity.UpdateAdminSave2(traffic2DTO,trafficEntity));
+        trafficTimeRepository.save(TrafficTimeEntity.UpdateAdminSave3(traffic3DTO,trafficEntity));
     }
 }

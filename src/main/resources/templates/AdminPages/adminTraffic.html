@@ -407,9 +407,8 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
-                    "                        <th scope=\"col\">like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></i></th>\n" +
                     "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
-                    "                        <th scope=\"col\">수정</th>\n" +
+                    "                        <th scope=\"col\">조회</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
                     "                    </tr>\n" +
                     "                    </thead>\n" +
@@ -423,10 +422,9 @@
                     output += "<td>" + result[i].trafficId + "</td>";
                     output += "<td>" + result[i].trafficLat + "</td>";
                     output += "<td>" + result[i].trafficLon + "</td>";
-                    output += "<td>" + result[i].trafficLike + "</td>";
                     output += "<td>" + result[i].trafficDislike + "</td>";
-                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='변경'></td>";
-                    output += "<td><input type='button' onclick='deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
+                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='조회'></td>";
+                    output += "<td><input type='button' onclick='event.stopPropagation();deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
                     output += "</td>";
                     output += "</tr>";
 
@@ -446,18 +444,18 @@
                                 "                        <th scope=\"col\">시작신호</th>\n" +
                                 "                        <th scope=\"col\">시작시간</th>\n" +
                                 "                        <th scope=\"col\">종료시간</th>\n" +
-                                "                        <th scope=\"col\">수정</th>\n" +
                                 "                    </tr>\n";
                             for (let x = 0; x < res.length; x++) {
-                                output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
-                                output += "<td>" + res[i].greenOn + "</td>";
-                                output += "<td>" + res[i].redOn + "</td>";
-                                output += "<td>" + res[i].setStartTime + "</td>";
-                                output += "<td>" + res[i].startType + "</td>";
-                                output += "<td>" + res[i].trafficApplyStart + "</td>";
-                                output += "<td>" + res[i].trafficApplyEnd + "</td>";
-                                output += "<td>" + "<input type='button' value='수정' onclick='updateTime()'>" + "</td>";
-                                output += "</tr>";
+                                    output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
+                                    output += "<td style='display: none'><input name='trafficTimeId' type='hidden' value='" + res[x].trafficTimeId + "'></td>";
+                                    output += "<td>" + res[x].greenOn + "</td>";
+                                    output += "<td>" + res[x].redOn + "</td>";
+                                    output += "<td>" + res[x].setStartTime + "</td>";
+                                    output += "<td>" + res[x].startType + "</td>";
+                                    output += "<td>" + res[x].trafficApplyStart + "</td>";
+                                    output += "<td>" + res[x].trafficApplyEnd + "</td>";
+                                    output += "</tr>";
+
                             }
                         }
                     })
@@ -484,9 +482,8 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
-                    "                        <th scope=\"col\">like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></i></th>\n" +
                     "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
-                    "                        <th scope=\"col\">수정</th>\n" +
+                    "                        <th scope=\"col\">조회</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
                     "                    </tr>\n" +
                     "                    </thead>\n" +
@@ -500,10 +497,9 @@
                     output += "<td>" + result[i].trafficId + "</td>";
                     output += "<td>" + result[i].trafficLat + "</td>";
                     output += "<td>" + result[i].trafficLon + "</td>";
-                    output += "<td>" + result[i].trafficLike + "</td>";
                     output += "<td>" + result[i].trafficDislike + "</td>";
-                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='변경'></td>";
-                    output += "<td><input type='button' onclick='deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
+                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='조회'></td>";
+                    output += "<td><input type='button' onclick='event.stopPropagation();deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
                     output += "</td>";
                     output += "</tr>";
 
@@ -523,18 +519,18 @@
                                 "                        <th scope=\"col\">시작신호</th>\n" +
                                 "                        <th scope=\"col\">시작시간</th>\n" +
                                 "                        <th scope=\"col\">종료시간</th>\n" +
-                                "                        <th scope=\"col\">수정</th>\n" +
                                 "                    </tr>\n";
                             for (let x = 0; x < res.length; x++) {
                                 output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
-                                output += "<td>" + res[i].greenOn + "</td>";
-                                output += "<td>" + res[i].redOn + "</td>";
-                                output += "<td>" + res[i].setStartTime + "</td>";
-                                output += "<td>" + res[i].startType + "</td>";
-                                output += "<td>" + res[i].trafficApplyStart + "</td>";
-                                output += "<td>" + res[i].trafficApplyEnd + "</td>";
-                                output += "<td>" + "<input type='button' value='수정' onclick='updateTime()'>" + "</td>";
+                                output += "<td style='display: none'><input name='trafficTimeId' type='hidden' value='" + res[x].trafficTimeId + "'></td>";
+                                output += "<td>" + res[x].greenOn + "</td>";
+                                output += "<td>" + res[x].redOn + "</td>";
+                                output += "<td>" + res[x].setStartTime + "</td>";
+                                output += "<td>" + res[x].startType + "</td>";
+                                output += "<td>" + res[x].trafficApplyStart + "</td>";
+                                output += "<td>" + res[x].trafficApplyEnd + "</td>";
                                 output += "</tr>";
+
                             }
                         }
                     })
@@ -561,9 +557,8 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
-                    "                        <th scope=\"col\">like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></i></th>\n" +
                     "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
-                    "                        <th scope=\"col\">수정</th>\n" +
+                    "                        <th scope=\"col\">조회</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
                     "                    </tr>\n" +
                     "                    </thead>\n" +
@@ -577,10 +572,9 @@
                     output += "<td>" + result[i].trafficId + "</td>";
                     output += "<td>" + result[i].trafficLat + "</td>";
                     output += "<td>" + result[i].trafficLon + "</td>";
-                    output += "<td>" + result[i].trafficLike + "</td>";
                     output += "<td>" + result[i].trafficDislike + "</td>";
-                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='변경'></td>";
-                    output += "<td><input type='button' onclick='deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
+                    output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='조회'></td>";
+                    output += "<td><input type='button' onclick='event.stopPropagation();deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
                     output += "</td>";
                     output += "</tr>";
 
@@ -600,18 +594,18 @@
                                 "                        <th scope=\"col\">시작신호</th>\n" +
                                 "                        <th scope=\"col\">시작시간</th>\n" +
                                 "                        <th scope=\"col\">종료시간</th>\n" +
-                                "                        <th scope=\"col\">수정</th>\n" +
                                 "                    </tr>\n";
                             for (let x = 0; x < res.length; x++) {
                                 output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
-                                output += "<td>" + res[i].greenOn + "</td>";
-                                output += "<td>" + res[i].redOn + "</td>";
-                                output += "<td>" + res[i].setStartTime + "</td>";
-                                output += "<td>" + res[i].startType + "</td>";
-                                output += "<td>" + res[i].trafficApplyStart + "</td>";
-                                output += "<td>" + res[i].trafficApplyEnd + "</td>";
-                                output += "<td>" + "<input type='button' value='수정' onclick='updateTime()'>" + "</td>";
+                                output += "<td style='display: none'><input name='trafficTimeId' type='hidden' value='" + res[x].trafficTimeId + "'></td>";
+                                output += "<td>" + res[x].greenOn + "</td>";
+                                output += "<td>" + res[x].redOn + "</td>";
+                                output += "<td>" + res[x].setStartTime + "</td>";
+                                output += "<td>" + res[x].startType + "</td>";
+                                output += "<td>" + res[x].trafficApplyStart + "</td>";
+                                output += "<td>" + res[x].trafficApplyEnd + "</td>";
                                 output += "</tr>";
+
                             }
                         }
                     })
@@ -641,6 +635,10 @@
             document.getElementsByClassName("timeTd"+id)[1].style.display = "none";
             document.getElementsByClassName("timeTd"+id)[2].style.display = "none";
         }
+    }
+
+    function deleteAdmin(id){
+        location.href = "/traffic/adminDelete?id=" + id;
     }
 </script>
 </body>

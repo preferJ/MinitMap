@@ -32,4 +32,12 @@ public class AdminHistoryService {
         adminHistoryDTO.setHistoryType("신호등록");
         adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
     }
+
+    public void trafficUpdate(Long loginId, Long id) {
+        MemberEntity memberEntity = memberRepository.findById(loginId).get();
+        AdminHistoryDTO adminHistoryDTO = new AdminHistoryDTO();
+        adminHistoryDTO.setHistoryMessage(id + "번 신호등 수정");
+        adminHistoryDTO.setHistoryType("신호수정");
+        adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
+    }
 }

@@ -15,4 +15,5 @@ public interface TrafficRepository extends JpaRepository<TrafficEntity,Long> {
 
     List<TrafficEntity> findByMemberEntityOrderByTrafficDislikeAsc(MemberEntity memberEntity);
     List<TrafficEntity> findByMemberEntityOrderByTrafficDislikeDesc(MemberEntity memberEntity);
+
 }

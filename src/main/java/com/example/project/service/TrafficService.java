@@ -89,4 +89,9 @@ public class TrafficService {
         }
         return trafficDTOList;
     }
+
+    public void delete(Long id) {
+        trafficRepository.deleteById(id);
+    }
+
 }

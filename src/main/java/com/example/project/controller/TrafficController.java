@@ -45,4 +45,18 @@ public class TrafficController {
         String email = (String) session.getAttribute("loginEmail");
         return trafficService.adminDislike(email,num);
     }
+
+    @GetMapping("/adminDelete")
+    public String deleteAdmin(@RequestParam("id") Long id){
+        trafficService.delete(id);
+        return "redirect:/board/adminTraffic";
+    }
+
+    @GetMapping("/adminUpdate")
+    public String adminUpdate(@RequestParam("id")Long id,@ModelAttribute TrafficTimeDTO trafficTimeDTO, @ModelAttribute Traffic2DTO traffic2DTO , @ModelAttribute Traffic3DTO traffic3DTO, HttpSession session){
+        Long loginId = (Long) session.getAttribute("loginId");
+        trafficTimeService.adminUpdate(id,trafficTimeDTO,traffic2DTO,traffic3DTO);
+        adminHistoryService.trafficUpdate(loginId,id);
+        return "redirect:/board/adminTraffic";
+    }
 }

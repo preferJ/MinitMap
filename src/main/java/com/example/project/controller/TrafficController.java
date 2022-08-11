@@ -6,6 +6,7 @@ import com.example.project.service.TrafficService;
 import com.example.project.service.TrafficTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;

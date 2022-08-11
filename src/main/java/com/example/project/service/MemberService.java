@@ -132,8 +132,6 @@ public class MemberService {
         System.out.println("memberEntity = " + memberEntity);
         if(memberEntity.getMemberLevel() == 0L){
             memberRepository.deleteById(memberId);
-
-
         }else{
         memberEntity.setMemberLevel(memberEntity.getMemberLevel()-1);
         memberRepository.save(memberEntity);

@@ -316,4 +316,9 @@ public class BoardController {
         return "/AdminPages/adminTraffic";
     }
 
+//    @GetMapping("/trafficLikeFindAll")
+//    public String trafficLikeFindAll(Model model) {
+//        boardService.findByBoardType1();
+//    }
+
 }

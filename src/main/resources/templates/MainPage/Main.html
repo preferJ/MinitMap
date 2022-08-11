@@ -7,44 +7,47 @@
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
           integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script type="text/javascript" th:inline="javascript">
-        function mainIconOver(){
-            document.getElementById("MainIcon").src="/icon/M-Click.png";
+        function mainIconOver() {
+            document.getElementById("MainIcon").src = "/icon/M-Click.png";
         }
-        function mainIconOut(){
-            document.getElementById("MainIcon").src="/icon/M-removebg-preview.png";
+
+        function mainIconOut() {
+            document.getElementById("MainIcon").src = "/icon/M-removebg-preview.png";
         }
-        function changecss(theClass,element,value){
+
+        function changecss(theClass, element, value) {
             var cssRules;
-            if(document.all){
+            if (document.all) {
                 cssRules = 'rules';
-            }else if (document.getElementById){
+            } else if (document.getElementById) {
                 cssRules = 'cssRules';
             }
             var added = false;
-            for(var S = 0; S < document.styleSheets.length;S++){
-                for(var R = 0; R < document.styleSheets.length;R++){
-                    if(document.styleSheets[S][cssRules][R].selectorText == theClass){
-                        if(document.styleSheets[S][cssRules][R].style[element]){
+            for (var S = 0; S < document.styleSheets.length; S++) {
+                for (var R = 0; R < document.styleSheets.length; R++) {
+                    if (document.styleSheets[S][cssRules][R].selectorText == theClass) {
+                        if (document.styleSheets[S][cssRules][R].style[element]) {
                             document.styleSheets[S][cssRules][R].style[element] = value;
-                            added=true;
+                            added = true;
                             break;
                         }
                     }
                 }
-                if(!added){
-                    if(document.styleSheets[S].insertRule){
-                        document.styleSheets[S].insertRule(theClass+'{'+element+': '+value+'}',document.styleSheets[S][cssRules].length);
-                    }else if(document.styleSheets[S].addRule){
-                        document.styleSheets[S].addRule(theClass,element+': '+value+';');
+                if (!added) {
+                    if (document.styleSheets[S].insertRule) {
+                        document.styleSheets[S].insertRule(theClass + '{' + element + ': ' + value + '}', document.styleSheets[S][cssRules].length);
+                    } else if (document.styleSheets[S].addRule) {
+                        document.styleSheets[S].addRule(theClass, element + ': ' + value + ';');
                     }
                 }
             }
         }
+
         var tapLock = false;
         var onTap = 1;
         var my_marker;
@@ -61,7 +64,7 @@
         var nameArr = [];
         var myPlacesList = [];
         var rutinsList = [];
-        var lon,lat;
+        var lon, lat;
         var s_marker = new Tmapv2.Marker({
             icon: "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
             position: null, //Marker의 중심좌표 설정.
@@ -76,101 +79,104 @@
         });
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function () {
-                var width_size = window.outerWidth;
-                // 화면의 height값을 가져오기
-                var height_size = window.outerHeight;
-                var mapResize = document.getElementById('map_div');//map의 div
-                var sidebarResize = document.getElementById("sidebar");
-                if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
-                    mapResize.style.height = height_size - 67 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 67 - 4 + "px";
-                    changecss('.sidebars','height',height_size - 67 - 4 + 'px');
-                    alert("전체화면은 지원하지 않습니다.")
-                } else if (width_size == 1920) {
-                    mapResize.style.height = height_size - 67 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 67 - 4 + "px";
-                    changecss('.sidebars','height',height_size - 67 - 4 + 'px');
-                } else {
-                    mapResize.style.height = height_size - 84 - 4 + "px";//map의 height 변경
-                    sidebarResize.style.height = height_size - 84 - 4 + "px";
-                    changecss('.sidebars','height',height_size - 84 - 4 + 'px');
-                }
+            console.log("리사이즈 실행됨")
+            getInboundTraffic();
+            var width_size = window.outerWidth;
+            // 화면의 height값을 가져오기
+            var height_size = window.outerHeight;
+            var mapResize = document.getElementById('map_div');//map의 div
+            var sidebarResize = document.getElementById("sidebar");
+            if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+                mapResize.style.height = height_size - 67 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 67 - 4 + "px";
+                changecss('.sidebars', 'height', height_size - 67 - 4 + 'px');
+                alert("전체화면은 지원하지 않습니다.")
+            } else if (width_size == 1920) {
+                mapResize.style.height = height_size - 67 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 67 - 4 + "px";
+                changecss('.sidebars', 'height', height_size - 67 - 4 + 'px');
+            } else {
+                mapResize.style.height = height_size - 84 - 4 + "px";//map의 height 변경
+                sidebarResize.style.height = height_size - 84 - 4 + "px";
+                changecss('.sidebars', 'height', height_size - 84 - 4 + 'px');
+            }
         });
+
         // 사이드바 관련
-        function sidebarHide1(){
+        function sidebarHide1() {
             const sidebarIcon = document.getElementById("side1HideIcon");
             var sidebar = document.getElementById("side1");
-            if(sidebar.style.left == "-395%"){
+            if (sidebar.style.left == "-395%") {
                 sidebar.style.animation = "seek 0.9s";
                 sidebar.style.left = "100%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
-                },900);
-            }else{
+                }, 900);
+            } else {
                 sidebar.style.animation = "hide 0.9s";
                 sidebar.style.left = "-395%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
-                },900)
+                }, 900)
             }
         }
 
-        function sidebarHide2(){
+        function sidebarHide2() {
             const sidebarIcon = document.getElementById("side2HideIcon");
             var sidebar = document.getElementById("side2");
-            if(sidebar.style.left == "-395%"){
+            if (sidebar.style.left == "-395%") {
                 sidebar.style.animation = "seek 0.9s";
                 sidebar.style.left = "100%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
-                },900);
-            }else{
+                }, 900);
+            } else {
                 sidebar.style.animation = "hide 0.9s";
                 sidebar.style.left = "-395%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
-                },900)
+                }, 900)
             }
         }
 
-        function sidebarHide3(){
+        function sidebarHide3() {
             const sidebarIcon = document.getElementById("side3HideIcon");
             var sidebar = document.getElementById("side3");
-            if(sidebar.style.left == "-395%"){
+            if (sidebar.style.left == "-395%") {
                 sidebar.style.animation = "seek 0.9s";
                 sidebar.style.left = "100%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
-                },900);
-            }else{
+                }, 900);
+            } else {
                 sidebar.style.animation = "hide 0.9s";
                 sidebar.style.left = "-395%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
-                },900)
+                }, 900)
             }
         }
 
-        function sidebarHide4(){
+        function sidebarHide4() {
             const sidebarIcon = document.getElementById("side4HideIcon");
             var sidebar = document.getElementById("side4");
-            if(sidebar.style.left == "-395%"){
+            if (sidebar.style.left == "-395%") {
                 sidebar.style.animation = "seek 0.9s";
                 sidebar.style.left = "100%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
-                },900);
-            }else{
+                }, 900);
+            } else {
                 sidebar.style.animation = "hide 0.9s";
                 sidebar.style.left = "-395%";
-                setTimeout(function (){
+                setTimeout(function () {
                     sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
-                },900)
+                }, 900)
             }
         }
 
-        function tap1(){
-            if(tapLock == false) {
+        function tap1() {
+            if (tapLock == false) {
                 tapLock = true;
                 const sidebarIcon = document.getElementById("side1HideIcon");
                 var sidebar = document.getElementById("side1");
@@ -209,8 +215,8 @@
             }
         }
 
-        function tap2(){
-            if(tapLock == false) {
+        function tap2() {
+            if (tapLock == false) {
                 tapLock = true;
                 map.addListener("click", onClick); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
                 const sidebarIcon = document.getElementById("side2HideIcon");
@@ -247,8 +253,8 @@
             }
         }
 
-        function tap3(){
-            if(tapLock == false) {
+        function tap3() {
+            if (tapLock == false) {
                 tapLock = true;
                 const sidebarIcon = document.getElementById("side3HideIcon");
                 var sidebar = document.getElementById("side3");
@@ -287,11 +293,64 @@
             }
         }
 
+        function sleep(ms) {
+            const wakeUpTime = Date.now() + ms;
+            while (Date.now() < wakeUpTime) {
+            }
+        }
+
+        function getInboundTraffic() {
+            if (startCheck > 0) {
+                stopPrint();
+            }
+            trafficArray = [];
+
+
+            let mapinfo = map.getCenter();
+            let lat = mapinfo._lat;
+            let lng = mapinfo._lng;
+            let center = lat + "," + lng
+            console.log(lat)
+            console.log(lng)
+            console.log(center)
+            console.log("함수실행 확인")
+            $.ajax({
+                type: "post", // 타입 (get, post, put 등등)
+                url: "/myTraffic/inBoundTrafficAll", // 요청할 서버url
+                dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
+                data: { // 보낼 데이터 (Object , String, Array)
+                    "center": center,
+                },
+                async : false,
+                success: function (response) { // 결과 성공 콜백함수
+                    console.log("함수 정상 실행")
+                    trafficArray = response;
+                    console.log(trafficArray)
+                    sleep(30);
+
+                    printStart();
+                    startCheck++;
+
+
+                },
+                error: function (request, status, error) { // 결과 에러 콜백함수
+                    console.log("에러 메세지입니다.")
+                    console.log(error)
+                }
+            })
+
+
+        }
+
 
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
+
+        function onDragend(e) {
+            getInboundTraffic();
+        }
 
 
         let TrafficStatus = 1;
@@ -302,7 +361,6 @@
         function toggleRedOrGreen() {
             const left_px = parseInt($('#' + "toggleBtn").css('left'));
             if (left_px > 10) {
-                alert("적색")
                 TrafficStatus = 1;
                 document.getElementById("timeCheck1").placeholder = "청색불로 바뀐 시간"
                 document.getElementById("timeCheck1").style.border = "solid 3px green"
@@ -310,7 +368,6 @@
                 document.getElementById("timeCheck3").placeholder = "청색불로 바뀐 시간"
 
             } else {
-                alert("녹색")
                 TrafficStatus = -1;
                 document.getElementById("timeCheck1").placeholder = "적색불로 바뀐 시간"
                 document.getElementById("timeCheck1").style.border = "solid 3px red"
@@ -433,6 +490,11 @@
         let trafficArray = [];
         let startCheck = 0;
         let trafficOnMapArray = [];
+
+        stopPrint = function () {
+            clearInterval(printTraffic);
+        };
+
         printStart = function () {
             printTraffic = setInterval(function () {
                 if (trafficOnMapArray.length > 0) {
@@ -443,19 +505,21 @@
                 }
 
                 console.log("프린트 프린트")
+                console.log(trafficArray[0])
                 let today = new Date();
                 let hours = today.getHours();
                 let minutes = today.getMinutes();
                 let seconds = today.getSeconds();
                 let time = hours * 10000 + minutes * 100 + seconds;
-                for (let i = 0; i < trafficArray[0].length; i++) {
+                for (let i = 0; i < trafficArray.length; i++) {
                     // console.log(trafficArray[0][i])
-                    if (trafficArray[0][i].trafficApplyStart < time && time < trafficArray[0][i].trafficApplyEnd) {
-                        var leftTime = trafficArray[0][i].leftTime + "초";
-                        if (trafficArray[0][i].startType == 1) {
+                    if (trafficArray[i].trafficApplyStart < time && time < trafficArray[i].trafficApplyEnd) {
+                        var leftTime = trafficArray[i].leftTime + "초";
+                        if (trafficArray[i].startType == 1) {
+                            console.log(trafficArray[i]);
                             marker_Traffic = new Tmapv2.Marker(
                                 {
-                                    position: new Tmapv2.LatLng(trafficArray[0][i].trafficLat, trafficArray[0][i].trafficLon), //Marker의 중심좌표 설정.
+                                    position: new Tmapv2.LatLng(trafficArray[i].trafficLat, trafficArray[i].trafficLon), //Marker의 중심좌표 설정.
                                     icon: "/icon/greenOn.png", // 아이콘 등록
                                     iconSize: new Tmapv2.Size(
                                         36, 57), // 아이콘 크기 설정
@@ -464,18 +528,17 @@
                                     map: map // 마커가 등록될 지도 객체
                                 });
                             trafficOnMapArray.push(marker_Traffic);
-                            trafficArray[0][i].leftTime--;
-                            console.log(trafficArray[0][i].leftTime)
-                            if (trafficArray[0][i].leftTime <= 0) {
-                                trafficArray[0][i].startType *= -1;
-                                trafficArray[0][i].leftTime = trafficArray[0][i].redOn
+                            trafficArray[i].leftTime--;
+                            if (trafficArray[i].leftTime <= 0) {
+                                trafficArray[i].startType *= -1;
+                                trafficArray[i].leftTime = trafficArray[i].redOn
                             }
 
 
                         } else {
                             marker_Traffic = new Tmapv2.Marker(
                                 {
-                                    position: new Tmapv2.LatLng(trafficArray[0][i].trafficLat, trafficArray[0][i].trafficLon), //Marker의 중심좌표 설정.
+                                    position: new Tmapv2.LatLng(trafficArray[i].trafficLat, trafficArray[i].trafficLon), //Marker의 중심좌표 설정.
                                     icon: "/icon/redOn.png", // 아이콘 등록
                                     iconSize: new Tmapv2.Size(
                                         36, 57), // 아이콘 크기 설정
@@ -484,11 +547,10 @@
                                     map: map // 마커가 등록될 지도 객체
                                 });
                             trafficOnMapArray.push(marker_Traffic);
-                            trafficArray[0][i].leftTime--;
-                            console.log(trafficArray[0][i].leftTime)
-                            if (trafficArray[0][i].leftTime <= 0) {
-                                trafficArray[0][i].startType *= -1;
-                                trafficArray[0][i].leftTime = trafficArray[0][i].greenOn;
+                            trafficArray[i].leftTime--;
+                            if (trafficArray[i].leftTime <= 0) {
+                                trafficArray[i].startType *= -1;
+                                trafficArray[i].leftTime = trafficArray[i].greenOn;
                             }
 
 
@@ -537,8 +599,8 @@
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
 
-        function tap4(){
-            if(tapLock == false) {
+        function tap4() {
+            if (tapLock == false) {
                 tapLock = true;
                 removeMarkers();
                 const sidebarIcon = document.getElementById("side4HideIcon");
@@ -568,19 +630,19 @@
             }
         }
 
-        function userTap(){
+        function userTap() {
             var userTap = document.getElementById("user");
-            if(userTap.className != 'show') {
+            if (userTap.className != 'show') {
                 userTap.classList.add('show');
-            }else{
+            } else {
                 userTap.classList.remove('show');
             }
         }
 
-        $(document).mouseup(function (e){
+        $(document).mouseup(function (e) {
             var user = $("#user");
             var userIcon = $(".userIcon");
-            if(user.has(e.target).length === 0 && userIcon.has(e.target).length === 0){
+            if (user.has(e.target).length === 0 && userIcon.has(e.target).length === 0) {
                 user.removeClass("show");
             }
         });
@@ -596,7 +658,7 @@
             location.href = "/member/findAll";
         }
 
-            const loginForm = () => {
+        const loginForm = () => {
             var width = 480;
             var height = 630;
 
@@ -619,13 +681,14 @@
         }
 
         function myPage(id) {
-            if(id == null) {
+            if (id == null) {
                 alert("로그인이 필요합니다");
                 location.href = "/1tapTest";
-            }else {
+            } else {
                 location.href = "/member/myPage/" + id;
             }
         }
+
         //로그인 끝
 
         //List출력 ajax
@@ -665,36 +728,37 @@
             })
         }
 
-        function rutinList(){
+        function rutinList() {
             $.ajax({
-                url:"/rutin/list",
+                url: "/rutin/list",
                 type: "get",
                 dataType: "json",
-                success:function (result){
+                success: function (result) {
                     rutinsList = result;
                     let output = "<table style='width: 100%' id='rutinTap'>";
-                    for (let i in result){
+                    for (let i in result) {
                         output += "<tr class='myPlaceTap'>";
-                        output += "<div id='"+result[i].rutinId+"'>";
-                        output += "<td onclick='rutinSearch("+result[i].rutinId+");tap2();'>";
+                        output += "<div id='" + result[i].rutinId + "'>";
+                        output += "<td onclick='rutinSearch(" + result[i].rutinId + ");tap2();'>";
                         output += result[i].rutinName;
-                        output += "</td>" + "</tr>" +"</div>";
+                        output += "</td>" + "</tr>" + "</div>";
                     }
                     output += "</table>";
                     document.getElementById("rutinList").innerHTML = output;
                     output = "<table style='width: 100%' id='rutinTap2'>";
-                    for (let i in result){
+                    for (let i in result) {
                         output += "<tr class='myPlaceTap'>";
-                        output += "<div id='"+result[i].rutinId+"'>";
-                        output += "<td onclick='rutinSearch("+result[i].rutinId+")'>";
+                        output += "<div id='" + result[i].rutinId + "'>";
+                        output += "<td onclick='rutinSearch(" + result[i].rutinId + ")'>";
                         output += result[i].rutinName;
-                        output += "</td>" + "</tr>" +"</div>";
+                        output += "</td>" + "</tr>" + "</div>";
                     }
                     output += "</table>";
                     document.getElementById("rutinList2").innerHTML = output;
                 }
             })
         }
+
         //list출력 ajax끝
 
         // 지도 띄우기
@@ -713,7 +777,7 @@
             var width_size = window.outerWidth;
             if (width_size == 1920) {
                 sidebarResize.style.height = height_size - 67 - 4 + "px";
-                changecss('.sidebars','height',height_size - 67 - 4 + 'px');
+                changecss('.sidebars', 'height', height_size - 67 - 4 + 'px');
                 // 1. 지도 띄우기
                 map = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng(request_lat, request_lng),
@@ -725,7 +789,7 @@
                 });
             } else {
                 sidebarResize.style.height = height_size - 84 - 4 + "px";
-                changecss('.sidebars','height',height_size - 84 - 4 + 'px');
+                changecss('.sidebars', 'height', height_size - 84 - 4 + 'px');
                 // 1. 지도 띄우기
                 map = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng(request_lat, request_lng),
@@ -736,42 +800,8 @@
                     scrollwheel: true
                 });
             }
-            trafficArray = [];
-
-
-            let mapinfo = map.getCenter();
-            let lat = mapinfo._lat;
-            let lng = mapinfo._lng;
-            let center = lat + "," + lng
-            console.log(lat)
-            console.log(lng)
-            console.log(center)
-            console.log("함수실행 확인")
-            $.ajax({
-                type: "post", // 타입 (get, post, put 등등)
-                url: "/myTraffic/inBoundTrafficAll", // 요청할 서버url
-                dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
-                data: { // 보낼 데이터 (Object , String, Array)
-                    "center": center,
-                },
-                success: function (response) { // 결과 성공 콜백함수
-                    console.log("함수 정상 실행")
-                    console.log(response);
-                    trafficArray.push(response)
-                    console.log(trafficArray)
-                    if (startCheck > 0) {
-                        stopPrint();
-                    }
-                    printStart();
-                    startCheck++;
-
-
-                },
-                error: function (request, status, error) { // 결과 에러 콜백함수
-                    console.log("에러 메세지입니다.")
-                    console.log(error)
-                }
-            })
+            getInboundTraffic();
+            map.addListener("dragend", onDragend); // 지도 드래그 끝났을 때, 이벤트 리스너 등록.
 
 
         }
@@ -788,8 +818,8 @@
                     "searchKeyword": searchKeyword, // 검색 키워드
                     "resCoordType": "EPSG3857", // 요청 좌표계
                     "reqCoordType": "WGS84GEO", // 응답 좌표계
-                    "centerLon" : map.getCenter().lng(),
-                    "centerLat" : map.getCenter().lat(),
+                    "centerLon": map.getCenter().lng(),
+                    "centerLat": map.getCenter().lat(),
                     "count": 6 // 가져올 갯수
                 },
                 success: function (response) {
@@ -851,7 +881,7 @@
                             });
                         // 결과창에 나타날 검색 결과 html
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div><div class='search-name'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide("+k+")' title='"+name+"'>"
+                        innerHtml += "<li><div><div class='search-name'><img id='searchIcon" + k + "' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='searchHide(" + k + ")' title='" + name + "'>"
                             + name
                             + "</span></div><div id='searchHide" + k + "' style='display: none'> <button type='button' name='sendBtn' onClick='startPing("
                             + k
@@ -881,8 +911,8 @@
         function searchHide(k) {
             var searchHide = document.getElementById("searchHide" + k);
             var searchIcon = document.getElementById("searchIcon" + k);
-            for(var i =0;i < searchMarkerArr.length;i++){
-                if(i != k) {
+            for (var i = 0; i < searchMarkerArr.length; i++) {
+                if (i != k) {
                     document.getElementById("searchHide" + i).style.display = "none";
                     document.getElementById("searchIcon" + i).src = "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + i + ".png";
                     searchMarkerArr[i].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + i + ".png");
@@ -995,7 +1025,7 @@
             }
         }
 
-        function rutinDown(){
+        function rutinDown() {
             var rutinTap = document.getElementById("rutinTap");
             var rutinIcon = document.getElementById("rutinIcon");
             if (rutinTap.style.display != "none") {
@@ -1006,14 +1036,15 @@
                 rutinIcon.className = "fa-solid fa-angle-up fa-2x"
             }
         }
-        function myPing(){
+
+        function myPing() {
             if (navigator.geolocation) {
                 // GeoLocation을 이용해서 접속 위치를 얻어옵니다
                 navigator.geolocation.getCurrentPosition(function (position) {
 
                     lat = position.coords.latitude; // 위도
                     lon = position.coords.longitude; // 경도
-                    if(my_marker != null) {
+                    if (my_marker != null) {
                         my_marker.setMap(null);
                         my_marker = null;
                     }
@@ -1027,6 +1058,7 @@
                 });
             }
         }
+
         // 탭1 끝
 
         // 탭2
@@ -1042,8 +1074,8 @@
                     "searchKeyword": searchKeyword1, // 검색 키워드
                     "resCoordType": "EPSG3857", // 요청 좌표계
                     "reqCoordType": "WGS84GEO", // 응답 좌표계
-                    "centerLon" : map.getCenter().lng(),
-                    "centerLat" : map.getCenter().lat(),
+                    "centerLon": map.getCenter().lng(),
+                    "centerLat": map.getCenter().lat(),
                     "count": 5 // 가져올 갯수
                 },
                 success: function (response) {
@@ -1112,9 +1144,9 @@
 
                         // 결과창에 나타날 검색 결과 html
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp("+k+")' onmouseout='searchMouseDown("+k+")'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='startPing("
+                        innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp(" + k + ")' onmouseout='searchMouseDown(" + k + ")'><img id='searchIcon" + k + "' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='startPing("
                             + k
-                            + "), start( " + k + " );' title='"+name+"'>"
+                            + "), start( " + k + " );' title='" + name + "'>"
                             + name
                             + "</span></div></li>";
 
@@ -1149,8 +1181,8 @@
                     "searchKeyword": searchKeyword2, // 검색 키워드
                     "resCoordType": "EPSG3857", // 요청 좌표계
                     "reqCoordType": "WGS84GEO", // 응답 좌표계
-                    "centerLon" : map.getCenter().lng(),
-                    "centerLat" : map.getCenter().lat(),
+                    "centerLon": map.getCenter().lng(),
+                    "centerLat": map.getCenter().lat(),
                     "count": 5 // 가져올 갯수
                 },
                 success: function (response) {
@@ -1209,9 +1241,9 @@
                             });
                         // 결과창에 나타날 검색 결과 html
                         // 출발지 도착지 세팅할 수 있게 해주는 버튼 추가
-                        innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp("+k+")' onmouseout='searchMouseDown("+k+")'><img id='searchIcon"+k+"' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='endPing("
+                        innerHtml += "<li><div class='search-name' onmouseover='searchMouseUp(" + k + ")' onmouseout='searchMouseDown(" + k + ")'><img id='searchIcon" + k + "' src='http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png' style='vertical-align:middle;'/><span onclick='endPing("
                             + k
-                            + "), end( " + k + " );' title='"+name+"'>"
+                            + "), end( " + k + " );' title='" + name + "'>"
                             + name
                             + "</span></div></li>";
                         // 마커들을 담을 배열에 마커 저장
@@ -1236,16 +1268,18 @@
             });
         }
 
-        function searchMouseUp(k){
-            var searchIcon = document.getElementById("searchIcon"+k);
+        function searchMouseUp(k) {
+            var searchIcon = document.getElementById("searchIcon" + k);
             searchIcon.src = "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_" + k + ".png";
             searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_" + k + ".png");
         }
-        function searchMouseDown(k){
-            var searchIcon = document.getElementById("searchIcon"+k);
+
+        function searchMouseDown(k) {
+            var searchIcon = document.getElementById("searchIcon" + k);
             searchIcon.src = "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png";
             searchMarkerArr[k].setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png");
         }
+
         function onClick(e) {
             // marker 객체의 포지션 상황을 판단하여 출발지인지 도착지인지 확인
             // 출발지 -> 도착지 순서로 상세조회에서 도착지 설정을 했을 때 출발지로 바로가게 만듬
@@ -1677,6 +1711,7 @@
                 }
             }
         }
+
         function mypTapDown2() {
             var mypTap = document.getElementById("mypTap2");
             var mypIcon = document.getElementById("mypIcon2");
@@ -1710,7 +1745,7 @@
                         "destination": destination,
                         "endPointLat": endPointLat,
                         "endPointLon": endPointLon,
-                        "rutinName" : rutinName
+                        "rutinName": rutinName
                     },
                     dataType: "text",
                     success: function (result) {
@@ -1730,10 +1765,10 @@
             }
         }
 
-        function startMyPlace(id){
+        function startMyPlace(id) {
             var index = 0;
-            for(var i = 0;i < rutinsList.length;i++){
-                if(rutinsList[i].rutinId == id){
+            for (var i = 0; i < rutinsList.length; i++) {
+                if (rutinsList[i].rutinId == id) {
                     index = i;
                 }
             }
@@ -1754,10 +1789,11 @@
             s_marker.addListener("dragend", onStart);
             ontestfoot();
         }
-        function endMyPlace(id){
+
+        function endMyPlace(id) {
             var index = 0;
-            for(var i = 0;i < rutinsList.length;i++){
-                if(rutinsList[i].rutinId == id){
+            for (var i = 0; i < rutinsList.length; i++) {
+                if (rutinsList[i].rutinId == id) {
                     index = i;
                 }
             }
@@ -1779,11 +1815,11 @@
             ontestfoot();
         }
 
-        function rutinSearch(id){
+        function rutinSearch(id) {
             removeMarkers();
             var index = 0;
-            for(var i = 0;i < rutinsList.length;i++){
-                if(rutinsList[i].rutinId == id){
+            for (var i = 0; i < rutinsList.length; i++) {
+                if (rutinsList[i].rutinId == id) {
                     index = i;
                 }
             }
@@ -1896,7 +1932,8 @@
                 });
 
         }
-        function rutinDown2(){
+
+        function rutinDown2() {
             var rutinTap = document.getElementById("rutinTap2");
             var rutinIcon = document.getElementById("rutinIcon2");
             if (rutinTap.style.display != "none") {
@@ -1907,6 +1944,7 @@
                 rutinIcon.className = "fa-solid fa-angle-up fa-2x"
             }
         }
+
         // 탭2 끝
 
         // 탭3
@@ -1937,6 +1975,7 @@
                 }
             })
         }
+
         const goBoardPages = () => {
             window.open("/board");
         }
@@ -1960,7 +1999,7 @@
             box-sizing: border-box;
         }
 
-        .sidebars{
+        .sidebars {
             top: 0;
             left: -500%;
             position: absolute;
@@ -1971,24 +2010,24 @@
             border-left: none;
         }
 
-        #side1{
+        #side1 {
             z-index: 97;
             left: 100%;
         }
 
-        #side2{
+        #side2 {
             z-index: 96;
         }
 
-        #side3{
+        #side3 {
             z-index: 95;
         }
 
-        #side4{
+        #side4 {
             z-index: 94;
         }
 
-        #sidebar{
+        #sidebar {
             float: left;
             position: absolute;
             z-index: 100;
@@ -1998,7 +2037,7 @@
             border: 2px solid black;
         }
 
-        #sidebarTool{
+        #sidebarTool {
             float: left;
             position: absolute;
             z-index: 100;
@@ -2020,7 +2059,7 @@
             display: none;
         }
 
-        .sideTap{
+        .sideTap {
             width: 100%;
             height: 100%;
             z-index: 99;
@@ -2051,7 +2090,7 @@
             color: #303f39 !important;
         }
 
-        .sideHide{
+        .sideHide {
             padding: 8px 5px;;
             border: solid black 2px;
             border-left: none;
@@ -2063,33 +2102,36 @@
         }
 
 
-        @keyframes hide{
-            0%{
+        @keyframes hide {
+            0% {
                 position: absolute;
-                left:100%;
+                left: 100%;
             }
-            100%{
+            100% {
                 position: absolute;
-                left:-395%;
-            }
-        }
-        @keyframes seek{
-            0%{
-                position: absolute;
-                left:-395%;
-            }
-            100%{
-                position: absolute;
-                left:100%;
+                left: -395%;
             }
         }
-        #MainIcon{
+
+        @keyframes seek {
+            0% {
+                position: absolute;
+                left: -395%;
+            }
+            100% {
+                position: absolute;
+                left: 100%;
+            }
+        }
+
+        #MainIcon {
             display: block;
             left: 0%;
             top: 0%;
             width: 60px;
             height: 60px;
         }
+
         .tap {
             text-align: center;
             list-style-type: none;
@@ -2097,17 +2139,21 @@
             margin: 0;
             padding: 0;
         }
-        .tap-result{
+
+        .tap-result {
             margin-top: 15px;
         }
-        .tapes{
+
+        .tapes {
             color: black;
         }
+
         tr.colored:hover td {
             background-color: #f3e9e9 !important;
             color: #303f39 !important;
         }
-        .bottomTap{
+
+        .bottomTap {
             text-align: center;
             position: absolute;
             display: block;
@@ -2116,10 +2162,12 @@
             margin: 0;
             padding: 0;
         }
-        .bottomTap i:hover{
+
+        .bottomTap i:hover {
             color: #0d6efd;
         }
-        #user{
+
+        #user {
             position: absolute;
             padding: 10px;
             width: 300px;
@@ -2133,23 +2181,27 @@
             background-color: rgba(245, 245, 245, 0.8);
             z-index: 1000000;
         }
-        #user.show{
+
+        #user.show {
             display: block;
         }
-        .userContainer{
+
+        .userContainer {
             position: relative;
             background-color: white;
             border-radius: 35px;
             width: 280px;
             height: 130px;
         }
-        .loginForm{
+
+        .loginForm {
             position: absolute;
             text-align: center;
             width: 100%;
             top: 50px;
         }
-        .logTap{
+
+        .logTap {
             display: inline-block;
         }
 
@@ -2196,9 +2248,10 @@
     <div style="position: relative">
         <div id="sidebar">
             <nav style="float: top">
-            <div>
-                <img id="MainIcon" onmouseover="mainIconOver()" onmouseout="mainIconOut()" src="/icon/M-removebg-preview.png" onclick="location.href='/Main'">
-            </div>
+                <div>
+                    <img id="MainIcon" onmouseover="mainIconOver()" onmouseout="mainIconOut()"
+                         src="/icon/M-removebg-preview.png" onclick="location.href='/Main'">
+                </div>
                 <ul class="tap">
                     <li class="tap-result">
                         <a id="tap1" class="tapes" onclick="tap1()"><i
@@ -2224,14 +2277,21 @@
                                 <h2 style="color: #0d6efd;">회원관리</h2>
                                 <div class="loginForm">
                                     <div th:if="${session.loginEmail}">
-                                        <button th:onclick="logout()" type="button" class="btn success logTap">▶로그아웃</button>
-                                        <button th:onclick="|myPage(${session.loginId})|" type="button" class="btn success logTap">▶회원 정보</button>
-                                        <div th:if="${session.loginEmail.toString().equals('admin')}" style="display:inline-block;">
-                                            <button th:onclick="loginAdmin()" type="button" class="btn success logTap">▶관리자 페이지</button>
+                                        <button th:onclick="logout()" type="button" class="btn success logTap">▶로그아웃
+                                        </button>
+                                        <button th:onclick="|myPage(${session.loginId})|" type="button"
+                                                class="btn success logTap">▶회원 정보
+                                        </button>
+                                        <div th:if="${session.loginEmail.toString().equals('admin')}"
+                                             style="display:inline-block;">
+                                            <button th:onclick="loginAdmin()" type="button" class="btn success logTap">
+                                                ▶관리자 페이지
+                                            </button>
                                         </div>
                                     </div>
                                     <div th:unless="${session.loginEmail}">
-                                        <button onclick="loginForm()" type="button" class="btn success logTap">▶로그인</button>
+                                        <button onclick="loginForm()" type="button" class="btn success logTap">▶로그인
+                                        </button>
                                         <button onclick="save()" type="button" class="btn success logTap">▶회원가입</button>
                                     </div>
                                 </div>
@@ -2304,12 +2364,20 @@
                 </div>
                 <div class="traffic_information">
                     <div style="margin-left: 17px;width: 240px;display: block;">
-                        <div style="position: relative;"><span style="width: 180px;display: inline-block"> <!-- 상단부분 --><input type="text" class="text_custom mt-2 mb-2" onkeyup="if(window.event.keyCode==13){searchButton1()}" id="searchKeyword1" name="searchKeyword" placeholder="출발지" autocomplete="off"><div id="start-interface"><ul id="searchResult1" name="searchResult">
+                        <div style="position: relative;"><span style="width: 180px;display: inline-block"> <!-- 상단부분 --><input
+                                type="text" class="text_custom mt-2 mb-2"
+                                onkeyup="if(window.event.keyCode==13){searchButton1()}" id="searchKeyword1"
+                                name="searchKeyword" placeholder="출발지" autocomplete="off"><div id="start-interface"><ul
+                                id="searchResult1" name="searchResult">
                             <li>검색결과</li>
-                        </ul></div><input type="search" class="text_custom mb-2" onkeyup="if(window.event.keyCode==13){searchButton2()}" id="searchKeyword2" placeholder="도착지" autocomplete="off"><div id="end-interface"><ul id="searchResult2" name="searchResult">
+                        </ul></div><input type="search" class="text_custom mb-2"
+                                          onkeyup="if(window.event.keyCode==13){searchButton2()}" id="searchKeyword2"
+                                          placeholder="도착지" autocomplete="off"><div id="end-interface"><ul
+                                id="searchResult2" name="searchResult">
                             <li>검색결과</li>
                         </ul></div></span>
-                            <span style="display: inline-block;width: 30px;right: 18px;position: absolute;top: 20%"><i onclick="pointChange()" class="fa-solid fa-arrow-rotate-left fa-3x"></i></span>
+                            <span style="display: inline-block;width: 30px;right: 18px;position: absolute;top: 20%"><i
+                                    onclick="pointChange()" class="fa-solid fa-arrow-rotate-left fa-3x"></i></span>
                         </div>
                         <div style="margin-top: 5px" th:if="${session.loginEmail}">
                             <button onclick="rutinSave()" style="width: 100%; height: 50px">내 루틴 저장</button>
@@ -2359,7 +2427,8 @@
                             <option value="자유">자유</option>
                             <option value="공지">공지</option>
                         </select>
-                            <button style="float: right;" class="btn btn-sm btn-outline-secondary" onclick="goBoardPages()">더보기
+                            <button style="float: right;" class="btn btn-sm btn-outline-secondary"
+                                    onclick="goBoardPages()">더보기
                             </button>
                         </div>
                         <table class="table table-striped table-sm" style="table-layout:fixed">
@@ -2426,7 +2495,8 @@
                         <br/>
                         <div>
                             <input type="text" class="trafficCount" id="trafficName" placeholder="신호등 이름 입력"
-                                   style="outline-color:#20c997;;" onblur="TrafficSetting();TrafficSetting();checklatlon()">
+                                   style="outline-color:#20c997;;"
+                                   onblur="TrafficSetting();TrafficSetting();checklatlon()">
                         </div>
                         <input type="text" id="greenOnTime" class="trafficCount" placeholder="청색불 점화 시간"
                                onblur="TrafficSetting()">
@@ -2464,7 +2534,7 @@
     </div>
 </div>
 <div id="map_div"></div>
-    <span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:50px;right:80px;">
+<span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:50px;right:80px;">
         <i class="fa-solid fa-circle fa-stack-2x" style="color:white;"></i>
         <i class="fa-solid fa-location-dot fa-stack-1x" style="color:red;"></i>
     </span>

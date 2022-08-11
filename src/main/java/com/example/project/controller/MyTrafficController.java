@@ -55,7 +55,7 @@ public class MyTrafficController {
     public @ResponseBody List<TrafficIntegratedDTO> inBoundTrafficAll(@RequestParam("center") String center, HttpSession session) {
         System.out.println("MyTrafficController.inBoundTrafficAll");
         System.out.println("center = " + center);
-        Long memberId = (Long) session.getAttribute("memberId");
+        Long memberId = (Long) session.getAttribute("loginId");
         List<TrafficIntegratedDTO> trafficIntegratedDTOList = myTrafficService.inBoundFindAll(center, memberId);
         return trafficIntegratedDTOList;
     }

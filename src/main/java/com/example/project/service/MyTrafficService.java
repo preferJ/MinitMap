@@ -80,7 +80,7 @@ public class MyTrafficService {
         return save.getMyTrafficId();
     }
 
-    public List<TrafficIntegratedDTO> inBoundFindAll(String center, Long memberId) {
+    public List<TrafficIntegratedDTO> inBoundFindAll(String center, Long loginId) {
         System.out.println("MyTrafficService.inBoundFindAll");
         List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
         String[] latlng = center.split(",");
@@ -90,29 +90,40 @@ public class MyTrafficService {
         double maxLat = lat + 0.01;
         double minLng = lng - 0.01;
         double maxLng = lng + 0.01;
-        System.out.println(lat);
-        System.out.println(lng);
-        List<TrafficEntity> trafficEntityList = trafficRepository.findAll();
-        List<MyTrafficEntity> myTrafficEntityList = myTrafficRepository.findAll();
+        System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
+        System.out.println("center = " + center + ", loginId = " + loginId);
+        System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
+        if (loginId == null) {
+            loginId = 999999L;
+        }
+
+        Optional<MemberEntity> byId = memberRepository.findById(loginId);
+        Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
+
         List<TrafficTimeEntity> trafficTimeEntityList = trafficTimeRepository.findAll();
 
 
         // 변수명 time 은 기준이 되는 trafficTime 객체
         for (TrafficTimeEntity time : trafficTimeEntityList) {
-            if (time.getTrafficEntity() == null) {
+            if (time.getTrafficEntity() == null && byId.isPresent()) {
                 // 트래픽ID 가 null 이면 --> 마이트래픽
                 MyTrafficEntity myTrafficEntity = time.getMyTrafficEntity();
-                Double myLat = myTrafficEntity.getMyTrafficLat();
-                Double myLng = myTrafficEntity.getMyTrafficLon();
-                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
-                    trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
+                if (myTrafficEntity.getMemberEntity() == byId.get()) {
+                    Double myLat = myTrafficEntity.getMyTrafficLat();
+                    Double myLng = myTrafficEntity.getMyTrafficLon();
+                    if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
+                        trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
+                    }
+
                 }
             } else if (time.getMyTrafficEntity() == null) {
                 TrafficEntity trafficEntity = time.getTrafficEntity();
-                Double myLat = trafficEntity.getTrafficLat();
-                Double myLng = trafficEntity.getTrafficLon();
-                if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
-                    trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
+                if (trafficEntity.getMemberEntity() == adminId.get()) {
+                    Double myLat = trafficEntity.getTrafficLat();
+                    Double myLng = trafficEntity.getTrafficLon();
+                    if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
+                        trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
+                    }
                 }
             }
         }
@@ -139,6 +150,7 @@ public class MyTrafficService {
             return null;
         }
     }
+
 
     public void textUpDown(Long upId, Long downId) {
         // upId의 넘버와 downId의 넘버를 바꾼다.

@@ -49,7 +49,7 @@ public class ErrorController {
        model.addAttribute("board", boardDTO);
        return "/AdminPages/boardCheck";
     }
-    @PostMapping("/historySave")
+    @GetMapping("/historySave")
     // 신고 처리를 저장 할 때 확인 된거는 확인이라고 띄우기 위한 1값을 넣을 때 업데이트 메서드
     public String historySave(@ModelAttribute AdminHistoryDTO adminHistoryDTO,@RequestParam Long boardId){
         adminHistoryService.save(adminHistoryDTO);

@@ -134,4 +134,29 @@ public class TrafficTimeEntity {
         trafficTimeEntity.setMyTrafficEntity(null);
         return trafficTimeEntity;
     }
+
+    public static TrafficTimeEntity UpdateAdminSave2(Traffic2DTO trafficTimeDTO, TrafficEntity trafficEntity) {
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficTimeId(trafficTimeDTO.getTrafficTimeId2());
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart2());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd2());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType2());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn2());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn2());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime2());
+        trafficTimeEntity.setTrafficEntity(trafficEntity);
+        return trafficTimeEntity;
+    }
+    public static TrafficTimeEntity UpdateAdminSave3(Traffic3DTO trafficTimeDTO, TrafficEntity trafficEntity) {
+        TrafficTimeEntity trafficTimeEntity = new TrafficTimeEntity();
+        trafficTimeEntity.setTrafficTimeId(trafficTimeDTO.getTrafficTimeId3());
+        trafficTimeEntity.setTrafficApplyStart(trafficTimeDTO.getTrafficApplyStart3());
+        trafficTimeEntity.setTrafficApplyEnd(trafficTimeDTO.getTrafficApplyEnd3());
+        trafficTimeEntity.setStartType(trafficTimeDTO.getStartType3());
+        trafficTimeEntity.setGreenOn(trafficTimeDTO.getGreenOn3());
+        trafficTimeEntity.setRedOn(trafficTimeDTO.getRedOn3());
+        trafficTimeEntity.setSetStartTime(trafficTimeDTO.getSetStartTime3());
+        trafficTimeEntity.setTrafficEntity(trafficEntity);
+        return trafficTimeEntity;
+    }
 }

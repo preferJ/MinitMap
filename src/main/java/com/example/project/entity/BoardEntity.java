@@ -68,6 +68,9 @@ public class BoardEntity {
     @Column(name = "boardReport")
     private Long boardReport;
 
+    @Column(name = "toAdmin")
+    private boolean toAdmin;
+
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ErrorEntity> errorEntityList = new ArrayList<>();
 
@@ -88,6 +91,7 @@ public class BoardEntity {
         boardEntity.setBoardDislike(0l);
         boardEntity.setBoardReport(0l);
         boardEntity.setManagerCheck(false);
+        boardEntity.setToAdmin(false);
         return boardEntity;
     }
 
@@ -104,6 +108,7 @@ public class BoardEntity {
         boardEntity.setBoardDislike(0l);
         boardEntity.setBoardReport(0l);
         boardEntity.setManagerCheck(false);
+        boardEntity.setToAdmin(false);
         return boardEntity;
     }
 
@@ -121,6 +126,7 @@ public class BoardEntity {
         boardEntity.setManagerCheck(boardDTO.isManagerCheck());
         boardEntity.setMemberEntity(memberEntity);
         boardEntity.setTrafficEntity(trafficEntity);
+        boardEntity.setToAdmin(boardDTO.isToAdmin());
         return boardEntity;
     }
 
@@ -138,6 +144,7 @@ public class BoardEntity {
         boardEntity.setManagerCheck(boardDTO.isManagerCheck());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
         boardEntity.setMemberEntity(memberEntity);
+        boardEntity.setToAdmin(boardDTO.isToAdmin());
         return boardEntity;
     }
 }

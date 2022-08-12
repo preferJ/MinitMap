@@ -45,4 +45,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
 
     Optional<BoardEntity> findByBoardId(Long boardId);
 
+    List<BoardEntity> findByBoardTypeOrderByToAdminAsc(String type);
+
+    List<BoardEntity> findByTrafficEntity(TrafficEntity trafficEntity);
 }

@@ -32,7 +32,6 @@ public class BoardController {
     private final MyTrafficService myTrafficService;
 
     private final ErrorService errorService;
-    private final AdminHistoryService adminHistoryService;
 
     // 이현 시작
     @GetMapping
@@ -323,4 +322,11 @@ public class BoardController {
         model.addAttribute("adminList", adminHistoryDTOList);
         return "/AdminPages/history";
     }
+    @GetMapping("/likeTraffic")
+    public String likeTraffic(Model model){
+        List<BoardDTO> boardDTOS = boardService.findLikeTraffic();
+        model.addAttribute("boardDTOList",boardDTOS);
+        return "/AdminPages/likeTraffic";
+    }
+
 }

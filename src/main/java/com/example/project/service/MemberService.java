@@ -138,4 +138,16 @@ public class MemberService {
         }
     }
 
+    public MemberDTO findByMemberEmail(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if(optionalMemberEntity.isPresent()){
+            return MemberDTO.toMemberDTO(optionalMemberEntity.get());
+        }else{
+            return null;
+        }
+    }
+
+    public void kakaoSignUp(MemberDTO memberDTO) {
+        memberRepository.save(MemberEntity.toMemberSaveEntity(memberDTO));
+    }
 }

@@ -270,6 +270,11 @@ public class TestController {
         return "/index";
     }
 
+    @GetMapping("/hss/tapDown")
+    public String tapDown(){
+        return "/hss/tapDown";
+    }
+
     @GetMapping("/Main")
     // ㅁㅈ
     public String tap1Test(@RequestParam(value = "page_lat", required = false, defaultValue = "0") Double page_lat,
@@ -305,6 +310,12 @@ public class TestController {
     @GetMapping("/markerClickTest")
     public String markerClickTest() {
         return "/trash/markerClickTest";
+    }
+
+
+    @GetMapping("/labelTest")
+    public String labelTest() {
+        return "/trash/labelTest";
     }
 
 

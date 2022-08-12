@@ -29,7 +29,7 @@ public class BoardService {
     private final LikeCheckRepository likeCheckRepository;
     private final MyTrafficRepository myTrafficRepository;
     private final TrafficTimeRepository trafficTimeRepository;
-
+    private final AdminHistoryRepository adminHistoryRepository;
     //이현
     public void save(BoardDTO boardDTO, Long memberId) {
         Optional<MemberEntity> memberEntity = memberRepository.findById(memberId);
@@ -314,6 +314,11 @@ public class BoardService {
                 if (memberEntity.getMemberLevel()<5){// 레벨이 5보다 작을때만 레벨업
                     memberEntity.setMemberLevel(memberEntity.getMemberLevel()+1);
                     memberRepository.save(memberEntity);
+                    AdminHistoryDTO adminHistoryDTO = new AdminHistoryDTO();
+                    adminHistoryDTO.setHistoryMessage(memberEntity.getMemberEmail() + "의등급상승");
+                    adminHistoryDTO.setHistoryType("등급상승");
+                    adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
+
                 }
                 boardEntity.setManagerCheck(true);
                 boardRepository.save(boardEntity);
@@ -426,4 +431,22 @@ public class BoardService {
     }
 
 
+    public List<BoardDTO> findLikeTraffic() {
+        List<BoardEntity> boardEntities = boardRepository.findByBoardTypeOrderByToAdminAsc("신호");
+        List<BoardDTO> boardDTOS = new ArrayList<>();
+        for (BoardEntity boardEntity : boardEntities){
+            if (boardEntity.getBoardLike()>=1){
+                boardDTOS.add(BoardDTO.toTrafficBoardDTO(boardEntity));
+            }
+        }
+        return boardDTOS;
+    }
+
+    public void toAdmin(Long trId) {
+        BoardEntity boardEntity = boardRepository.findById(trId).get();
+        if (boardEntity.isToAdmin() == false){
+            boardEntity.setToAdmin(true);
+            boardRepository.save(boardEntity);
+        }
+    }
 }

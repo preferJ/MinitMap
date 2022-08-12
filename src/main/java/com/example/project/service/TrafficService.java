@@ -1,8 +1,10 @@
 package com.example.project.service;
 
 import com.example.project.dto.TrafficDTO;
+import com.example.project.entity.BoardEntity;
 import com.example.project.entity.MemberEntity;
 import com.example.project.entity.TrafficEntity;
+import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
 import com.example.project.repository.TrafficRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ public class TrafficService {
 
     private final TrafficRepository trafficRepository;
     private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+
 
     public Long save(TrafficDTO trafficDTO, Long memberId) {
         Optional<MemberEntity> entity = memberRepository.findById(memberId);
@@ -92,6 +96,10 @@ public class TrafficService {
 
     public void delete(Long id) {
         trafficRepository.deleteById(id);
+    }
+
+    public TrafficDTO findById(Long id) {
+        return TrafficDTO.toTrafficDTO(trafficRepository.findById(id).get());
     }
 
 }

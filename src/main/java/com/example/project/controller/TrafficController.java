@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dto.*;
 import com.example.project.service.AdminHistoryService;
+import com.example.project.service.BoardService;
 import com.example.project.service.TrafficService;
 import com.example.project.service.TrafficTimeService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class TrafficController {
     private final TrafficService trafficService;
     private final TrafficTimeService trafficTimeService;
     private final AdminHistoryService adminHistoryService;
-
+    private final BoardService boardService;
     @GetMapping("adminSave")
     public String adminSave(@ModelAttribute TrafficDTO trafficDTO , @ModelAttribute TrafficTimeDTO trafficTimeDTO, @ModelAttribute Traffic2DTO traffic2DTO , @ModelAttribute Traffic3DTO traffic3DTO, HttpSession session){
         Long loginId = (Long) session.getAttribute("loginId");
@@ -59,5 +60,26 @@ public class TrafficController {
         trafficTimeService.adminUpdate(id,trafficTimeDTO,traffic2DTO,traffic3DTO);
         adminHistoryService.trafficUpdate(loginId,id);
         return "redirect:/board/adminTraffic";
+    }
+
+    @GetMapping("/adminSaveBoard")
+    public String adminSaveBoard(@ModelAttribute TrafficDTO trafficDTO , @ModelAttribute TrafficTimeDTO trafficTimeDTO, @ModelAttribute Traffic2DTO traffic2DTO , @ModelAttribute Traffic3DTO traffic3DTO, HttpSession session,@RequestParam("id") Long trId){
+        Long loginId = (Long) session.getAttribute("loginId");
+        Long id = trafficService.adminSave(trafficDTO,loginId);
+        trafficTimeService.adminSave(id,trafficTimeDTO,traffic2DTO,traffic3DTO);
+        adminHistoryService.trafficSave(loginId,id);
+        boardService.toAdmin(trId);
+        return "redirect:/board/likeTraffic";
+    }
+
+    @GetMapping("/trafficInfo")
+    public String trafficInfo(@RequestParam("id") Long id,Model model){
+        TrafficDTO trafficDTO = trafficService.findById(id);
+        List<TrafficTimeDTO> trafficTimeDTOS = trafficTimeService.findByTrafficId(id);
+        model.addAttribute("dnleh",trafficDTO.getTrafficLat());
+        model.addAttribute("rudeh",trafficDTO.getTrafficLon());
+        model.addAttribute("traffic",trafficDTO);
+        model.addAttribute("trafficTimeList",trafficTimeDTOS);
+        return "/BoardPages/trafficMap";
     }
 }

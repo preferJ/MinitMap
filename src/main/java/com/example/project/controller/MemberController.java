@@ -145,4 +145,19 @@ public class MemberController {
         memberService.findByMemberId(id);
         return "/hss/tapDown";
     }
+
+    @PostMapping("/kakaoLogin")
+    public @ResponseBody MemberDTO kakaoLogin(@ModelAttribute MemberDTO memberDTO,
+                                              HttpSession session){
+        boolean memberEmailCheak = memberService.findByMemberEmail(memberDTO.getMemberEmail());
+        if(!memberEmailCheak){
+            memberService.kakaoSignUp(memberDTO);
+        }
+        MemberDTO loginResult = memberService.login(memberDTO);
+        session.setAttribute("loginEmail", loginResult.getMemberEmail());
+        session.setAttribute("loginId", loginResult.getMemberId());
+        session.setAttribute("loginNickName", loginResult.getMemberNickname());
+        System.out.println(memberDTO);
+        return memberDTO;
+    }
 }

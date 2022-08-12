@@ -313,7 +313,7 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <div class="fadeIn first">
-                <i id="icon" class="fa-solid fa-circle-user"></i>
+                <i id="icon" class="fa-solid fa-circle-user fa-2x" style="margin-top: 10px"></i>
             </div>
             <form>
                 <input type="text" id="memberEmail" class="fadeIn second" name="memberEmail" autofocus placeholder="아이디"> <br>
@@ -329,10 +329,85 @@
             </div>
         </div>
     </div>
+    <div style="text-align: center; margin-top: 50px">
+        <div onclick="kakaoLogin();">
+            <a href="javascript:void(0)">
+                <img src="/icon/kakao_login_medium_narrow.png">
+            </a>
+        </div>
+<!--        <div onclick="kakaoLogout();">-->
+<!--            <a href="javascript:void(0)">-->
+<!--                <span>카카오 로그아웃</span>-->
+<!--            </a>-->
+<!--        </div>--></div>
     </div>
 
 </form>
 </body>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script th:inline="javascript">
+    Kakao.init('666fb7277f7aee7a89176609aa664ab6'); //발급받은 키 중 javascript키를 사용해준다.
+    console.log(Kakao.isInitialized()); // sdk초기화여부판단
+    //카카오로그인
+    function kakaoLogin() {
+        Kakao.Auth.login({
+            success: function (response) {
+                console.log("aa");
+                Kakao.API.request({
+                    url: '/v2/user/me',
+                    success: function (response) {
+                        kakaoLog(response);
+                    },
+                    fail: function (error) {
+                        console.log(error)
+                    },
+                })
+            },
+            fail: function (error) {
+                console.log(error)
+            },
+        })
+    }
+
+    function kakaoLog(response){
+        console.log(response)
+        var id = response.id;
+        var nickName = response.kakao_account.profile.nickname;
+        console.log(nickName);
+        $.ajax({
+            type: "post",
+            url: "/member/kakaoLogin",
+            data: {"memberEmail": id,
+                "memberPassword": id,
+                "memberNickname": nickName,
+                "memberPhone": "010-0000-0000"},
+            dataType: "text",
+            success: function (result) {
+                console.log(result);
+                alert("로그인되었습니다.")
+                location.href = "/hss/tapDown";
+            },
+            error: function () {
+                alert("홈페이지 오류");
+            }
+        });
+    }
+    //카카오로그아웃
+    function kakaoLogout() {
+        if (Kakao.Auth.getAccessToken()) {
+            Kakao.API.request({
+                url: '/v1/user/unlink',
+                success: function (response) {
+                    console.log(response)
+                },
+                fail: function (error) {
+                    console.log(error)
+                },
+            })
+            Kakao.Auth.setAccessToken(undefined)
+        }
+    }
+</script>
 <script th:inline="javascript">
     function saveForm() {
         location.href = "/member/saveForm";

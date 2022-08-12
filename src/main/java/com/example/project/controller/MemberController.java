@@ -153,10 +153,9 @@ public class MemberController {
         if(!memberEmailCheak){
             memberService.kakaoSignUp(memberDTO);
         }
-        MemberDTO loginResult = memberService.login(memberDTO);
-        session.setAttribute("loginEmail", loginResult.getMemberEmail());
-        session.setAttribute("loginId", loginResult.getMemberId());
-        session.setAttribute("loginNickName", loginResult.getMemberNickname());
+        session.setAttribute("loginEmail", memberDTO.getMemberEmail());
+        session.setAttribute("loginId", memberDTO.getMemberId());
+        session.setAttribute("loginNickName", memberDTO.getMemberNickname());
         System.out.println(memberDTO);
         return memberDTO;
     }

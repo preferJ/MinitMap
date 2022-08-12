@@ -149,13 +149,14 @@ public class MemberController {
     @PostMapping("/kakaoLogin")
     public @ResponseBody MemberDTO kakaoLogin(@ModelAttribute MemberDTO memberDTO,
                                               HttpSession session){
-        boolean memberEmailCheak = memberService.findByMemberEmail(memberDTO.getMemberEmail());
-        if(!memberEmailCheak){
+        MemberDTO memberEmailCheak = memberService.findByMemberEmail(memberDTO.getMemberEmail());
+        if(memberEmailCheak == null){
             memberService.kakaoSignUp(memberDTO);
         }
-        session.setAttribute("loginEmail", memberDTO.getMemberEmail());
-        session.setAttribute("loginId", memberDTO.getMemberId());
-        session.setAttribute("loginNickName", memberDTO.getMemberNickname());
+        MemberDTO LoginDTO = memberService.findByMemberEmail(memberDTO.getMemberEmail());
+        session.setAttribute("loginEmail", LoginDTO.getMemberEmail());
+        session.setAttribute("loginId", LoginDTO.getMemberId());
+        session.setAttribute("loginNickName", LoginDTO.getMemberNickname());
         System.out.println(memberDTO);
         return memberDTO;
     }

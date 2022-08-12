@@ -371,13 +371,18 @@
 
     function kakaoLog(response){
         console.log(response)
+        var email = response.kakao_account.email;
+        console.log(email);
+        if(email == null){
+            email = response.id;
+        }
         var id = response.id;
         var nickName = response.kakao_account.profile.nickname;
         console.log(nickName);
         $.ajax({
             type: "post",
             url: "/member/kakaoLogin",
-            data: {"memberEmail": id,
+            data: {"memberEmail": email,
                 "memberPassword": id,
                 "memberNickname": nickName,
                 "memberPhone": "010-0000-0000"},

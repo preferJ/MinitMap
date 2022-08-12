@@ -138,12 +138,12 @@ public class MemberService {
         }
     }
 
-    public boolean findByMemberEmail(String memberEmail) {
+    public MemberDTO findByMemberEmail(String memberEmail) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
         if(optionalMemberEntity.isPresent()){
-            return true;
+            return MemberDTO.toMemberDTO(optionalMemberEntity.get());
         }else{
-            return false;
+            return null;
         }
     }
 

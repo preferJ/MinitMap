@@ -11,7 +11,7 @@
     <input type="hidden" name="boardId" th:value="${board.boardId}">
     <input type="hidden" name="memberId" th:value="${board.memberId}">
     <select id="history" name="historyType" style="width: 100%">
-        <option id="levelDown" value="등급하락">등급하락</option>
+        <option value="등급하락">등급하락</option>
         <option value="등급유지">등급유지</option>
     </select>
     <textarea cols="71" rows="9" name="historyMessage"
@@ -26,9 +26,7 @@
    function levelDown(id) {
        console.log(id)
        let type = document.getElementById("history").value;
-       const lvdown = document.getElementById("lv1").value;
-
-       if (type === lvdown){
+       if (type == "등급하락"){
            location.href = "/member/levelDown/" + id;
        }
    }

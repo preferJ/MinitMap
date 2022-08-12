@@ -3,6 +3,7 @@ package com.example.project.controller;
 import com.example.project.common.PagingConst;
 import com.example.project.dto.*;
 import com.example.project.entity.BoardEntity;
+import com.example.project.repository.AdminHistoryRepository;
 import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
 import com.example.project.service.*;
@@ -32,6 +33,7 @@ public class BoardController {
     private final MyTrafficService myTrafficService;
 
     private final ErrorService errorService;
+    private final AdminHistoryService adminHistoryService;
 
     // 이현 시작
     @GetMapping

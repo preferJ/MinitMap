@@ -253,13 +253,13 @@
 
             <div class="container">
                 <table class="container">
-                    <tr>
+                    <tr style="text-align: center">
                         <th>번호</th>
                         <th>타입</th>
-                        <th>말</th>
+                        <th>조치내용</th>
                         <th>시간</th>
                     </tr>
-                    <tr th:each="admin: ${adminList}">
+                    <tr style="text-align: center" th:each="admin: ${adminList}">
                         <td th:text="${admin.adminHistoryId}"></td>
                         <td th:text="${admin.historyType}"></td>
                         <td th:text="${admin.historyMessage}"></td>

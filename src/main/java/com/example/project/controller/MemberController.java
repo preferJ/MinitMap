@@ -141,7 +141,9 @@ public class MemberController {
 
     @GetMapping("/levelDown/{id}")
     public String levelDown(@PathVariable Long id) {
+        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
         System.out.println("id = " + id);
+        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
         memberService.findByMemberId(id);
         return "/hss/tapDown";
     }

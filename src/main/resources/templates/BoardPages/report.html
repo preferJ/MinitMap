@@ -10,8 +10,8 @@
 <form action="/error/reportSave" method="post">
     <div>
         <div>
-        신고자 : <span th:text="${session.loginId}"></span>
-            <input type="hidden" name="memberId" th:value="${session.loginId}">
+        신고자 : <span th:text="${session.loginEmail}"></span>
+            <input type="hidden" name="memberId" th:value="${session.loginEmail}">
         </div>
         <input type="hidden" name="boardId" th:value="${boardId}">
         <div>

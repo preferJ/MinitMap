@@ -524,6 +524,7 @@
                                         36, 57), // 아이콘 크기 설정
                                     title: 1, // 마커 타이틀
                                     label: leftTime,
+                                    zIndex: 5,
                                     map: map // 마커가 등록될 지도 객체
                                 });
                             marker_Traffic.addListener("click", function (evt) {
@@ -547,6 +548,7 @@
                                         36, 57), // 아이콘 크기 설정
                                     title: -1, // 마커 타이틀
                                     label: leftTime,
+                                    zIndex: 5,
                                     map: map // 마커가 등록될 지도 객체
                                 });
                             trafficOnMapArray.push(marker_Traffic);
@@ -567,6 +569,7 @@
                                 iconSize: new Tmapv2.Size(
                                     36, 57), // 아이콘 크기 설정
                                 title: 1, // 마커 타이틀
+                                zIndex: 5,
                                 map: map // 마커가 등록될 지도 객체
                             });
                         marker_Traffic.addListener("click", function (evt) {
@@ -619,22 +622,25 @@
                 labelOnClose();
                 labelArray = [];
             }
-
-            var content = "<div class='m-pop' style='position: static; top: 180px; left : 320px; display: flex; font-size: 14px; box-shadow: 5px 5px 5px #00000040; border-radius: 10px; width : 400px; height:100px; background-color: #FFFFFF; align-items: center; padding: 5px;'>" +
-                "<div class='img-box' style='width: 110px; height: 90px; border-radius: 10px; background: #f5f5f5 url(/icon/greenOn.png) no-repeat center;'></div>" +
-                "<div class='info-box' style='margin-left : 10px'>" +
-                "<p style='margin-bottom: 7px;'>" +
-                "<span class='tit' style=' font-size: 16px; font-weight: bold;'>" + response.trafficName + "</span>" +
-                "<a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>홈페이지</a></p>" +
-                "<p>" +
-                "<span class='new-addr'>서울 중구 삼일대로 343 (우)04538</span><br>" +
-                "<span class='new-addr' >" + response.leftTime + "</span>" +
-                "</p>" +
-                "<p>" +
-                "<span class='old-addr' style='color: #707070;'>(지번) 저동1가 114</span>" +
-                "</p>" +
+// 마크
+            var content = "<div class='m-pop' id='labelDiv'>" +
+                "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>" +
+                "<div>현재 상태<img src='/icon/greenOn.png' style='margin-left: 10px' width='60px' height='60px'></div>" +
+                "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
+                "<div class='info-box'>" +
+                "<div><span style='font-size: 20px;'>Info</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
+                "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p> 1. **시 **분 ~ **시 **분</p>" +
+                "세부내용" +
+                "<span>" + response.leftTime + "</span>" +
+                "</span>" +
+                "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
+                "등록자: <a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>등록자</a>" +
+                "</span>" +
                 "</div>" +
-                "<a href='javascript:void(0)' onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 10px; right: 10px; display: block; width: 15px; height: 15px; background: url(/icon/greenOn.png) no-repeat center;'></a>" +
+                "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>" +
+                "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>" +
+                "</div>" +
+                "</div>" +
                 "</div>";
             //Popup 객체 생성.
             let infoWindow = new Tmapv2.InfoWindow({
@@ -642,6 +648,9 @@
                 content: content, //Popup 표시될 text
                 border: '0px solid #FF0000', //Popup의 테두리 border 설정.
                 type: 2, //Popup의 type 설정.
+                zIndex: 11,
+                offset: new Tmapv2.Point(-25, -5),
+                background: false,
                 map: map //Popup이 표시될 맵 객체
             });
             labelArray.push(infoWindow)
@@ -844,6 +853,7 @@
                     height: height_size - 67 - 3 + "px",
                     zoom: [[${page_zoom}]],
                     zoomControl: true,
+                    zIndexMarker: 8,
                     scrollwheel: true
                 });
             } else {
@@ -856,6 +866,7 @@
                     height: height_size - 84 - 3 + "px",
                     zoom: [[${page_zoom}]],
                     zoomControl: true,
+                    zIndexMarker: 8,
                     scrollwheel: true
                 });
             }
@@ -2345,6 +2356,21 @@
         .toggleSwitch, .toggleButton {
             transition: all 0.2s ease-in;
         }
+/*마크2*/
+        #labelDiv{
+            z-index: 11;
+            position: static;
+            display: flex;
+            font-size: 14px;
+            /*box-shadow: 5px 5px 5px #00000040;*/
+            outline: black solid 5px;
+            border-radius: 10px;
+            width : 300px;
+            height: 400px;
+            background-color: #FFFFFF;
+            padding: 20px;
+            /*margin: 5px;*/
+        }
     </style>
 </head>
 <body onload="initTmap();myPlaceList();rutinList();boardList();">
@@ -2640,7 +2666,7 @@
     </div>
 </div>
 <div id="map_div"></div>
-<span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 99999;top:50px;right:80px;">
+<span class="fa-stack fa-2x" onclick="myPing()" style="position:absolute;z-index: 50;top:50px;right:80px;">
         <i class="fa-solid fa-circle fa-stack-2x" style="color:white;"></i>
         <i class="fa-solid fa-location-dot fa-stack-1x" id="myPingColor" style="color:red;"></i>
     </span>

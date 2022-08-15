@@ -9,6 +9,8 @@ import com.example.project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,5 +41,14 @@ public class AdminHistoryService {
         adminHistoryDTO.setHistoryMessage(id + "번 신호등 수정");
         adminHistoryDTO.setHistoryType("신호수정");
         adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
+    }
+
+    public List<AdminHistoryDTO> findAll() {
+        List<AdminHistoryEntity> adminHistoryEntityList= adminHistoryRepository.findAll();
+        List<AdminHistoryDTO> adminHistoryDTOList = new ArrayList<>();
+        for (AdminHistoryEntity admin: adminHistoryEntityList){
+            adminHistoryDTOList.add(AdminHistoryDTO.toAdminHistoryDTO(admin));
+        }
+        return adminHistoryDTOList;
     }
 }

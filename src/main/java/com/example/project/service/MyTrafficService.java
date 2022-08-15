@@ -86,10 +86,10 @@ public class MyTrafficService {
         String[] latlng = center.split(",");
         double lat = Double.parseDouble(latlng[0]);
         double lng = Double.parseDouble(latlng[1]);
-        double minLat = lat - 0.01;
-        double maxLat = lat + 0.01;
-        double minLng = lng - 0.01;
-        double maxLng = lng + 0.01;
+        double minLat = lat - 0.02;
+        double maxLat = lat + 0.02;
+        double minLng = lng - 0.02;
+        double maxLng = lng + 0.02;
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
         System.out.println("center = " + center + ", loginId = " + loginId);
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
@@ -99,7 +99,6 @@ public class MyTrafficService {
 
         Optional<MemberEntity> byId = memberRepository.findById(loginId);
         Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
-
         List<TrafficTimeEntity> trafficTimeEntityList = trafficTimeRepository.findAll();
 
 
@@ -172,5 +171,16 @@ public class MyTrafficService {
         MyTrafficEntity myTrafficEntity = myTrafficRepository.findById(id).get();
         myTrafficEntity.setMyTrafficName(name);
         myTrafficRepository.save(myTrafficEntity);
+    }
+
+
+    public void getInBound() {
+        double lat = 37.57002494389944;
+        double lng = 126.98906779289288;
+        double minLat = lat - 0.02;
+        double maxLat = lat + 0.02;
+        double minLng = lng - 0.02;
+        double maxLng = lng + 0.02;
+
     }
 }

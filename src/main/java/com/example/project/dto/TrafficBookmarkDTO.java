@@ -12,12 +12,14 @@ public class TrafficBookmarkDTO {
     private Long trafficBookmarkId;
     private Long memberId;
     private Long trafficId;
+    private Long myTrafficId;
 
     public static TrafficBookmarkDTO toTrafficBookmarkDTO(TrafficBookmarkEntity trafficBookmarkEntity){
         TrafficBookmarkDTO trafficBookmarkDTO = new TrafficBookmarkDTO();
         trafficBookmarkDTO.setTrafficBookmarkId(trafficBookmarkEntity.getTrafficBookmarkId());
         trafficBookmarkDTO.setMemberId(trafficBookmarkEntity.getMemberEntity().getMemberId());
         trafficBookmarkDTO.setTrafficId(trafficBookmarkEntity.getTrafficEntity().getTrafficId());
+        trafficBookmarkDTO.setMyTrafficId(trafficBookmarkEntity.getMyTrafficEntity().getMyTrafficId());
         return trafficBookmarkDTO;
     }
 }

@@ -215,6 +215,55 @@
             }
         }
 
+        //ㅅㅎ 북마크 신호등 가져오기
+        function bookMarkTraffic() {
+            $.ajax({
+                url: "/bookMark/list",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    let a = "<table>";
+                    for (let i in result) {
+
+                        a += "<tr class='bookMarkList'" + ")'>";
+                        a += "<td>" + result.toString()
+
+
+                    }
+                    a += "</table>";
+
+
+                    myPlacesList = result;
+                    let output = "<table style=\"display: inline\" id=\"mypTap\">";
+                    for (let i in result) {
+                        output += "<tr class='myPlaceTap' onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
+                        output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
+                        output += "</td>" + "</tr>";
+                        output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace" + result[i].myPlaceId + "'>";
+                        output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ");tap2();' value='출발지'></td>";
+                        output += "<td><input type='button' onclick='endMyPlace(" + result[i].myPlaceId + ")tap2();' value='도착지'></td>";
+                        output += "</tr>";
+                    }
+                    output += "</table>";
+                    document.getElementById("myPlaceList").innerHTML = output
+                    output = "<table style=\"display: inline\" id=\"mypTap2\">";
+                    for (let i in result) {
+                        output += "<tr class='myPlaceTap' onclick='myPlaceClick2(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
+                        output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
+                        output += "</td>" + "</tr>";
+                        output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace2" + result[i].myPlaceId + "'>";
+                        output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ")' value='출발지'></td>";
+                        output += "<td><input type='button' onclick='endMyPlace(" + result[i].myPlaceId + ")' value='도착지'></td>";
+                        output += "</tr>";
+                    }
+                    output += "</table>";
+                    document.getElementById("myPlaceList2").innerHTML = output
+                }
+            })
+        }
+
+        // ㅅㅎ
+
         function tap2() {
             if (tapLock == false) {
                 tapLock = true;
@@ -614,6 +663,11 @@
             setStartTime.value = time;
         }
 
+        function bookMarkAdd(id, ck) {
+        alert("아이디값 :"+ id + "체크 값 : " + ck)
+        }
+
+
         let labelArray = [];
 
         function label(response) {
@@ -623,7 +677,7 @@
                 labelArray = [];
             }
 // 마크
-            var content = "<div class='m-pop' id='labelDiv'>" +
+            let content = "<div class='m-pop' id='labelDiv'>" +
                 "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>" +
                 "<div>현재 상태<img src='/icon/greenOn.png' style='margin-left: 10px' width='60px' height='60px'></div>" +
                 "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
@@ -631,8 +685,18 @@
                 "<div><span style='font-size: 20px;'>Info</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
                 "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p> 1. **시 **분 ~ **시 **분</p>" +
                 "세부내용" +
-                "<span>" + response.leftTime + "</span>" +
-                "</span>" +
+                "<span>" + response.leftTime + "</span>";
+
+            if (response.trafficId == null) {
+                content += "<button onclick='bookMarkAdd(" + response.myTrafficId + ","+"0" + ")'>" + "북마크추가버튼" + "</button>";
+
+            } else {
+                content += "<button onclick='bookMarkAdd(" + response.trafficId + ","+"1" + ")'>" + "북마크추가버튼" + "</button>";
+
+            }
+
+
+            content += "</span>" +
                 "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
                 "등록자: <a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>등록자</a>" +
                 "</span>" +
@@ -1109,7 +1173,7 @@
 
         function myPing() {
             var myPingColor = document.getElementById("myPingColor");
-            if(myPingColor.style.color == "red"){
+            if (myPingColor.style.color == "red") {
                 myPingColor.style.color = "green";
                 if (navigator.geolocation) {
                     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -1129,7 +1193,7 @@
                         map.setCenter(new Tmapv2.LatLng(lat, lon));
                         map.setZoom(18);
                     });
-                    playAlert = setInterval(function() {
+                    playAlert = setInterval(function () {
                         if (navigator.geolocation) {
                             // GeoLocation을 이용해서 접속 위치를 얻어옵니다
                             navigator.geolocation.getCurrentPosition(function (position) {
@@ -1150,7 +1214,7 @@
                         console.log("내위치 찍기")
                     }, 5000);
                 }
-            }else{
+            } else {
                 myPingColor.style.color = "red";
                 clearInterval(playAlert);
             }
@@ -1531,10 +1595,10 @@
                         var positionBounds = new Tmapv2.LatLngBounds();
 
                         var markerPosition = new Tmapv2.LatLng(
-                            s_marker.getPosition().lat(),s_marker.getPosition().lng());
+                            s_marker.getPosition().lat(), s_marker.getPosition().lng());
                         positionBounds.extend(markerPosition);
                         markerPosition = new Tmapv2.LatLng(
-                            e_marker.getPosition().lat(),e_marker.getPosition().lng());
+                            e_marker.getPosition().lat(), e_marker.getPosition().lng());
                         positionBounds.extend(markerPosition);
 
                         var resultData = response.features;
@@ -2356,8 +2420,9 @@
         .toggleSwitch, .toggleButton {
             transition: all 0.2s ease-in;
         }
-/*마크2*/
-        #labelDiv{
+
+        /*마크2*/
+        #labelDiv {
             z-index: 11;
             position: static;
             display: flex;
@@ -2365,7 +2430,7 @@
             /*box-shadow: 5px 5px 5px #00000040;*/
             outline: black solid 5px;
             border-radius: 10px;
-            width : 300px;
+            width: 300px;
             height: 400px;
             background-color: #FFFFFF;
             padding: 20px;
@@ -2538,7 +2603,7 @@
                     <hr>
                     <p id="result">거리/시간</p>
                     <hr>
-<!--                    <div id="course">길안내</div>-->
+                    <!--                    <div id="course">길안내</div>-->
                 </div>
             </div>
         </div>
@@ -2599,7 +2664,7 @@
                         <div>녹신호</div>
                     </div>
                     <hr>
-                    <div class="box" >
+                    <div class="box">
                         <div>
                             <div>
                                 <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"

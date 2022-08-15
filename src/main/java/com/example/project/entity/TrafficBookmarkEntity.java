@@ -24,14 +24,25 @@ public class TrafficBookmarkEntity {
     @JoinColumn(name = "trafficId", nullable = false)
     private TrafficEntity trafficEntity;
 
-    public static TrafficBookmarkEntity toTrafficBookmarkSaveEntity(TrafficBookmarkDTO trafficBookmarkDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "myTrafficId", nullable = false)
+    private MyTrafficEntity myTrafficEntity;
+
+    public static TrafficBookmarkEntity toTrafficBookmarkSaveEntity(TrafficBookmarkDTO trafficBookmarkDTO, MemberEntity memberEntity, TrafficEntity trafficEntity) {
         TrafficBookmarkEntity trafficBookmarkEntity = new TrafficBookmarkEntity();
         trafficBookmarkEntity.setMemberEntity(memberEntity);
         trafficBookmarkEntity.setTrafficEntity(trafficEntity);
         return trafficBookmarkEntity;
     }
 
-    public static TrafficBookmarkEntity toTrafficBookmarkUpdateEntity(TrafficBookmarkDTO trafficBookmarkDTO, MemberEntity memberEntity, TrafficEntity trafficEntity){
+    public static TrafficBookmarkEntity toMyTrafficBookmarkSaveEntity(TrafficBookmarkDTO trafficBookmarkDTO, MemberEntity memberEntity, MyTrafficEntity myTrafficEntity) {
+        TrafficBookmarkEntity trafficBookmarkEntity = new TrafficBookmarkEntity();
+        trafficBookmarkEntity.setMemberEntity(memberEntity);
+        trafficBookmarkEntity.setMyTrafficEntity(myTrafficEntity);
+        return trafficBookmarkEntity;
+    }
+
+    public static TrafficBookmarkEntity toTrafficBookmarkUpdateEntity(TrafficBookmarkDTO trafficBookmarkDTO, MemberEntity memberEntity, TrafficEntity trafficEntity) {
         TrafficBookmarkEntity trafficBookmarkEntity = new TrafficBookmarkEntity();
         trafficBookmarkEntity.setTrafficBookmarkId(trafficBookmarkDTO.getTrafficId());
         trafficBookmarkEntity.setMemberEntity(memberEntity);

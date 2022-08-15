@@ -15,4 +15,5 @@ public interface ErrorRepository extends JpaRepository<ErrorEntity,Long> {
 
     List<ErrorEntity> findByBoardEntity(BoardEntity boardEntity);
     // 해당하는 글이 받은 오류신고들
+
 }

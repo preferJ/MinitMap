@@ -319,4 +319,11 @@ public class TestController {
     }
 
 
+    @GetMapping("/timeTest")
+    public String timeTest(){
+        Long trId=7l;
+        List<TrafficTimeDTO> time = trafficTimeService.findTime(trId);
+        System.out.println("trafficTimeDTO = " + time);
+        return "/index";
+    }
 }

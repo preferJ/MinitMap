@@ -2,7 +2,6 @@ package com.example.project.service;
 
 import com.example.project.dto.Traffic2DTO;
 import com.example.project.dto.Traffic3DTO;
-import com.example.project.dto.TrafficDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.MyTrafficEntity;
 import com.example.project.entity.TrafficEntity;
@@ -12,8 +11,9 @@ import com.example.project.repository.TrafficRepository;
 import com.example.project.repository.TrafficTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.parser.Entity;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -103,5 +103,35 @@ public class TrafficTimeService {
         trafficTimeRepository.save(TrafficTimeEntity.toTrafficTimeUpdateEntity(trafficTimeDTO,trafficEntity));
         trafficTimeRepository.save(TrafficTimeEntity.UpdateAdminSave2(traffic2DTO,trafficEntity));
         trafficTimeRepository.save(TrafficTimeEntity.UpdateAdminSave3(traffic3DTO,trafficEntity));
+    }
+
+    @Transactional
+    public List<TrafficTimeDTO> findTime(Long trId) {
+        TrafficEntity trafficEntity = trafficRepository.findById(trId).get();
+        LocalTime now = LocalTime.now();
+//        Long nowTime = now.getHour()*10000l + now.getMinute() * 100l + now.getSecond();  // 시간을 Long 타입으로 변환
+        Long nowTime =  6000l;
+        List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(trafficEntity);
+        List<TrafficTimeDTO> trafficTimeDTOS = new ArrayList<>();
+        // 신호가 1개면 그냥 걔만가져감
+        if (byTrafficEntity.size() <=1){
+            trafficTimeDTOS.add(TrafficTimeDTO.toTrafficTimeDTO(byTrafficEntity.get(0)));
+        //  신호가 2개 이상이면 구분해서 가져감
+        }else{
+            int timeCheck = -1;
+            // 사이값이 아니면 리턴없어서 좆버그걸림 좆됨
+            try{
+                timeCheck = trafficTimeRepository.findByBetween(trafficEntity,nowTime);
+            }catch (Exception e){
+
+            }
+            if (timeCheck == -1){
+                timeCheck = trafficTimeRepository.findByTimeCheck(trafficEntity, nowTime);
+            }
+            TrafficTimeEntity trafficTimeEntity = trafficTimeRepository.findById((long) timeCheck).get();
+            trafficTimeDTOS.add(TrafficTimeDTO.toTrafficTimeDTO(trafficTimeEntity));
+        }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@ : " + trafficTimeDTOS);
+        return trafficTimeDTOS;
     }
 }

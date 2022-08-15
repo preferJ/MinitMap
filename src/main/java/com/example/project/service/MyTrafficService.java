@@ -175,15 +175,19 @@ public class MyTrafficService {
 
 
     public void getInBound() {
-        double lat = 37.57002494389944;
-        double lng = 126.98906779289288;
-        double minLat = lat - 0.02;
-        double maxLat = lat + 0.02;
-        double minLng = lng - 0.02;
-        double maxLng = lng + 0.02;
+        double lat = 1;
+        double lng = 2;
+        double a = lat - 0.02;
+        double b = lat + 0.02;
+        double c = lng - 0.02;
+        double d = lng + 0.02;
 
-        List<TrafficDTO> trafficDTOList = new ArrayList<>();
-        List<MyTrafficDTO> myTrafficDTOList = new ArrayList<>();
+        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(a,b,c,d);
+        List<MyTrafficDTO> myTrafficDTOS = new ArrayList<>();
+        for (MyTrafficEntity myTrafficEntity : myTrafficEntities){
+            myTrafficDTOS.add(MyTrafficDTO.toSaveMyTrafficDTO(myTrafficEntity));
+        }
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$ : "  + myTrafficDTOS );
 
 //        이거 두개 만드셈
 

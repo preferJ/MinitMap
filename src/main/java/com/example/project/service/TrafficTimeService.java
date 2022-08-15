@@ -106,20 +106,27 @@ public class TrafficTimeService {
     }
 
     @Transactional
-    public List<TrafficTimeDTO> findTime(Long trId) {
-        TrafficEntity trafficEntity = trafficRepository.findById(trId).get();
+    public List<TrafficTimeDTO> findTime() {
+        // 중복제거 신호리스트
+        List<TrafficEntity> trafficDistinct = trafficTimeRepository.findTrafficDistinct();
+        // 중복제거 마이트래픽리스트
+        List<MyTrafficEntity> myTrafficDistinct = trafficTimeRepository.findMyTrafficDistinct();
         LocalTime now = LocalTime.now();
 //        Long nowTime = now.getHour()*10000l + now.getMinute() * 100l + now.getSecond();  // 시간을 Long 타입으로 변환
         Long nowTime =  6000l;
-        List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(trafficEntity);
+
         List<TrafficTimeDTO> trafficTimeDTOS = new ArrayList<>();
+        // 트래픽리스트
+        for (TrafficEntity trafficEntity : trafficDistinct){
+            List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(trafficEntity);
+            // 결국 얻게되는 시간
         // 신호가 1개면 그냥 걔만가져감
         if (byTrafficEntity.size() <=1){
             trafficTimeDTOS.add(TrafficTimeDTO.toTrafficTimeDTO(byTrafficEntity.get(0)));
         //  신호가 2개 이상이면 구분해서 가져감
         }else{
             int timeCheck = -1;
-            // 사이값이 아니면 리턴없어서 좆버그걸림 좆됨
+            // 사이값이 아니면 리턴 없어서 오류뜨니 트라이캐치
             try{
                 timeCheck = trafficTimeRepository.findByBetween(trafficEntity,nowTime);
             }catch (Exception e){
@@ -130,7 +137,9 @@ public class TrafficTimeService {
             }
             TrafficTimeEntity trafficTimeEntity = trafficTimeRepository.findById((long) timeCheck).get();
             trafficTimeDTOS.add(TrafficTimeDTO.toTrafficTimeDTO(trafficTimeEntity));
-        }
+        }}
+
+        // 마이트래픽리스트
         System.out.println("@@@@@@@@@@@@@@@@@@@@ : " + trafficTimeDTOS);
         return trafficTimeDTOS;
     }

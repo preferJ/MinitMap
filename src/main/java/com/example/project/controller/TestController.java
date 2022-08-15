@@ -2,7 +2,9 @@ package com.example.project.controller;
 
 import com.example.project.dto.*;
 import com.example.project.dto.TrafficDTO;
+import com.example.project.entity.BoardEntity;
 import com.example.project.entity.TestEntity;
+import com.example.project.repository.BoardRepository;
 import com.example.project.repository.TestRepository;
 import com.example.project.service.*;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class TestController {
     private final MyPlaceService myPlaceService;
 
     private final RutinService rutinService;
+    private final BoardRepository boardRepository;
 
     //    ㅅㅎ 테스트 sout 추가
     // 이현 System.out.println("테스트");
@@ -321,9 +324,16 @@ public class TestController {
 
     @GetMapping("/timeTest")
     public String timeTest(){
-        Long trId=7l;
-        List<TrafficTimeDTO> time = trafficTimeService.findTime(trId);
-        System.out.println("trafficTimeDTO = " + time);
+        myTrafficService.getInBound();
+//        List<TrafficTimeDTO> time = trafficTimeService.findTime();
+//        System.out.println("trafficTimeDTO = " + time);
         return "/index";
     }
+
+    @GetMapping("/testtesttest")
+    public @ResponseBody List<BoardEntity> tesetBoard(){
+        return boardRepository.findAll();
+    }
+
+
 }

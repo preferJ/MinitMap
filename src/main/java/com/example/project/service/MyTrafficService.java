@@ -182,5 +182,10 @@ public class MyTrafficService {
         double minLng = lng - 0.02;
         double maxLng = lng + 0.02;
 
+        List<TrafficDTO> trafficDTOList = new ArrayList<>();
+        List<MyTrafficDTO> myTrafficDTOList = new ArrayList<>();
+
+//        이거 두개 만드셈
+
     }
 }

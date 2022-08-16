@@ -682,9 +682,9 @@
 
             let content = "<div class='m-pop' id='labelDiv'>";
             if (response.trafficId == null) {
-                content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.myTrafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>";
+                content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.myTrafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='myTrafficNameChange("+ response.myTrafficId +")'></i></span></div>";
             } else {
-                content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>";
+                content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='adminTrafficNameChange("+response.trafficId+")'></i></span></div>";
             }
             content +=
                 "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
@@ -722,12 +722,12 @@
 
             if (response.trafficId == null) {
                 if (response.boardId != null) {
-                    content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
+                    content += "<span style='float: left'><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
                 } else {
-                    content += "<span style='float: left'><button style='float: left'>감추기</button><br/>";
+                    content += "<span style='float: left'><br/>";
                 }
             } else {
-                content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
+                content += "<span style='float: left'><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
             }
 
             content +=
@@ -790,6 +790,38 @@
             }
         }
 
+        function myTrafficNameChange(id){
+            let name = prompt('뭐로변경할까요???', '');
+            $.ajax({
+                url: "/myTraffic/updateName",
+                type: "get",
+                data: {
+                    "id": id,
+                    "name": name
+                },
+                success: function () {
+                    alert("변경되었습니다.")
+                    labelOnClose();
+                }
+            })
+        }
+
+        function adminTrafficNameChange(id){
+            let name = prompt('뭐로변경할까요???', '');
+            $.ajax({
+                url: "/myTraffic/adminMyTraffic",
+                type: "get",
+                data: {
+                    "id": id,
+                    "name": name
+                },
+                success: function () {
+                    alert("변경되었습니다.")
+                    labelOnClose();
+                    getInboundTraffic();
+                }
+            })
+        }
         function like(num) {
             let loginCheck = [[${session.loginId}]]
             if (loginCheck != null) {

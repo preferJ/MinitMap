@@ -89,4 +89,12 @@ public class MyTrafficController {
         myTrafficService.updateName(id, name);
         return "ok";
     }
+
+    @GetMapping("/adminMyTraffic")
+    public @ResponseBody String adminMyTraffic(@RequestParam("id") Long id, @RequestParam("name") String name,HttpSession session) {
+        Long loginId = (Long) session.getAttribute("loginId");
+        myTrafficService.adminMyTraffic(id,name,loginId);
+        return "ok";
+    }
+
 }

@@ -60,4 +60,13 @@ public class MyTrafficEntity {
         myTrafficEntity.setBoardId(myTrafficDTO.getBoardId());
         return myTrafficEntity;
     }
+
+    public static MyTrafficEntity TrafficToMyTraffic(TrafficEntity trafficEntity,String name,MemberEntity memberEntity) {
+        MyTrafficEntity myTrafficEntity = new MyTrafficEntity();
+        myTrafficEntity.setMyTrafficLat(trafficEntity.getTrafficLat());
+        myTrafficEntity.setMyTrafficLon(trafficEntity.getTrafficLon());
+        myTrafficEntity.setMyTrafficName(name);
+        myTrafficEntity.setMemberEntity(memberEntity);
+        return myTrafficEntity;
+    }
 }

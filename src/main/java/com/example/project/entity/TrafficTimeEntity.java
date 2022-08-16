@@ -159,4 +159,16 @@ public class TrafficTimeEntity {
         trafficTimeEntity.setTrafficEntity(trafficEntity);
         return trafficTimeEntity;
     }
+
+    public static TrafficTimeEntity timeTotime(TrafficTimeEntity trafficTimeEntity, MyTrafficEntity save) {
+        TrafficTimeEntity trafficTimeEntity1 = new TrafficTimeEntity();
+        trafficTimeEntity1.setGreenOn(trafficTimeEntity.getGreenOn());
+        trafficTimeEntity1.setRedOn(trafficTimeEntity.getRedOn());
+        trafficTimeEntity1.setSetStartTime(trafficTimeEntity.getSetStartTime());
+        trafficTimeEntity1.setStartType(trafficTimeEntity.getStartType());
+        trafficTimeEntity1.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
+        trafficTimeEntity1.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
+        trafficTimeEntity1.setMyTrafficEntity(save);
+        return trafficTimeEntity1;
+    }
 }

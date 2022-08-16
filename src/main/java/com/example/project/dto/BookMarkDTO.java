@@ -19,14 +19,14 @@ public class BookMarkDTO {
     private Long myTrafficId;
 
 
-public static BookMarkDTO toBookMarkDTO(BookMarkEntity bookMarkEntity){
-    BookMarkDTO bookMarkDTO = new BookMarkDTO();
-    bookMarkDTO.setBookMarkId(bookMarkEntity.getBookMarkId());
-    bookMarkDTO.setMemberId(bookMarkEntity.getMemberId());
-    bookMarkDTO.setMyTrafficId(bookMarkEntity.getMyTrafficId());
-    bookMarkDTO.setTrafficId(bookMarkEntity.getTrafficId());
-return bookMarkDTO;
-}
+    public static BookMarkDTO toBookMarkDTO(BookMarkEntity bookMarkEntity) {
+        BookMarkDTO bookMarkDTO = new BookMarkDTO();
+        bookMarkDTO.setBookMarkId(bookMarkEntity.getBookMarkId());
+        bookMarkDTO.setMemberId(bookMarkEntity.getMemberId());
+        bookMarkDTO.setMyTrafficId(bookMarkEntity.getMyTrafficId());
+        bookMarkDTO.setTrafficId(bookMarkEntity.getTrafficId());
+        return bookMarkDTO;
+    }
 
 
 }

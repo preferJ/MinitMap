@@ -255,6 +255,16 @@ public class MyTrafficService {
         return lon;
     }
 
+    public void adminMyTraffic(Long id, String name,Long loginId) {
+        TrafficEntity trafficEntity = trafficRepository.findById(id).get();
+        List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(trafficEntity);
+        MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.TrafficToMyTraffic(trafficEntity, name, memberRepository.findById(loginId).get()));
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
+            TrafficTimeEntity trafficTimeEntity1 = TrafficTimeEntity.timeTotime(trafficTimeEntity,save);
+            trafficTimeRepository.save(trafficTimeEntity1);
+        }
+    }
+
 //
 //    public void getInBound() {
 //        double lat = 1;

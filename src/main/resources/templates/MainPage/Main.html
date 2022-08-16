@@ -544,8 +544,7 @@
                                     icon: "/icon/greenOn.png", // 아이콘 등록
                                     iconSize: new Tmapv2.Size(
                                         36, 57), // 아이콘 크기 설정
-                                    title: 1, // 마커 타이틀
-                                    label: leftTime,
+                                    label: "<div style='text-align: center;display: inline-block;background-color: white;padding: 3px;color: green;font-size: 15px;'><b>"+leftTime +"</b></div>",
                                     zIndex: 5,
                                     map: map // 마커가 등록될 지도 객체
                                 });
@@ -568,11 +567,13 @@
                                     icon: "/icon/redOn.png", // 아이콘 등록
                                     iconSize: new Tmapv2.Size(
                                         36, 57), // 아이콘 크기 설정
-                                    title: -1, // 마커 타이틀
-                                    label: leftTime,
+                                    label: "<div style='text-align: center;display: inline-block;background-color: white;color: red;padding: 3px;font-size: 15px;'><b>"+leftTime +"</b></div>",
                                     zIndex: 5,
                                     map: map // 마커가 등록될 지도 객체
                                 });
+                            marker_Traffic.addListener("click", function (evt) {
+                                label(trafficArray[i])
+                            });
                             trafficOnMapArray.push(marker_Traffic);
                             trafficArray[i].leftTime--;
                             if (trafficArray[i].leftTime <= 0) {
@@ -590,7 +591,6 @@
                                 icon: "/icon/offTraffic.png", // 아이콘 등록
                                 iconSize: new Tmapv2.Size(
                                     36, 57), // 아이콘 크기 설정
-                                title: 1, // 마커 타이틀
                                 zIndex: 5,
                                 map: map // 마커가 등록될 지도 객체
                             });
@@ -711,7 +711,7 @@
 
             content +=
                 "</div>" +
-                "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>";
+                "<div id='bottomInfoBox' style='position: absolute; bottom: -130px;left: 10px;width: 260px;height: 70px;text-align: center'>";
 
             if (response.trafficId == null) {
                 if (response.boardId != null) {

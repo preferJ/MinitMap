@@ -1352,6 +1352,19 @@
             }
         }
 
+        function bookMarkTapDown(){
+            console.log("실행")
+            var mypTap = document.getElementById("bookMarkTraffic");
+            var mypIcon = document.getElementById("bookMarkIcon");
+            if (mypTap.style.display == "inline") {
+                mypTap.style.display = "none";
+                mypIcon.className = "fa-solid fa-angle-down fa-2x"
+            } else if (mypTap.style.display == "none") {
+                mypTap.style.display = "inline";
+                mypIcon.className = "fa-solid fa-angle-up fa-2x"
+            }
+        }
+
         function myPing() {
             var myPingColor = document.getElementById("myPingColor");
             if (myPingColor.style.color == "red") {
@@ -2732,8 +2745,12 @@
                             </div>
                             <hr>
                             <div>
-                                <b>자주보는 신호등</b> <br>
-                                <div id="bookMarkTraffic"></div>
+                                <b>자주보는 신호등</b>
+                                <div style="float: right">
+                                    <i onclick="bookMarkTapDown()" id="bookMarkIcon" class="fa-solid fa-angle-up fa-2x"></i>
+                                </div>
+                                <br>
+                                <div id="bookMarkTraffic" style="display: inline"></div>
                             </div>
                             <hr>
                             <div th:if="${session.loginEmail.toString().equals('admin')}">

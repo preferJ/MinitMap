@@ -223,7 +223,8 @@
                 type: "post",
                 dataType: "json",
                     success: function (response) { // 결과 성공 콜백함수
-                    console.log(response)
+                    console.log("북마크 가져오기 실행")
+                        console.log(response)
 
                     },
                     error:
@@ -637,7 +638,9 @@
         }
 
         function bookMarkAdd(id, ck) {
-            alert("아이디값 :" + id + "체크 값 : " + ck)
+            if ([[${session.loginId}]]==null){
+                alert("로그인이 필요한 기능입니다.")
+            }else{
             $.ajax({
                     type: "post", // 타입 (get, post, put 등등)
                     url: "/bookMark/save", // 요청할 서버url
@@ -656,7 +659,7 @@
                             console.log(error)
                         }
                 }
-            )
+            )}
         }
 
 
@@ -982,7 +985,7 @@
             getInboundTraffic();
             map.addListener("dragend", onDragend); // 지도 드래그 끝났을 때, 이벤트 리스너 등록.
 
-            // bookMarkTraffic() // 북마크 가져오기
+            bookMarkTraffic(); // 북마크 가져오기
 
 
         }

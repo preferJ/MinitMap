@@ -46,7 +46,9 @@ public class BookMarkService {
         List<BookMarkEntity> bookMarkEntityList = bookMarkRepository.findAllByMemberId(memberId);
         List<BookMarkDTO> bookMarkDTOList = new ArrayList<>();
         for (BookMarkEntity bookMarkEntity : bookMarkEntityList) {
-            bookMarkDTOList.add(BookMarkDTO.toBookMarkDTO(bookMarkEntity));
+            if (bookMarkEntity.getMemberId() == memberId) {
+                bookMarkDTOList.add(BookMarkDTO.toBookMarkDTO(bookMarkEntity));
+            }
         }
         return bookMarkDTOList;
     }

@@ -16,12 +16,11 @@ public class BookMarkController {
     private final BookMarkService bookMarkService;
 
     @PostMapping("/list")
+    @ResponseBody
     public List<BookMarkDTO> findAll(HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginId");
         List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
         return bookMarkDTOList;
-
-
     }
 
 

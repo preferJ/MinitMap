@@ -225,6 +225,36 @@ public class MyTrafficService {
         myTrafficRepository.save(myTrafficEntity);
     }
 
+    public String findByIdName(Long myTrafficId) {
+        Optional<MyTrafficEntity> myTrafficEntity = myTrafficRepository.findById(myTrafficId);
+        String name = "";
+        if (myTrafficEntity.isPresent()){
+            name = myTrafficEntity.get().getMyTrafficName();
+        }
+
+        return name;
+    }
+
+    public Double findByIdLat(Long myTrafficId) {
+        Optional<MyTrafficEntity> myTrafficEntity = myTrafficRepository.findById(myTrafficId);
+        double lat = 0;
+        if (myTrafficEntity.isPresent()){
+            lat = myTrafficEntity.get().getMyTrafficLat();
+        }
+
+        return lat;
+    }
+
+    public double findByIdLon(Long myTrafficId) {
+        Optional<MyTrafficEntity> myTrafficEntity = myTrafficRepository.findById(myTrafficId);
+        double lon = 0;
+        if (myTrafficEntity.isPresent()){
+            lon = myTrafficEntity.get().getMyTrafficLon();
+        }
+
+        return lon;
+    }
+
 //
 //    public void getInBound() {
 //        double lat = 1;

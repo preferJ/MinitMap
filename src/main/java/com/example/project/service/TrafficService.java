@@ -3,6 +3,7 @@ package com.example.project.service;
 import com.example.project.dto.TrafficDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.MemberEntity;
+import com.example.project.entity.MyTrafficEntity;
 import com.example.project.entity.TrafficEntity;
 import com.example.project.repository.BoardRepository;
 import com.example.project.repository.MemberRepository;
@@ -105,4 +106,33 @@ public class TrafficService {
         return TrafficDTO.toTrafficDTO(trafficRepository.findById(id).get());
     }
 
+    public String findByIdName(Long trafficId) {
+        Optional<TrafficEntity> trafficEntity = trafficRepository.findById(trafficId);
+        String name = "";
+        if (trafficEntity.isPresent()){
+            name = trafficEntity.get().getTrafficName();
+        }
+
+        return name;
+    }
+
+    public Double findByIdLat(Long trafficId) {
+        Optional<TrafficEntity> trafficEntity = trafficRepository.findById(trafficId);
+        double lat = 0;
+        if (trafficEntity.isPresent()){
+            lat = trafficEntity.get().getTrafficLat();
+        }
+
+        return lat;
+    }
+
+    public double findByIdLon(Long trafficId) {
+        Optional<TrafficEntity> trafficEntity = trafficRepository.findById(trafficId);
+        double lon = 0;
+        if (trafficEntity.isPresent()){
+            lon = trafficEntity.get().getTrafficLon();
+        }
+
+        return lon;
+    }
 }

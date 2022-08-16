@@ -219,12 +219,15 @@
         function bookMarkTraffic() {
             let bookMarkTraffic = document.getElementById("bookMarkTraffic")
             $.ajax({
-                url: "/bookMark/list",
-                type: "post",
-                dataType: "json",
+                    url: "/bookMark/list",
+                    type: "post",
+                    dataType: "json",
                     success: function (response) { // 결과 성공 콜백함수
-                    console.log("북마크 가져오기 실행")
+                        console.log("북마크 가져오기 실행")
                         console.log(response)
+
+
+
 
                     },
                     error:
@@ -545,7 +548,7 @@
                                     icon: "/icon/greenOn.png", // 아이콘 등록
                                     iconSize: new Tmapv2.Size(
                                         36, 57), // 아이콘 크기 설정
-                                    label: "<div style='text-align: center;display: inline-block;background-color: white;padding: 3px;color: green;font-size: 15px;'><b>"+leftTime +"</b></div>",
+                                    label: "<div style='text-align: center;display: inline-block;background-color: white;padding: 3px;color: green;font-size: 15px;'><b>" + leftTime + "</b></div>",
                                     zIndex: 5,
                                     map: map // 마커가 등록될 지도 객체
                                 });
@@ -568,7 +571,7 @@
                                     icon: "/icon/redOn.png", // 아이콘 등록
                                     iconSize: new Tmapv2.Size(
                                         36, 57), // 아이콘 크기 설정
-                                    label: "<div style='text-align: center;display: inline-block;background-color: white;color: red;padding: 3px;font-size: 15px;'><b>"+leftTime +"</b></div>",
+                                    label: "<div style='text-align: center;display: inline-block;background-color: white;color: red;padding: 3px;font-size: 15px;'><b>" + leftTime + "</b></div>",
                                     zIndex: 5,
                                     map: map // 마커가 등록될 지도 객체
                                 });
@@ -638,28 +641,29 @@
         }
 
         function bookMarkAdd(id, ck) {
-            if ([[${session.loginId}]]==null){
+            if ([[${session.loginId}]] == null) {
                 alert("로그인이 필요한 기능입니다.")
-            }else{
-            $.ajax({
-                    type: "post", // 타입 (get, post, put 등등)
-                    url: "/bookMark/save", // 요청할 서버url
-                    dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
-                    data: { // 보낼 데이터 (Object , String, Array)
-                        "trafficId": id,
-                        "ck": ck,
-                    },
-                    async: false,
-                    success: function (response) { // 결과 성공 콜백함수
+            } else {
+                $.ajax({
+                        type: "post", // 타입 (get, post, put 등등)
+                        url: "/bookMark/save", // 요청할 서버url
+                        dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
+                        data: { // 보낼 데이터 (Object , String, Array)
+                            "trafficId": id,
+                            "ck": ck,
+                        },
+                        async: false,
+                        success: function (response) { // 결과 성공 콜백함수
 
-                    },
-                    error:
+                        },
+                        error:
 
-                        function (request, status, error) { // 결과 에러 콜백함수
-                            console.log(error)
-                        }
-                }
-            )}
+                            function (request, status, error) { // 결과 에러 콜백함수
+                                console.log(error)
+                            }
+                    }
+                )
+            }
         }
 
 
@@ -719,7 +723,7 @@
             if (response.trafficId == null) {
                 if (response.boardId != null) {
                     content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
-                }else{
+                } else {
                     content += "<span style='float: left'><button style='float: left'>감추기</button><br/>";
                 }
             } else {
@@ -790,8 +794,8 @@
             let loginCheck = [[${session.loginId}]]
             if (loginCheck != null) {
                 $.ajax({
-                    url:"/board/indexLike?like=1&boardId=" + num,
-                    type:"get"
+                    url: "/board/indexLike?like=1&boardId=" + num,
+                    type: "get"
                 })
                 alert("맞아요~")
             } else {
@@ -803,8 +807,8 @@
             let loginCheck = [[${session.loginId}]]
             if (loginCheck != null) {
                 $.ajax({
-                    url:"/board/indexLike?like=2&boardId=" + num,
-                    type:"get"
+                    url: "/board/indexLike?like=2&boardId=" + num,
+                    type: "get"
                 })
                 alert("안맞아요~");
             } else {
@@ -991,6 +995,7 @@
 
 
         }
+
         // 1탭
         function searchButton() {
             var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
@@ -2595,7 +2600,7 @@
                             <hr>
                             <div>
                                 <b>자주보는 신호등</b> <br>
-                              <div id="bookMarkTraffic"></div>
+                                <div id="bookMarkTraffic"></div>
                             </div>
                             <hr>
                             <div th:if="${session.loginEmail.toString().equals('admin')}">
@@ -2722,22 +2727,26 @@
                         <div>
                             <div>
                                 <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"
-                                       class="timeCheckInputBoxGreen" style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center"
+                                       class="timeCheckInputBoxGreen"
+                                       style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center"
                                 >
                             </div>
                             <div>
                                 <input type="text" id="timeCheck2" placeholder="적색불로 바뀐 시간"
-                                       class="timeCheckInputBox" style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
+                                       class="timeCheckInputBox"
+                                       style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
                             </div>
                             <div>
                                 <input type="text" id="timeCheck3" placeholder="청색불로 바뀐 시간"
-                                       class="timeCheckInputBox" style="margin-bottom: 5px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
+                                       class="timeCheckInputBox"
+                                       style="margin-bottom: 5px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
                             </div>
                         </div>
                     </div>
                     <div style="display: block">
                         <input type="button" value="시간 기록"
-                               style="width: 190px; height: 95px;margin-top: 5px;position: center;" class="btn btn-outline-success"
+                               style="width: 190px; height: 95px;margin-top: 5px;position: center;"
+                               class="btn btn-outline-success"
                                onclick="timeCheck();" id="timeCheckBtn">
                     </div>
                     <hr>
@@ -2750,12 +2759,14 @@
                                    onblur="TrafficSetting();TrafficSetting();checklatlon()">
                         </div>
                         <div>
-                        <input type="text" id="greenOnTime" class="trafficCount" placeholder="녹색불 점화 시간"
-                               onblur="TrafficSetting()" style="outline-color: #10ad1a;margin-bottom: 8px; border:0; border-radius: 20px; background-color: lawngreen;text-align: center;">
+                            <input type="text" id="greenOnTime" class="trafficCount" placeholder="녹색불 점화 시간"
+                                   onblur="TrafficSetting()"
+                                   style="outline-color: #10ad1a;margin-bottom: 8px; border:0; border-radius: 20px; background-color: lawngreen;text-align: center;">
                         </div>
                         <div>
-                        <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간"
-                               onblur="TrafficSetting()" style="outline-color: red; border:0; border-radius: 20px; background-color: #f03d3d; text-align: center;">
+                            <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간"
+                                   onblur="TrafficSetting()"
+                                   style="outline-color: red; border:0; border-radius: 20px; background-color: #f03d3d; text-align: center;">
                         </div>
                     </div>
                     <hr>
@@ -2779,8 +2790,10 @@
                         <input type="hidden" name="greenOn" id="greenOn" value="asd">
                         <input type="hidden" name="redOn" id="redOn" value="asd">
                         <input type="hidden" name="setStartTime" id="setStartTime" value="asd">
-                        <button type="submit"  class="btn btn-outline-warning" style="width: 190px">저장</button> <br/><br />
-                        <input type="button" onclick="valueReset()"  class="btn btn-outline-primary" style="width: 190px" value="초기화">
+                        <button type="submit" class="btn btn-outline-warning" style="width: 190px">저장</button>
+                        <br/><br/>
+                        <input type="button" onclick="valueReset()" class="btn btn-outline-primary" style="width: 190px"
+                               value="초기화">
 
                     </form>
                 </div>

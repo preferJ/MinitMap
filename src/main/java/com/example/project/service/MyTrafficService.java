@@ -24,6 +24,8 @@ public class MyTrafficService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
 
+    private final BoardService boardService;
+
     //이현 중복신호등 체크
     public String saveCheck(Long id, Long loginId) {
         String check = "ok";
@@ -152,31 +154,20 @@ public class MyTrafficService {
 
         Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
 
-        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(loginId,a,b,c,d);
-        List<TrafficEntity> trafficEntities = trafficRepository.findBetween(adminId.get().getMemberId(),a,b,c,d);
-        List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(trafficEntities , myTrafficEntities);
-
-
-
-
-
-
-
+        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(loginId, a, b, c, d);
+        List<TrafficEntity> trafficEntities = trafficRepository.findBetween(adminId.get().getMemberId(), a, b, c, d);
+        List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(trafficEntities, myTrafficEntities);
 
 
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
         for (int i = 0; i < trafficIntegratedDTOS.size(); i++) {
             System.out.println(trafficIntegratedDTOS.get(i));
+            trafficIntegratedDTOS.get(i).setNickName(boardService.findById(trafficIntegratedDTOS.get(i).getBoardId()).getMemberNickname());
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
         return trafficIntegratedDTOS;
     }
-
-
-
-
-
 
 
     public List<MyTrafficDTO> findByEmail(String memberEmail) {

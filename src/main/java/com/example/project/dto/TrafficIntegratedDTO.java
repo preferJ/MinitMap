@@ -3,6 +3,7 @@ package com.example.project.dto;
 import com.example.project.entity.MyTrafficEntity;
 import com.example.project.entity.TrafficEntity;
 import com.example.project.entity.TrafficTimeEntity;
+import com.example.project.service.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,9 @@ import java.time.LocalTime;
 public class TrafficIntegratedDTO {
     private Long memberId;
     private Long boardId ; // ck
+
+    private String nickName;
+
     private Long trafficId;
     private Long myTrafficId;
     private String myTrafficName;
@@ -32,6 +36,7 @@ public class TrafficIntegratedDTO {
     private Long setStartTime;
     private Long leftTime;
     private boolean bookMarkCheck; // ck
+
 
 
     //ㅅㅎ 신호등 합친거 메서드

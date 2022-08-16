@@ -2667,16 +2667,16 @@
                         <div>
                             <div>
                                 <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"
-                                       class="timeCheckInputBoxGreen" style="border:0; background-color: whitesmoke; border-radius: 20px; text-align: center"
+                                       class="timeCheckInputBoxGreen" style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center"
                                 >
                             </div>
                             <div>
                                 <input type="text" id="timeCheck2" placeholder="적색불로 바뀐 시간"
-                                       class="timeCheckInputBox" style="border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
+                                       class="timeCheckInputBox" style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
                             </div>
                             <div>
                                 <input type="text" id="timeCheck3" placeholder="청색불로 바뀐 시간"
-                                       class="timeCheckInputBox" style="border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
+                                       class="timeCheckInputBox" style="margin-bottom: 5px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
                             </div>
                         </div>
                     </div>
@@ -2691,27 +2691,27 @@
                         <br/>
                         <div>
                             <input type="text" class="trafficCount" id="trafficName" placeholder="신호등 이름 입력"
-                                   style="border-radius: 20px; border-color: black; text-align: center"
+                                   style="margin-bottom: 8px;border-radius: 20px; border-color: black; text-align: center"
                                    onblur="TrafficSetting();TrafficSetting();checklatlon()">
                         </div>
                         <div>
                         <input type="text" id="greenOnTime" class="trafficCount" placeholder="녹색불 점화 시간"
-                               onblur="TrafficSetting()" style="color: white; border:0; border-radius: 20px; background-color: lawngreen;text-align: center;">
+                               onblur="TrafficSetting()" style="outline-color: #10ad1a;margin-bottom: 8px; border:0; border-radius: 20px; background-color: lawngreen;text-align: center;">
                         </div>
                         <div>
                         <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간"
-                               onblur="TrafficSetting()" style="color:white; border:0; border-radius: 20px; background-color: #f03d3d; text-align: center;">
+                               onblur="TrafficSetting()" style="outline-color: red; border:0; border-radius: 20px; background-color: #f03d3d; text-align: center;">
                         </div>
                     </div>
                     <hr>
                     <h4>적용 시간대</h4>
                     <input type="text" id="startTime" class="trafficCount" placeholder="00:00:00"
-                           style="border:0; background-color: whitesmoke; border-radius: 20px;outline-color:#20c997;text-align: center">
+                           style="border:0; background-color: whitesmoke; border-radius: 20px;outline-color:darkgray;text-align: center">
                     <div style="text-align: center">
                         ||
                     </div>
                     <input type="text" id="endTime" class="trafficCount" placeholder="00:00:00"
-                           style="border:0; background-color: whitesmoke; border-radius: 20px; outline-color:#20c997;text-align: center">
+                           style="border:0; background-color: whitesmoke; border-radius: 20px; outline-color:darkgray;text-align: center">
                     <hr>
                     <form action="/myTraffic/saveTraffic" method="post">
                         <input type="hidden" name="memberId" id="memberId" th:value="${session.loginId}">

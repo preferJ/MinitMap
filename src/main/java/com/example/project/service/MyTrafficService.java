@@ -42,7 +42,7 @@ public class MyTrafficService {
         Optional<BoardEntity> board = boardRepository.findById(id);
         Optional<MemberEntity> byId = memberRepository.findById(loginId);
         // 신호등 저장
-        MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(board.get().getTrafficEntity().getTrafficLat(), board.get().getTrafficEntity().getTrafficLon(), name, byId.get()));
+        MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.toSaveMyTrafficEntity(board.get(), name, byId.get()));
         // 신호등 시간 저장
         List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(board.get().getTrafficEntity());
         for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity) {

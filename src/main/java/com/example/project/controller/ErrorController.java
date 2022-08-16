@@ -55,6 +55,6 @@ public class ErrorController {
         adminHistoryService.save(adminHistoryDTO);
        boardService.updateByBoardHits(boardId);
        errorService.updateManagerCheck(boardId);
-        return "/hss/tapDown";
+        return "/hss/tapHref";
     }
 }

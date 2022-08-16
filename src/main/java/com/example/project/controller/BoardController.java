@@ -277,6 +277,7 @@ public class BoardController {
     @GetMapping("/delete")
     public String delete(@RequestParam("boardId") Long id) {
         boardService.delete(id);
+
         return "redirect:/board";
     }
 
@@ -307,7 +308,7 @@ public class BoardController {
     @GetMapping("/report/{id}")
     // ㅁㅈ / 신고 탭 이동
     public String report(@PathVariable Long id, Model model) {
-        boardRepository.findByBoardId(id);
+        boardService.findByBoardId(id);
         model.addAttribute("boardId", id);
         return "/BoardPages/report";
     }
@@ -319,6 +320,7 @@ public class BoardController {
     }
 
     @GetMapping("/history")
+    // 관리자 모든거 출력 ㅋ
     public String history(Model model){
        List<AdminHistoryDTO> adminHistoryDTOList = adminHistoryService.findAll();
         model.addAttribute("adminList", adminHistoryDTOList);
@@ -331,4 +333,10 @@ public class BoardController {
         return "/AdminPages/likeTraffic";
     }
 
+    @GetMapping("/indexLike")
+    public @ResponseBody String indexLike(@RequestParam("like") Long like, @RequestParam("boardId") Long boardId, HttpSession session) {
+        Long id = (Long) session.getAttribute("loginId");
+        boardService.indexLikeCheck(like, boardId, id);
+        return "ok";
+    }
 }

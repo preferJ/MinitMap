@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ErrorDTO {
     private Long errorId;
+    private String memberEmail;
     private Long trafficId;
     private Long boardId;
     private Long memberId;
@@ -27,6 +28,20 @@ public class ErrorDTO {
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setErrorId(errorEntity.getErrorId());
         errorDTO.setBoardId(errorEntity.getBoardEntity().getBoardId());
+        errorDTO.setMemberId(errorEntity.getMemberEntity().getMemberId());
+        errorDTO.setErrorType(errorEntity.getErrorType());
+        errorDTO.setErrorTitle(errorEntity.getErrorTitle());
+        errorDTO.setErrorContents(errorEntity.getErrorContents());
+        errorDTO.setErrorCreatedTime(errorEntity.getErrorCreatedTime());
+        errorDTO.setManagerCheck(errorEntity.isManagerCheck());
+        errorDTO.setBoardEntity(errorEntity.getBoardEntity());
+        return errorDTO;
+    }
+    public static ErrorDTO toErrorDTOEmail(ErrorEntity errorEntity){
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setErrorId(errorEntity.getErrorId());
+        errorDTO.setBoardId(errorEntity.getBoardEntity().getBoardId());
+        errorDTO.setMemberEmail(errorEntity.getMemberEntity().getMemberEmail());
         errorDTO.setMemberId(errorEntity.getMemberEntity().getMemberId());
         errorDTO.setErrorType(errorEntity.getErrorType());
         errorDTO.setErrorTitle(errorEntity.getErrorTitle());

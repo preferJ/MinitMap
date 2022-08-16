@@ -671,15 +671,15 @@
 // 마크
             let firstTime = (response.trafficApplyStart - response.trafficApplyStart % 10000) / 10000 + ":" + (response.trafficApplyStart % 10000 - response.trafficApplyStart % 100) / 100 + ":" + response.trafficApplyStart % 100;
             let secondTime = (response.trafficApplyEnd - response.trafficApplyEnd % 10000) / 10000 + ":" + (response.trafficApplyEnd % 10000 - response.trafficApplyEnd % 100) / 100 + ":" + response.trafficApplyEnd % 100;
-            let setTime = (response.setStartTime - response.setStartTime % 10000) / 10000 + "시" + (response.setStartTime % 10000 - response.setStartTime % 100) / 100 + "분" + response.setStartTime % 100 +"초";
+            let setTime = (response.setStartTime - response.setStartTime % 10000) / 10000 + "시" + (response.setStartTime % 10000 - response.setStartTime % 100) / 100 + "분" + response.setStartTime % 100 + "초";
 
             let content = "<div class='m-pop' id='labelDiv'>";
-            if (response.trafficId == null){
+            if (response.trafficId == null) {
                 content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.myTrafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>";
-            }else{
+            } else {
                 content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>";
             }
-                content+=
+            content +=
                 "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
                 "<div class='info-box'>" +
                 "<div><span style='font-size: 20px;'>적용시간</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
@@ -701,18 +701,29 @@
             content += "</span>" +
                 "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
                 "등록자: <span target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.memberId + "</span>" +
-                "</span>" ;
-            if (response.boardId != null){
+                "</span>";
+            if (response.boardId != null) {
                 content += "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
-                    "등록글: <a onclick='boardDetail("+ response.boardId +")' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.boardId + "번</a>" +
+                    "등록글: <a onclick='boardDetail(" + response.boardId + ")' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.boardId + "번</a>" +
                     "</span>";
             }
 
 
             content +=
                 "</div>" +
-                "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>" +
-                "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>" +
+                "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>";
+
+            if (response.trafficId == null) {
+                if (response.boardId != null) {
+                    content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
+                }else{
+                    content += "<span style='float: left'><button style='float: left'>감추기</button><br/>";
+                }
+            } else {
+                content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
+            }
+
+            content +=
                 "</div>" +
                 "</div>" +
                 "</div>";
@@ -769,6 +780,30 @@
                 if (onTap == 2) {
                     map.removeListener("click", onClick);
                 }
+            }
+        }
+
+        function like(num) {
+            let loginCheck = [[${session.loginId}]]
+            if (loginCheck != null) {
+                $.ajax({
+                    url:"/board/indexLike?like=1&boardId=" + num,
+                    type:"get"
+                })
+            } else {
+                loginForm();
+            }
+        }
+
+        function dislike(num) {
+            let loginCheck = [[${session.loginId}]]
+            if (loginCheck != null) {
+                $.ajax({
+                    url:"/board/indexLike?like=2&boardId=" + num,
+                    type:"get"
+                })
+            } else {
+                loginForm();
             }
         }
 
@@ -951,7 +986,6 @@
 
 
         }
-
         // 1탭
         function searchButton() {
             var searchKeyword = $('#searchKeyword').val(); // 검색 키워드
@@ -1118,7 +1152,7 @@
             }
         }
 
-        function boardDetail(id){
+        function boardDetail(id) {
             window.open("/board/detail?id=" + id);
         }
 
@@ -2665,7 +2699,7 @@
                 <div class="traffic_information" style="text-align: center">
                     <h3>신호등추가</h3>
                     <hr>
-                    <div style="size: 15px">현재 신호등 상태</div>
+                    <div style="size: 15px"><b>현재 신호등 상태</b></div>
                     <div style="position: center;display: inline-flex;align-items: center;">
                         <div>적신호</div>
                         <div style="margin-top: 20px;">
@@ -2683,22 +2717,22 @@
                         <div>
                             <div>
                                 <input type="text" id="timeCheck1" placeholder="청색불로 바뀐 시간"
-                                       class="timeCheckInputBoxGreen"
+                                       class="timeCheckInputBoxGreen" style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center"
                                 >
                             </div>
                             <div>
                                 <input type="text" id="timeCheck2" placeholder="적색불로 바뀐 시간"
-                                       class="timeCheckInputBox">
+                                       class="timeCheckInputBox" style="margin-bottom: 8px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
                             </div>
                             <div>
                                 <input type="text" id="timeCheck3" placeholder="청색불로 바뀐 시간"
-                                       class="timeCheckInputBox">
+                                       class="timeCheckInputBox" style="margin-bottom: 5px;border:0; background-color: whitesmoke; border-radius: 20px; text-align: center">
                             </div>
                         </div>
                     </div>
                     <div style="display: block">
                         <input type="button" value="시간 기록"
-                               style="outline-color: #0d6efd; width: 190px;height: 100px;margin-top: 5px;position: center;"
+                               style="width: 190px; height: 95px;margin-top: 5px;position: center;" class="btn btn-outline-success"
                                onclick="timeCheck();" id="timeCheckBtn">
                     </div>
                     <hr>
@@ -2707,25 +2741,27 @@
                         <br/>
                         <div>
                             <input type="text" class="trafficCount" id="trafficName" placeholder="신호등 이름 입력"
-                                   style="outline-color:#20c997;;"
+                                   style="margin-bottom: 8px;border-radius: 20px; border-color: black; text-align: center"
                                    onblur="TrafficSetting();TrafficSetting();checklatlon()">
                         </div>
-                        <input type="text" id="greenOnTime" class="trafficCount" placeholder="청색불 점화 시간"
-                               onblur="TrafficSetting()">
-                        <br>
+                        <div>
+                        <input type="text" id="greenOnTime" class="trafficCount" placeholder="녹색불 점화 시간"
+                               onblur="TrafficSetting()" style="outline-color: #10ad1a;margin-bottom: 8px; border:0; border-radius: 20px; background-color: lawngreen;text-align: center;">
+                        </div>
+                        <div>
                         <input type="text" id="redOnTime" class="trafficCount" placeholder="적색불 점화 시간"
-                               onblur="TrafficSetting()">
+                               onblur="TrafficSetting()" style="outline-color: red; border:0; border-radius: 20px; background-color: #f03d3d; text-align: center;">
+                        </div>
                     </div>
                     <hr>
                     <h4>적용 시간대</h4>
-                    <br/>
                     <input type="text" id="startTime" class="trafficCount" placeholder="00:00:00"
-                           style="outline-color:#20c997;text-align: center">
+                           style="border:0; background-color: whitesmoke; border-radius: 20px;outline-color:darkgray;text-align: center">
                     <div style="text-align: center">
                         ||
                     </div>
                     <input type="text" id="endTime" class="trafficCount" placeholder="00:00:00"
-                           style="outline-color:#20c997;text-align: center">
+                           style="border:0; background-color: whitesmoke; border-radius: 20px; outline-color:darkgray;text-align: center">
                     <hr>
                     <form action="/myTraffic/saveTraffic" method="post">
                         <input type="hidden" name="memberId" id="memberId" th:value="${session.loginId}">
@@ -2738,7 +2774,9 @@
                         <input type="hidden" name="greenOn" id="greenOn" value="asd">
                         <input type="hidden" name="redOn" id="redOn" value="asd">
                         <input type="hidden" name="setStartTime" id="setStartTime" value="asd">
-                        <button type="submit" class="btn btn-primary" style="width: 100px">저장</button>
+                        <button type="submit"  class="btn btn-outline-warning" style="width: 190px">저장</button> <br/><br />
+                        <input type="button" onclick="valueReset()"  class="btn btn-outline-primary" style="width: 190px" value="초기화">
+
                     </form>
                 </div>
             </div>
@@ -2751,4 +2789,18 @@
         <i class="fa-solid fa-location-dot fa-stack-1x" id="myPingColor" style="color:red;"></i>
     </span>
 </body>
+<script>
+    function valueReset() {
+        const a1 = document.getElementById("timeCheck1").value = null;
+        const a2 = document.getElementById("timeCheck2").value = null;
+        const a3 = document.getElementById("timeCheck3").value = null;
+        const a4 = document.getElementById("trafficName").value = null;
+        const a5 = document.getElementById("greenOnTime").value = null;
+        const a6 = document.getElementById("redOnTime").value = null;
+        const a7 = document.getElementById("startTime").value = null;
+        const a8 = document.getElementById("endTime").value = null;
+        $("#timeCheckBtn").attr("disabled", false); //설정
+        timeCheckCounrt = 0;
+    }
+</script>
 </html>

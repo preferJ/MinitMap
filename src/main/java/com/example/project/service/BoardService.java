@@ -46,10 +46,13 @@ public class BoardService {
             }
 
             boardEntity = BoardEntity.toBoardTrafficSaveEntity(boardDTO, memberEntity.get(), save);
+            Long boardId = boardRepository.save(boardEntity).getBoardId();
+            save.setBoardId(boardId);
+            trafficRepository.save(save);
         } else {
             boardEntity = BoardEntity.toBoardSaveEntity(boardDTO, memberEntity.get());
+            boardRepository.save(boardEntity);
         }
-        boardRepository.save(boardEntity);
     }
 
     // 이현

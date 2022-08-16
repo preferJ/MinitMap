@@ -664,7 +664,7 @@
         }
 
         function bookMarkAdd(id, ck) {
-        alert("아이디값 :"+ id + "체크 값 : " + ck)
+            alert("아이디값 :" + id + "체크 값 : " + ck)
         }
 
 
@@ -677,28 +677,33 @@
                 labelArray = [];
             }
 // 마크
+            let firstTime = (response.trafficApplyStart - response.trafficApplyStart % 10000) / 10000 + ":" + (response.trafficApplyStart % 10000 - response.trafficApplyStart % 100) / 100 + ":" + response.trafficApplyStart % 100;
+            let secondTime = (response.trafficApplyEnd - response.trafficApplyEnd % 10000) / 10000 + ":" + (response.trafficApplyEnd % 10000 - response.trafficApplyEnd % 100) / 100 + ":" + response.trafficApplyEnd % 100;
+            let setTime = (response.setStartTime - response.setStartTime % 10000) / 10000 + "시" + (response.setStartTime % 10000 - response.setStartTime % 100) / 100 + "분" + response.setStartTime % 100 +"초";
+
             let content = "<div class='m-pop' id='labelDiv'>" +
                 "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>" +
-                "<div>현재 상태<img src='/icon/greenOn.png' style='margin-left: 10px' width='60px' height='60px'></div>" +
                 "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
                 "<div class='info-box'>" +
-                "<div><span style='font-size: 20px;'>Info</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
-                "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p> 1. **시 **분 ~ **시 **분</p>" +
-                "세부내용" +
-                "<span>" + response.leftTime + "</span>";
+                "<div><span style='font-size: 20px;'>적용시간</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
+                "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p>" + firstTime + "~" + secondTime + "</p>" +
+                "Info" +
+                "<p> 기준시 : " + setTime + "</p>" +
+                "<p> 청색 주기 : " + response.greenOn + "초</p>" +
+                "<p> 적색 주기 : " + response.redOn + "초</p>";
 
             if (response.trafficId == null) {
-                content += "<button onclick='bookMarkAdd(" + response.myTrafficId + ","+"0" + ")'>" + "북마크추가버튼" + "</button>";
+                content += "<button onclick='bookMarkAdd(" + response.myTrafficId + "," + "0" + ")'>" + "북마크추가버튼" + "</button>";
 
             } else {
-                content += "<button onclick='bookMarkAdd(" + response.trafficId + ","+"1" + ")'>" + "북마크추가버튼" + "</button>";
+                content += "<button onclick='bookMarkAdd(" + response.trafficId + "," + "1" + ")'>" + "북마크추가버튼" + "</button>";
 
             }
 
 
             content += "</span>" +
                 "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
-                "등록자: <a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>등록자</a>" +
+                "등록자: <span target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.memberId + "</span>" +
                 "</span>" +
                 "</div>" +
                 "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>" +

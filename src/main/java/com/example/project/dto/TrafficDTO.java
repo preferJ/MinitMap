@@ -16,7 +16,7 @@ public class TrafficDTO {
     private Long trafficLike;
     private Long trafficDislike;
     private Long boardId;
-
+    private String trafficName;
 
     public static TrafficDTO toTrafficDTO(TrafficEntity trafficEntity){
         TrafficDTO trafficDTO = new TrafficDTO();
@@ -27,6 +27,7 @@ public class TrafficDTO {
         trafficDTO.setTrafficLike(trafficEntity.getTrafficLike());
         trafficDTO.setTrafficDislike(trafficEntity.getTrafficDislike());
         trafficDTO.setBoardId(trafficEntity.getBoardId());
+        trafficDTO.setTrafficName(trafficEntity.getTrafficName());
         return trafficDTO;
     }
 

@@ -147,9 +147,6 @@ public class MyTrafficService {
         double b = lat + 0.02;
         double c = lng - 0.02;
         double d = lng + 0.02;
-        System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
-        System.out.println("center = " + center + ", loginId = " + loginId);
-        System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
         if (loginId == null) {
             loginId = 999999L;
         }
@@ -158,6 +155,16 @@ public class MyTrafficService {
 
         List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(loginId, a, b, c, d);
         List<TrafficEntity> trafficEntities = trafficRepository.findBetween(adminId.get().getMemberId(), a, b, c, d);
+
+        // 위도 경도 겹치면 어드민 날리기
+        for (TrafficEntity trafficEntity : trafficEntities){
+            for (MyTrafficEntity myTrafficEntity : myTrafficEntities){
+                if (trafficEntity.getTrafficLat() == myTrafficEntity.getMyTrafficLat() && trafficEntity.getTrafficLon() == myTrafficEntity.getMyTrafficLon()){
+                    trafficEntities.remove(trafficEntity);
+                }
+            }
+        }
+
         List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(trafficEntities, myTrafficEntities);
 
 

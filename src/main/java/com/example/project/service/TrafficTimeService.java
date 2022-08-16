@@ -109,8 +109,7 @@ public class TrafficTimeService {
     @Transactional
     public List<TrafficIntegratedDTO> findTime(List<TrafficEntity> trafficEntities, List<MyTrafficEntity> myTrafficEntities) {
         LocalTime now = LocalTime.now();
-//        Long nowTime = now.getHour()*10000l + now.getMinute() * 100l + now.getSecond();  // 시간을 Long 타입으로 변환
-        Long nowTime =  6000l;
+        Long nowTime = now.getHour()*10000l + now.getMinute() * 100l + now.getSecond();  // 시간을 Long 타입으로 변환
 
         List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
         // 트래픽리스트

@@ -21,7 +21,7 @@ public class LikeCheckEntity {
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardId", nullable = false)
+    @JoinColumn(name = "boardId")
     private BoardEntity boardEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,6 +37,14 @@ public class LikeCheckEntity {
         likeCheckEntity.setLikeCheck(check);
         likeCheckEntity.setMemberEntity(memberEntity);
         likeCheckEntity.setBoardEntity(boardEntity);
+        return likeCheckEntity;
+    }
+
+    public static LikeCheckEntity toLikeCheckTrafficSaveEntity(boolean check, MemberEntity memberEntity, TrafficEntity trafficEntity){
+        LikeCheckEntity likeCheckEntity = new LikeCheckEntity();
+        likeCheckEntity.setLikeCheck(check);
+        likeCheckEntity.setMemberEntity(memberEntity);
+        likeCheckEntity.setTrafficEntity(trafficEntity);
         return likeCheckEntity;
     }
     public static LikeCheckEntity toLikeCheckSaveEntity1(LikeCheckDTO likeCheckDTO, MemberEntity memberEntity, BoardEntity boardEntity, TrafficEntity trafficEntity){

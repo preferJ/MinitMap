@@ -87,7 +87,9 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body onload="adminTraffic();">
-<div style="position: absolute;bottom: 100px;right: 100px;width: 60px;height: 60px;border-radius: 30px;background-color: #464646;"><p><span style="padding: 15px;text-align: center;display: block;color: white;" onclick="location.href='/Main'"><i class="fa-solid fa-map fa-2x"></i></span></p></div>
+<div style="position: absolute;bottom: 100px;right: 100px;width: 60px;height: 60px;border-radius: 30px;background-color: #464646;">
+    <p><span style="padding: 15px;text-align: center;display: block;color: white;" onclick="location.href='/Main'"><i
+            class="fa-solid fa-map fa-2x"></i></span></p></div>
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/board">MinitMap</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
@@ -225,7 +227,10 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">관리자 신호 관리</h1>
-                <span><input style="text-align: right" type="button" onclick="" value="신고신호보기"> <input type="button" style="text-align: right"  onclick="saveTraffic()" value="신호추가"></span>
+                <span><input style="text-align: right" type="button" onclick="" value="신고신호보기"> <input type="button"
+                                                                                                       style="text-align: right"
+                                                                                                       onclick="saveTraffic()"
+                                                                                                       value="신호추가"></span>
             </div>
 
             <form action="/traffic/adminSave" method="get">
@@ -413,6 +418,7 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
+                    "                        <th scope=\"col\">Like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">조회</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
@@ -428,6 +434,7 @@
                     output += "<td>" + result[i].trafficId + "</td>";
                     output += "<td>" + result[i].trafficLat + "</td>";
                     output += "<td>" + result[i].trafficLon + "</td>";
+                    output += "<td>" + result[i].trafficLike + "</td>";
                     output += "<td>" + result[i].trafficDislike + "</td>";
                     output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='조회'></td>";
                     output += "<td><input type='button' onclick='event.stopPropagation();deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
@@ -444,6 +451,7 @@
                         dataType: "json",
                         success: function (res) {
                             output += "                    <tr style='display: none;' id='timeTh" + result[i].trafficId + "' class='timeTh" + result[i].trafficId + "'>\n" +
+                                "                        <th scope=\"col\">번호</th>\n" +
                                 "                        <th scope=\"col\">녹색</th>\n" +
                                 "                        <th scope=\"col\">적색</th>\n" +
                                 "                        <th scope=\"col\">기준시간</th>\n" +
@@ -452,15 +460,16 @@
                                 "                        <th scope=\"col\">종료시간</th>\n" +
                                 "                    </tr>\n";
                             for (let x = 0; x < res.length; x++) {
-                                    output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
-                                    output += "<td style='display: none'><input name='trafficTimeId' type='hidden' value='" + res[x].trafficTimeId + "'></td>";
-                                    output += "<td>" + res[x].greenOn + "</td>";
-                                    output += "<td>" + res[x].redOn + "</td>";
-                                    output += "<td>" + res[x].setStartTime + "</td>";
-                                    output += "<td>" + res[x].startType + "</td>";
-                                    output += "<td>" + res[x].trafficApplyStart + "</td>";
-                                    output += "<td>" + res[x].trafficApplyEnd + "</td>";
-                                    output += "</tr>";
+                                output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
+                                output += "<td style='display: none'><input name='trafficTimeId' type='hidden' value='" + res[x].trafficTimeId + "'></td>";
+                                output += "<td>" + res[x].trafficTimeId + "</td>";
+                                output += "<td>" + res[x].greenOn + "</td>";
+                                output += "<td>" + res[x].redOn + "</td>";
+                                output += "<td>" + res[x].setStartTime + "</td>";
+                                output += "<td>" + res[x].startType + "</td>";
+                                output += "<td>" + res[x].trafficApplyStart + "</td>";
+                                output += "<td>" + res[x].trafficApplyEnd + "</td>";
+                                output += "</tr>";
 
                             }
                         }
@@ -478,8 +487,8 @@
             url: "/traffic/adminLike",
             type: "get",
             dataType: "json",
-            data:{
-              "num":num
+            data: {
+                "num": num
             },
             success: function (result) {
                 let output = "<table class=\"table table-sm\" style=\"table-layout:fixed\">\n" +
@@ -488,6 +497,7 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
+                    "                        <th scope=\"col\">Like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">조회</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
@@ -503,6 +513,7 @@
                     output += "<td>" + result[i].trafficId + "</td>";
                     output += "<td>" + result[i].trafficLat + "</td>";
                     output += "<td>" + result[i].trafficLon + "</td>";
+                    output += "<td>" + result[i].trafficLike + "</td>";
                     output += "<td>" + result[i].trafficDislike + "</td>";
                     output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='조회'></td>";
                     output += "<td><input type='button' onclick='event.stopPropagation();deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
@@ -529,6 +540,7 @@
                             for (let x = 0; x < res.length; x++) {
                                 output += "<tr style='display: none' class='timeTd" + result[i].trafficId + "'>";
                                 output += "<td style='display: none'><input name='trafficTimeId' type='hidden' value='" + res[x].trafficTimeId + "'></td>";
+                                output += "<td>" + res[x].trafficTimeId + "</td>";
                                 output += "<td>" + res[x].greenOn + "</td>";
                                 output += "<td>" + res[x].redOn + "</td>";
                                 output += "<td>" + res[x].setStartTime + "</td>";
@@ -553,8 +565,8 @@
             url: "/traffic/adminDislike",
             type: "get",
             dataType: "json",
-            data:{
-                "num":num
+            data: {
+                "num": num
             },
             success: function (result) {
                 let output = "<table class=\"table table-sm\" style=\"table-layout:fixed\">\n" +
@@ -563,6 +575,7 @@
                     "                        <th scope=\"col\">신호번호</th>\n" +
                     "                        <th scope=\"col\">위도</th>\n" +
                     "                        <th scope=\"col\">경도</th>\n" +
+                    "                        <th scope=\"col\">Like <i onclick='upAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='upAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">disLike <i onclick='downAdminTraffic(1)' class='fa-solid fa-arrow-up'> <i onclick='downAdminTraffic(2)' class='fa-solid fa-arrow-down'></th>\n" +
                     "                        <th scope=\"col\">조회</th>\n" +
                     "                        <th scope=\"col\">삭제</th>\n" +
@@ -578,6 +591,7 @@
                     output += "<td>" + result[i].trafficId + "</td>";
                     output += "<td>" + result[i].trafficLat + "</td>";
                     output += "<td>" + result[i].trafficLon + "</td>";
+                    output += "<td>" + result[i].trafficLike + "</td>";
                     output += "<td>" + result[i].trafficDislike + "</td>";
                     output += "<td><input type='button' onclick='updateAdmin(" + result[i].trafficId + ")' value='조회'></td>";
                     output += "<td><input type='button' onclick='event.stopPropagation();deleteAdmin(" + result[i].trafficId + ")' value='삭제'></td>";
@@ -594,6 +608,7 @@
                         dataType: "json",
                         success: function (res) {
                             output += "                    <tr style='display: none;' id='timeTh" + result[i].trafficId + "' class='timeTh" + result[i].trafficId + "'>\n" +
+                                "                        <th scope=\"col\">신호번호</th>\n" +
                                 "                        <th scope=\"col\">녹색</th>\n" +
                                 "                        <th scope=\"col\">적색</th>\n" +
                                 "                        <th scope=\"col\">기준시간</th>\n" +
@@ -629,21 +644,21 @@
         if (th.style.display == "none") {
             th.style.display = "table-row";
             th.style.backgroundColor = "#dfc2c4";
-            document.getElementsByClassName("timeTd"+id)[0].style.display = "table-row";
-            document.getElementsByClassName("timeTd"+id)[0].style.backgroundColor = "#dfc2c4";
-            document.getElementsByClassName("timeTd"+id)[1].style.display = "table-row";
-            document.getElementsByClassName("timeTd"+id)[1].style.backgroundColor = "#dfc2c4";
-            document.getElementsByClassName("timeTd"+id)[2].style.display = "table-row";
-            document.getElementsByClassName("timeTd"+id)[2].style.backgroundColor = "#dfc2c4";
+            document.getElementsByClassName("timeTd" + id)[0].style.display = "table-row";
+            document.getElementsByClassName("timeTd" + id)[0].style.backgroundColor = "#dfc2c4";
+            document.getElementsByClassName("timeTd" + id)[1].style.display = "table-row";
+            document.getElementsByClassName("timeTd" + id)[1].style.backgroundColor = "#dfc2c4";
+            document.getElementsByClassName("timeTd" + id)[2].style.display = "table-row";
+            document.getElementsByClassName("timeTd" + id)[2].style.backgroundColor = "#dfc2c4";
         } else {
             th.style.display = "none";
-            document.getElementsByClassName("timeTd"+id)[0].style.display = "none";
-            document.getElementsByClassName("timeTd"+id)[1].style.display = "none";
-            document.getElementsByClassName("timeTd"+id)[2].style.display = "none";
+            document.getElementsByClassName("timeTd" + id)[0].style.display = "none";
+            document.getElementsByClassName("timeTd" + id)[1].style.display = "none";
+            document.getElementsByClassName("timeTd" + id)[2].style.display = "none";
         }
     }
 
-    function deleteAdmin(id){
+    function deleteAdmin(id) {
         location.href = "/traffic/adminDelete?id=" + id;
     }
 </script>

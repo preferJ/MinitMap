@@ -727,7 +727,7 @@
             content +=
                 "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
                 "<div class='info-box'>" +
-                "<div><span style='font-size: 20px;'>적용시간</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
+                "<div><span style='font-size: 20px;'>적용시간</span><span style='margin-left: 15px'></span></div>" +
                 "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p>" + firstTime + "~" + secondTime + "</p>" +
                 "Info" +
                 "<p> 기준시 : " + setTime + "</p>" +
@@ -765,7 +765,7 @@
                     content += "<span style='float: left'><br/>";
                 }
             } else {
-                content += "<span style='float: left'><br/><button onclick='adminReport("+response.trafficId+")' style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
+                content += "<span style='float: left'><br/><button onclick='adminReport("+response.trafficId+")' style='float: left'>오류신고</button></span><span style='float: right'><button onclick='adminLike( 1 , "+response.trafficId+")' style='float: right'>맞아용</button><br /><button onclick='adminLike( 2 , "+response.trafficId +")' style='float: right'>안맞아용</button></span>";
             }
 
             content +=
@@ -865,6 +865,22 @@
                     getInboundTraffic();
                 }
             })
+        }
+        function adminLike(num , id){
+            let loginCheck = [[${session.loginId}]]
+            if (loginCheck != null) {
+                $.ajax({
+                    url: "/traffic/like?id="+id+"&num=" + num ,
+                    type: "get"
+                })
+                if (num == 1){
+                    alert("맞아요~")
+                }else{
+                    alert("안맞아용~")
+                }
+            } else {
+                loginForm();
+            }
         }
         function like(num) {
             let loginCheck = [[${session.loginId}]]

@@ -1,11 +1,9 @@
 package com.example.project.service;
 
 import com.example.project.dto.TrafficDTO;
-import com.example.project.entity.BoardEntity;
-import com.example.project.entity.MemberEntity;
-import com.example.project.entity.MyTrafficEntity;
-import com.example.project.entity.TrafficEntity;
+import com.example.project.entity.*;
 import com.example.project.repository.BoardRepository;
+import com.example.project.repository.LikeCheckRepository;
 import com.example.project.repository.MemberRepository;
 import com.example.project.repository.TrafficRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +20,7 @@ public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final LikeCheckRepository likeCheckRepository;
 
 
     public Long save(TrafficDTO trafficDTO, Long memberId) {
@@ -134,5 +133,35 @@ public class TrafficService {
         }
 
         return lon;
+    }
+
+    public void like(Long id, Long num , Long loginId) {
+        TrafficEntity trafficEntity = trafficRepository.findById(id).get();
+        MemberEntity memberEntity = memberRepository.findById(loginId).get();
+        LikeCheckEntity likeCheckEntity = likeCheckRepository.findByTrafficEntityAndMemberEntity(trafficEntity, memberEntity);
+        if (likeCheckEntity == null){
+            if (num == 1){
+                likeCheckRepository.save(LikeCheckEntity.toLikeCheckTrafficSaveEntity(true,memberEntity,trafficEntity));
+                trafficEntity.setTrafficLike(trafficEntity.getTrafficLike()+1l);
+            }else{
+                likeCheckRepository.save(LikeCheckEntity.toLikeCheckTrafficSaveEntity(false,memberEntity,trafficEntity));
+                trafficEntity.setTrafficDislike(trafficEntity.getTrafficDislike()+1l);
+            }
+        }else if(likeCheckEntity.isLikeCheck()){
+            if (num == 2){
+                likeCheckEntity.setLikeCheck(false);
+                likeCheckRepository.save(likeCheckEntity);
+                trafficEntity.setTrafficLike(trafficEntity.getTrafficLike()-1l);
+                trafficEntity.setTrafficDislike(trafficEntity.getTrafficDislike()+1l);
+            }
+        }else{
+            if (num == 1){
+                likeCheckEntity.setLikeCheck(true);
+                likeCheckRepository.save(likeCheckEntity);
+                trafficEntity.setTrafficLike(trafficEntity.getTrafficLike()+1l);
+                trafficEntity.setTrafficDislike(trafficEntity.getTrafficDislike()-1l);
+            }
+        }
+        trafficRepository.save(trafficEntity);
     }
 }

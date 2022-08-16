@@ -82,4 +82,11 @@ public class TrafficController {
         model.addAttribute("trafficTimeList",trafficTimeDTOS);
         return "/BoardPages/trafficMap";
     }
+
+    @GetMapping("/like")
+    public @ResponseBody String like(@RequestParam("id") Long id , @RequestParam("num") Long num,HttpSession session){
+        Long loginId = (Long) session.getAttribute("loginId");
+        trafficService.like(id,num,loginId);
+        return "ok";
+    }
 }

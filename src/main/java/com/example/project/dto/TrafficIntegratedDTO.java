@@ -13,10 +13,12 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrafficIntegratedDTO {
-    private Long trafficId;
     private Long memberId;
+    private Long boardId ; // ck
+    private Long trafficId;
     private Long myTrafficId;
     private String myTrafficName;
+    private String trafficName; // ck
     private Double trafficLat;
     private Double trafficLon;
     private Long trafficLike;
@@ -29,6 +31,7 @@ public class TrafficIntegratedDTO {
     private Long redOn;
     private Long setStartTime;
     private Long leftTime;
+    private boolean bookMarkCheck; // ck
 
 
     //ㅅㅎ 신호등 합친거 메서드

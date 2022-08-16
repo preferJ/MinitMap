@@ -24,10 +24,19 @@ public interface TrafficTimeRepository extends JpaRepository<TrafficTimeEntity, 
     @Transactional
     int findByTimeCheck(@Param(value = "id") TrafficEntity trafficEntity, @Param(value = "time1") Long time1);
 
+    @Query(value = "select * from traffic_time where myTraffic_id = :id and traffic_apply_end > :time1 order by ABS(traffic_apply_start - :time1) limit 1", nativeQuery = true)
+    @Transactional
+    int findByTimeCheckMy(@Param(value = "id") MyTrafficEntity myTrafficEntity, @Param(value = "time1") Long time1);
+
 
     @Query(value = "select * from traffic_time where traffic_id = :id and :time1 between traffic_apply_start and traffic_apply_end", nativeQuery = true)
     @Transactional
     int findByBetween(@Param(value = "id") TrafficEntity trafficEntity, @Param(value = "time1") Long time1);
+
+
+    @Query(value = "select * from traffic_time where myTraffic_id = :id and :time1 between traffic_apply_start and traffic_apply_end", nativeQuery = true)
+    @Transactional
+    int findByBetweenMY(@Param(value = "id") MyTrafficEntity myTrafficEntity, @Param(value = "time1") Long time1);
 
     @Query("select DISTINCT (t.trafficEntity) from TrafficTimeEntity t")
     List<TrafficEntity> findTrafficDistinct();

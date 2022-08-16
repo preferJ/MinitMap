@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -18,7 +19,7 @@ public class BookMarkController {
     private final BookMarkService bookMarkService;
 
     @PostMapping("/list")
-    public List<BookMarkDTO> findAll(HttpSession session){
+    public List<BookMarkDTO> findAll(HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginId");
         List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
         return bookMarkDTOList;
@@ -28,8 +29,15 @@ public class BookMarkController {
 
 
     @PostMapping("/save")
-    public void save(@ModelAttribute BookMarkDTO bookMarkDTO) {
-         bookMarkService.save(bookMarkDTO);
+    public void save(@RequestParam("trafficId") Long trafficId,
+                     @RequestParam("ck") Long ck, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("LoginId");
+        if (ck == 1) {
+            bookMarkService.saveAdminT(memberId , trafficId);
+        }else {
+            bookMarkService.saveMyT(memberId , trafficId);
+
+        }
     }
 
     @PostMapping("/delete")

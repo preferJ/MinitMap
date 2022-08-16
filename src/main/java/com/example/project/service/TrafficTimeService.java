@@ -2,6 +2,7 @@ package com.example.project.service;
 
 import com.example.project.dto.Traffic2DTO;
 import com.example.project.dto.Traffic3DTO;
+import com.example.project.dto.TrafficIntegratedDTO;
 import com.example.project.dto.TrafficTimeDTO;
 import com.example.project.entity.MyTrafficEntity;
 import com.example.project.entity.TrafficEntity;
@@ -106,23 +107,19 @@ public class TrafficTimeService {
     }
 
     @Transactional
-    public List<TrafficTimeDTO> findTime() {
-        // 중복제거 신호리스트
-        List<TrafficEntity> trafficDistinct = trafficTimeRepository.findTrafficDistinct();
-        // 중복제거 마이트래픽리스트
-        List<MyTrafficEntity> myTrafficDistinct = trafficTimeRepository.findMyTrafficDistinct();
+    public List<TrafficIntegratedDTO> findTime(List<TrafficEntity> trafficEntities, List<MyTrafficEntity> myTrafficEntities) {
         LocalTime now = LocalTime.now();
 //        Long nowTime = now.getHour()*10000l + now.getMinute() * 100l + now.getSecond();  // 시간을 Long 타입으로 변환
         Long nowTime =  6000l;
 
-        List<TrafficTimeDTO> trafficTimeDTOS = new ArrayList<>();
+        List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
         // 트래픽리스트
-        for (TrafficEntity trafficEntity : trafficDistinct){
+        for (TrafficEntity trafficEntity : trafficEntities){
             List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(trafficEntity);
             // 결국 얻게되는 시간
         // 신호가 1개면 그냥 걔만가져감
         if (byTrafficEntity.size() <=1){
-            trafficTimeDTOS.add(TrafficTimeDTO.toTrafficTimeDTO(byTrafficEntity.get(0)));
+            trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(trafficEntity,byTrafficEntity.get(0)));
         //  신호가 2개 이상이면 구분해서 가져감
         }else{
             int timeCheck = -1;
@@ -136,11 +133,32 @@ public class TrafficTimeService {
                 timeCheck = trafficTimeRepository.findByTimeCheck(trafficEntity, nowTime);
             }
             TrafficTimeEntity trafficTimeEntity = trafficTimeRepository.findById((long) timeCheck).get();
-            trafficTimeDTOS.add(TrafficTimeDTO.toTrafficTimeDTO(trafficTimeEntity));
+            trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(trafficEntity,trafficTimeEntity));
         }}
 
-        // 마이트래픽리스트
-        System.out.println("@@@@@@@@@@@@@@@@@@@@ : " + trafficTimeDTOS);
-        return trafficTimeDTOS;
+
+        for (MyTrafficEntity trafficEntity : myTrafficEntities){
+            List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(trafficEntity);
+            // 결국 얻게되는 시간
+            // 신호가 1개면 그냥 걔만가져감
+            if (byTrafficEntity.size() <=1){
+                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(trafficEntity,byTrafficEntity.get(0)));
+                //  신호가 2개 이상이면 구분해서 가져감
+            }else{
+                int timeCheck = -1;
+                // 사이값이 아니면 리턴 없어서 오류뜨니 트라이캐치
+                try{
+                    timeCheck = trafficTimeRepository.findByBetweenMY(trafficEntity,nowTime);
+                }catch (Exception e){
+
+                }
+                if (timeCheck == -1){
+                    timeCheck = trafficTimeRepository.findByTimeCheckMy(trafficEntity, nowTime);
+                }
+                TrafficTimeEntity trafficTimeEntity = trafficTimeRepository.findById((long) timeCheck).get();
+                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(trafficEntity,trafficTimeEntity));
+            }}
+
+        return trafficIntegratedDTOList;
     }
 }

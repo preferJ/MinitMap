@@ -277,6 +277,7 @@ public class BoardController {
     @GetMapping("/delete")
     public String delete(@RequestParam("boardId") Long id) {
         boardService.delete(id);
+
         return "redirect:/board";
     }
 
@@ -331,4 +332,10 @@ public class BoardController {
         return "/AdminPages/likeTraffic";
     }
 
+    @GetMapping("/indexLike")
+    public @ResponseBody String indexLike(@RequestParam("like") Long like, @RequestParam("boardId") Long boardId, HttpSession session) {
+        Long id = (Long) session.getAttribute("loginId");
+        boardService.indexLikeCheck(like, boardId, id);
+        return "ok";
+    }
 }

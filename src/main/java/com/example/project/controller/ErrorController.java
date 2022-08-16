@@ -25,8 +25,10 @@ public class ErrorController {
     // ㅁㅈ / 신고 저장
     public String reportSave(@ModelAttribute ErrorDTO errorDTO) {
         errorService.save(errorDTO);
+        System.out.println("errorDTO = " + errorDTO);
         return "/hss/tapDown";
     }
+
     @GetMapping("/findAll")
     // ㅁㅈ // 신고받은 게시물 중복 값 없이 출력
     public String findAll(Model model){

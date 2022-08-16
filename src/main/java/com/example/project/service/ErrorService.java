@@ -37,6 +37,9 @@ public class ErrorService {
                 if (optionalBoardEntity.isPresent()) {
                     BoardEntity boardEntity = optionalBoardEntity.get();
                     errorRepository.save(ErrorEntity.toBoardErrorSaveEntity(errorDTO, boardEntity, memberEntity));
+                    BoardEntity boardEntity1 = boardRepository.findById(errorDTO.getBoardId()).get();
+                    boardEntity.setBoardReport(boardEntity1.getBoardReport() + 1l);
+                    boardRepository.save(boardEntity1);
                 }
             } else {
                 Optional<TrafficEntity> optionalTrafficEntity = trafficRepository.findById(errorDTO.getTrafficId());
@@ -45,10 +48,8 @@ public class ErrorService {
                     errorRepository.save(ErrorEntity.toTrafficErrorSaveEntity(errorDTO, trafficEntity, memberEntity));
                 }
             }
+
         }
-        BoardEntity boardEntity = boardRepository.findById(errorDTO.getBoardId()).get();
-        boardEntity.setBoardReport(boardEntity.getBoardReport()+1l);
-        boardRepository.save(boardEntity);
 
     }
 
@@ -56,7 +57,7 @@ public class ErrorService {
         // 신고를 받은 글 출력 메서드
         List<BoardEntity> boardEntities = errorRepository.findDistinct();
         List<BoardDTO> boardDTOS = new ArrayList<>();
-        for (BoardEntity boardEntity : boardEntities){
+        for (BoardEntity boardEntity : boardEntities) {
             boardDTOS.add(BoardDTO.toBoardDTO(boardEntity));
         }
         return boardDTOS;
@@ -64,18 +65,18 @@ public class ErrorService {
 
     public List<ErrorDTO> findAllByBoardId(Long boardId) {
         // 해당 글의 신고 출력 메서드
-       List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
-       List<ErrorDTO> errorDTOList = new ArrayList<>();
-       for(ErrorEntity error: errorEntityList){
-           errorDTOList.add(ErrorDTO.toErrorDTOEmail(error));
-       }
-       return errorDTOList;
+        List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
+        List<ErrorDTO> errorDTOList = new ArrayList<>();
+        for (ErrorEntity error : errorEntityList) {
+            errorDTOList.add(ErrorDTO.toErrorDTOEmail(error));
+        }
+        return errorDTOList;
     }
 
     public void updateManagerCheck(Long boardId) {
         BoardEntity boardEntity = boardRepository.findById(boardId).get();
         List<ErrorEntity> byBoardEntity = errorRepository.findByBoardEntity(boardEntity);
-        for (ErrorEntity error : byBoardEntity){
+        for (ErrorEntity error : byBoardEntity) {
             error.setManagerCheck(true);
             errorRepository.save(error);
         }

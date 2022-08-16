@@ -313,7 +313,7 @@ public class BoardController {
         return "/BoardPages/report";
     }
 
-    @GetMapping("/report/{id}")
+    @GetMapping("/adminReport/{id}")
     // ㅁㅈ / 신고 탭 이동
     public String adminReport(@PathVariable Long id, Model model) {
         model.addAttribute("id", id);

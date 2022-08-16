@@ -30,12 +30,22 @@ public class BookMarkController {
     public void save(@RequestParam("trafficId") Long trafficId,
                      @RequestParam("ck") Long ck, HttpSession session) {
         System.out.println("BookMarkController.save");
-        Long memberId = (Long) session.getAttribute("LoginId");
-        if (ck == 1) {
-//            bookMarkService.saveAdminT(memberId , trafficId);
-        }else {
-//            bookMarkService.saveMyT(memberId , trafficId);
+        Long memberId = (Long) session.getAttribute("loginId");
+        System.out.println(memberId);
 
+        if (memberId != null) {
+            BookMarkDTO bookMarkDTO = new BookMarkDTO();
+            bookMarkDTO.setMemberId(memberId);
+
+            if (ck == 1) {
+                bookMarkDTO.setTrafficId(trafficId);
+            } else {
+                bookMarkDTO.setMyTrafficId(trafficId);
+            }
+            bookMarkService.save(bookMarkDTO);
+
+            List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
+            System.out.println(bookMarkDTOList);
         }
     }
 

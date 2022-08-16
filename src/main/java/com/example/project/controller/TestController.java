@@ -322,18 +322,18 @@ public class TestController {
     }
 
 
-    @GetMapping("/timeTest")
-    public String timeTest(){
-        myTrafficService.getInBound();
-//        List<TrafficTimeDTO> time = trafficTimeService.findTime();
-//        System.out.println("trafficTimeDTO = " + time);
-        return "/index";
+//    @GetMapping("/timeTest")
+//    public String timeTest(){
+//        myTrafficService.getInBound();
+////        List<TrafficTimeDTO> time = trafficTimeService.findTime();
+////        System.out.println("trafficTimeDTO = " + time);
+//        return "/index";
+
+//    @GetMapping("/testtesttest")
+//    public @ResponseBody List<BoardEntity> tesetBoard(){
+//        return boardRepository.findAll();
+//    }
+
+
     }
 
-    @GetMapping("/testtesttest")
-    public @ResponseBody List<BoardEntity> tesetBoard(){
-        return boardRepository.findAll();
-    }
-
-
-}

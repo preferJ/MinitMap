@@ -150,8 +150,10 @@ public class MyTrafficService {
             loginId = 999999L;
         }
 
-        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(a,b,c,d);
-        List<TrafficEntity> trafficEntities = trafficRepository.findBetween(a,b,c,d);
+        Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
+
+        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(loginId,a,b,c,d);
+        List<TrafficEntity> trafficEntities = trafficRepository.findBetween(adminId.get().getMemberId(),a,b,c,d);
         List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(trafficEntities , myTrafficEntities);
 
 
@@ -215,23 +217,23 @@ public class MyTrafficService {
         myTrafficRepository.save(myTrafficEntity);
     }
 
-
-    public void getInBound() {
-        double lat = 1;
-        double lng = 2;
-        double a = lat - 0.02;
-        double b = lat + 0.02;
-        double c = lng - 0.02;
-        double d = lng + 0.02;
-
-        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(a,b,c,d);
-        List<MyTrafficDTO> myTrafficDTOS = new ArrayList<>();
-        for (MyTrafficEntity myTrafficEntity : myTrafficEntities){
-            myTrafficDTOS.add(MyTrafficDTO.toSaveMyTrafficDTO(myTrafficEntity));
-        }
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$ : "  + myTrafficDTOS );
-
-//        이거 두개 만드셈
-
-    }
+//
+//    public void getInBound() {
+//        double lat = 1;
+//        double lng = 2;
+//        double a = lat - 0.02;
+//        double b = lat + 0.02;
+//        double c = lng - 0.02;
+//        double d = lng + 0.02;
+//
+//        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(a,b,c,d);
+//        List<MyTrafficDTO> myTrafficDTOS = new ArrayList<>();
+//        for (MyTrafficEntity myTrafficEntity : myTrafficEntities){
+//            myTrafficDTOS.add(MyTrafficDTO.toSaveMyTrafficDTO(myTrafficEntity));
+//        }
+//        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$ : "  + myTrafficDTOS );
+//
+////        이거 두개 만드셈
+//
+//    }
 }

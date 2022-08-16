@@ -26,6 +26,8 @@ public class MyTrafficService {
 
     private final BoardService boardService;
 
+    private final MemberService memberService;
+
     //이현 중복신호등 체크
     public String saveCheck(Long id, Long loginId) {
         String check = "ok";
@@ -162,7 +164,14 @@ public class MyTrafficService {
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
         for (int i = 0; i < trafficIntegratedDTOS.size(); i++) {
             System.out.println(trafficIntegratedDTOS.get(i));
-            trafficIntegratedDTOS.get(i).setNickName(boardService.findById(trafficIntegratedDTOS.get(i).getBoardId()).getMemberNickname());
+            Long boardId = trafficIntegratedDTOS.get(i).getBoardId();
+            if (boardId != null) {
+                BoardDTO boardDTO = boardService.findByBoardId(boardId);
+                Long memberId = boardDTO.getMemberId();
+                MemberDTO memberDTO = memberService.findById(memberId);
+                String nickName = memberDTO.getMemberNickname();
+                trafficIntegratedDTOS.get(i).setNickName(nickName);
+            }
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 

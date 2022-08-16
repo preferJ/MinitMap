@@ -217,49 +217,22 @@
 
         //ㅅㅎ 북마크 신호등 가져오기
         function bookMarkTraffic() {
+            let bookMarkTraffic = document.getElementById("bookMarkTraffic")
             $.ajax({
                 url: "/bookMark/list",
                 type: "post",
                 dataType: "json",
-                success: function (result) {
-                    let a = "<table>";
-                    for (let i in result) {
+                    success: function (response) { // 결과 성공 콜백함수
+                    console.log(response)
 
-                        a += "<tr class='bookMarkList'" + ")'>";
-                        a += "<td>" + result.toString()
+                    },
+                    error:
 
-
-                    }
-                    a += "</table>";
-
-
-                    myPlacesList = result;
-                    let output = "<table style=\"display: inline\" id=\"mypTap\">";
-                    for (let i in result) {
-                        output += "<tr class='myPlaceTap' onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
-                        output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
-                        output += "</td>" + "</tr>";
-                        output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace" + result[i].myPlaceId + "'>";
-                        output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ");tap2();' value='출발지'></td>";
-                        output += "<td><input type='button' onclick='endMyPlace(" + result[i].myPlaceId + ")tap2();' value='도착지'></td>";
-                        output += "</tr>";
-                    }
-                    output += "</table>";
-                    document.getElementById("myPlaceList").innerHTML = output
-                    output = "<table style=\"display: inline\" id=\"mypTap2\">";
-                    for (let i in result) {
-                        output += "<tr class='myPlaceTap' onclick='myPlaceClick2(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
-                        output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
-                        output += "</td>" + "</tr>";
-                        output += "<tr style='margin-bottom: 5px;display: none;' id='myPlace2" + result[i].myPlaceId + "'>";
-                        output += "<td><input type='button' onclick='startMyPlace(" + result[i].myPlaceId + ")' value='출발지'></td>";
-                        output += "<td><input type='button' onclick='endMyPlace(" + result[i].myPlaceId + ")' value='도착지'></td>";
-                        output += "</tr>";
-                    }
-                    output += "</table>";
-                    document.getElementById("myPlaceList2").innerHTML = output
+                        function (request, status, error) { // 결과 에러 콜백함수
+                            console.log(error)
+                        }
                 }
-            })
+            )
         }
 
         // ㅅㅎ
@@ -973,6 +946,8 @@
             }
             getInboundTraffic();
             map.addListener("dragend", onDragend); // 지도 드래그 끝났을 때, 이벤트 리스너 등록.
+
+            // bookMarkTraffic() // 북마크 가져오기
 
 
         }
@@ -2581,8 +2556,7 @@
                             <hr>
                             <div>
                                 <b>자주보는 신호등</b> <br>
-                                <input type="text" th:value="11"> <br>
-                                <input type="text" th:value="11">
+                              <div id="bookMarkTraffic"></div>
                             </div>
                             <hr>
                             <div th:if="${session.loginEmail.toString().equals('admin')}">

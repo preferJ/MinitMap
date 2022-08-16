@@ -16,6 +16,9 @@ public interface MyTrafficRepository extends JpaRepository<MyTrafficEntity,Long>
 
     List<MyTrafficEntity> findByMemberEntityOrderByMyTrafficOrderNumber(MemberEntity memberEntity);
 
-    @Query("select m from MyTrafficEntity m where m.myTrafficLat between :a and :b and m.myTrafficLon between :c and :d")
-    List<MyTrafficEntity> findBetween(Double a , Double b , Double c , Double d);
+
+    @Query("select m from MyTrafficEntity m where m.memberEntity.memberId = :memberId and  m.myTrafficLat between :a and :b and m.myTrafficLon between :c and :d")
+    List<MyTrafficEntity> findBetween(Long memberId , Double a , Double b , Double c , Double d);
+
+    List<MyTrafficEntity> findByBoardId(Long id);
 }

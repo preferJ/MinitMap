@@ -3,6 +3,7 @@ package com.example.project.dto;
 import com.example.project.entity.MyTrafficEntity;
 import com.example.project.entity.TrafficEntity;
 import com.example.project.entity.TrafficTimeEntity;
+import com.example.project.service.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,15 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrafficIntegratedDTO {
-    private Long trafficId;
     private Long memberId;
+    private Long boardId ; // ck
+
+    private String nickName;
+
+    private Long trafficId;
     private Long myTrafficId;
     private String myTrafficName;
+    private String trafficName; // ck
     private Double trafficLat;
     private Double trafficLon;
     private Long trafficLike;
@@ -29,6 +35,8 @@ public class TrafficIntegratedDTO {
     private Long redOn;
     private Long setStartTime;
     private Long leftTime;
+    private boolean bookMarkCheck; // ck
+
 
 
     //ㅅㅎ 신호등 합친거 메서드
@@ -93,11 +101,12 @@ public class TrafficIntegratedDTO {
         integratedDTO.setMyTrafficId(myTrafficEntity.getMyTrafficId());
         integratedDTO.setMyTrafficName(myTrafficEntity.getMyTrafficName());
         integratedDTO.setMemberId(myTrafficEntity.getMemberEntity().getMemberId());
+
         // id , name 값
         integratedDTO.setTrafficLat(myTrafficEntity.getMyTrafficLat());
         integratedDTO.setTrafficLon(myTrafficEntity.getMyTrafficLon());
         // 위도 경도
-
+        integratedDTO.setBoardId(myTrafficEntity.getBoardId());
         integratedDTO.setGreenOn(trafficTimeEntity.getGreenOn());
         integratedDTO.setRedOn(trafficTimeEntity.getRedOn());
         integratedDTO.setTrafficApplyStart(trafficTimeEntity.getTrafficApplyStart());
@@ -159,6 +168,7 @@ public class TrafficIntegratedDTO {
 
         integratedDTO.setTrafficId(trafficEntity.getTrafficId());
         integratedDTO.setMemberId(trafficEntity.getMemberEntity().getMemberId());
+        integratedDTO.setTrafficName(trafficEntity.getTrafficName());
 
         // id , name 값
         integratedDTO.setTrafficLat(trafficEntity.getTrafficLat());

@@ -18,6 +18,11 @@ public interface TrafficRepository extends JpaRepository<TrafficEntity,Long> {
     List<TrafficEntity> findByMemberEntityOrderByTrafficDislikeAsc(MemberEntity memberEntity);
     List<TrafficEntity> findByMemberEntityOrderByTrafficDislikeDesc(MemberEntity memberEntity);
 
-    @Query("select t from TrafficEntity t where t.trafficLat between :a and :b and t.trafficLon between :c and :d")
-    List<TrafficEntity> findBetween(Double a , Double b , Double c , Double d);
+
+
+    @Query("select m from TrafficEntity m where m.memberEntity.memberId = :memberId and  m.trafficLat between :a and :b and m.trafficLon between :c and :d")
+    List<TrafficEntity> findBetween(Long memberId,Double a , Double b , Double c , Double d);
+
+
+
 }

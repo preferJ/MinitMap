@@ -46,10 +46,13 @@ public class BoardService {
             }
 
             boardEntity = BoardEntity.toBoardTrafficSaveEntity(boardDTO, memberEntity.get(), save);
+            Long boardId = boardRepository.save(boardEntity).getBoardId();
+            save.setBoardId(boardId);
+            trafficRepository.save(save);
         } else {
             boardEntity = BoardEntity.toBoardSaveEntity(boardDTO, memberEntity.get());
+            boardRepository.save(boardEntity);
         }
-        boardRepository.save(boardEntity);
     }
 
     // 이현
@@ -358,6 +361,11 @@ public class BoardService {
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
+        List<MyTrafficEntity> byBoardId = myTrafficRepository.findByBoardId(id);
+        for (MyTrafficEntity myTrafficEntity : byBoardId){
+            myTrafficEntity.setBoardId(null);
+            myTrafficRepository.save(myTrafficEntity);
+        }
     }
 
     public List<BoardDTO> hots(String type) {
@@ -447,6 +455,61 @@ public class BoardService {
         if (boardEntity.isToAdmin() == false){
             boardEntity.setToAdmin(true);
             boardRepository.save(boardEntity);
+        }
+    }
+
+    @Transactional
+    public void indexLikeCheck(Long like, Long boardId, Long loginId) {
+        Optional<BoardEntity> byId = boardRepository.findById(boardId);
+        Optional<MemberEntity> memberId = memberRepository.findById(loginId);
+        LikeCheckEntity likeCheckEntity = likeCheckRepository.findByBoardEntityAndMemberEntity(byId.get(),memberId.get());
+        // 첫 등록
+        if (likeCheckEntity == null) {
+            if (like == 1) { //좋아요
+                LikeCheckEntity likeCheckEntity1 = LikeCheckEntity.toLikeCheckSaveEntity(true, memberId.get(), byId.get());
+                likeCheckRepository.save(likeCheckEntity1);
+                boardRepository.like(boardId);
+            } else { // 싫어요
+                likeCheckRepository.save(LikeCheckEntity.toLikeCheckSaveEntity(false, memberRepository.findById(loginId).get(), byId.get()));
+                boardRepository.dislike(boardId);
+            }
+
+        } else if (likeCheckEntity.isLikeCheck()) { // 좋아요 누른상태
+            if (like == 1) { //좋아요
+                likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
+            } else { // 싫어요
+                likeCheckEntity.setLikeCheck(false);
+                likeCheckRepository.save(likeCheckEntity);
+                boardRepository.dislike(boardId);
+            }
+            boardRepository.UnLike(boardId);
+        } else { // 싫어요 누른상태
+            if (like == 1) { //좋아요
+                likeCheckEntity.setLikeCheck(true);
+                likeCheckRepository.save(likeCheckEntity);
+                boardRepository.like(boardId);
+            } else { // 싫어요
+                likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
+            }
+            boardRepository.UnDislike(boardId);
+        }
+        // 추천 3개시 등급업 처리
+        BoardEntity boardEntity = boardRepository.findById(boardId).get();
+        if (boardEntity.getBoardLike()>3){ // <- 추천기준 갯수
+            if (boardEntity.isManagerCheck() == false){
+                MemberEntity memberEntity = memberRepository.findById(boardEntity.getMemberEntity().getMemberId()).get();
+                if (memberEntity.getMemberLevel()<5){// 레벨이 5보다 작을때만 레벨업
+                    memberEntity.setMemberLevel(memberEntity.getMemberLevel()+1);
+                    memberRepository.save(memberEntity);
+                    AdminHistoryDTO adminHistoryDTO = new AdminHistoryDTO();
+                    adminHistoryDTO.setHistoryMessage(memberEntity.getMemberEmail() + "의등급상승");
+                    adminHistoryDTO.setHistoryType("등급상승");
+                    adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
+
+                }
+                boardEntity.setManagerCheck(true);
+                boardRepository.save(boardEntity);
+            }
         }
     }
 }

@@ -27,6 +27,9 @@ public class MyTrafficEntity {
     @Column(name = "myTrafficLon")
     private Double myTrafficLon;
 
+    @Column(name = "boardId")
+    private Long boardId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId", nullable = false)
     private MemberEntity memberEntity;
@@ -37,11 +40,12 @@ public class MyTrafficEntity {
     @OneToMany(mappedBy = "myTrafficEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficTimeEntity> trafficTimeEntityList = new ArrayList<>();
 
-    public static MyTrafficEntity toSaveMyTrafficEntity(Double lat,Double lon,String name, MemberEntity memberEntity){
+    public static MyTrafficEntity toSaveMyTrafficEntity(BoardEntity boardEntity,String name, MemberEntity memberEntity){
         MyTrafficEntity myTrafficEntity = new MyTrafficEntity();
-        myTrafficEntity.setMyTrafficLat(lat);
-        myTrafficEntity.setMyTrafficLon(lon);
+        myTrafficEntity.setMyTrafficLat(boardEntity.getTrafficEntity().getTrafficLat());
+        myTrafficEntity.setMyTrafficLon(boardEntity.getTrafficEntity().getTrafficLon());
         myTrafficEntity.setMyTrafficName(name);
+        myTrafficEntity.setBoardId(boardEntity.getBoardId());
         myTrafficEntity.setMemberEntity(memberEntity);
         return myTrafficEntity;
     }
@@ -53,6 +57,7 @@ public class MyTrafficEntity {
         myTrafficEntity.setMyTrafficName(myTrafficDTO.getMyTrafficName());
         myTrafficEntity.setMyTrafficOrderNumber(myTrafficDTO.getMyTrafficOrderNumber());
         myTrafficEntity.setMemberEntity(memberEntity);
+        myTrafficEntity.setBoardId(myTrafficDTO.getBoardId());
         return myTrafficEntity;
     }
 }

@@ -16,6 +16,7 @@ public class MyTrafficDTO {
     private Double myTrafficLon;
     private Long myTrafficOrderNumber;
     //ㅅㅎ 수정 신호등순서필드 추가
+    private Long boardId;
 
 
     // ㅅㅎ수정 soSave메서드에 오더넘버 추가
@@ -27,6 +28,7 @@ public class MyTrafficDTO {
         myTrafficDTO.setMyTrafficLat(myTrafficEntity.getMyTrafficLat());
         myTrafficDTO.setMyTrafficLon(myTrafficEntity.getMyTrafficLon());
         myTrafficDTO.setMyTrafficOrderNumber(myTrafficEntity.getMyTrafficOrderNumber());
+        myTrafficDTO.setBoardId(myTrafficEntity.getBoardId());
         return myTrafficDTO;
     }
 }

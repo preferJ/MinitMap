@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>MinitMap</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script
             src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx71377ca4d61b42018b3da0ede8c234fb"></script>
@@ -664,7 +664,26 @@
         }
 
         function bookMarkAdd(id, ck) {
-        alert("아이디값 :"+ id + "체크 값 : " + ck)
+            alert("아이디값 :" + id + "체크 값 : " + ck)
+            $.ajax({
+                    type: "post", // 타입 (get, post, put 등등)
+                    url: "/bookMark/save", // 요청할 서버url
+                    dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
+                    data: { // 보낼 데이터 (Object , String, Array)
+                        "trafficId": id,
+                        "ck": ck,
+                    },
+                    async: false,
+                    success: function (response) { // 결과 성공 콜백함수
+
+                    },
+                    error:
+
+                        function (request, status, error) { // 결과 에러 콜백함수
+                            console.log(error)
+                        }
+                }
+            )
         }
 
 
@@ -677,32 +696,61 @@
                 labelArray = [];
             }
 // 마크
-            let content = "<div class='m-pop' id='labelDiv'>" +
-                "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>" +
-                "<div>현재 상태<img src='/icon/greenOn.png' style='margin-left: 10px' width='60px' height='60px'></div>" +
+            let firstTime = (response.trafficApplyStart - response.trafficApplyStart % 10000) / 10000 + ":" + (response.trafficApplyStart % 10000 - response.trafficApplyStart % 100) / 100 + ":" + response.trafficApplyStart % 100;
+            let secondTime = (response.trafficApplyEnd - response.trafficApplyEnd % 10000) / 10000 + ":" + (response.trafficApplyEnd % 10000 - response.trafficApplyEnd % 100) / 100 + ":" + response.trafficApplyEnd % 100;
+            let setTime = (response.setStartTime - response.setStartTime % 10000) / 10000 + "시" + (response.setStartTime % 10000 - response.setStartTime % 100) / 100 + "분" + response.setStartTime % 100 + "초";
+
+            let content = "<div class='m-pop' id='labelDiv'>";
+            if (response.trafficId == null) {
+                content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.myTrafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>";
+            } else {
+                content += "<div class='tit' style=' font-size: 16px; font-weight: bold;position: absolute;top: 5px;left: 15px'><div><b style='font-size: 30px'>" + response.trafficName + "</b><span style='margin-left: 15px'><i class=\"fa-solid fa-pen fa-2x\" onclick='이름변경()'></i></span></div>";
+            }
+            content +=
                 "<button onclick='labelOnClose()' class='btn-close' style='position: absolute; top: 5px; right: 0px; display: block; width: 15px; height: 15px; background: red no-repeat center;'><b style='text-align: justify-all'>X</b></button>" +
                 "<div class='info-box'>" +
-                "<div><span style='font-size: 20px;'>Info</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
-                "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p> 1. **시 **분 ~ **시 **분</p>" +
-                "세부내용" +
-                "<span>" + response.leftTime + "</span>";
+                "<div><span style='font-size: 20px;'>적용시간</span><span style='margin-left: 15px'><i class='fa-solid fa-gear fa-1x' onclick='편집()'></i></span></div>" +
+                "<span id='leftInfoBox' style='font-size: 12px;float: left;width: 170px;display: block'><p>" + firstTime + "~" + secondTime + "</p>" +
+                "Info" +
+                "<p> 기준시 : " + setTime + "</p>" +
+                "<p> 청색 주기 : " + response.greenOn + "초</p>" +
+                "<p> 적색 주기 : " + response.redOn + "초</p>";
 
             if (response.trafficId == null) {
-                content += "<button onclick='bookMarkAdd(" + response.myTrafficId + ","+"0" + ")'>" + "북마크추가버튼" + "</button>";
+                content += "<button onclick='bookMarkAdd(" + response.myTrafficId + "," + "0" + ")'>" + "북마크추가버튼" + "</button>";
 
             } else {
-                content += "<button onclick='bookMarkAdd(" + response.trafficId + ","+"1" + ")'>" + "북마크추가버튼" + "</button>";
+                content += "<button onclick='bookMarkAdd(" + response.trafficId + "," + "1" + ")'>" + "북마크추가버튼" + "</button>";
 
             }
 
 
             content += "</span>" +
                 "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
-                "등록자: <a href='http://tmapapi.sktelecom.com/' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>등록자</a>" +
-                "</span>" +
+                "등록자: <span target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.memberId + "</span>" +
+                "</span>";
+            if (response.boardId != null) {
+                content += "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
+                    "등록글: <a onclick='boardDetail(" + response.boardId + ")' target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.boardId + "번</a>" +
+                    "</span>";
+            }
+
+
+            content +=
                 "</div>" +
-                "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>" +
-                "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>" +
+                "<div id='bottomInfoBox' style='position: absolute; bottom: -200px;left: 10px;width: 260px;height: 70px;text-align: center'>";
+
+            if (response.trafficId == null) {
+                if (response.boardId != null) {
+                    content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
+                }else{
+                    content += "<span style='float: left'><button style='float: left'>감추기</button><br/>";
+                }
+            } else {
+                content += "<span style='float: left'><button style='float: left'>감추기</button><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
+            }
+
+            content +=
                 "</div>" +
                 "</div>" +
                 "</div>";
@@ -759,6 +807,30 @@
                 if (onTap == 2) {
                     map.removeListener("click", onClick);
                 }
+            }
+        }
+
+        function like(num) {
+            let loginCheck = [[${session.loginId}]]
+            if (loginCheck != null) {
+                $.ajax({
+                    url:"/board/indexLike?like=1&boardId=" + num,
+                    type:"get"
+                })
+            } else {
+                loginForm();
+            }
+        }
+
+        function dislike(num) {
+            let loginCheck = [[${session.loginId}]]
+            if (loginCheck != null) {
+                $.ajax({
+                    url:"/board/indexLike?like=2&boardId=" + num,
+                    type:"get"
+                })
+            } else {
+                loginForm();
             }
         }
 
@@ -1103,6 +1175,10 @@
                     clickPing(lat, lng, name);
                 }
             }
+        }
+
+        function boardDetail(id) {
+            window.open("/board/detail?id=" + id);
         }
 
         function myPlaceSave(id) {

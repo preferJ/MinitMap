@@ -51,7 +51,10 @@ public class TrafficService {
 
     public Long adminSave(TrafficDTO trafficDTO, Long id) {
         MemberEntity memberEntity = memberRepository.findById(id).get();
-        return trafficRepository.save(TrafficEntity.trafficSaveEntity(trafficDTO, memberEntity)).getTrafficId();
+        TrafficEntity trafficEntity = trafficRepository.save(TrafficEntity.trafficSaveEntity(trafficDTO, memberEntity));
+        trafficEntity.setTrafficName("admin" + trafficEntity.getTrafficId());
+        trafficRepository.save(trafficEntity);
+        return trafficEntity.getTrafficId();
     }
 
     public List<TrafficDTO> findByEmail(String email) {

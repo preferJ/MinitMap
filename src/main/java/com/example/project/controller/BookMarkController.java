@@ -4,9 +4,7 @@ import com.example.project.dto.BookMarkDTO;
 import com.example.project.service.BookMarkService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -18,7 +16,7 @@ public class BookMarkController {
     private final BookMarkService bookMarkService;
 
     @PostMapping("/list")
-    public List<BookMarkDTO> findAll(HttpSession session){
+    public List<BookMarkDTO> findAll(HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginId");
         List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
         return bookMarkDTOList;
@@ -28,8 +26,27 @@ public class BookMarkController {
 
 
     @PostMapping("/save")
-    public void save(@ModelAttribute BookMarkDTO bookMarkDTO) {
-         bookMarkService.save(bookMarkDTO);
+    @ResponseBody
+    public void save(@RequestParam("trafficId") Long trafficId,
+                     @RequestParam("ck") Long ck, HttpSession session) {
+        System.out.println("BookMarkController.save");
+        Long memberId = (Long) session.getAttribute("loginId");
+        System.out.println(memberId);
+
+        if (memberId != null) {
+            BookMarkDTO bookMarkDTO = new BookMarkDTO();
+            bookMarkDTO.setMemberId(memberId);
+
+            if (ck == 1) {
+                bookMarkDTO.setTrafficId(trafficId);
+            } else {
+                bookMarkDTO.setMyTrafficId(trafficId);
+            }
+            bookMarkService.save(bookMarkDTO);
+
+            List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
+            System.out.println(bookMarkDTOList);
+        }
     }
 
     @PostMapping("/delete")

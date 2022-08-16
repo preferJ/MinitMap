@@ -24,13 +24,14 @@ public class BookMarkService {
 
         List<BookMarkEntity> bookMarkEntityList = bookMarkRepository.findAllByMemberId(bookMarkDTO.getMemberId());
         for (BookMarkEntity bookMarkEntity : bookMarkEntityList) {
-            if (bookMarkEntity.getTrafficId() != bookMarkDTO.getTrafficId()) {
+            if (bookMarkEntity.getTrafficId() == bookMarkDTO.getTrafficId()) {
                 dupCheck = false;
             }
-            if (bookMarkEntity.getMyTrafficId() != bookMarkDTO.getMyTrafficId()) {
+            if (bookMarkEntity.getMyTrafficId() == bookMarkDTO.getMyTrafficId()) {
                 dupCheck = false;
             }
         }
+
         if (dupCheck) {
             bookMarkRepository.save(BookMarkEntity.toBookMarkWithTrafficSaveEntity(bookMarkDTO));
         }
@@ -49,4 +50,6 @@ public class BookMarkService {
         }
         return bookMarkDTOList;
     }
+
+
 }

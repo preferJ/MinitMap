@@ -67,7 +67,7 @@ public class ErrorService {
        List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
        List<ErrorDTO> errorDTOList = new ArrayList<>();
        for(ErrorEntity error: errorEntityList){
-           errorDTOList.add(ErrorDTO.toErrorDTO(error));
+           errorDTOList.add(ErrorDTO.toErrorDTOEmail(error));
        }
        return errorDTOList;
     }

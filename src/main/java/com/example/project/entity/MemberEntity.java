@@ -52,7 +52,7 @@ public class MemberEntity {
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TrafficBookmarkEntity> trafficBookmarkEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ErrorEntity> errorEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = false, fetch = FetchType.LAZY)

@@ -162,6 +162,8 @@ public class TrafficIntegratedDTO {
 
         integratedDTO.setTrafficId(trafficEntity.getTrafficId());
         integratedDTO.setMemberId(trafficEntity.getMemberEntity().getMemberId());
+        integratedDTO.setBoardId(trafficEntity.getBoardId());
+        integratedDTO.setTrafficName(trafficEntity.getTrafficName());
 
         // id , name 값
         integratedDTO.setTrafficLat(trafficEntity.getTrafficLat());

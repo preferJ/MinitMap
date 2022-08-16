@@ -4,10 +4,7 @@ import com.example.project.dto.BookMarkDTO;
 import com.example.project.service.BookMarkService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -29,13 +26,15 @@ public class BookMarkController {
 
 
     @PostMapping("/save")
+    @ResponseBody
     public void save(@RequestParam("trafficId") Long trafficId,
                      @RequestParam("ck") Long ck, HttpSession session) {
+        System.out.println("BookMarkController.save");
         Long memberId = (Long) session.getAttribute("LoginId");
         if (ck == 1) {
-            bookMarkService.saveAdminT(memberId , trafficId);
+//            bookMarkService.saveAdminT(memberId , trafficId);
         }else {
-            bookMarkService.saveMyT(memberId , trafficId);
+//            bookMarkService.saveMyT(memberId , trafficId);
 
         }
     }

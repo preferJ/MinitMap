@@ -51,4 +51,6 @@ public class BookMarkService {
     }
 
 
+    public void saveAdminT(Long memberId, Long trafficId) {
+    }
 }

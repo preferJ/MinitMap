@@ -26,13 +26,7 @@ public class BookMarkController {
     @PostMapping("/list")
     @ResponseBody
     public List<TrafficBookmarkDTO> getList(HttpSession session) {
-        System.out.println("찍히는지 확인");
-        System.out.println("찍히는지 확인");
-        System.out.println("찍히는지 확인");
-        System.out.println("찍히는지 확인");
-        System.out.println("찍히는지 확인");
-        System.out.println("찍히는지 확인");
-        System.out.println("찍히는지 확인");
+
         Long memberId = (Long) session.getAttribute("loginId");
         List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
         List<TrafficBookmarkDTO> trafficBookmarkDTOList = new ArrayList<>();

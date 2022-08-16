@@ -150,27 +150,35 @@ public class MyTrafficService {
         if (loginId == null) {
             loginId = 999999L;
         }
-
+        boolean addCheck = true;
         Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
 
         List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(loginId, a, b, c, d);
         List<TrafficEntity> trafficEntities = trafficRepository.findBetween(adminId.get().getMemberId(), a, b, c, d);
+        List<TrafficEntity> realTrafficEntities = new ArrayList<>();
 
-        // 위도 경도 겹치면 어드민 날리기
-        for (TrafficEntity trafficEntity : trafficEntities){
-            for (MyTrafficEntity myTrafficEntity : myTrafficEntities){
-                if (trafficEntity.getTrafficLat() == myTrafficEntity.getMyTrafficLat() && trafficEntity.getTrafficLon() == myTrafficEntity.getMyTrafficLon()){
-                    trafficEntities.remove(trafficEntity);
+
+        for (TrafficEntity trafficEntity : trafficEntities) {
+            for (MyTrafficEntity myTrafficEntity : myTrafficEntities) {
+                if (trafficEntity.getTrafficLon().equals(myTrafficEntity.getMyTrafficLon()) && trafficEntity.getTrafficLat().equals(myTrafficEntity.getMyTrafficLat())) {
+                    addCheck = false;
                 }
             }
+            if (addCheck){
+                realTrafficEntities.add(trafficEntity);
+            }
+            addCheck = true;
         }
 
-        List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(trafficEntities, myTrafficEntities);
+
+        // 위도 경도 겹치면 어드민 날리기
+
+
+        List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(realTrafficEntities, myTrafficEntities);
 
 
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
         for (int i = 0; i < trafficIntegratedDTOS.size(); i++) {
-            System.out.println(trafficIntegratedDTOS.get(i));
             Long boardId = trafficIntegratedDTOS.get(i).getBoardId();
             if (boardId != null) {
                 BoardDTO boardDTO = boardService.findByBoardId(boardId);
@@ -178,15 +186,15 @@ public class MyTrafficService {
                 MemberDTO memberDTO = memberService.findById(memberId);
                 String nickName = memberDTO.getMemberNickname();
                 trafficIntegratedDTOS.get(i).setNickName(nickName);
-            }else {
-                if (loginId == trafficIntegratedDTOS.get(i).getMemberId()){
+            } else {
+                if (loginId == trafficIntegratedDTOS.get(i).getMemberId()) {
                     MemberDTO memberDTO = memberService.findById(trafficIntegratedDTOS.get(i).getMemberId());
                     trafficIntegratedDTOS.get(i).setNickName(memberDTO.getMemberNickname());
-                }else {
+                } else {
                     trafficIntegratedDTOS.get(i).setNickName("관리자");
                 }
             }
-
+            System.out.println(trafficIntegratedDTOS.get(i));
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
@@ -235,7 +243,7 @@ public class MyTrafficService {
     public String findByIdName(Long myTrafficId) {
         Optional<MyTrafficEntity> myTrafficEntity = myTrafficRepository.findById(myTrafficId);
         String name = "";
-        if (myTrafficEntity.isPresent()){
+        if (myTrafficEntity.isPresent()) {
             name = myTrafficEntity.get().getMyTrafficName();
         }
 
@@ -245,7 +253,7 @@ public class MyTrafficService {
     public Double findByIdLat(Long myTrafficId) {
         Optional<MyTrafficEntity> myTrafficEntity = myTrafficRepository.findById(myTrafficId);
         double lat = 0;
-        if (myTrafficEntity.isPresent()){
+        if (myTrafficEntity.isPresent()) {
             lat = myTrafficEntity.get().getMyTrafficLat();
         }
 
@@ -255,19 +263,19 @@ public class MyTrafficService {
     public double findByIdLon(Long myTrafficId) {
         Optional<MyTrafficEntity> myTrafficEntity = myTrafficRepository.findById(myTrafficId);
         double lon = 0;
-        if (myTrafficEntity.isPresent()){
+        if (myTrafficEntity.isPresent()) {
             lon = myTrafficEntity.get().getMyTrafficLon();
         }
 
         return lon;
     }
 
-    public void adminMyTraffic(Long id, String name,Long loginId) {
+    public void adminMyTraffic(Long id, String name, Long loginId) {
         TrafficEntity trafficEntity = trafficRepository.findById(id).get();
         List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByTrafficEntity(trafficEntity);
         MyTrafficEntity save = myTrafficRepository.save(MyTrafficEntity.TrafficToMyTraffic(trafficEntity, name, memberRepository.findById(loginId).get()));
-        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity){
-            TrafficTimeEntity trafficTimeEntity1 = TrafficTimeEntity.timeTotime(trafficTimeEntity,save);
+        for (TrafficTimeEntity trafficTimeEntity : byTrafficEntity) {
+            TrafficTimeEntity trafficTimeEntity1 = TrafficTimeEntity.timeTotime(trafficTimeEntity, save);
             trafficTimeRepository.save(trafficTimeEntity1);
         }
     }

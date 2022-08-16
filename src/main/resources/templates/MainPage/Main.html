@@ -700,7 +700,7 @@
 
             content += "</span>" +
                 "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
-                "등록자: <span target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.memberId + "</span>" +
+                "등록자: <span target='_blank' class='link' style='color: #3D6DCC; font-size: 13px; margin-left: 10px;'>" + response.nickName + "</span>" +
                 "</span>";
             if (response.boardId != null) {
                 content += "<span id='rightInfoBox' style='font-size: 12px;display: block;float: right;width: 110px'>" +
@@ -790,6 +790,7 @@
                     url:"/board/indexLike?like=1&boardId=" + num,
                     type:"get"
                 })
+                alert("맞아요~")
             } else {
                 loginForm();
             }
@@ -802,6 +803,7 @@
                     url:"/board/indexLike?like=2&boardId=" + num,
                     type:"get"
                 })
+                alert("안맞아요~");
             } else {
                 loginForm();
             }

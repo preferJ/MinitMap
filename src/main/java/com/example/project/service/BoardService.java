@@ -476,22 +476,20 @@ public class BoardService {
 
         } else if (likeCheckEntity.isLikeCheck()) { // 좋아요 누른상태
             if (like == 1) { //좋아요
-                likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
             } else { // 싫어요
                 likeCheckEntity.setLikeCheck(false);
                 likeCheckRepository.save(likeCheckEntity);
                 boardRepository.dislike(boardId);
+                boardRepository.UnLike(boardId);
             }
-            boardRepository.UnLike(boardId);
         } else { // 싫어요 누른상태
             if (like == 1) { //좋아요
                 likeCheckEntity.setLikeCheck(true);
                 likeCheckRepository.save(likeCheckEntity);
                 boardRepository.like(boardId);
+                boardRepository.UnDislike(boardId);
             } else { // 싫어요
-                likeCheckRepository.deleteById(likeCheckEntity.getLikeCheckId());
             }
-            boardRepository.UnDislike(boardId);
         }
         // 추천 3개시 등급업 처리
         BoardEntity boardEntity = boardRepository.findById(boardId).get();

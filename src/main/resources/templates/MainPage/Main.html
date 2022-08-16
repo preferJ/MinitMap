@@ -896,15 +896,20 @@
         }
 
         function adminReport(id){
-            var width = 553;
-            var height = 400;
+            let loginCheck = [[${session.loginId}]]
+            if (loginCheck != null) {
+                var width = 553;
+                var height = 400;
 
-            var left = (window.screen.width / 2) - (width / 2);
-            var top = (window.screen.height / 4);
+                var left = (window.screen.width / 2) - (width / 2);
+                var top = (window.screen.height / 4);
 
-            var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+                var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
 
-            window.open("/board/adminReport/"+ id, "신고하기", windowStatus);
+                window.open("/board/adminReport/" + id, "신고하기", windowStatus);
+            }else{
+                loginForm();
+            }
         }
         function boardReport(id) {
             var width = 553;

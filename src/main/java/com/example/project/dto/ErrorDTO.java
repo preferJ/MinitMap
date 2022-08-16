@@ -58,7 +58,8 @@ public class ErrorDTO {
         errorDTO.setMemberEmail(errorEntity.getMemberEntity().getMemberEmail());
         errorDTO.setTrafficId(errorEntity.getTrafficEntity().getTrafficId());
         errorDTO.setErrorType(errorEntity.getErrorType());
-        errorDTO.setErrorContents(errorDTO.getErrorContents());
+        errorDTO.setErrorContents(errorEntity.getErrorContents());
+        errorDTO.setErrorTitle(errorEntity.getErrorTitle());
         errorDTO.setErrorCreatedTime(errorEntity.getErrorCreatedTime());
         errorDTO.setManagerCheck(errorEntity.isManagerCheck());
         return  errorDTO;

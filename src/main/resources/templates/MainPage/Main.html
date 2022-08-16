@@ -665,6 +665,25 @@
 
         function bookMarkAdd(id, ck) {
             alert("아이디값 :" + id + "체크 값 : " + ck)
+            $.ajax({
+                    type: "post", // 타입 (get, post, put 등등)
+                    url: "/bookMark/save", // 요청할 서버url
+                    dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
+                    data: { // 보낼 데이터 (Object , String, Array)
+                        "trafficId": id,
+                        "ck": ck,
+                    },
+                    async: false,
+                    success: function (response) { // 결과 성공 콜백함수
+
+                    },
+                    error:
+
+                        function (request, status, error) { // 결과 에러 콜백함수
+                            console.log(error)
+                        }
+                }
+            )
         }
 
 

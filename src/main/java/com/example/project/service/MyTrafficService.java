@@ -1,9 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.dto.MyTrafficDTO;
-import com.example.project.dto.RutinDTO;
-import com.example.project.dto.TrafficDTO;
-import com.example.project.dto.TrafficIntegratedDTO;
+import com.example.project.dto.*;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +17,8 @@ public class MyTrafficService {
     private final MyTrafficRepository myTrafficRepository;
     private final TrafficTimeRepository trafficTimeRepository;
     private final TrafficRepository trafficRepository;
+
+    private final TrafficTimeService trafficTimeService;
 
 
     private final MemberRepository memberRepository;
@@ -80,16 +79,70 @@ public class MyTrafficService {
         return save.getMyTrafficId();
     }
 
+//    public List<TrafficIntegratedDTO> inBoundFindAll(String center, Long loginId) {
+//        System.out.println("MyTrafficService.inBoundFindAll");
+//        List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
+//        String[] latlng = center.split(",");
+//        double lat = Double.parseDouble(latlng[0]);
+//        double lng = Double.parseDouble(latlng[1]);
+//        double minLat = lat - 0.02;
+//        double maxLat = lat + 0.02;
+//        double minLng = lng - 0.02;
+//        double maxLng = lng + 0.02;
+//        System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
+//        System.out.println("center = " + center + ", loginId = " + loginId);
+//        System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
+//        if (loginId == null) {
+//            loginId = 999999L;
+//        }
+//
+//        Optional<MemberEntity> byId = memberRepository.findById(loginId);
+//        Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
+//        List<TrafficTimeEntity> trafficTimeEntityList = trafficTimeRepository.findAll();
+//
+//
+//        // 변수명 time 은 기준이 되는 trafficTime 객체
+//        for (TrafficTimeEntity time : trafficTimeEntityList) {
+//            if (time.getTrafficEntity() == null && byId.isPresent()) {
+//                // 트래픽ID 가 null 이면 --> 마이트래픽
+//                MyTrafficEntity myTrafficEntity = time.getMyTrafficEntity();
+//                if (myTrafficEntity.getMemberEntity() == byId.get()) {
+//                    Double myLat = myTrafficEntity.getMyTrafficLat();
+//                    Double myLng = myTrafficEntity.getMyTrafficLon();
+//                    if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
+//                        trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
+//                    }
+//
+//                }
+//            } else if (time.getMyTrafficEntity() == null) {
+//                TrafficEntity trafficEntity = time.getTrafficEntity();
+//                if (trafficEntity.getMemberEntity() == adminId.get()) {
+//                    Double myLat = trafficEntity.getTrafficLat();
+//                    Double myLng = trafficEntity.getTrafficLon();
+//                    if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
+//                        trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
+//                    }
+//                }
+//            }
+//        }
+//        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//        for (int i = 0; i < trafficIntegratedDTOList.size(); i++) {
+//            System.out.println(trafficIntegratedDTOList.get(i));
+//        }
+//        System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//
+//        return trafficIntegratedDTOList;
+//    }
+
     public List<TrafficIntegratedDTO> inBoundFindAll(String center, Long loginId) {
         System.out.println("MyTrafficService.inBoundFindAll");
-        List<TrafficIntegratedDTO> trafficIntegratedDTOList = new ArrayList<>();
         String[] latlng = center.split(",");
         double lat = Double.parseDouble(latlng[0]);
         double lng = Double.parseDouble(latlng[1]);
-        double minLat = lat - 0.02;
-        double maxLat = lat + 0.02;
-        double minLng = lng - 0.02;
-        double maxLng = lng + 0.02;
+        double a = lat - 0.02;
+        double b = lat + 0.02;
+        double c = lng - 0.02;
+        double d = lng + 0.02;
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
         System.out.println("center = " + center + ", loginId = " + loginId);
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★");
@@ -97,43 +150,32 @@ public class MyTrafficService {
             loginId = 999999L;
         }
 
-        Optional<MemberEntity> byId = memberRepository.findById(loginId);
-        Optional<MemberEntity> adminId = memberRepository.findByMemberEmail("admin");
-        List<TrafficTimeEntity> trafficTimeEntityList = trafficTimeRepository.findAll();
+        List<MyTrafficEntity> myTrafficEntities = myTrafficRepository.findBetween(a,b,c,d);
+        List<TrafficEntity> trafficEntities = trafficRepository.findBetween(a,b,c,d);
+        List<TrafficIntegratedDTO> trafficIntegratedDTOS = trafficTimeService.findTime(trafficEntities , myTrafficEntities);
 
 
-        // 변수명 time 은 기준이 되는 trafficTime 객체
-        for (TrafficTimeEntity time : trafficTimeEntityList) {
-            if (time.getTrafficEntity() == null && byId.isPresent()) {
-                // 트래픽ID 가 null 이면 --> 마이트래픽
-                MyTrafficEntity myTrafficEntity = time.getMyTrafficEntity();
-                if (myTrafficEntity.getMemberEntity() == byId.get()) {
-                    Double myLat = myTrafficEntity.getMyTrafficLat();
-                    Double myLng = myTrafficEntity.getMyTrafficLon();
-                    if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
-                        trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getMyTrafficEntity(), time));
-                    }
 
-                }
-            } else if (time.getMyTrafficEntity() == null) {
-                TrafficEntity trafficEntity = time.getTrafficEntity();
-                if (trafficEntity.getMemberEntity() == adminId.get()) {
-                    Double myLat = trafficEntity.getTrafficLat();
-                    Double myLng = trafficEntity.getTrafficLon();
-                    if (myLat > minLat && myLat < maxLat && myLng > minLng && myLng < maxLng) {
-                        trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(time.getTrafficEntity(), time));
-                    }
-                }
-            }
-        }
+
+
+
+
+
+
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-        for (int i = 0; i < trafficIntegratedDTOList.size(); i++) {
-            System.out.println(trafficIntegratedDTOList.get(i));
+        for (int i = 0; i < trafficIntegratedDTOS.size(); i++) {
+            System.out.println(trafficIntegratedDTOS.get(i));
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
-        return trafficIntegratedDTOList;
+        return trafficIntegratedDTOS;
     }
+
+
+
+
+
+
 
     public List<MyTrafficDTO> findByEmail(String memberEmail) {
         Optional<MemberEntity> memberEntityOptional = memberRepository.findByMemberEmail(memberEmail);

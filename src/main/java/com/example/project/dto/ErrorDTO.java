@@ -51,4 +51,16 @@ public class ErrorDTO {
         errorDTO.setBoardEntity(errorEntity.getBoardEntity());
         return errorDTO;
     }
+
+    public static ErrorDTO toErrorTrafficDTO(ErrorEntity errorEntity) {
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setErrorId(errorEntity.getErrorId());
+        errorDTO.setMemberEmail(errorEntity.getMemberEntity().getMemberEmail());
+        errorDTO.setTrafficId(errorEntity.getTrafficEntity().getTrafficId());
+        errorDTO.setErrorType(errorEntity.getErrorType());
+        errorDTO.setErrorContents(errorDTO.getErrorContents());
+        errorDTO.setErrorCreatedTime(errorEntity.getErrorCreatedTime());
+        errorDTO.setManagerCheck(errorEntity.isManagerCheck());
+        return  errorDTO;
+    }
 }

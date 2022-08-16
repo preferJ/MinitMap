@@ -81,4 +81,15 @@ public class ErrorService {
             errorRepository.save(error);
         }
     }
+
+    public List<ErrorDTO> errorTraffic() {
+        List<ErrorEntity> all = errorRepository.findAll();
+        List<ErrorDTO> errorDTO = new ArrayList<>();
+        for (ErrorEntity error : all) {
+            if (error.getTrafficEntity() != null) {
+                errorDTO.add(ErrorDTO.toErrorTrafficDTO(error));
+            }
+        }
+        return errorDTO;
+    }
 }

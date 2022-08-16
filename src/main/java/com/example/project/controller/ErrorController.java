@@ -59,4 +59,12 @@ public class ErrorController {
        errorService.updateManagerCheck(boardId);
         return "/hss/tapHref";
     }
+
+    @GetMapping("/errorTraffic")
+    // 신고받은 신호등 출력 메서드
+    public String errorTraffic(Model model){
+       List<ErrorDTO> errorDTOList = errorService.errorTraffic();
+       model.addAttribute("errorDTOList", errorDTOList);
+       return "/AdminPages/errorTraffic";
+    }
 }

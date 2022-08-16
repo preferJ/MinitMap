@@ -1,5 +1,6 @@
 package com.example.project.repository;
 
+import com.example.project.dto.ErrorDTO;
 import com.example.project.entity.BoardEntity;
 import com.example.project.entity.ErrorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,5 @@ public interface ErrorRepository extends JpaRepository<ErrorEntity,Long> {
     List<BoardEntity> findDistinct();
 
     List<ErrorEntity> findByBoardEntity(BoardEntity boardEntity);
-    // 해당하는 글이 받은 오류신고들
 
 }

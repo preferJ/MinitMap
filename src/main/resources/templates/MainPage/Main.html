@@ -77,6 +77,7 @@
             draggable: true,
             map: null //Marker가 표시될 Map 설정.
         });
+        var bookMarkMarker = null;
         // 화면 크기가 변경될때마다 함수 호출
         $(window).resize(function () {
             console.log("리사이즈 실행됨")
@@ -224,11 +225,15 @@
                     dataType: "json",
                     success: function (response) { // 결과 성공 콜백함수
                         console.log("북마크 가져오기 실행")
-                        console.log(response)
-
-
-
-
+                        console.log(response);
+                        let output = "<table style=\"display: inline\" id=\"bookMarkTap\">";
+                        for (let i in response) {
+                            output += "<tr style='background-color: transparent' class='bookMarkTap' id='bookMarkTap"+i+"' onclick='bookMarkZoom("+response[i].lat+","+response[i].lon+","+i+")'>";
+                            output += "<td>" + "<p>" + response[i].trafficName + "</p>";
+                            output += "</td>" + "</tr>";
+                        }
+                        output += "</table>";
+                        document.getElementById("bookMarkTraffic").innerHTML = output
                     },
                     error:
 
@@ -237,6 +242,39 @@
                         }
                 }
             )
+        }
+
+        var bookMarkCount = -1;
+
+        function bookMarkZoom(lat,lon,i) {
+            var bookMarkTap = document.getElementById("bookMarkTap" + i);
+            if (bookMarkTap.style.backgroundColor == "transparent") {
+                if (bookMarkMarker != null) {
+                    if(bookMarkCount != -1){
+                        document.getElementById("bookMarkTap"+bookMarkCount).style.backgroundColor = "transparent";
+                    }
+                    bookMarkMarker.setMap(null);
+                    bookMarkMarker = null;
+                }
+                bookMarkMarker = new Tmapv2.Marker({
+                    position: new Tmapv2.LatLng(lat, lon),
+                    icon: "/icon/downPoint.png", // 아이콘 등록
+                    iconSize: new Tmapv2.Size(
+                        30, 30), // 아이콘 크기 설정
+                    zIndex: 7,
+                    offset: new Tmapv2.Point(16, 80),
+                    map: map // 마커가 등록될 지도 객체
+                });
+                map.setCenter(new Tmapv2.LatLng(lat, lon));
+                map.setZoom(18);
+                bookMarkTap.style.backgroundColor = "#f3e9e9";
+                bookMarkCount = i;
+            }else{
+                bookMarkMarker.setMap(null);
+                bookMarkMarker = null;
+                bookMarkTap.style.backgroundColor = "transparent";
+                bookMarkCount = -1;
+            }
         }
 
         // ㅅㅎ
@@ -727,7 +765,7 @@
                     content += "<span style='float: left'><br/>";
                 }
             } else {
-                content += "<span style='float: left'><br/><button onclick='' style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
+                content += "<span style='float: left'><br/><button onclick='adminReport("+response.trafficId+")' style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
             }
 
             content +=
@@ -760,33 +798,39 @@
         // ㅅㅎ 탭4에서 쓸 변수 및 함수들 ------------------------------------------------
 
         function tap4() {
-            if (tapLock == false) {
-                tapLock = true;
-                removeMarkers();
-                const sidebarIcon = document.getElementById("side4HideIcon");
-                var sidebar = document.getElementById("side4");
-                var sidebar2 = document.getElementById("side" + onTap);
-                if (onTap != 4) {
-                    map.addListener("click", onClickTap4); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
-                    sidebar2.style.left = "-500%";
-                    sidebar.style.left = "100%";
-                    if (sidebar2.style.left != "-395%") {
-                        sidebar2.style.animation = "hide 0.9s";
-                    }
-                    sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
-                    sidebar.style.animation = "seek 0.9s";
-                    setTimeout(function () {
-                        sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
-                        onTap = 4;
+            var logCheck = [[${session.loginEmail}]];
+            if(logCheck != null) {
+                if (tapLock == false) {
+                    tapLock = true;
+                    removeMarkers();
+                    const sidebarIcon = document.getElementById("side4HideIcon");
+                    var sidebar = document.getElementById("side4");
+                    var sidebar2 = document.getElementById("side" + onTap);
+                    if (onTap != 4) {
+                        map.addListener("click", onClickTap4); // 이벤트의 종류와 해당 이벤트 발생 시 실행할 함수를 리스너를 통해 등록합니다
+                        sidebar2.style.left = "-500%";
+                        sidebar.style.left = "100%";
+                        if (sidebar2.style.left != "-395%") {
+                            sidebar2.style.animation = "hide 0.9s";
+                        }
+                        sidebarIcon.className = "fa-solid fa-angle-right fa-2xl";
+                        sidebar.style.animation = "seek 0.9s";
+                        setTimeout(function () {
+                            sidebarIcon.className = "fa-solid fa-angle-left fa-2xl";
+                            onTap = 4;
+                            tapLock = false;
+                        }, 900);
+                    } else if (onTap == 4) {
+                        sidebarHide4();
                         tapLock = false;
-                    }, 900);
-                } else if (onTap == 4) {
-                    sidebarHide4();
-                    tapLock = false;
+                    }
+                    if (onTap == 2) {
+                        map.removeListener("click", onClick);
+                    }
                 }
-                if (onTap == 2) {
-                    map.removeListener("click", onClick);
-                }
+            }
+            else{
+                alert("로그인이 필요한 탭입니다.");
             }
         }
 
@@ -833,6 +877,18 @@
             } else {
                 loginForm();
             }
+        }
+
+        function adminReport(id){
+            var width = 553;
+            var height = 400;
+
+            var left = (window.screen.width / 2) - (width / 2);
+            var top = (window.screen.height / 4);
+
+            var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+            window.open("/board/adminReport/"+ id, "신고하기", windowStatus);
         }
         function boardReport(id) {
             var width = 553;
@@ -930,6 +986,7 @@
                 success: function (result) {
                     myPlacesList = result;
                     let output = "<table style=\"display: inline\" id=\"mypTap\">";
+                    console.log(result);
                     for (let i in result) {
                         output += "<tr class='myPlaceTap' onclick='myPlaceClick(" + result[i].myPlaceId + "," + result[i].myPlaceLat + "," + result[i].myPlaceLon + "," + '"' + result[i].myPlaceName + '"' + ")'>";
                         output += "<td>" + "<p>" + result[i].myPlaceName + "</p>";
@@ -2368,6 +2425,18 @@
         }
 
         .myPlaceTap:hover {
+            background-color: #f3e9e9 !important;
+            color: #303f39 !important;
+        }
+
+        .bookMarkTap {
+            margin-top: 13px;
+            margin-bottom: -13px;
+            display: inline-block;
+            width: 250px;
+        }
+
+        .bookMarkTap:hover {
             background-color: #f3e9e9 !important;
             color: #303f39 !important;
         }

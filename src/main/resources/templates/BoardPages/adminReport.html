@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>신고하기</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<h2>신고하기</h2>
+<form action="/error/adminReportSave" method="post">
+  <div>
+    <div>
+      신고자 : <span th:text="${session.loginEmail}"></span>
+      <input type="hidden" name="memberId" th:value="${session.loginId}">
+    </div>
+    <input type="hidden" name="trafficId" th:value="${id}">
+    <div>
+      <select name="errorType" style="width: 100%" required="">
+        <option value="----------신고 항목 선택----------">신고 항목 선택</option>
+        <option value="신호등의 위치가 실제 맵과 다름">신호등의 위치가 실제 맵과 다름</option>
+        <option value="신호등 시간이 일치하지 않음">신호등 시간이 일치하지 않음</option>
+      </select>
+    </div>
+    <div>
+      <input type="text" name="errorTitle" placeholder="제목" style="width: 100%" required>
+    </div>
+    <div>
+            <textarea cols="71" rows="9" name="errorContents"
+                      style="resize: none;" placeholder="신고할 내용을 구체적으로 입력해주세요" required></textarea>
+    </div>
+    <div style="text-align: center">
+      <input type="submit" class="btn btn-danger" value="신고하기">
+    </div>
+  </div>
+</form>
+</body>
+</html>

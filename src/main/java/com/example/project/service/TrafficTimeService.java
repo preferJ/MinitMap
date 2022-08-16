@@ -136,26 +136,26 @@ public class TrafficTimeService {
         }}
 
 
-        for (MyTrafficEntity trafficEntity : myTrafficEntities){
-            List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(trafficEntity);
+        for (MyTrafficEntity myTrafficEntity : myTrafficEntities){
+            List<TrafficTimeEntity> byTrafficEntity = trafficTimeRepository.findByMyTrafficEntity(myTrafficEntity);
             // 결국 얻게되는 시간
             // 신호가 1개면 그냥 걔만가져감
             if (byTrafficEntity.size() <=1){
-                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(trafficEntity,byTrafficEntity.get(0)));
+                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(myTrafficEntity,byTrafficEntity.get(0)));
                 //  신호가 2개 이상이면 구분해서 가져감
             }else{
                 int timeCheck = -1;
                 // 사이값이 아니면 리턴 없어서 오류뜨니 트라이캐치
                 try{
-                    timeCheck = trafficTimeRepository.findByBetweenMY(trafficEntity,nowTime);
+                    timeCheck = trafficTimeRepository.findByBetweenMY(myTrafficEntity,nowTime);
                 }catch (Exception e){
 
                 }
                 if (timeCheck == -1){
-                    timeCheck = trafficTimeRepository.findByTimeCheckMy(trafficEntity, nowTime);
+                    timeCheck = trafficTimeRepository.findByTimeCheckMy(myTrafficEntity, nowTime);
                 }
                 TrafficTimeEntity trafficTimeEntity = trafficTimeRepository.findById((long) timeCheck).get();
-                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(trafficEntity,trafficTimeEntity));
+                trafficIntegratedDTOList.add(TrafficIntegratedDTO.toTrafficIntegratedDTO(myTrafficEntity,trafficTimeEntity));
             }}
 
         return trafficIntegratedDTOList;

@@ -722,12 +722,12 @@
 
             if (response.trafficId == null) {
                 if (response.boardId != null) {
-                    content += "<span style='float: left'><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
+                    content += "<span style='float: left'><br/><button onclick='boardReport("+response.boardId+")' style='float: left'>오류신고</button></span><span style='float: right'><button onclick='like(" + response.boardId + ")' style='float: right'>맞아용</button><br /><button onclick='dislike(" + response.boardId + ")' style='float: right'>안맞아용</button></span>";
                 } else {
                     content += "<span style='float: left'><br/>";
                 }
             } else {
-                content += "<span style='float: left'><br/><button style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
+                content += "<span style='float: left'><br/><button onclick='' style='float: left'>오류신고</button></span><span style='float: right'><button style='float: right'>맞아용</button><br /><button style='float: right'>안맞아용</button></span>";
             }
 
             content +=
@@ -833,6 +833,17 @@
             } else {
                 loginForm();
             }
+        }
+        function boardReport(id) {
+            var width = 553;
+            var height = 400;
+
+            var left = (window.screen.width / 2) - (width / 2);
+            var top = (window.screen.height / 4);
+
+            var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+            window.open("/board/report/"+ id, "신고하기", windowStatus);
         }
 
         function dislike(num) {

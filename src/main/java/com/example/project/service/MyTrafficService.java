@@ -171,7 +171,15 @@ public class MyTrafficService {
                 MemberDTO memberDTO = memberService.findById(memberId);
                 String nickName = memberDTO.getMemberNickname();
                 trafficIntegratedDTOS.get(i).setNickName(nickName);
+            }else {
+                if (loginId == trafficIntegratedDTOS.get(i).getMemberId()){
+                    MemberDTO memberDTO = memberService.findById(trafficIntegratedDTOS.get(i).getMemberId());
+                    trafficIntegratedDTOS.get(i).setNickName(memberDTO.getMemberNickname());
+                }else {
+                    trafficIntegratedDTOS.get(i).setNickName("관리자");
+                }
             }
+
         }
         System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 

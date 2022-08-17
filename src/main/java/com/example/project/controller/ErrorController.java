@@ -59,12 +59,27 @@ public class ErrorController {
        errorService.updateManagerCheck(boardId);
         return "/hss/tapHref";
     }
-
+    @GetMapping("/historySave2")
+    public String historySave2(@ModelAttribute AdminHistoryDTO adminHistoryDTO, @RequestParam Long errorId){
+        adminHistoryService.save(adminHistoryDTO);
+        errorService.findByErrorId(errorId);
+        return "hss/tapHref2";
+    }
     @GetMapping("/errorTraffic")
     // 신고받은 신호등 출력 메서드
     public String errorTraffic(Model model){
        List<ErrorDTO> errorDTOList = errorService.errorTraffic();
        model.addAttribute("errorDTOList", errorDTOList);
        return "/AdminPages/errorTraffic";
+    }
+
+    @GetMapping("/trafficError/{id}")
+    public String trafficError(@PathVariable Long id, Model model){
+        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
+        System.out.println("id = " + id);
+        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
+       ErrorDTO errorDTO = errorService.findById(id);
+       model.addAttribute("error", errorDTO);
+       return "/AdminPages/trafficErrorCheck";
     }
 }

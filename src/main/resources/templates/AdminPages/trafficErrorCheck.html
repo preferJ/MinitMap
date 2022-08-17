@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>신고조치</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<h2>신고조치</h2>
+<form action="/error/historySave2" method="get" name="saveForm">
+    <input type="hidden" name="memberId" th:value="${error.memberId}">
+    <input type="hidden" name="errorId" th:value="${error.errorId}">
+    <select id="history" name="historyType" style="width: 100%">
+        <option value="신호등 검토중..">신호등 검토중...</option>
+        <option value="이상없음">이상없음</option>
+        <option value="신호등 삭제">신호등 삭제</option>
+    </select>
+    <textarea cols="71" rows="9" name="historyMessage"
+              style="resize: none;" placeholder="조치내용을 입력해주세요" required></textarea>
+    <div style="text-align: center">
+        <input type="submit" class="btn btn-outline-warning" value="조치하기">
+    </div>
+</form>
+</body>
+</html>

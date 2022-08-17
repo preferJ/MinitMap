@@ -10,7 +10,7 @@
           integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
-    <title>회원목록 조회</title>
+    <title>신고받은 신호등 조회</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
@@ -274,6 +274,13 @@
                         <td th:text="${error.errorTitle}"></td>
                         <td th:text="${error.errorContents}"></td>
                         <td th:text="${error.errorCreatedTime}"></td>
+
+                        <td th:if="${error.managerCheck == true}">
+                            <input class="btn-danger" type="button" disabled value='오류확인됨'>
+                        </td>
+                        <td th:if="${error.managerCheck == false}">
+                            <button class="btn-danger" th:onclick="trafficError([[${error.errorId}]])">오류확인</button>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -301,6 +308,17 @@
         } else {
             loginForm();
         }
+    }
+    function trafficError(id) {
+        var width = 553;
+        var height = 350;
+
+        var left = (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 4);
+
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=no, status=no, resizable=yes, titlebar=yes';
+
+        window.open("/error/trafficError/"+ id, "신호등오류확인", windowStatus);
     }
     function myTraffic(){
         let loginCheck = [[${session.loginId}]]

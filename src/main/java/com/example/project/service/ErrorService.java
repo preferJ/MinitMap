@@ -92,4 +92,24 @@ public class ErrorService {
         }
         return errorDTO;
     }
+
+    public ErrorDTO findById(Long errorId) {
+        Optional<ErrorEntity> optionalErrorEntity = errorRepository.findById(errorId);
+        System.out.println("optionalErrorEntity = " + optionalErrorEntity);
+        if(optionalErrorEntity.isPresent()){
+          ErrorEntity errorEntity = optionalErrorEntity.get();
+          return ErrorDTO.toErrorTrafficDTO(errorEntity);
+        }else {
+            return null;
+        }
+    }
+
+    public void findByErrorId(Long errorId) {
+        Optional<ErrorEntity> optionalErrorEntity = errorRepository.findById(errorId);
+        if(optionalErrorEntity.isPresent()){
+           ErrorEntity errorEntity = optionalErrorEntity.get();
+           errorEntity.setManagerCheck(true);
+           errorRepository.save(errorEntity);
+        }
+    }
 }

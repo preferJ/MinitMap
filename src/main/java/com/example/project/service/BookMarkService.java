@@ -2,10 +2,12 @@ package com.example.project.service;
 
 import com.example.project.dto.BookMarkDTO;
 import com.example.project.dto.MyPlaceDTO;
+import com.example.project.dto.TrafficBookmarkDTO;
 import com.example.project.entity.BookMarkEntity;
 import com.example.project.entity.MemberEntity;
 import com.example.project.entity.MyPlaceEntity;
 import com.example.project.repository.BookMarkRepository;
+import com.example.project.repository.TrafficBookmarkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +40,8 @@ public class BookMarkService {
 
     }
 
-    public void delete(BookMarkDTO bookMarkDTO) {
-        bookMarkRepository.deleteById(bookMarkDTO.getBookMarkId());
+    public void delete(TrafficBookmarkDTO trafficBookmarkDTO) {
+        bookMarkRepository.deleteById(trafficBookmarkDTO.getTrafficBookmarkId());
     }
 
     public List<BookMarkDTO> findAll(Long memberId) {

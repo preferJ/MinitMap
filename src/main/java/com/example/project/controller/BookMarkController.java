@@ -70,8 +70,7 @@ public class BookMarkController {
 
 
     @PostMapping("/save")
-    @ResponseBody
-    public void save(@RequestParam("trafficId") Long trafficId,
+    public @ResponseBody String save(@RequestParam("trafficId") Long trafficId,
                      @RequestParam("ck") Long ck, HttpSession session) {
         System.out.println("BookMarkController.save");
         Long memberId = (Long) session.getAttribute("loginId");
@@ -91,11 +90,13 @@ public class BookMarkController {
             List<BookMarkDTO> bookMarkDTOList = bookMarkService.findAll(memberId);
             System.out.println(bookMarkDTOList);
         }
+        return "okay";
     }
 
     @PostMapping("/delete")
-    public void delete(@ModelAttribute BookMarkDTO bookMarkDTO) {
-        bookMarkService.delete(bookMarkDTO);
+    public @ResponseBody String delete(@ModelAttribute TrafficBookmarkDTO trafficBookmarkDTO) {
+        bookMarkService.delete(trafficBookmarkDTO);
+        return "okay";
     }
 
 }

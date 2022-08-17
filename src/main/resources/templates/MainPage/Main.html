@@ -218,30 +218,53 @@
 
         //ㅅㅎ 북마크 신호등 가져오기
         function bookMarkTraffic() {
-            let bookMarkTraffic = document.getElementById("bookMarkTraffic")
-            $.ajax({
-                    url: "/bookMark/list",
-                    type: "post",
-                    dataType: "json",
-                    success: function (response) { // 결과 성공 콜백함수
-                        console.log("북마크 가져오기 실행")
-                        console.log(response);
-                        let output = "<table style=\"display: inline\" id=\"bookMarkTap\">";
-                        for (let i in response) {
-                            output += "<tr style='background-color: transparent' class='bookMarkTap' id='bookMarkTap"+i+"' onclick='bookMarkZoom("+response[i].lat+","+response[i].lon+","+i+")'>";
-                            output += "<td>" + "<p>" + response[i].trafficName + "</p>";
-                            output += "</td>" + "</tr>";
-                        }
-                        output += "</table>";
-                        document.getElementById("bookMarkTraffic").innerHTML = output
-                    },
-                    error:
+            var loginCheck = [[${session.loginEmail}]];
+            if(loginCheck != null) {
+                let bookMarkTraffic = document.getElementById("bookMarkTraffic")
+                $.ajax({
+                        url: "/bookMark/list",
+                        type: "post",
+                        dataType: "json",
+                        success: function (response) { // 결과 성공 콜백함수
+                            console.log("북마크 가져오기 실행")
+                            console.log(response);
+                            let output = "<table style=\"display: inline\" id=\"bookMarkTap\">";
+                            for (let i in response) {
+                                output += "<tr style='background-color: transparent' class='bookMarkTap' id='bookMarkTap" + i + "'>";
+                                output += "<td style='display: inline-block' width='85%' onclick='bookMarkZoom(" + response[i].lat + "," + response[i].lon + "," + i + ")'>" + "<p style='padding: 3px 0px;'>" + response[i].trafficName + "</p>" +
+                                    "<td style='float: right;display: inline-block'><a style='text-decoration: none;color: red' onclick='deleteBookMark(" + response[i].trafficBookmarkId + ")'>삭제</a></td>";
+                                output += "</td>" + "</tr>";
+                            }
+                            output += "</table>";
+                            document.getElementById("bookMarkTraffic").innerHTML = output
+                        },
+                        error:
 
-                        function (request, status, error) { // 결과 에러 콜백함수
-                            console.log(error)
-                        }
+                            function (request, status, error) { // 결과 에러 콜백함수
+                                console.log(error)
+                            }
+                    }
+                )
+            }
+        }
+
+        function deleteBookMark(id){
+            $.ajax({
+                url: "/bookMark/delete",
+                data: {"trafficBookmarkId": id},
+                type: "post",
+                dataType: "text",
+                success: function (a) { // 결과 성공 콜백함수
+                    console.log(a);
+                    alert("삭제되었습니다.");
+                    bookMarkTraffic();
+                },
+                error:
+                    function (request, status, error) { // 결과 에러 콜백함수
+                        console.log(error)
+                    }
                 }
-            )
+            );
         }
 
         var bookMarkCount = -1;
@@ -685,14 +708,15 @@
                 $.ajax({
                         type: "post", // 타입 (get, post, put 등등)
                         url: "/bookMark/save", // 요청할 서버url
-                        dataType: "json", // 데이터 타입 (html, xml, json, text 등등)
+                        dataType: "text", // 데이터 타입 (html, xml, json, text 등등)
                         data: { // 보낼 데이터 (Object , String, Array)
                             "trafficId": id,
                             "ck": ck,
                         },
                         async: false,
                         success: function (response) { // 결과 성공 콜백함수
-
+                            alert("북마크 추가됨");
+                            bookMarkTraffic();
                         },
                         error:
 

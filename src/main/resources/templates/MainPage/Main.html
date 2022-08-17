@@ -1093,12 +1093,8 @@
 
         // 지도 띄우기
         function initTmap() {
-            var request_lat;
-            var request_lng;
-            if (page_lat == 0 && page_lng == 0) {
-                request_lat = 37.43903837025035;
-                request_lng = 126.67438796576901;
-            }
+            var request_lat = 37.43903837025035;
+            var request_lng = 126.67438796576901;
             var sidebarResize = document.getElementById("sidebar");
             var height_size = window.outerHeight;
             var width_size = window.outerWidth;
@@ -1110,7 +1106,7 @@
                     center: new Tmapv2.LatLng(request_lat, request_lng),
                     width: "100%",
                     height: height_size - 67 - 3 + "px",
-                    zoom: 18,
+                    zoom: 19,
                     zoomControl: true,
                     zIndexMarker: 8,
                     scrollwheel: true
@@ -1123,7 +1119,7 @@
                     center: new Tmapv2.LatLng(request_lat, request_lng),
                     width: "100%",
                     height: height_size - 84 - 3 + "px",
-                    zoom: 18,
+                    zoom: 19,
                     zoomControl: true,
                     zIndexMarker: 8,
                     scrollwheel: true

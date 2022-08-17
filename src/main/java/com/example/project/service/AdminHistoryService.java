@@ -51,4 +51,9 @@ public class AdminHistoryService {
         }
         return adminHistoryDTOList;
     }
+
+    public void adminSave(AdminHistoryDTO adminHistoryDTO) {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail("admin").get();
+        adminHistoryRepository.save(AdminHistoryEntity.toAdminHistorySaveEntity(adminHistoryDTO,memberEntity));
+    }
 }

@@ -59,9 +59,11 @@ public class ErrorController {
        errorService.updateManagerCheck(boardId);
         return "/hss/tapHref";
     }
+
     @GetMapping("/historySave2")
     public String historySave2(@ModelAttribute AdminHistoryDTO adminHistoryDTO, @RequestParam Long errorId){
-        adminHistoryService.save(adminHistoryDTO);
+        System.out.println("adminHistoryDTO = " + adminHistoryDTO + ", errorId = " + errorId);
+        adminHistoryService.adminSave(adminHistoryDTO);
         errorService.findByErrorId(errorId);
         return "hss/tapHref2";
     }
@@ -75,9 +77,6 @@ public class ErrorController {
 
     @GetMapping("/trafficError/{id}")
     public String trafficError(@PathVariable Long id, Model model){
-        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
-        System.out.println("id = " + id);
-        System.out.println("＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠");
        ErrorDTO errorDTO = errorService.findById(id);
        model.addAttribute("error", errorDTO);
        return "/AdminPages/trafficErrorCheck";

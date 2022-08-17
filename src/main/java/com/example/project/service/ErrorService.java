@@ -65,7 +65,7 @@ public class ErrorService {
 
     public List<ErrorDTO> findAllByBoardId(Long boardId) {
         // 해당 글의 신고 출력 메서드
-        List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntity(boardRepository.findByBoardId(boardId).get());
+        List<ErrorEntity> errorEntityList = errorRepository.findByBoardEntityOrderByManagerCheckDesc(boardRepository.findByBoardId(boardId).get());
         List<ErrorDTO> errorDTOList = new ArrayList<>();
         for (ErrorEntity error : errorEntityList) {
             errorDTOList.add(ErrorDTO.toErrorDTOEmail(error));
@@ -75,7 +75,7 @@ public class ErrorService {
 
     public void updateManagerCheck(Long boardId) {
         BoardEntity boardEntity = boardRepository.findById(boardId).get();
-        List<ErrorEntity> byBoardEntity = errorRepository.findByBoardEntity(boardEntity);
+        List<ErrorEntity> byBoardEntity = errorRepository.findByBoardEntityOrderByManagerCheckDesc(boardEntity);
         for (ErrorEntity error : byBoardEntity) {
             error.setManagerCheck(true);
             errorRepository.save(error);

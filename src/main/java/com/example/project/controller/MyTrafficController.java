@@ -38,7 +38,9 @@ public class MyTrafficController {
 
 
     @PostMapping("/saveTraffic")
-    public String saveTraffic(@ModelAttribute MyTrafficDTO myTrafficDTO, @ModelAttribute TrafficTimeDTO trafficTimeDTO, @RequestParam Long memberId, HttpSession session) {
+    public String saveTraffic(@ModelAttribute MyTrafficDTO myTrafficDTO,
+                              @ModelAttribute TrafficTimeDTO trafficTimeDTO,
+                              @RequestParam Long memberId, HttpSession session) {
         Long myTrafficId = myTrafficService.save(myTrafficDTO, memberId);
         trafficTimeService.save(myTrafficId, trafficTimeDTO);
 
@@ -52,7 +54,8 @@ public class MyTrafficController {
     }
 
     @PostMapping("/inBoundTrafficAll")
-    public @ResponseBody List<TrafficIntegratedDTO> inBoundTrafficAll(@RequestParam("center") String center, HttpSession session) {
+    public @ResponseBody List<TrafficIntegratedDTO> inBoundTrafficAll(@RequestParam("center") String center,
+                                                                      HttpSession session) {
         System.out.println("MyTrafficController.inBoundTrafficAll");
         System.out.println("center = " + center);
         Long memberId = (Long) session.getAttribute("loginId");

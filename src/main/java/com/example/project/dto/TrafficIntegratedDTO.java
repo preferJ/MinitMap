@@ -113,7 +113,7 @@ public class TrafficIntegratedDTO {
         integratedDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
         integratedDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         integratedDTO.setLeftTime(1L);
-        if (trafficTimeEntity.getStartType() == "RED"){
+        if (trafficTimeEntity.getStartType().equals("RED")){
         integratedDTO.setStartType(-1L);
         }else {
             integratedDTO.setStartType(1L);
@@ -181,7 +181,11 @@ public class TrafficIntegratedDTO {
         integratedDTO.setTrafficApplyEnd(trafficTimeEntity.getTrafficApplyEnd());
         integratedDTO.setSetStartTime(trafficTimeEntity.getSetStartTime());
         integratedDTO.setLeftTime(1L);
-        if (trafficTimeEntity.getStartType() == "RED"){
+        System.out.println(trafficTimeEntity.getStartType());
+        if (trafficTimeEntity.getStartType().equals("RED")){
+            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+            System.out.println("스타트 타입 레드");
+            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
             integratedDTO.setStartType(-1L);
         }else {
             integratedDTO.setStartType(1L);

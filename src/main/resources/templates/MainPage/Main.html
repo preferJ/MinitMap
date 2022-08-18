@@ -595,7 +595,6 @@
         preferStart = function () {
             preferTraffic = setInterval(function () {
 
-
                 if (preferarr.length > 0) {
                     for (var i in preferarr) {
                         preferarr[i].setMap(null);
@@ -616,7 +615,7 @@
                 let preferleft;
                 if (cal > preferRed) {
                     trafficLight = "green";
-                    preferleft = preferGreen - cal - preferRed;
+                    preferleft =  cal - preferRed;
                 } else {
                     trafficLight = "red";
                     preferleft = preferRed - cal;
@@ -624,7 +623,7 @@
                 }
 
                 if (trafficLight == "green") {
-                    var marker_Traffic = new Tmapv2.Marker(
+                    var preferM = new Tmapv2.Marker(
                         {
                             position: new Tmapv2.LatLng(37.439526824656355, 126.67483627796213), //Marker의 중심좌표 설정.
                             icon: "/icon/greenOn.png", // 아이콘 등록
@@ -635,7 +634,7 @@
                             map: map // 마커가 등록될 지도 객체
                         });
                 } else {
-                    var marker_Traffic = new Tmapv2.Marker(
+                    var preferM = new Tmapv2.Marker(
                         {
                             position: new Tmapv2.LatLng(37.439526824656355, 126.67483627796213), //Marker의 중심좌표 설정.
                             icon: "/icon/redOn.png", // 아이콘 등록
@@ -646,7 +645,7 @@
                             map: map // 마커가 등록될 지도 객체
                         });
                 }
-                preferarr.push(marker_Traffic);
+                preferarr.push(preferM);
                 console.log(trafficLight)
                 console.log(cal)
                 console.log(preferJ)
